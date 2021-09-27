@@ -12,7 +12,7 @@
                 <div class="text-lg lg:text-2xl uppercase text-pink-600 leading-none tracking-wider">
                   Audio<span class="text-gray-300 dark:text-gray-400">Silo</span>
                 </div>
-                <div class="hidden lg:block leading-none text-xs text-gray-300">
+                <div class="hidden lg:block leading-none text-xs text-gray-300 text-opacity-80">
                   Powered by Audioserve
                 </div>
               </div>
