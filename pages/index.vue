@@ -70,6 +70,16 @@
             <p>Stream your books to any device, or download them from offline use.</p>
           </div>
         </div>
+
+        <div class="bg-gray-200 rounded max-w-sm m-3 py-8">
+          <div class="p-4 px-8 text-lg font-semibold rounded-t">
+            Audible replacement
+          </div>
+          <div class="p-4 px-8">
+            <p class="mb-4">This allows you to host, stream and download your own DRM-free audiobooks without the need to hand over your data to anyone else.</p>
+            <p>By reverse proxying Audioserve, you can access your books anywhere you like.</p>
+          </div>
+        </div>
       </div>
     </div>
     <div v-if="demo===true" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex justify-center items-center">
