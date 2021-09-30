@@ -30,7 +30,7 @@
                 <vue-typed-js
                   :loop="true"
                   class="w-full justify-center"
-                  :strings="['Audiobook player', 'Audible replacement', 'Audiobook player']"
+                  :strings="['Audiobook Player', 'Audible Replacement', 'Audiobook Player']"
                   :typeSpeed="60"
                   :backDelay="1000"
                   :loopCount="2"
