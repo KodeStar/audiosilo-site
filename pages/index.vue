@@ -52,7 +52,7 @@
       <div class="container py-12 flex flex-col md:flex-row justify-evenly">
         <div class="rounded max-w-sm m-3 py-8">
           <div class="p-4 px-8 text-2xl text-pink-800 font-semibold rounded-t">
-            Powered by open source self hosted software
+            Powered by open-source self-hosted software
           </div>
           <div class="p-4 px-8 text-sm">
             <p class="mb-4">Audioserve is an open source audio server designed primarily for audiobooks.</p>
@@ -73,7 +73,7 @@
 
         <div class="rounded max-w-sm m-3 py-8">
           <div class="p-4 px-8 text-2xl text-pink-800 font-semibold rounded-t">
-            Self hosted Audible replacement
+            Self-hosted Audible replacement
           </div>
           <div class="p-4 px-8 text-sm">
             <p class="mb-4">This allows you to host, stream and download your own DRM-free audiobooks without the need to hand over your data to anyone else.</p>
