@@ -10,7 +10,13 @@ module.exports = {
     container: {
       center: true,
     },
-    extend: {},
+    extend: {
+      colors: {
+        gray: {
+          150: '#eeedf2'
+        }
+      }
+    },
   },
   variants: {
     extend: {},

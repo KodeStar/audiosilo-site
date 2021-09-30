@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-300 min-h-screen">
+  <div class="bg-gray-150 min-h-screen">
     <div class="md:h-[1000px] lg:h-[1200px]">
       <div class="bg-cover bg-center" style="background-image: url('bg2.jpg')">
         <div class="bg-gray-800 bg-opacity-50">
@@ -49,33 +49,33 @@
       </div>
     </div>
     <div>
-      <div class="container py-12 flex flex-col md:flex-row justify-center">
-        <div class="bg-gray-200 rounded max-w-sm m-3 py-8">
-          <div class="p-4 px-8 text-lg font-semibold rounded-t">
-            Powered by Audioserve
+      <div class="container py-12 flex flex-col md:flex-row justify-evenly">
+        <div class="rounded max-w-sm m-3 py-8">
+          <div class="p-4 px-8 text-2xl text-pink-800 font-semibold rounded-t">
+            Powered by open source self hosted software
           </div>
-          <div class="p-4 px-8">
+          <div class="p-4 px-8 text-sm">
             <p class="mb-4">Audioserve is an open source audio server designed primarily for audiobooks.</p>
             <p class="mb-4">Built with Rust, it's the perfect backend server to handle your books.</p>
             <p>It's small, light on resources, and built with purpose.</p>
           </div>
         </div>
 
-        <div class="bg-gray-200 rounded max-w-sm m-3 py-8">
-          <div class="p-4 px-8 text-lg font-semibold rounded-t">
-            Purpose built
+        <div class="rounded max-w-sm m-3 py-8">
+          <div class="p-4 px-8 text-2xl text-pink-800 font-semibold rounded-t">
+            Purpose built, not (poorly) repurposed
           </div>
-          <div class="p-4 px-8">
+          <div class="p-4 px-8 text-sm">
             <p class="mb-4">This isn't a repurposed music player, both the server and player have being built specifically with audiobooks in mind.</p>
             <p>Stream your books to any device, or download them from offline use.</p>
           </div>
         </div>
 
-        <div class="bg-gray-200 rounded max-w-sm m-3 py-8">
-          <div class="p-4 px-8 text-lg font-semibold rounded-t">
-            Audible replacement
+        <div class="rounded max-w-sm m-3 py-8">
+          <div class="p-4 px-8 text-2xl text-pink-800 font-semibold rounded-t">
+            Self hosted Audible replacement
           </div>
-          <div class="p-4 px-8">
+          <div class="p-4 px-8 text-sm">
             <p class="mb-4">This allows you to host, stream and download your own DRM-free audiobooks without the need to hand over your data to anyone else.</p>
             <p>By reverse proxying Audioserve, you can access your books anywhere you like.</p>
           </div>
