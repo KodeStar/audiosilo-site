@@ -7,14 +7,14 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Audiosilo',
+    title: 'AudioSilo — Self-hosted multi-platform audiobook player',
     htmlAttrs: {
       lang: 'en'
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: 'AudioSilo is a self-hosted, multi-platform audiobook player for iOS, Android and the web, backed by its own open-source Go server. Stream and download your own DRM-free audiobooks with bookmarks, notes, sleep timer and cross-device progress sync.' },
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [

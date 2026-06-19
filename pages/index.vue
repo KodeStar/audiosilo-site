@@ -14,13 +14,13 @@
                     Audio<span class="text-gray-300 dark:text-gray-400">Silo</span>
                   </div>
                   <div class="hidden lg:block leading-none text-xs text-gray-300 text-opacity-80">
-                    Powered by Audioserve
+                    Powered by AudioSilo Server <span class="text-pink-600">{{ serverVersion }}</span>
                   </div>
                 </div>
               </NuxtLink>
               <div class="text-gray-300">
-                <span @click="demo = true" class="mx-5 cursor-pointer">Demo</span>
-                <a class="mx-5" href="https://github.com/KodeStar/audiosilo" target="_blank">Code</a>
+                <a class="mx-5" href="https://demo.audiosilo.app" target="_blank">Demo</a>
+                <a class="mx-5" href="https://github.com/KodeStar/audiosilo-server" target="_blank">Code</a>
                 <a class="mx-5" href="https://discord.gg/vfQMqkzQrf" target="_blank">Support</a>
               </div>
             </div>
@@ -39,7 +39,7 @@
                   <h1 class="text-5xl my-12 font-extrabold justify-content: center;">Multi-platform <span class="typing inline-block text-pink-600"></span></h1>
                 </vue-typed-js>
                 <div class="max-w-3xl mb-8">
-                  <p class="mb-2 text-lg leading-loose">Audiosilo is a multi-platform audiobook player. It should run on anything that can install a PWA and includes variable playback speed, sleep timer, light and dark themes, bookmarks and listening history.</p>
+                  <p class="mb-2 text-lg leading-loose">AudioSilo is a multi-platform audiobook player &mdash; native apps for iOS and Android plus an installable web PWA, all from one codebase. It includes variable playback speed, a sleep timer with shake-to-cancel, light and dark themes, bookmarks, markdown notes, fast search, listening history and offline downloads, with your progress synced across every device.</p>
                 </div>
               </div>
               <div class=""><img src="laptop.png" alt="" /></div>
@@ -52,12 +52,12 @@
       <div class="container py-12 flex flex-col md:flex-row justify-evenly">
         <div class="rounded max-w-sm m-3 py-8">
           <div class="p-4 px-8 text-2xl text-pink-800 font-semibold rounded-t">
-            Powered by open-source self-hosted software
+            Powered by your own bespoke server
           </div>
           <div class="p-4 px-8 text-sm">
-            <p class="mb-4">Audioserve is an open source audio server designed primarily for audiobooks.</p>
-            <p class="mb-4">Built with Rust, it's the perfect backend server to handle your books.</p>
-            <p>It's small, light on resources, and built with purpose.</p>
+            <p class="mb-4">AudioSilo Server is an open-source audiobook server written in Go, designed to be safe to leave exposed to the internet.</p>
+            <p class="mb-4">No default passwords, built-in rate limiting and brute-force lockout, configurable TLS, fast full-text search and HTTP range streaming.</p>
+            <p>Small, light on resources and built with purpose &mdash; currently on <span class="text-pink-600">{{ serverVersion }}</span>.</p>
           </div>
         </div>
 
@@ -66,8 +66,9 @@
             Purpose built, not (poorly) repurposed
           </div>
           <div class="p-4 px-8 text-sm">
-            <p class="mb-4">This isn't a repurposed music player, both the server and player have being built specifically with audiobooks in mind.</p>
-            <p>Stream your books to any device, or download them from offline use.</p>
+            <p class="mb-4">This isn't a repurposed music player &mdash; both the server and the player are built specifically with audiobooks in mind.</p>
+            <p class="mb-4">Normalized chapters, resume-anywhere progress, bookmarks and notes that follow your books even when files move.</p>
+            <p>Stream your books to any device, or download them for offline listening.</p>
           </div>
         </div>
 
@@ -76,24 +77,10 @@
             Self-hosted Audible replacement
           </div>
           <div class="p-4 px-8 text-sm">
-            <p class="mb-4">This allows you to host, stream and download your own DRM-free audiobooks without the need to hand over your data to anyone else.</p>
-            <p>By reverse proxying Audioserve, you can access your books anywhere you like.</p>
+            <p class="mb-4">Host, stream and download your own DRM-free audiobooks without the need to hand over your data to anyone else.</p>
+            <p>By reverse proxying AudioSilo Server, you can securely access your library from anywhere you like.</p>
           </div>
         </div>
-      </div>
-    </div>
-    <div v-if="demo===true" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex justify-center items-center">
-      <div class="rounded-lg flex border border-gray-700 text-gray-300 bg-gray-800 flex-col p-4 lg:p-8 w-full max-w-lg m-4 relative">
-        <span @click="demo = false" class="text-gray-300 p-3 absolute top-0 right-0 cursor-pointer"><i class="fa-fw fa-solid fa-times"></i></span>
-        <div class="flex justify-center mb-5 text-gray-300 font-bold text-xl">
-          Demo site details
-        </div>
-        <div class="rounded my-3 lg:my-1 flex flex-col lg:flex-row items-center"><span class="bg-gray-700 flex p-3 w-full lg:w-32 rounded justify-center lg:mr-2">Server</span><span class="flex"><span class="bg-gray-900 flex w-[264px] p-3 rounded justify-center mr-2">https://audioserve.zderadicka.eu/</span><span @click="copyURL('https://audioserve.zderadicka.eu/')" class="cursor-pointer bg-pink-600 flex items-center p-3 rounded justify-center"><i class="fa-light fa-copy"></i></span></span></div>
-        <div class="rounded my-3 lg:my-1 flex flex-col lg:flex-row items-center"><span class="bg-gray-700 flex p-3 w-full lg:w-32 rounded justify-center lg:mr-2">Shared Secret</span><span class="flex"><span class="bg-gray-900 flex w-[264px] p-3 rounded justify-center mr-2">mypass</span><span @click="copyURL('mypass')" class="cursor-pointer bg-pink-600 flex items-center p-3 rounded justify-center"><i class="fa-light fa-copy"></i></span></span></div>
-        <div class="rounded my-3 lg:my-1 flex flex-col lg:flex-row items-center"><span class="bg-gray-700 flex p-3 w-full lg:w-32 rounded justify-center lg:mr-2">User/Group</span><span class="bg-gray-900 flex w-full lg:w-[264px] p-3 rounded justify-center lg:mr-2 text-gray-700 italic">Anything you want</span></div>
-        <a class="bg-pink-600 text-white w-full mt-3 p-3 rounded text-center text-lg" href="https://client.audiosilo.app/" target="_blank">
-          Go to demo site
-        </a>
       </div>
     </div>
   </div>
@@ -101,20 +88,23 @@
 
 <script>
 export default {
-  props: [],
   data () {
     return {
-      demo: false
+      // Fallback shown if the GitHub API can't be reached; latest known release.
+      serverVersion: 'v1.1.0'
     }
   },
-  methods: {
-    async copyURL (mytext) {
-      try {
-        await navigator.clipboard.writeText(mytext)
-        alert('Copied')
-      } catch ($e) {
-        alert('Cannot copy')
+  async mounted () {
+    try {
+      const res = await fetch('https://api.github.com/repos/KodeStar/audiosilo-server/releases/latest')
+      if (res.ok) {
+        const data = await res.json()
+        if (data && data.tag_name) {
+          this.serverVersion = data.tag_name
+        }
       }
+    } catch (e) {
+      // Keep the fallback version on any network/parse error.
     }
   }
 }
