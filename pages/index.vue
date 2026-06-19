@@ -36,7 +36,7 @@
                   :loopCount="2"
                   :startDelay="1000"
                 >
-                  <h1 class="text-5xl my-12 font-extrabold justify-content: center;">Muti-platform <span class="typing inline-block text-pink-600"></span></h1>
+                  <h1 class="text-5xl my-12 font-extrabold justify-content: center;">Multi-platform <span class="typing inline-block text-pink-600"></span></h1>
                 </vue-typed-js>
                 <div class="max-w-3xl mb-8">
                   <p class="mb-2 text-lg leading-loose">Audiosilo is a multi-platform audiobook player. It should run on anything that can install a PWA and includes variable playback speed, sleep timer, light and dark themes, bookmarks and listening history.</p>
