@@ -37,7 +37,7 @@
         <p class="mb-4 leading-relaxed">
           AudioSilo (&ldquo;the app&rdquo;) is published by <strong>KodeStar</strong>. Questions about this
           policy can be sent to
-          <a class="text-pink-600 hover:underline" href="mailto:kodestar@gmail.com">kodestar@gmail.com</a>.
+          <a class="text-pink-600 hover:underline" href="mailto:kode@audiosilo.app">kode@audiosilo.app</a>.
         </p>
 
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 my-8">
@@ -143,7 +143,7 @@
         <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Contact</h2>
         <p class="mb-4 leading-relaxed">
           Questions about this privacy policy can be sent to
-          <a class="text-pink-600 hover:underline" href="mailto:kodestar@gmail.com">kodestar@gmail.com</a>.
+          <a class="text-pink-600 hover:underline" href="mailto:kode@audiosilo.app">kode@audiosilo.app</a>.
         </p>
       </div>
     </div>
