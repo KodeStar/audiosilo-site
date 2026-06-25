@@ -83,6 +83,16 @@
         </div>
       </div>
     </div>
+    <div class="bg-gray-800 text-gray-400 text-sm">
+      <div class="container py-6 flex flex-col sm:flex-row items-center justify-between">
+        <div class="mb-2 sm:mb-0">&copy; 2026 KodeStar &middot; AudioSilo</div>
+        <div>
+          <NuxtLink class="mx-3 hover:text-pink-600" to="/privacy">Privacy Policy</NuxtLink>
+          <a class="mx-3 hover:text-pink-600" href="https://github.com/KodeStar/audiosilo-server" target="_blank">Code</a>
+          <a class="mx-3 hover:text-pink-600" href="https://discord.gg/vfQMqkzQrf" target="_blank">Support</a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

@@ -1,0 +1,173 @@
+<template>
+  <div class="bg-gray-150 min-h-screen flex flex-col">
+    <!-- Header -->
+    <div class="bg-gray-800">
+      <div class="container py-4 flex items-center justify-between">
+        <NuxtLink class="flex items-center" to="/">
+          <svg class="w-10 mr-3 transform rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="299.2254999999999 397.8038000000001 401.5409999999997 315.357">
+            <path d="M681.4395 530.5928c-7.576-21.18-23.963-33.328-44.96-33.328h-18.151v112.545h18.151c21.275 0 37.716-11.724 45.097-32.154 2.644-7.197 4.042-15.312 4.042-23.47 0-7.84-1.446-16-4.179-23.593m-75.959 135.162c-7.915 8.056-19.048 12.674-30.542 12.674h-149.887c-11.521 0-22.373-4.506-30.57-12.702-8.054-7.915-12.673-19.05-12.673-30.544v-10.081h-20.884v6.767c0 16.855 4.4 31.759 12.705 43.07 8.861 12.406 22.551 20.08 39.548 22.186 3.465.494 7.073.744 10.721.744h152.193c3.651 0 7.258-.25 10.676-.739 17.198-2.114 30.564-9.575 39.732-22.182 8.075-11.192 12.386-25.775 12.538-42.2v-7.646h-20.709v10.081c0 11.407-4.672 22.539-12.848 30.572m-2.589-105.796h-34.725c-3.014 0-5.535-1.517-6.994-4.303l-13.465-22.148-22.213 54.207c-.713 2.139-2.207 3.759-4.265 4.582-.946.405-1.942.61-2.963.61-3.04 0-5.763-1.822-6.945-4.661l-22.973-53.708-24.537 72.2c-.056.167-.113.305-.168.443-.089.222-.177.444-.268.713-.149.449-.573.983-.948 1.456-1.04 1.171-2.14 1.955-3.269 2.33-.882.293-1.788.444-2.695.444-1.081 0-2.116-.217-2.937-.599-.734-.368-1.369-.685-1.814-1.128l-.107-.108-.121-.092c-.841-.657-1.648-1.84-2.224-3.214l-16.72-47.024h-35.441v75.224c0 7.33 2.992 14.526 8.21 19.743 5.219 5.219 12.415 8.21 19.742 8.21h149.887c7.437 0 14.448-2.915 19.744-8.21 5.217-5.217 8.209-12.413 8.209-19.743zm0-74.664c0-7.436-2.915-14.447-8.209-19.74-5.293-5.296-12.305-8.211-19.744-8.211h-39.921c-1.392 0-2.963-.491-4.376-1.388l-66.669-37.071v30.812c0 4.217-3.43 7.647-7.646 7.647h-31.275c-7.33 0-14.527 2.994-19.742 8.211-5.294 5.293-8.21 12.304-8.21 19.74v59.371h40.923c3.481 0 6.413 2.226 7.358 5.735l11.015 30.656 23.847-70.429c1.131-3.13 4.093-5.234 7.373-5.234.81 0 1.618.129 2.349.365 2.055.721 3.794 2.395 4.758 4.561l23.484 55.12 20.858-51.268c.56-1.679 1.688-3.065 3.272-4.014 1.217-.739 2.606-1.128 4.014-1.128 2.677 0 5.094 1.352 6.473 3.628l19.595 32.008h30.473zm-221.083 11.97h-18.153c-20.777 0-37.639 12.459-45.103 33.323-2.639 7.333-4.034 15.493-4.034 23.598 0 8.537 1.31 16.435 3.892 23.457 7.386 20.443 23.878 32.167 45.245 32.167h18.153zm314.203 85.493c-7.253 20.099-21.476 34.198-40.049 39.706l-1.604.476v8.929c0 20.138-5.369 38.127-15.537 52.044-11.508 15.991-28.816 25.811-50.081 28.404-4.197.561-8.452.844-12.649.844h-152.193c-4.196 0-8.45-.283-12.673-.846-21.387-2.624-38.231-12.184-50.065-28.417-10.158-13.902-15.527-31.891-15.527-52.029v-8.973l-1.465-.432c-18.724-5.515-32.942-19.61-40.054-39.735-3.244-8.649-4.889-18.252-4.889-28.543 0-9.727 1.696-19.662 4.9-28.717 9.951-27.644 31.649-43.496 59.53-43.496h18.15l.271-2.135c1.207-9.522 5.612-18.43 12.419-25.099 8.183-8.181 19.035-12.687 30.556-12.687h23.774l-.006-36.062c-.112-1.572.223-3.077.965-4.35 1.413-2.402 3.883-3.836 6.609-3.836 1.354 0 2.688.375 3.876 1.095l76.816 43.153h37.853c11.494 0 22.627 4.618 30.575 12.706 6.79 6.65 11.196 15.558 12.401 25.08l.27 2.135h18.295c27.789 0 49.435 15.852 59.382 43.484 3.209 9.065 4.905 18.999 4.905 28.765.138 9.627-1.508 19.496-4.755 28.536" fill="#db2777" />
+          </svg>
+          <div class="text-lg uppercase text-pink-600 leading-none tracking-wider">
+            Audio<span class="text-gray-300">Silo</span>
+          </div>
+        </NuxtLink>
+        <div class="text-gray-300 text-sm">
+          <NuxtLink class="mx-2 sm:mx-3 hover:text-pink-600" to="/">Home</NuxtLink>
+          <a class="mx-2 sm:mx-3 hover:text-pink-600" href="https://demo.audiosilo.app" target="_blank">Demo</a>
+          <a class="mx-2 sm:mx-3 hover:text-pink-600" href="https://github.com/KodeStar/audiosilo-server" target="_blank">Code</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="container py-12 flex-grow">
+      <div class="max-w-3xl mx-auto text-gray-700">
+        <h1 class="text-4xl font-extrabold text-pink-800 mb-1">Privacy Policy</h1>
+        <p class="text-gray-500 mb-8">Last updated: 25 June 2026</p>
+
+        <p class="mb-6 text-lg leading-relaxed">
+          AudioSilo is a <strong>self-hosted audiobook player</strong>. The AudioSilo app is a
+          <em>client</em> for an AudioSilo server that <strong>you</strong> (or whoever administers your
+          server) run and control. In normal use, the app communicates <strong>only</strong> with the server
+          address you provide, and the developer of AudioSilo operates
+          <strong>no service that receives, stores, or processes your data</strong>.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Who we are</h2>
+        <p class="mb-4 leading-relaxed">
+          AudioSilo (&ldquo;the app&rdquo;) is published by <strong>KodeStar</strong>. Questions about this
+          policy can be sent to
+          <a class="text-pink-600 hover:underline" href="mailto:kodestar@gmail.com">kodestar@gmail.com</a>.
+        </p>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 my-8">
+          <p class="font-semibold text-gray-800 mb-2">The short version</p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>We do <strong>not</strong> collect, see, sell, or share your personal data.</li>
+            <li>We use <strong>no</strong> analytics, advertising, tracking, or crash-reporting services.</li>
+            <li>All of your content and account data lives on <strong>your own AudioSilo server</strong> and
+              on <strong>your own device</strong> &mdash; not with us.</li>
+            <li>The app contacts only the server <strong>you</strong> tell it to connect to.</li>
+          </ul>
+        </div>
+
+        <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">What information the app handles</h2>
+        <p class="mb-4 leading-relaxed">
+          Because AudioSilo is self-hosted, almost everything stays between your device and the server you
+          connect to.
+        </p>
+        <p class="font-semibold text-gray-800 mb-2">Stored on your device</p>
+        <ul class="list-disc pl-5 space-y-1 mb-4">
+          <li><strong>Your session token</strong> &mdash; kept in the operating system&rsquo;s encrypted secure
+            storage (Keychain on iOS, Keystore on Android) so you stay signed in.</li>
+          <li><strong>Downloaded audiobooks</strong> &mdash; audio files and cover art you choose to download
+            for offline listening, stored in the app&rsquo;s private storage.</li>
+          <li><strong>App preferences</strong> &mdash; settings such as playback speed, theme, and language,
+            plus a local cache of your listening position.</li>
+        </ul>
+        <p class="font-semibold text-gray-800 mb-2">Sent to the server you choose</p>
+        <ul class="list-disc pl-5 space-y-1 mb-4">
+          <li>When you sign in or pair, and as you listen, the app sends requests to the
+            <strong>AudioSilo server address you provide</strong>. Your account credentials, listening
+            progress, bookmarks, notes, and favourites are stored on <strong>that</strong> server, operated by
+            you or your server&rsquo;s administrator.</li>
+          <li>We (KodeStar) have <strong>no access</strong> to your server, your account, or any data on it.</li>
+        </ul>
+        <p class="mb-4 leading-relaxed">
+          There is no central AudioSilo account system. Your account exists only on your self-hosted server.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Device permissions</h2>
+        <ul class="list-disc pl-5 space-y-1 mb-4">
+          <li><strong>Camera</strong> &mdash; used solely to scan a pairing QR code when connecting to your
+            server. Images are processed on-device to read the code and are never stored or transmitted to
+            us.</li>
+          <li><strong>Background audio</strong> &mdash; so playback continues when the app is backgrounded or
+            the screen is locked.</li>
+          <li><strong>Network access</strong> &mdash; to communicate with your AudioSilo server.</li>
+        </ul>
+
+        <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Optional public demo</h2>
+        <p class="mb-4 leading-relaxed">
+          AudioSilo offers an optional, web-based public demo (at
+          <span class="font-mono text-sm">demo.audiosilo.app</span>) so people can try the player without
+          setting up a server. The demo server creates a <strong>temporary, throwaway guest session</strong>
+          with sample content; no personal account is created and demo data is ephemeral. Using the demo is
+          optional and separate from connecting to your own server.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Analytics, advertising, and tracking</h2>
+        <p class="mb-4 leading-relaxed">
+          AudioSilo contains <strong>no</strong> analytics, advertising, attribution, or third-party tracking
+          software. We do not profile you and do not build advertising identifiers. Nothing about your usage is
+          reported back to us.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Third-party services</h2>
+        <p class="mb-4 leading-relaxed">
+          The app integrates no third-party data-collecting services. The only third parties involved are the
+          <strong>app stores</strong> (Apple App Store, Google Play) that distribute the app, and the
+          <strong>server you connect to</strong> &mdash; each governed by its own operator&rsquo;s terms.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Data retention and deletion</h2>
+        <ul class="list-disc pl-5 space-y-1 mb-4">
+          <li><strong>On your device:</strong> uninstalling the app removes its local data, including the
+            stored session token, downloaded audiobooks, and preferences.</li>
+          <li><strong>On your server:</strong> your account and listening data are retained according to your
+            server&rsquo;s configuration. Because the server is under your control, you can delete your account
+            and its data there at any time.</li>
+        </ul>
+
+        <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Children&rsquo;s privacy</h2>
+        <p class="mb-4 leading-relaxed">
+          AudioSilo is a general-audience audiobook player and is not directed at children under 13. We do not
+          knowingly collect personal information from children &mdash; indeed, we collect personal information
+          from no one.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Security</h2>
+        <p class="mb-4 leading-relaxed">
+          Communication between the app and your server uses standard transport security (HTTPS, which your
+          server can be configured to enforce). Your session token is held in the device&rsquo;s encrypted
+          secure storage. Because we hold no user data centrally, there is no central store of your information
+          to be breached.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Changes to this policy</h2>
+        <p class="mb-4 leading-relaxed">
+          We may update this policy as the app evolves. Material changes will be reflected by the
+          &ldquo;Last updated&rdquo; date above and published at the same URL.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Contact</h2>
+        <p class="mb-4 leading-relaxed">
+          Questions about this privacy policy can be sent to
+          <a class="text-pink-600 hover:underline" href="mailto:kodestar@gmail.com">kodestar@gmail.com</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-gray-800 text-gray-400 text-sm">
+      <div class="container py-6 text-center">
+        &copy; 2026 KodeStar &middot; AudioSilo
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  head: {
+    title: 'AudioSilo — Privacy Policy',
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Privacy policy for the AudioSilo self-hosted audiobook player.'
+      }
+    ]
+  }
+}
+</script>
