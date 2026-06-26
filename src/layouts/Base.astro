@@ -1,0 +1,52 @@
+---
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
+import '../styles/global.css'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+
+interface Props {
+  title?: string
+  description?: string
+  solidHeader?: boolean
+}
+
+const {
+  title = 'AudioSilo — Self-hosted multi-platform audiobook player',
+  description = 'AudioSilo is a self-hosted, multi-platform audiobook player for iOS, Android and the web, backed by its own open-source Go server. Stream and download your own DRM-free audiobooks with bookmarks, notes, sleep timer and cross-device progress sync.',
+  solidHeader = true,
+} = Astro.props
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#db2777" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="theme-color" content="#1f2937" />
+  </head>
+  <body class="bg-gray-150 text-gray-800 min-h-screen flex flex-col">
+    {solidHeader && <Header />}
+    <main class="flex-grow">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

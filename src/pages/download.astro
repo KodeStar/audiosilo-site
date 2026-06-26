@@ -1,0 +1,193 @@
+---
+import Base from '../layouts/Base.astro'
+import Icon from '../components/Icon.astro'
+import CodeBlock from '../components/CodeBlock.astro'
+
+const SERVER_RELEASES = 'https://github.com/KodeStar/audiosilo-server/releases'
+const SERVER_REPO = 'https://github.com/KodeStar/audiosilo-server'
+const FRONTEND_RELEASES = 'https://github.com/KodeStar/audiosilo-frontend/releases'
+
+const compose = `services:
+  audiosilo:
+    image: ghcr.io/kodestar/audiosilo-server:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data            # db, config, certs (first run prints admin creds once)
+      - /srv/audiobooks:/library:ro
+    environment:
+      PUID: "1000"              # owner of /data (Unraid: 99)
+      PGID: "1000"              # group of /data (Unraid: 100)
+      AUDIOSILO_WEB_DIR: /app/web
+      # AUDIOSILO_PUBLIC_URL: "https://books.example.com"  # used in QR/invite links
+      # AUDIOSILO_TLS_MODE: "off"                          # behind a TLS-terminating proxy`
+
+const composeRun = `docker compose up -d
+docker compose logs        # first run prints the admin password + auth code ONCE`
+
+const source = `git clone https://github.com/KodeStar/audiosilo-server
+cd audiosilo-server
+go build -o bin/audiosilo ./cmd/audiosilo
+
+# First run prints the admin password + auth code once. Save them.
+AUDIOSILO_TLS_MODE=off ./bin/audiosilo --data ./data`
+
+const btnPrimary =
+  'inline-flex items-center gap-2 bg-pink-600 hover:bg-pink-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors'
+const btnGhost =
+  'inline-flex items-center gap-2 border border-gray-300 hover:border-pink-600 text-gray-700 px-5 py-2.5 rounded-lg transition-colors'
+---
+<Base
+  title="Download AudioSilo — self-hosted audiobook server"
+  description="Download and run AudioSilo Server. Docker is the recommended approach; native binaries, build-from-source and the mobile/web apps are also available."
+>
+  <!-- Page header -->
+  <section class="bg-gray-800 text-gray-100">
+    <div class="container py-12 text-center">
+      <h1 class="text-4xl font-extrabold mb-3">Download AudioSilo</h1>
+      <p class="text-gray-400 max-w-2xl mx-auto">
+        AudioSilo Server is the only thing you install &mdash; it bundles the web player and serves
+        the API the apps connect to. Pick the option that suits you; <strong class="text-gray-200"
+          >Docker is recommended</strong
+        > for always-on and multi-user setups.
+      </p>
+    </div>
+  </section>
+
+  <div class="container py-12 space-y-6">
+    <!-- Docker (recommended) -->
+    <article class="bg-white rounded-xl border-2 border-pink-300 ring-1 ring-pink-100 shadow-sm p-6 sm:p-8">
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <span class="flex items-center justify-center w-11 h-11 rounded-lg bg-pink-100 text-pink-600">
+          <Icon name="cube" class="w-6 h-6" />
+        </span>
+        <h2 class="text-2xl font-semibold text-pink-800">Docker</h2>
+        <span class="text-xs font-semibold uppercase tracking-wide bg-pink-600 text-white px-2.5 py-1 rounded-full">
+          Recommended
+        </span>
+      </div>
+      <p class="text-gray-600 mb-4 max-w-3xl">
+        The published image bundles the server <strong>and</strong> a pinned web player; ffmpeg is included.
+        Only <code class="bg-gray-150 text-pink-700 px-1 rounded">/data</code> (database, config, certs) is
+        persisted. Updating the server or the bundled player is always a new image &mdash;
+        <code class="bg-gray-150 text-pink-700 px-1 rounded">docker compose pull &amp;&amp; docker compose up -d</code>.
+      </p>
+      <CodeBlock filename="docker-compose.yml" code={compose} />
+      <CodeBlock code={composeRun} />
+      <p class="text-sm text-gray-500 mb-5">
+        Mount your audiobooks read-only, set <code class="bg-gray-150 text-pink-700 px-1 rounded">PUID</code>/<code
+          class="bg-gray-150 text-pink-700 px-1 rounded">PGID</code
+        > to the user that should own <code class="bg-gray-150 text-pink-700 px-1 rounded">/data</code>, and set
+        <code class="bg-gray-150 text-pink-700 px-1 rounded">AUDIOSILO_PUBLIC_URL</code> so QR / invite links are correct.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a class={btnPrimary} href={SERVER_RELEASES} target="_blank" rel="noopener">
+          <Icon name="download" class="w-5 h-5" /> Server releases
+        </a>
+        <a class={btnGhost} href="/docs/installation">
+          Installation guide <Icon name="arrowRight" class="w-4 h-4" />
+        </a>
+      </div>
+    </article>
+
+    <!-- Native binaries -->
+    <article class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 sm:p-8">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="flex items-center justify-center w-11 h-11 rounded-lg bg-gray-150 text-pink-600">
+          <Icon name="download" class="w-6 h-6" />
+        </span>
+        <h2 class="text-2xl font-semibold text-pink-800">Native binaries</h2>
+      </div>
+      <p class="text-gray-600 mb-4 max-w-3xl">
+        One self-contained download per OS/arch, published to GitHub Releases on every tagged version.
+        Ideal for running directly on a home machine.
+      </p>
+      <ul class="space-y-2 mb-5 text-sm text-gray-700">
+        <li class="flex gap-2">
+          <Icon name="check" class="w-4 h-4 text-pink-600 flex-shrink-0 mt-0.5" />
+          <span><strong>Web player embedded</strong> in the binary &mdash; <code class="bg-gray-150 text-pink-700 px-1 rounded">/web</code> just works, no extra setup.</span>
+        </li>
+        <li class="flex gap-2">
+          <Icon name="check" class="w-4 h-4 text-pink-600 flex-shrink-0 mt-0.5" />
+          <span><strong>ffmpeg auto-fetched</strong> on first run if it isn't already installed, then cached.</span>
+        </li>
+        <li class="flex gap-2">
+          <Icon name="check" class="w-4 h-4 text-pink-600 flex-shrink-0 mt-0.5" />
+          <span>Formats: <code class="bg-gray-150 text-pink-700 px-1 rounded">.tar.gz</code> (Linux/macOS), <code class="bg-gray-150 text-pink-700 px-1 rounded">.zip</code> (Windows), and <code class="bg-gray-150 text-pink-700 px-1 rounded">.deb</code>/<code class="bg-gray-150 text-pink-700 px-1 rounded">.rpm</code> (Linux, with a systemd unit), plus <code class="bg-gray-150 text-pink-700 px-1 rounded">checksums.txt</code>.</span>
+        </li>
+        <li class="flex gap-2">
+          <Icon name="check" class="w-4 h-4 text-pink-600 flex-shrink-0 mt-0.5" />
+          <span>Run with <code class="bg-gray-150 text-pink-700 px-1 rounded">--setup</code> for a guided browser wizard to set the admin password and pick your books folder.</span>
+        </li>
+      </ul>
+      <a class={btnPrimary} href={SERVER_RELEASES} target="_blank" rel="noopener">
+        <Icon name="download" class="w-5 h-5" /> Browse server releases
+      </a>
+    </article>
+
+    <!-- Build from source -->
+    <article class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 sm:p-8">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="flex items-center justify-center w-11 h-11 rounded-lg bg-gray-150 text-pink-600">
+          <Icon name="terminal" class="w-6 h-6" />
+        </span>
+        <h2 class="text-2xl font-semibold text-pink-800">Build from source</h2>
+      </div>
+      <p class="text-gray-600 mb-4 max-w-3xl">
+        For developers and unsupported platforms. The server is CGO-free (pure-Go SQLite), so it builds
+        anywhere Go does. Requires <strong>Go 1.25+</strong>.
+      </p>
+      <CodeBlock code={source} />
+      <a class={btnGhost} href={SERVER_REPO} target="_blank" rel="noopener">
+        <Icon name="code" class="w-5 h-5" /> View the source on GitHub
+      </a>
+    </article>
+
+    <!-- Mobile & web apps -->
+    <article class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 sm:p-8">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="flex items-center justify-center w-11 h-11 rounded-lg bg-gray-150 text-pink-600">
+          <Icon name="phone" class="w-6 h-6" />
+        </span>
+        <h2 class="text-2xl font-semibold text-pink-800">Mobile &amp; web apps</h2>
+      </div>
+      <p class="text-gray-600 mb-4 max-w-3xl">
+        The player reaches you two ways. Both connect to your own server &mdash; there's nothing to download
+        from us before you have one running.
+      </p>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <Icon name="globe" class="w-5 h-5 text-pink-600" />
+            <h3 class="font-semibold text-gray-800">Web app (PWA)</h3>
+            <span class="text-xs font-semibold uppercase bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Available now</span>
+          </div>
+          <p class="text-sm text-gray-600">
+            Your server hosts the installable web player at <code class="bg-gray-150 text-pink-700 px-1 rounded">/web</code>.
+            Open it in any browser and &ldquo;Add to Home Screen&rdquo; for an app-like experience &mdash; nothing to install separately.
+          </p>
+        </div>
+        <div class="rounded-lg border border-gray-200 p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <Icon name="phone" class="w-5 h-5 text-pink-600" />
+            <h3 class="font-semibold text-gray-800">iOS &amp; Android</h3>
+            <span class="text-xs font-semibold uppercase bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Coming soon</span>
+          </div>
+          <p class="text-sm text-gray-600 mb-3">
+            Native apps built from the same codebase are on the way to the App Store and Google Play.
+            Follow progress and grab pre-release builds on the frontend releases page.
+          </p>
+          <a class="text-sm text-pink-600 hover:underline" href={FRONTEND_RELEASES} target="_blank" rel="noopener">
+            Frontend releases &rarr;
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <p class="text-center text-sm text-gray-500">
+      Not sure where to start? The <a class="text-pink-600 hover:underline" href="/docs/installation">installation guide</a>
+      walks through a Docker setup end to end.
+    </p>
+  </div>
+</Base>

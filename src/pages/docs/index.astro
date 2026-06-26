@@ -1,0 +1,73 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro'
+import Icon from '../../components/Icon.astro'
+
+const cards = [
+  {
+    icon: 'rocket',
+    title: 'Installation',
+    body: 'Run the server with Docker or a native binary, and meet your admin credentials.',
+    href: '/docs/installation',
+  },
+  {
+    icon: 'settings',
+    title: 'Configuration',
+    body: 'Every config.yaml key and its environment-variable override, explained.',
+    href: '/docs/configuration',
+  },
+  {
+    icon: 'globe',
+    title: 'Reverse proxy & TLS',
+    body: 'Expose AudioSilo safely with a reverse proxy, TLS and trusted proxies.',
+    href: '/docs/reverse-proxy',
+  },
+  {
+    icon: 'check',
+    title: 'First run',
+    body: 'Add a library and pair your first device with an auth code or QR.',
+    href: '/docs/first-run',
+  },
+] as const
+---
+<DocsLayout
+  title="AudioSilo documentation"
+  description="Documentation for AudioSilo Server — installation, configuration, exposing it safely, and pairing your first device."
+>
+  <p>
+    AudioSilo is a <strong>self-hosted audiobook platform</strong>: a small, open-source server written
+    in Go, plus a cross-platform player (native iOS &amp; Android apps and an installable web PWA, all from
+    one codebase). You run the server, point it at a folder of audiobooks, and connect from any device.
+  </p>
+  <p>
+    The server exposes a JSON API, a baked-in admin/connect web UI, and &mdash; in the Docker image and the
+    native binaries &mdash; the web player at <code>/web</code>. It's designed to be
+    <strong>safe to leave exposed to the internet</strong>: no default passwords, app-layer hardening
+    (rate limiting and brute-force lockout), and configurable TLS.
+  </p>
+
+  <h2>Start here</h2>
+  <div class="grid sm:grid-cols-2 gap-4 not-prose mt-4">
+    {
+      cards.map((c) => (
+        <a
+          href={c.href}
+          class="block rounded-xl border border-gray-200 bg-white p-5 hover:border-pink-300 hover:shadow-sm transition"
+        >
+          <div class="flex items-center gap-2 mb-2 text-pink-600">
+            <Icon name={c.icon} class="w-5 h-5" />
+            <span class="font-semibold text-pink-800">{c.title}</span>
+          </div>
+          <p class="text-sm text-gray-600">{c.body}</p>
+        </a>
+      ))
+    }
+  </div>
+
+  <h2>Looking to install?</h2>
+  <p>
+    Head to the <a href="/download">download page</a> to grab the server, or jump straight to the
+    <a href="/docs/installation">installation guide</a>. The server is licensed under
+    <strong>AGPL-3.0</strong>; the source lives on
+    <a href="https://github.com/KodeStar/audiosilo-server" target="_blank" rel="noopener">GitHub</a>.
+  </p>
+</DocsLayout>

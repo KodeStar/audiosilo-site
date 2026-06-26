@@ -1,0 +1,101 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro'
+import CodeBlock from '../../components/CodeBlock.astro'
+
+const config = `# Written to <data-dir>/config.yaml on first run with secure defaults.
+# Edit and restart, or override selected values with the [ENV_VAR] shown.
+
+bind: "0.0.0.0:8080"          # listen address                    [AUDIOSILO_BIND]
+public_url: ""                # external base URL for QR/invite    [AUDIOSILO_PUBLIC_URL]
+
+tls:
+  mode: "selfsigned"          # off | selfsigned | autocert       [AUDIOSILO_TLS_MODE]
+  hosts: []                   # autocert hostnames                 [AUDIOSILO_TLS_HOSTS]
+
+trusted_proxies: []           # CIDRs whose X-Forwarded-For is trusted   [AUDIOSILO_TRUSTED_PROXIES]
+cors_origins: []              # allowed browser origins ("*" disables the check)  [AUDIOSILO_CORS_ORIGINS]
+max_upload_bytes: 2147483648  # 2 GiB                             [AUDIOSILO_MAX_UPLOAD_BYTES]
+web_dir: ""                   # web player dir; Docker bakes /app/web   [AUDIOSILO_WEB_DIR]
+
+libraries: []                 # declare libraries to sync + scan on startup
+# - name: "Main"
+#   root: "/srv/audiobooks"
+
+demo:
+  enabled: false              # public throwaway demo accounts     [AUDIOSILO_DEMO_ENABLED]
+  library: ""                 # library granted to demo users      [AUDIOSILO_DEMO_LIBRARY]
+  idle_ttl: "24h"             # reap demo users idle longer than this   [AUDIOSILO_DEMO_IDLE_TTL]
+
+app_links:                    # native deep-linking (iOS/Android), YAML only
+  apple_app_ids: []
+  android_package: ""
+  android_sha256: []`
+---
+<DocsLayout
+  title="Configuration"
+  description="Reference for the AudioSilo Server config.yaml file and its environment-variable overrides."
+>
+  <p>
+    On first run the server writes <code>config.yaml</code> into the data directory with secure
+    defaults. Edit it and restart, or override individual values with the environment variables shown
+    in brackets &mdash; handy for Docker. Command-line flags set the data dir and ffprobe path:
+    <code>audiosilo --data ./data --ffprobe ffprobe</code>.
+  </p>
+
+  <CodeBlock filename="config.yaml" code={config} />
+
+  <h2>Networking</h2>
+  <ul>
+    <li>
+      <strong><code>bind</code></strong> &mdash; the address to listen on. Default <code>0.0.0.0:8080</code>.
+    </li>
+    <li>
+      <strong><code>public_url</code></strong> &mdash; the externally reachable base URL, used to build QR
+      pairing payloads and copy-invite links. If empty it's derived from the incoming request; set it
+      explicitly behind a reverse proxy.
+    </li>
+    <li>
+      <strong><code>trusted_proxies</code></strong> &mdash; CIDRs whose <code>X-Forwarded-For</code> header
+      is trusted. Set this behind a proxy so client IPs (used for rate limiting) are accurate, e.g.
+      <code>["127.0.0.1/32", "10.0.0.0/8"]</code>.
+    </li>
+    <li>
+      <strong><code>cors_origins</code></strong> &mdash; allowed browser origins. Empty grants no
+      cross-origin headers (native apps and same-origin web clients still work); <code>"*"</code> disables
+      the check.
+    </li>
+  </ul>
+
+  <h2>TLS</h2>
+  <p>The <code>tls.mode</code> key takes one of three values:</p>
+  <ul>
+    <li><strong><code>selfsigned</code></strong> (default) &mdash; generates and persists a self-signed cert. Good for a LAN; clients must accept it.</li>
+    <li><strong><code>autocert</code></strong> &mdash; automatic Let's Encrypt certificates (set <code>tls.hosts</code>). Needs a public hostname reachable on :443.</li>
+    <li><strong><code>off</code></strong> &mdash; plain HTTP for use behind a reverse proxy that terminates TLS. See <a href="/docs/reverse-proxy">reverse proxy &amp; TLS</a>.</li>
+  </ul>
+
+  <h2>Libraries</h2>
+  <p>
+    Declaring <code>libraries</code> here syncs them into the database and scans them on startup; you
+    can also create libraries at runtime from the admin console. There's <strong>no folder layout to
+    configure</strong> &mdash; the scanner classifies each folder on its own (a directory of audio is one
+    book; loose files at the root are single-file books), and any folder it gets wrong is fixed with a
+    per-folder override (<code>book</code> | <code>collection</code>).
+  </p>
+
+  <h2>Public demo mode</h2>
+  <p>
+    With <code>demo.enabled</code>, an unauthenticated visitor can mint a throwaway account that's
+    granted the named library; idle demo accounts and their data are reaped automatically after
+    <code>idle_ttl</code>. Intended for a public demo instance such as
+    <code>demo.audiosilo.app</code>.
+  </p>
+
+  <h2>Native deep links</h2>
+  <p>
+    Set <code>app_links</code> so the server publishes
+    <code>/.well-known/apple-app-site-association</code> and <code>/.well-known/assetlinks.json</code>,
+    letting a phone open the installed app straight from a pairing/invite link (iOS Universal Links /
+    Android App Links). Leave it empty to fall back to the web player.
+  </p>
+</DocsLayout>

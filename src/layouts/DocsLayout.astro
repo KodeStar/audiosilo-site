@@ -1,0 +1,57 @@
+---
+import Base from './Base.astro'
+
+interface Props {
+  title: string
+  description?: string
+}
+const { title, description } = Astro.props
+
+const docs = [
+  { label: 'Overview', href: '/docs' },
+  { label: 'Installation', href: '/docs/installation' },
+  { label: 'Configuration', href: '/docs/configuration' },
+  { label: 'Reverse proxy & TLS', href: '/docs/reverse-proxy' },
+  { label: 'First run', href: '/docs/first-run' },
+]
+
+const current = Astro.url.pathname.replace(/\/$/, '') || '/docs'
+---
+<Base title={`${title} — AudioSilo Docs`} description={description}>
+  <div class="container py-10">
+    <div class="flex flex-col md:flex-row gap-10">
+      <aside class="md:w-60 md:flex-shrink-0">
+        <div class="md:sticky md:top-8">
+          <p class="text-xs uppercase tracking-wider text-gray-500 mb-3">Documentation</p>
+          <nav class="flex flex-col gap-1">
+            {
+              docs.map((d) => {
+                const active = current === d.href.replace(/\/$/, '')
+                return (
+                  <a
+                    href={d.href}
+                    class={`px-3 py-2 rounded text-sm transition-colors ${
+                      active
+                        ? 'bg-pink-600 text-white'
+                        : 'text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {d.label}
+                  </a>
+                )
+              })
+            }
+          </nav>
+          <div class="mt-6 border-t border-gray-300 pt-4 text-sm">
+            <a class="text-pink-600 hover:underline" href="/download">Download AudioSilo &rarr;</a>
+          </div>
+        </div>
+      </aside>
+
+      <article class="docs-content max-w-3xl flex-grow">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-pink-800 mb-6">{title}</h1>
+        <slot />
+      </article>
+    </div>
+  </div>
+</Base>

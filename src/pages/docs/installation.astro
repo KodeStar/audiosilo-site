@@ -1,0 +1,85 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro'
+import CodeBlock from '../../components/CodeBlock.astro'
+
+const compose = `services:
+  audiosilo:
+    image: ghcr.io/kodestar/audiosilo-server:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data            # db, config, certs (first run prints admin creds once)
+      - /srv/audiobooks:/library:ro
+    environment:
+      PUID: "1000"              # owner of /data (Unraid: 99)
+      PGID: "1000"              # group of /data (Unraid: 100)
+      AUDIOSILO_WEB_DIR: /app/web
+      # AUDIOSILO_PUBLIC_URL: "https://books.example.com"  # used in QR/invite links`
+
+const up = `docker compose up -d
+docker compose logs        # first run prints the admin password + auth code ONCE`
+
+const binary = `# Run with a guided browser setup wizard (recommended for home users):
+./audiosilo --setup --data ./data
+
+# Or run headless — it auto-creates an admin and prints the password + auth code once:
+AUDIOSILO_TLS_MODE=off ./audiosilo --data ./data`
+
+const update = `docker compose pull && docker compose up -d`
+---
+<DocsLayout
+  title="Installation"
+  description="Install AudioSilo Server with Docker (recommended) or a native binary."
+>
+  <p>
+    AudioSilo Server is the only thing you install. The Docker image and the native binaries both
+    include the web player, so the apps work out of the box. <strong>Docker is the recommended path</strong>
+    for always-on, NAS, VPS and multi-user setups.
+  </p>
+
+  <h2>Requirements</h2>
+  <ul>
+    <li><strong>Docker</strong> (to run the published image), or a single downloaded binary.</li>
+    <li>A folder of audiobooks (m4b, or mp3 parts &mdash; the scanner figures out the shape).</li>
+    <li>
+      <strong>ffmpeg/ffprobe</strong> is optional but recommended (durations and chapters). The Docker
+      image includes it; the native binaries fetch it automatically on first run if it isn't present.
+    </li>
+  </ul>
+
+  <h2>Option 1 — Docker (recommended)</h2>
+  <p>Create a <code>docker-compose.yml</code>, mounting your audiobooks read-only and persisting <code>/data</code>:</p>
+  <CodeBlock filename="docker-compose.yml" code={compose} />
+  <p>Then start it and read the logs to grab your one-time admin credentials:</p>
+  <CodeBlock code={up} />
+  <p>
+    Set <code>PUID</code>/<code>PGID</code> to the user that should own <code>/data</code> (Unraid:
+    <code>99</code>/<code>100</code>; generic Linux: your <code>id -u</code>/<code>id -g</code>). The
+    entrypoint chowns the data dir and runs the server as that user, so it works regardless of how the
+    mounted volume is owned.
+  </p>
+  <p>Updating the server or the bundled player is always a new image:</p>
+  <CodeBlock code={update} />
+
+  <h2>Option 2 — Native binary</h2>
+  <p>
+    Download the archive for your OS/arch from the
+    <a href="https://github.com/KodeStar/audiosilo-server/releases" target="_blank" rel="noopener">server releases page</a>
+    (<code>.tar.gz</code>, <code>.zip</code>, or a <code>.deb</code>/<code>.rpm</code> that installs a systemd
+    service), extract it, and run:
+  </p>
+  <CodeBlock code={binary} />
+  <p>
+    The <code>--data</code> directory holds the config, database and certs. The web player is embedded
+    in the binary, so <code>/web</code> just works.
+  </p>
+
+  <h2>After it's running</h2>
+  <p>
+    By default the server listens on <code>:8080</code> with a self-signed certificate. Open
+    <code>https://localhost:8080/admin</code> to reach the admin console, or continue with the
+    <a href="/docs/first-run">first-run guide</a> to add a library and pair a device. To put it on the
+    internet safely, see <a href="/docs/reverse-proxy">reverse proxy &amp; TLS</a>.
+  </p>
+</DocsLayout>
