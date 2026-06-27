@@ -1,0 +1,19 @@
+---
+interface Props {
+  code: string
+  filename?: string
+}
+const { code, filename } = Astro.props
+---
+<div
+  class="my-5 rounded-lg overflow-hidden border border-gray-700 bg-gray-900 text-gray-100 text-sm not-prose"
+>
+  {
+    filename && (
+      <div class="px-4 py-2 bg-gray-800 text-gray-400 text-xs border-b border-gray-700 font-mono">
+        {filename}
+      </div>
+    )
+  }
+  <pre class="p-4 overflow-x-auto leading-relaxed"><code>{code.trim()}</code></pre>
+</div>

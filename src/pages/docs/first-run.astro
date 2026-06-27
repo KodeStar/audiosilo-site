@@ -1,0 +1,75 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro'
+import CodeBlock from '../../components/CodeBlock.astro'
+
+const creds = `# In the server's logs on first start:
+admin password: 9f3c… (shown once — save it)
+auth code:      ABCD-EFGH (redeem to pair a device)`
+
+const addLibrary = `# Get a session token by logging in as admin:
+TOKEN=...   # from POST /api/v1/auth/login
+
+# Add a library, then browse it immediately:
+curl -X POST https://your-server/api/v1/admin/libraries \\
+  -H "Authorization: Bearer $TOKEN" \\
+  -d '{"name":"Main","root":"/library"}'`
+---
+<DocsLayout
+  title="First run"
+  description="Meet your admin credentials, add a library, and pair your first device with AudioSilo."
+>
+  <h2>1. Grab your admin credentials</h2>
+  <p>
+    On its very first start the server creates an admin account and prints the password plus an auth
+    code <strong>exactly once</strong> &mdash; save them. (With <code>--setup</code>, a browser wizard sets the
+    password for you instead.)
+  </p>
+  <CodeBlock code={creds} />
+  <p>
+    With Docker, run <code>docker compose logs</code> to see them. Sign in to the admin console at
+    <code>/admin</code> with the username <code>admin</code> and that password.
+  </p>
+
+  <h2>2. Add a library</h2>
+  <p>
+    Point a library at a folder of audiobooks &mdash; the one you mounted at <code>/library</code> in Docker,
+    for example. You can do this in the admin console, or via the API:
+  </p>
+  <CodeBlock code={addLibrary} />
+  <p>
+    There's nothing else to configure: the scanner auto-detects each folder's shape (single-file m4b,
+    folder-per-book, or multi-file mp3 parts) and indexes titles, authors, chapters and cover art. A
+    folder it misclassifies can be overridden per-folder from the admin console.
+  </p>
+
+  <h2>3. Pair a device</h2>
+  <p>The connect flow turns an auth code into a durable, device-scoped session:</p>
+  <ul>
+    <li>
+      In the admin console, mint an auth code or click <strong>Copy invite</strong> to get a shareable
+      link (<code>/connect#code=…</code> &mdash; the code rides in the URL fragment, so it never hits the
+      server logs).
+    </li>
+    <li>
+      The connect screen shows a <strong>QR code</strong> with <em>Open in app</em> / <em>Open web
+      player</em>. Scanning opens the native app (when it claims your domain) or the web player.
+    </li>
+    <li>
+      The client exchanges a single-use pairing token for a device-named session token. Username and
+      password login is also supported.
+    </li>
+  </ul>
+
+  <h2>4. Open the web player</h2>
+  <p>
+    The Docker image and native binaries serve the installable web player at <code>/web</code>. Open it
+    in a browser and &ldquo;Add to Home Screen&rdquo; for an app-like experience, or wait for the native
+    apps (see the <a href="/download">download page</a>). Either way, your progress, bookmarks and notes
+    sync across every device you connect.
+  </p>
+
+  <blockquote>
+    Tip: set <a href="/docs/configuration"><code>public_url</code></a> to your real external URL before
+    minting invites, so the QR and copy-invite links point somewhere your devices can actually reach.
+  </blockquote>
+</DocsLayout>

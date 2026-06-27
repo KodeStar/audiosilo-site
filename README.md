@@ -1,69 +1,53 @@
 # audiosilo-site
 
-## Build Setup
+Marketing site for [AudioSilo](https://audiosilo.app) — the self-hosted,
+multi-platform audiobook player.
 
-```bash
-# install dependencies
-$ yarn install
+Built with [Astro](https://astro.build) (static output) + a couple of React
+islands, styled with [Tailwind CSS v4](https://tailwindcss.com). Deployed to
+GitHub Pages on the `audiosilo.app` domain (see `public/CNAME`).
 
-# serve with hot reload at localhost:3000
-$ yarn dev
+## Develop
 
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
+```sh
+yarn install
+yarn dev          # http://localhost:4321
 ```
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+## Build
 
-## Special Directories
+```sh
+yarn build        # static site → dist/
+yarn preview      # serve the built site locally
+yarn check        # astro check (TypeScript)
+```
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+## Structure
 
-### `assets`
+```
+public/                 static assets (images, favicons, CNAME)
+src/
+  components/           Logo, Header, Footer, Icon, CodeBlock (.astro)
+                        VersionBadge, TypedHero (React islands, .tsx)
+  data/features.ts      home-page feature content
+  layouts/              Base.astro, DocsLayout.astro
+  pages/
+    index.astro         home (hero + features)
+    download.astro      download options (Docker recommended)
+    docs/               installation, configuration, reverse-proxy, first-run
+    privacy.astro       privacy policy
+  styles/global.css     Tailwind v4 entry + custom styles
+```
 
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+## Deploy
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
+Pushing to `master` runs `.github/workflows/ci.yml`, which builds the site with
+Node 20 and publishes `dist/` to GitHub Pages.
 
-### `components`
+## Content sources
 
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
-
-### `layouts`
-
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
-
-
-### `pages`
-
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
-
-### `plugins`
-
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
-
-### `static`
-
-This directory contains your static files. Each file inside this directory is mapped to `/`.
-
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
-
-### `store`
-
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+Product copy is drawn from the AudioSilo repositories
+([audiosilo-server](https://github.com/KodeStar/audiosilo-server),
+[audiosilo-frontend](https://github.com/KodeStar/audiosilo-frontend)). The header
+version badge fetches the latest server release tag from the GitHub API at
+runtime, falling back to a hard-coded value in `src/components/VersionBadge.tsx`.

@@ -1,0 +1,29 @@
+---
+const links = [
+  { label: 'Home', href: '/', external: false },
+  { label: 'Download', href: '/download', external: false },
+  { label: 'Docs', href: '/docs', external: false },
+  { label: 'Privacy Policy', href: '/privacy', external: false },
+  { label: 'Support', href: 'https://discord.gg/vfQMqkzQrf', external: true },
+]
+---
+<footer class="bg-gray-800 text-gray-400 text-sm">
+  <div class="container py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div>&copy; 2026 KodeStar &middot; AudioSilo</div>
+    <nav class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+      {
+        links.map((link) =>
+          link.external ? (
+            <a class="hover:text-pink-600" href={link.href} target="_blank" rel="noopener">
+              {link.label}
+            </a>
+          ) : (
+            <a class="hover:text-pink-600" href={link.href}>
+              {link.label}
+            </a>
+          )
+        )
+      }
+    </nav>
+  </div>
+</footer>
