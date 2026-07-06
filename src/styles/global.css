@@ -66,6 +66,9 @@
 html {
   color-scheme: dark;
   scroll-behavior: smooth;
+  /* Anchor jumps and the skip link land below the sticky header (~59px tall)
+     instead of underneath it. */
+  scroll-padding-top: 5rem;
 }
 body {
   font-family: 'Roboto', sans-serif;
@@ -151,8 +154,13 @@ body {
 /* -------------------------------------------------------------------------
    Scroll-reveal: elements rise + fade in once (IntersectionObserver adds
    `is-visible`). No-op under reduced motion.
+
+   The hidden initial state is scoped to `.js` (added to <html> by an early
+   inline script in Base.astro) so that with JavaScript disabled - crawlers,
+   brittle connections - every section stays fully visible instead of being
+   stuck at opacity 0.
    ------------------------------------------------------------------------- */
-.reveal {
+.js .reveal {
   opacity: 0;
   transform: translateY(14px);
   transition:
@@ -160,12 +168,12 @@ body {
     transform 0.5s ease-out;
   will-change: opacity, transform;
 }
-.reveal.is-visible {
+.js .reveal.is-visible {
   opacity: 1;
   transform: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  .js .reveal {
     opacity: 1;
     transform: none;
     transition: none;
@@ -209,18 +217,6 @@ body {
   .wave-bar,
   .eq-bar {
     animation: none;
-  }
-}
-
-/* Typed.js cursor - ported from the old assets/css/main.scss. */
-.typed-cursor {
-  opacity: 1;
-  animation: typedjsBlink 0.7s infinite;
-}
-
-@keyframes typedjsBlink {
-  50% {
-    opacity: 0;
   }
 }
 

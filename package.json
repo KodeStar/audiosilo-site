@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "type": "module",
-  "description": "Marketing site for AudioSilo — the self-hosted, multi-platform audiobook player.",
+  "description": "Marketing site for AudioSilo - the self-hosted, multi-platform audiobook player.",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -16,8 +16,7 @@
     "@fontsource/roboto": "^5.1.0",
     "astro": "^5.7.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "typed.js": "^2.1.0"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",

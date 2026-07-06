@@ -14,12 +14,17 @@ interface Props {
   /** Render the shared site Header. The home page passes false and supplies
       its own hero-integrated nav. */
   solidHeader?: boolean
+  /** Set on pages whose first section is a full-bleed hero that manages its
+      own generous top spacing (home, download, 404). Plain content pages leave
+      it false so <main> gets a consistent spacer clearing the sticky header. */
+  hasHero?: boolean
 }
 
 const {
   title = 'AudioSilo - Self-hosted multi-platform audiobook player',
   description = 'AudioSilo is a self-hosted, multi-platform audiobook player for iOS, Android and the web, backed by its own open-source Go server. Stream and download your own DRM-free audiobooks with bookmarks, notes, sleep timer and cross-device progress sync.',
   solidHeader = true,
+  hasHero = false,
 } = Astro.props
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href
@@ -29,6 +34,12 @@ const ogImage = new URL('/og.png', Astro.site).href
 <!doctype html>
 <html lang="en" class="dark">
   <head>
+    <!-- Mark the document as JS-capable as early as possible so the scroll-
+         reveal styles (scoped to `.js .reveal`) only hide content when they
+         can also un-hide it. Without JS the sections stay fully visible. -->
+    <script is:inline>
+      document.documentElement.classList.add('js')
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="format-detection" content="telephone=no" />
@@ -51,6 +62,9 @@ const ogImage = new URL('/og.png', Astro.site).href
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="AudioSilo - your audiobooks, your server, every device" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -66,7 +80,7 @@ const ogImage = new URL('/og.png', Astro.site).href
       Skip to content
     </a>
     {solidHeader && <Header />}
-    <main id="main" class="flex-grow">
+    <main id="main" class:list={['flex-grow', !hasHero && 'pt-6 sm:pt-8']}>
       <slot />
     </main>
     <Footer />
