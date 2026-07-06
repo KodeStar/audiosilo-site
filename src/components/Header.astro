@@ -1,46 +1,142 @@
 ---
 import Logo from './Logo.astro'
+import Icon from './Icon.astro'
 import VersionBadge from './VersionBadge.tsx'
 
-interface Props {
-  transparent?: boolean
-}
-const { transparent = false } = Astro.props
+const GITHUB = 'https://github.com/KodeStar/audiosilo-server'
 
 const nav = [
-  { label: 'Demo', href: 'https://demo.audiosilo.app', external: true },
+  { label: 'Features', href: '/#features', external: false },
+  { label: 'How it works', href: '/#how-it-works', external: false },
   { label: 'Download', href: '/download', external: false },
   { label: 'Docs', href: 'https://docs.audiosilo.app', external: true },
-  { label: 'Support', href: 'https://discord.gg/vfQMqkzQrf', external: true },
 ]
 ---
-<header class={transparent ? '' : 'bg-gray-800'}>
-  <div class="container py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
-    <a class="flex items-center" href="/">
-      <Logo class="w-12 lg:w-16 mr-2 lg:mr-4 transform rotate-180" />
-      <div class="flex flex-col">
-        <div class="text-lg lg:text-2xl uppercase text-pink-600 leading-none tracking-wider">
-          Audio<span class="text-gray-300">Silo</span>
-        </div>
-        <div class="hidden lg:block leading-none text-xs text-gray-300/80 mt-1">
-          Current: <VersionBadge client:load className="text-pink-600" />
-        </div>
-      </div>
+<header class="site-header sticky top-0 z-50 border-b border-transparent" data-scrolled="false">
+  <div class="container flex items-center justify-between gap-4 py-3">
+    <!-- Brand -->
+    <a class="flex items-center gap-3" href="/" aria-label="AudioSilo home">
+      <Logo class="w-9 shrink-0" />
+      <span class="flex flex-col leading-none">
+        <span class="text-lg uppercase tracking-wider text-pink-600 leading-none">
+          Audio<span class="text-hi">Silo</span>
+        </span>
+        <span class="mt-1 hidden text-[0.65rem] text-dim lg:block">
+          Server <VersionBadge client:load className="text-pink-500" />
+        </span>
+      </span>
     </a>
-    <nav class="text-gray-300 flex items-center gap-4 sm:gap-5 text-sm sm:text-base">
+
+    <!-- Desktop nav -->
+    <nav class="hidden items-center gap-6 md:flex" aria-label="Primary">
       {
-        nav.map((item) =>
-          item.external ? (
-            <a class="hover:text-pink-600" href={item.href} target="_blank" rel="noopener">
-              {item.label}
-            </a>
-          ) : (
-            <a class="hover:text-pink-600" href={item.href}>
-              {item.label}
-            </a>
-          )
-        )
+        nav.map((item) => (
+          <a
+            class="text-sm font-medium text-body transition-colors hover:text-pink-500"
+            href={item.href}
+            {...(item.external ? { target: '_blank', rel: 'noopener' } : {})}
+          >
+            {item.label}
+          </a>
+        ))
       }
+      <a
+        class="rounded-full border border-pink-500/40 bg-pink-600/10 px-4 py-1.5 text-sm font-medium text-pink-400 transition-colors hover:border-pink-500 hover:bg-pink-600/20 hover:text-pink-300"
+        href="https://demo.audiosilo.app"
+        target="_blank"
+        rel="noopener"
+      >
+        Live demo
+      </a>
+      <a
+        class="text-dim transition-colors hover:text-hi"
+        href={GITHUB}
+        target="_blank"
+        rel="noopener"
+        aria-label="AudioSilo server on GitHub"
+      >
+        <Icon name="github" class="h-5 w-5" />
+      </a>
     </nav>
+
+    <!-- Mobile disclosure menu (no framework) -->
+    <details class="site-menu relative md:hidden">
+      <summary
+        class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-md text-body transition-colors hover:text-hi"
+        aria-label="Open menu"
+      >
+        <Icon name="menu" class="menu-open h-6 w-6" />
+        <Icon name="x" class="menu-close hidden h-6 w-6" />
+      </summary>
+      <div
+        class="absolute right-0 top-12 z-50 w-56 rounded-xl border border-edge bg-surface p-2 shadow-2xl shadow-black/40"
+      >
+        {
+          nav.map((item) => (
+            <a
+              class="block rounded-lg px-3 py-2 text-sm font-medium text-body transition-colors hover:bg-raised hover:text-hi"
+              href={item.href}
+              {...(item.external ? { target: '_blank', rel: 'noopener' } : {})}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+        <a
+          class="mt-1 block rounded-lg bg-pink-600/10 px-3 py-2 text-sm font-medium text-pink-400 transition-colors hover:bg-pink-600/20"
+          href="https://demo.audiosilo.app"
+          target="_blank"
+          rel="noopener"
+        >
+          Live demo
+        </a>
+        <a
+          class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-body transition-colors hover:bg-raised hover:text-hi"
+          href={GITHUB}
+          target="_blank"
+          rel="noopener"
+        >
+          <Icon name="github" class="h-4 w-4" />
+          GitHub
+        </a>
+      </div>
+    </details>
   </div>
 </header>
+
+<style>
+  /* Hide the default disclosure triangle and swap the menu/close icons. */
+  .site-menu > summary::-webkit-details-marker {
+    display: none;
+  }
+  .site-menu[open] .menu-open {
+    display: none;
+  }
+  .site-menu[open] .menu-close {
+    display: block;
+  }
+</style>
+
+<script>
+  // Blur + border the header once the page is scrolled away from the top.
+  const header = document.querySelector<HTMLElement>('.site-header')
+  if (header) {
+    const onScroll = () => {
+      header.dataset.scrolled = window.scrollY > 8 ? 'true' : 'false'
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+  }
+
+  // Close the mobile disclosure menu on outside click or Escape.
+  const menu = document.querySelector<HTMLDetailsElement>('.site-menu')
+  if (menu) {
+    document.addEventListener('click', (e) => {
+      if (menu.open && !menu.contains(e.target as Node)) menu.open = false
+    })
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') menu.open = false
+    })
+  }
+</script>
+</content>

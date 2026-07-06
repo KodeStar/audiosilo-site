@@ -1,0 +1,22 @@
+---
+// Small chip. `success` = "Available now"; `muted` = "Coming soon"; `pink` =
+// accent; `default` = neutral surface. Slot for label (add an icon if wanted).
+interface Props {
+  variant?: 'default' | 'success' | 'muted' | 'pink'
+  class?: string
+}
+const { variant = 'default', class: className = '' } = Astro.props
+
+const variants = {
+  default: 'border-edge bg-surface text-body',
+  success: 'border-green-500/30 bg-green-500/10 text-green-400',
+  muted: 'border-edge bg-white/5 text-dim',
+  pink: 'border-pink-500/30 bg-pink-600/10 text-pink-400',
+}
+---
+<span
+  class={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${variants[variant]} ${className}`}
+>
+  <slot />
+</span>
+</content>

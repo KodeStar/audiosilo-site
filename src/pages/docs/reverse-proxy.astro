@@ -7,7 +7,7 @@ const serverCfg = `tls:
 public_url: "https://books.example.com"   # exact external URL    [AUDIOSILO_PUBLIC_URL]
 trusted_proxies: ["127.0.0.1/32", "10.0.0.0/8"]   # your proxy's network`
 
-const caddy = `# Caddyfile — automatic HTTPS via Let's Encrypt
+const caddy = `# Caddyfile - automatic HTTPS via Let's Encrypt
 books.example.com {
     reverse_proxy localhost:8080
 }`
@@ -41,15 +41,15 @@ const nginx = `server {
   <h2>Pick a TLS strategy</h2>
   <ul>
     <li>
-      <strong>Self-signed</strong> (<code>tls.mode: selfsigned</code>, the default) &mdash; fine for a LAN,
+      <strong>Self-signed</strong> (<code>tls.mode: selfsigned</code>, the default) - fine for a LAN,
       but clients must accept the certificate.
     </li>
     <li>
       <strong>Automatic Let's Encrypt</strong> (<code>tls.mode: autocert</code>, set <code>tls.hosts</code>)
-      &mdash; the server obtains and renews certs itself. Needs a public hostname reachable on :443.
+      - the server obtains and renews certs itself. Needs a public hostname reachable on :443.
     </li>
     <li>
-      <strong>Behind a reverse proxy</strong> (<code>tls.mode: off</code>) &mdash; the recommended setup for
+      <strong>Behind a reverse proxy</strong> (<code>tls.mode: off</code>) - the recommended setup for
       most internet-facing deployments. Caddy, nginx or Traefik terminates TLS and forwards to the server
       over plain HTTP.
     </li>

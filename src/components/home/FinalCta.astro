@@ -1,0 +1,43 @@
+---
+import Icon from '../Icon.astro'
+import Waveform from '../Waveform.astro'
+---
+<section class="container pb-24 pt-8 sm:pb-28">
+  <div
+    class="reveal relative overflow-hidden rounded-3xl px-6 py-16 text-center sm:px-12 sm:py-20"
+    style="background: linear-gradient(135deg, #db2777 0%, #9d174d 100%);"
+  >
+    <!-- Decorative waveform, low opacity, top and bottom. -->
+    <div class="pointer-events-none absolute inset-x-0 top-6 flex justify-center opacity-20">
+      <Waveform bars={64} class="w-full max-w-2xl" />
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-2xl">
+      <h2 class="text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">
+        Ready to own your audiobook library?
+      </h2>
+      <p class="mt-4 text-lg text-pink-50/90">
+        Run the server with Docker in minutes, then connect your apps. Your library, your hardware,
+        your rules.
+      </p>
+      <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+        <a
+          href="/download"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-pink-700 shadow-lg shadow-black/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-pink-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          <Icon name="rocket" class="h-5 w-5" />
+          Get started
+        </a>
+        <a
+          href="https://docs.audiosilo.app"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center justify-center gap-2 rounded-lg border border-white/60 px-6 py-3 font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          Read the docs
+          <Icon name="arrowRight" class="h-4 w-4" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

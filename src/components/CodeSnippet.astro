@@ -1,18 +1,18 @@
 ---
 import Icon from './Icon.astro'
 
-// Dark code block used inside the docs prose. Mirrors CodeSnippet's look
-// (bg-raised, hairline border, rounded, optional filename tab) and carries its
-// own copy-to-clipboard button. Kept separate from CodeSnippet so the docs
-// pages can import it without pulling in home-page assumptions.
+// Dark code block on bg-raised with a rounded border, an optional filename tab
+// and a copy-to-clipboard button (vanilla JS, shows a brief "Copied" state).
+// The existing CodeBlock.astro is left untouched for the docs pages.
 interface Props {
   code: string
   filename?: string
+  class?: string
 }
-const { code, filename } = Astro.props
+const { code, filename, class: className = '' } = Astro.props
 const trimmed = code.trim()
 ---
-<div class="code-block not-prose my-5 overflow-hidden rounded-xl border border-edge bg-raised">
+<div class={`code-snippet not-prose overflow-hidden rounded-xl border border-edge bg-raised ${className}`}>
   <div class="flex items-center justify-between border-b border-edge px-4 py-2">
     <span class="font-mono text-xs text-dim">{filename ?? ''}</span>
     <button
@@ -28,9 +28,9 @@ const trimmed = code.trim()
 </div>
 
 <script>
-  document.querySelectorAll<HTMLButtonElement>('.code-block .copy-btn').forEach((btn) => {
+  document.querySelectorAll<HTMLButtonElement>('.code-snippet .copy-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const text = btn.closest('.code-block')?.querySelector('code')?.textContent ?? ''
+      const text = btn.closest('.code-snippet')?.querySelector('code')?.textContent ?? ''
       const label = btn.querySelector<HTMLElement>('.copy-label')
       navigator.clipboard
         .writeText(text)
@@ -50,3 +50,4 @@ const trimmed = code.trim()
     })
   })
 </script>
+</content>

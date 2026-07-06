@@ -1,0 +1,70 @@
+---
+import Badge from '../Badge.astro'
+import Icon from '../Icon.astro'
+
+const APP_STORE = 'https://apps.apple.com/us/app/audiosilo/id6783431375'
+---
+<section class="container py-14 sm:py-16">
+  <div class="reveal grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <!-- iOS: live on the App Store -->
+    <a
+      href={APP_STORE}
+      target="_blank"
+      rel="noopener"
+      class="group flex flex-col gap-3 rounded-xl border border-edge bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-pink-500/50"
+    >
+      <div class="flex items-center justify-between">
+        <Icon name="apple" class="h-6 w-6 text-hi" />
+        <Badge variant="success">Live</Badge>
+      </div>
+      <div>
+        <p class="font-semibold text-hi">iOS app</p>
+        <p class="mt-1 text-sm text-dim group-hover:text-body">Download on the App Store</p>
+      </div>
+    </a>
+
+    <!-- Web PWA: available now -->
+    <a
+      href="https://demo.audiosilo.app"
+      target="_blank"
+      rel="noopener"
+      class="group flex flex-col gap-3 rounded-xl border border-edge bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-pink-500/50"
+    >
+      <div class="flex items-center justify-between">
+        <Icon name="globe" class="h-6 w-6 text-hi" />
+        <Badge variant="success">Available now</Badge>
+      </div>
+      <div>
+        <p class="font-semibold text-hi">Web player</p>
+        <p class="mt-1 text-sm text-dim group-hover:text-body">Installable PWA, try the demo</p>
+      </div>
+    </a>
+
+    <!-- Android: coming soon -->
+    <div class="flex flex-col gap-3 rounded-xl border border-edge bg-surface/60 p-5">
+      <div class="flex items-center justify-between">
+        <Icon name="phone" class="h-6 w-6 text-dim" />
+        <Badge variant="muted">Coming soon</Badge>
+      </div>
+      <div>
+        <p class="font-semibold text-body">Android app</p>
+        <p class="mt-1 text-sm text-dim">In closed testing</p>
+      </div>
+    </div>
+
+    <!-- Server: Docker + native binaries -->
+    <a
+      href="/download"
+      class="group flex flex-col gap-3 rounded-xl border border-edge bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-pink-500/50"
+    >
+      <div class="flex items-center justify-between">
+        <Icon name="cube" class="h-6 w-6 text-hi" />
+        <Badge variant="success">Available now</Badge>
+      </div>
+      <div>
+        <p class="font-semibold text-hi">The server</p>
+        <p class="mt-1 text-sm text-dim group-hover:text-body">Docker image and native binaries</p>
+      </div>
+    </a>
+  </div>
+</section>

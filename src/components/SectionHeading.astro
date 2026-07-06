@@ -1,0 +1,31 @@
+---
+// Section heading block: a small pink uppercase overline, the h2, and an
+// optional lede paragraph. Centered by default; `align="left"` left-aligns.
+interface Props {
+  overline?: string
+  title: string
+  lede?: string
+  align?: 'center' | 'left'
+  class?: string
+}
+const { overline, title, lede, align = 'center', class: className = '' } = Astro.props
+
+const wrap = align === 'center' ? 'items-center text-center' : 'items-start text-left'
+const ledeWidth = align === 'center' ? 'mx-auto' : ''
+---
+<div class={`flex flex-col ${wrap} ${className}`}>
+  {
+    overline && (
+      <span class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-pink-500">
+        {overline}
+      </span>
+    )
+  }
+  <h2 class="text-3xl font-bold leading-tight tracking-tight text-hi sm:text-4xl">{title}</h2>
+  {
+    lede && (
+      <p class={`mt-4 max-w-2xl text-lg leading-relaxed text-body ${ledeWidth}`}>{lede}</p>
+    )
+  }
+</div>
+</content>

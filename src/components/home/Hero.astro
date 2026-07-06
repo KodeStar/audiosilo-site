@@ -1,0 +1,95 @@
+---
+import Button from '../Button.astro'
+import Badge from '../Badge.astro'
+import Waveform from '../Waveform.astro'
+import Equalizer from '../Equalizer.astro'
+import Icon from '../Icon.astro'
+---
+<section class="relative overflow-hidden">
+  <!-- Soft radial glow behind the hero. -->
+  <div class="glow left-1/2 top-24 h-[520px] w-[880px] max-w-[95vw] -translate-x-1/2"></div>
+
+  <div class="container relative z-10 pt-16 pb-10 sm:pt-24 lg:pt-28">
+    <!-- Copy block -->
+    <div class="mx-auto flex max-w-3xl flex-col items-center text-center">
+      <Badge variant="pink" class="reveal is-visible">
+        <Icon name="shield" class="h-3.5 w-3.5" />
+        Open source · self-hosted · no subscription
+      </Badge>
+
+      <h1
+        class="mt-6 text-[clamp(2.75rem,7vw,5.5rem)] font-black leading-[1.02] tracking-[-0.02em] text-hi"
+      >
+        Your audiobooks.<br />Your <span class="hero-grad">server</span>.<br />Every device.
+      </h1>
+
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-body">
+        A self-hosted audiobook player for iOS, Android and the web, backed by its own
+        open-source Go server, so your library and your listening stay entirely yours.
+      </p>
+
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
+        <Button href="/download">
+          <Icon name="rocket" class="h-5 w-5" />
+          Get started
+        </Button>
+        <Button href="https://demo.audiosilo.app" variant="secondary" external>
+          Try the live demo
+          <Icon name="arrowRight" class="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+
+    <!-- Screenshot composition: desktop with the phone overlapping its right edge. -->
+    <div class="relative mx-auto mt-14 max-w-5xl sm:mt-16">
+      <div class="glow left-1/2 top-10 h-[340px] w-[640px] max-w-[90vw] -translate-x-1/2"></div>
+
+      <div
+        class="relative z-10 overflow-hidden rounded-2xl border border-edge bg-surface shadow-2xl shadow-black/50"
+      >
+        <img
+          src="/shot-desktop.png"
+          alt="The AudioSilo web player on desktop, showing the library grid and a continue-listening shelf"
+          width="1800"
+          height="1125"
+          class="h-auto w-full"
+          fetchpriority="high"
+          decoding="async"
+        />
+
+        <!-- Decorative floating 'now playing' chip. -->
+        <div
+          class="absolute left-3 top-3 hidden items-center gap-2 rounded-full border border-edge bg-deep/80 px-3 py-1.5 text-xs font-medium text-body backdrop-blur sm:flex"
+        >
+          <Equalizer />
+          Now playing
+        </div>
+      </div>
+
+      <!-- Overlapping phone (md+ only; keeps the mobile hero clean). -->
+      <img
+        src="/shot-phone.png"
+        alt="The AudioSilo player on a phone, showing a book with chapter controls"
+        width="560"
+        height="1214"
+        class="absolute -bottom-6 right-[-1rem] z-20 hidden h-auto w-40 rounded-[1.75rem] border border-edge shadow-2xl shadow-black/60 md:block lg:right-2 lg:w-48"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+
+    <!-- Animated waveform strip under the fold. -->
+    <div class="mt-14 flex justify-center">
+      <Waveform bars={72} animated class="w-full max-w-2xl opacity-70" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-grad {
+    background: linear-gradient(90deg, #ec4899, #db2777);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+</style>

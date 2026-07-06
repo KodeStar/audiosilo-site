@@ -1,0 +1,83 @@
+---
+import SectionHeading from '../SectionHeading.astro'
+import Icon from '../Icon.astro'
+
+const points = [
+  {
+    title: 'Grant exactly what you want',
+    body: 'A whole library, one author, a single series, or one book. Shares are named sets of folder paths, nothing more and nothing less.',
+  },
+  {
+    title: 'Everyone sees only their part',
+    body: 'Browsing, search and playback are all scoped to what each person has been granted. They never see the rest of your shelves.',
+  },
+  {
+    title: 'Per-user everything',
+    body: 'Each person gets their own progress, bookmarks, notes and history. Sharing a library never means sharing a "continue listening" position.',
+  },
+  {
+    title: 'Add someone in seconds',
+    body: 'Send a copy-invite link or a QR code. No account sign-up, no shared password. Users can even set their own recovery code later.',
+  },
+]
+
+const shares = [
+  { name: 'Family', rule: 'lib 1 (whole library)' },
+  { name: 'The kids', rule: 'lib 1 › Roald Dahl' },
+  { name: 'Sci-fi club', rule: 'lib 1 › Asimov › Foundation' },
+]
+---
+<section class="container py-20 sm:py-24">
+  <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+    <!-- Left: copy -->
+    <div class="reveal order-2 lg:order-1">
+      <SectionHeading
+        overline="Sharing & family"
+        title="One library, everyone in the household"
+        lede="Filesystem-based shares let you hand out precisely the right slice of your library to each person you invite."
+        align="left"
+      />
+      <ul class="mt-8 space-y-6">
+        {
+          points.map((p) => (
+            <li class="flex gap-4">
+              <span class="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-pink-600/10 text-pink-400">
+                <Icon name="check" class="h-4 w-4" />
+              </span>
+              <div>
+                <h3 class="font-semibold text-hi">{p.title}</h3>
+                <p class="mt-1 text-body">{p.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <!-- Right: stylized shares panel -->
+    <div class="reveal order-1 lg:order-2">
+      <div class="rounded-xl border border-edge bg-surface p-5 shadow-2xl shadow-black/40 sm:p-6">
+        <div class="mb-4 flex items-center gap-2 text-dim">
+          <Icon name="users" class="h-5 w-5" />
+          <span class="text-sm font-medium uppercase tracking-wider">Shares</span>
+        </div>
+        <div class="space-y-3">
+          {
+            shares.map((s) => (
+              <div class="rounded-lg border border-edge bg-raised p-4">
+                <p class="font-semibold text-hi">{s.name}</p>
+                <span class="mt-2 inline-flex items-center gap-2 rounded-md border border-edge bg-surface px-3 py-1.5 text-sm text-body">
+                  <Icon name="book" class="h-4 w-4 text-pink-400" />
+                  {s.rule}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+        <p class="mt-4 text-sm text-dim">
+          Each person gets their own progress and bookmarks.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

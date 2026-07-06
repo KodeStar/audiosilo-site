@@ -1,29 +1,84 @@
 ---
-const links = [
-  { label: 'Home', href: '/', external: false },
-  { label: 'Download', href: '/download', external: false },
-  { label: 'Docs', href: '/docs', external: false },
-  { label: 'Privacy Policy', href: '/privacy', external: false },
-  { label: 'Support', href: 'https://discord.gg/vfQMqkzQrf', external: true },
+import Logo from './Logo.astro'
+
+const columns = [
+  {
+    title: 'Product',
+    links: [
+      { label: 'Download', href: '/download', external: false },
+      { label: 'Live demo', href: 'https://demo.audiosilo.app', external: true },
+      { label: 'Features', href: '/#features', external: false },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Docs', href: 'https://docs.audiosilo.app', external: true },
+      { label: 'Server on GitHub', href: 'https://github.com/KodeStar/audiosilo-server', external: true },
+      {
+        label: 'Server releases',
+        href: 'https://github.com/KodeStar/audiosilo-server/releases',
+        external: true,
+      },
+    ],
+  },
+  {
+    title: 'Community',
+    links: [
+      { label: 'Discord', href: 'https://discord.gg/vfQMqkzQrf', external: true },
+      { label: 'kode@audiosilo.app', href: 'mailto:kode@audiosilo.app', external: false },
+      { label: 'Privacy', href: '/privacy', external: false },
+    ],
+  },
 ]
 ---
-<footer class="bg-gray-800 text-gray-400 text-sm">
-  <div class="container py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-    <div>&copy; 2026 KodeStar &middot; AudioSilo</div>
-    <nav class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-      {
-        links.map((link) =>
-          link.external ? (
-            <a class="hover:text-pink-600" href={link.href} target="_blank" rel="noopener">
-              {link.label}
-            </a>
-          ) : (
-            <a class="hover:text-pink-600" href={link.href}>
-              {link.label}
-            </a>
-          )
-        )
-      }
-    </nav>
+<footer class="mt-24 border-t border-edge bg-surface text-sm">
+  <div class="container py-12">
+    <div class="flex flex-col gap-10 md:flex-row md:justify-between">
+      <!-- Brand -->
+      <div class="max-w-xs">
+        <a class="flex items-center gap-3" href="/" aria-label="AudioSilo home">
+          <Logo class="w-9 shrink-0" />
+          <span class="text-lg uppercase tracking-wider text-pink-600 leading-none">
+            Audio<span class="text-hi">Silo</span>
+          </span>
+        </a>
+        <p class="mt-4 text-dim">Made for audiobook lovers.</p>
+      </div>
+
+      <!-- Link columns -->
+      <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
+        {
+          columns.map((col) => (
+            <div>
+              <h2 class="mb-3 text-xs font-semibold uppercase tracking-wider text-dim">
+                {col.title}
+              </h2>
+              <ul class="space-y-2">
+                {col.links.map((link) => (
+                  <li>
+                    <a
+                      class="text-body transition-colors hover:text-pink-500"
+                      href={link.href}
+                      {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div
+      class="mt-10 flex flex-col gap-2 border-t border-edge pt-6 text-dim sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>The AudioSilo server is free and open source under AGPLv3.</p>
+      <p>&copy; 2026 KodeStar</p>
+    </div>
   </div>
 </footer>
+</content>

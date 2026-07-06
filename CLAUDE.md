@@ -36,17 +36,21 @@ Sessions in this repo run a fixed division of labour between models:
   convention: `export PATH="$HOME/.nvm/versions/node/v24.16.0/bin:$PATH"`).
 - Do not upgrade to Astro 6/7 as a side effect of other work - that's a
   deliberate, separate change.
+- The full `pink-*` scale is pinned to the product brand in `global.css`
+  `@theme` (`pink-600 = #db2777`), so `pink-*` utilities are brand-correct;
+  the dark surfaces are `deep`/`surface`/`raised`/`edge` tokens.
 
 ## Build / gate
 
 ```sh
 yarn dev          # http://localhost:4321
 yarn build        # static site → dist/  (the gate, with check below)
-yarn check        # astro check (TypeScript)
+yarn run check    # astro check (TypeScript) - note: `yarn run`, since bare
+                  # `yarn check` invokes yarn's own lockfile check instead
 yarn preview      # serve the built site locally
 ```
 
-**Before a change is done, run `yarn build && yarn check`.** CI
+**Before a change is done, run `yarn build && yarn run check`.** CI
 (`.github/workflows/ci.yml`) builds with Node 20 and publishes `dist/` to
 GitHub Pages on push to **`master`** (not `main`) - pushing to master deploys
 the live site, so keep work on branches until it's reviewed.

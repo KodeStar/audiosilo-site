@@ -1,0 +1,14 @@
+---
+// A tiny animated 3-bar "now playing" equalizer glyph. Frozen under
+// prefers-reduced-motion via the .eq-bar rule in global.css.
+interface Props {
+  class?: string
+}
+const { class: className = '' } = Astro.props
+---
+<span class={`inline-flex h-3.5 items-end gap-[2px] ${className}`} aria-hidden="true">
+  <span class="eq-bar w-[2px] rounded-full bg-pink-500" style="animation-delay:0s"></span>
+  <span class="eq-bar w-[2px] rounded-full bg-pink-500" style="animation-delay:.18s"></span>
+  <span class="eq-bar w-[2px] rounded-full bg-pink-500" style="animation-delay:.36s"></span>
+</span>
+</content>

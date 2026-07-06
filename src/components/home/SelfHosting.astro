@@ -1,0 +1,86 @@
+---
+import SectionHeading from '../SectionHeading.astro'
+import Icon from '../Icon.astro'
+import Badge from '../Badge.astro'
+
+const secureDefaults = [
+  'No default passwords',
+  'Rate limiting + brute-force lockout',
+  'argon2id password hashing',
+  "Self-signed, Let's Encrypt, or off",
+]
+
+const benefits = [
+  {
+    title: 'The filesystem is the source of truth',
+    body: 'Your files stay exactly as they are on disk. The database is just a rebuildable index, so you are never locked into a proprietary store.',
+  },
+  {
+    title: 'Zero-wait first connection',
+    body: 'Point the server at a folder and browse straight away. There is no initial scan to sit through before you can see your library.',
+  },
+  {
+    title: 'It reads messy libraries',
+    body: 'Single-file books, a folder per book, or loose chapter files: the scanner detects the shape automatically, with nothing to configure.',
+  },
+  {
+    title: 'Progress survives renames',
+    body: 'Rename, move or re-tag a file and your listening position follows it, instead of resetting to zero.',
+  },
+]
+---
+<section class="container py-20 sm:py-24">
+  <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+    <!-- Left: terminal-style first-run card -->
+    <div class="reveal relative">
+      <div class="glow left-10 top-10 h-[300px] w-[420px] max-w-[90vw]"></div>
+      <div
+        class="relative z-10 overflow-hidden rounded-xl border border-edge bg-raised shadow-2xl shadow-black/50"
+      >
+        <div class="flex items-center gap-2 border-b border-edge px-4 py-3">
+          <span class="h-3 w-3 rounded-full bg-edge"></span>
+          <span class="h-3 w-3 rounded-full bg-edge"></span>
+          <span class="h-3 w-3 rounded-full bg-edge"></span>
+          <span class="ml-2 font-mono text-xs text-dim">audiosilo</span>
+        </div>
+        <div class="overflow-x-auto p-5 font-mono text-sm leading-relaxed">
+          <p class="text-dim"><span class="text-pink-400">$</span> audiosilo --data ./data</p>
+          <p class="mt-3 text-hi">AudioSilo server started.</p>
+          <p class="mt-3 text-dim">First-run credentials (shown once):</p>
+          <p class="mt-1 text-body">admin password&nbsp;&nbsp;<span class="text-hi">7Kp2q9Vx1Ld4</span></p>
+          <p class="text-body">invite code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-hi">3F9K-Q2M7</span></p>
+          <p class="mt-3 text-body">listening on&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-pink-400">https://0.0.0.0:8080</span></p>
+          <p class="text-body">tls mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-success">selfsigned</span></p>
+        </div>
+      </div>
+      <div class="mt-5 flex flex-wrap gap-2">
+        {secureDefaults.map((d) => <Badge>{d}</Badge>)}
+      </div>
+    </div>
+
+    <!-- Right: benefit copy -->
+    <div class="reveal">
+      <SectionHeading
+        overline="Self-hosting"
+        title="Built to face the internet"
+        lede="Safe to expose directly, with a guided setup wizard. You get the safety of a hardened server and the simplicity of a home app, without choosing between them."
+        align="left"
+      />
+      <ul class="mt-8 space-y-6">
+        {
+          benefits.map((b) => (
+            <li class="flex gap-4">
+              <span class="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-pink-600/10 text-pink-400">
+                <Icon name="check" class="h-4 w-4" />
+              </span>
+              <div>
+                <h3 class="font-semibold text-hi">{b.title}</h3>
+                <p class="mt-1 text-body">{b.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
