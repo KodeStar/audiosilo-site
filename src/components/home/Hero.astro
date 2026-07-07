@@ -115,6 +115,12 @@ import shotDesktop from '../../assets/screenshots/shot-desktop.png'
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    /* background-clip:text only paints the gradient inside the span's inline
+       box; the h1's negative letter-spacing pulls that box's right edge inside
+       the final glyph's ink, shaving the 'r'. Pad the paint box out past the
+       glyph and pull the following period back so spacing is unchanged. */
+    padding-right: 0.12em;
+    margin-right: -0.12em;
   }
 </style>
 
