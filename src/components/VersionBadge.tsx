@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 // Shown if the GitHub API can't be reached; keep in step with the latest server tag.
-const FALLBACK = 'v1.6.2'
+const FALLBACK = 'v1.9.0'
 
 interface Props {
   className?: string

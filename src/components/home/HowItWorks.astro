@@ -1,7 +1,9 @@
 ---
+import { Image } from 'astro:assets'
 import SectionHeading from '../SectionHeading.astro'
 import CodeSnippet from '../CodeSnippet.astro'
 import Icon from '../Icon.astro'
+import shotConnect from '../../assets/screenshots/shot-connect.png'
 
 const compose = `# docker-compose.yml
 services:
@@ -69,11 +71,13 @@ services:
         <div
           class="mt-5 overflow-hidden rounded-xl border border-edge bg-raised shadow-xl shadow-black/40"
         >
-          <img
-            src="/shot-connect.png"
+          <Image
+            src={shotConnect}
             alt="The AudioSilo connect page, showing a pairing QR code and open-in-app buttons"
-            width="2880"
-            height="1800"
+            widths={[480, 640, 960, 1280]}
+            sizes="(min-width: 1024px) 640px, (min-width: 640px) 60vw, 100vw"
+            format="webp"
+            quality={72}
             class="h-auto w-full"
             loading="lazy"
             decoding="async"

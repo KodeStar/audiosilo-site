@@ -1,9 +1,11 @@
 ---
+import { Image } from 'astro:assets'
 import Button from '../Button.astro'
 import Badge from '../Badge.astro'
 import Waveform from '../Waveform.astro'
 import Equalizer from '../Equalizer.astro'
 import Icon from '../Icon.astro'
+import shotDesktop from '../../assets/screenshots/shot-desktop.png'
 ---
 <section class="relative overflow-hidden">
   <!-- Soft radial glow behind the hero. -->
@@ -47,12 +49,15 @@ import Icon from '../Icon.astro'
       <div
         class="relative z-10 overflow-hidden rounded-2xl border border-edge bg-surface shadow-2xl shadow-black/50"
       >
-        <img
-          src="/shot-desktop.png"
+        <Image
+          src={shotDesktop}
           alt="The AudioSilo web player on desktop, showing the library grid and a continue-listening shelf"
-          width="3600"
-          height="2250"
+          widths={[640, 960, 1280, 1920]}
+          sizes="(min-width: 1024px) 1024px, 100vw"
+          format="webp"
+          quality={72}
           class="h-auto w-full"
+          loading="eager"
           fetchpriority="high"
           decoding="async"
         />
@@ -76,20 +81,23 @@ import Icon from '../Icon.astro'
       <div
         class="absolute -bottom-6 right-[-1rem] z-20 hidden w-40 overflow-hidden rounded-[2rem] border border-edge bg-deep shadow-2xl shadow-black/60 ring-1 ring-white/5 md:block lg:right-2 lg:w-48"
       >
+        <!-- No src/autoplay here on purpose: the video (and its poster) must
+             not download on phones, where this whole block is hidden. The
+             inline script below only wires up src + autoplay on md+ viewports
+             (and skips it under reduced motion), so mobile fetches nothing. -->
         <video
           id="hero-demo"
           class="block h-auto w-full"
-          width="804"
-          height="1748"
-          autoplay
+          width="602"
+          height="1310"
           muted
           loop
           playsinline
-          preload="metadata"
-          poster="/ios-app-demo-poster.jpg"
+          preload="none"
+          data-src="/ios-app-demo.mp4"
+          data-poster="/ios-app-demo-poster.webp"
           aria-label="The AudioSilo iOS app in use: browsing a library, opening a book and playing with chapter controls"
         >
-          <source src="/ios-app-demo.mp4" type="video/mp4" />
         </video>
       </div>
     </div>
@@ -111,12 +119,36 @@ import Icon from '../Icon.astro'
 </style>
 
 <script>
-  // Respect reduced motion: freeze the looping demo video on its first frame.
+  // The hero demo video only exists on md+ viewports (hidden below), so there
+  // is no reason to download its ~1MB file on a phone. It ships with no src and
+  // preload="none"; we attach the source + poster and start it only when the
+  // viewport is wide enough AND the user hasn't asked to reduce motion. On a
+  // phone nothing here runs to completion, so no video/poster bytes transfer.
   const demo = document.getElementById('hero-demo') as HTMLVideoElement | null
-  if (demo && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    demo.removeAttribute('autoplay')
-    demo.autoplay = false
-    demo.loop = false
-    demo.pause()
+  if (demo) {
+    const wide = window.matchMedia('(min-width: 768px)')
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let loaded = false
+    const load = () => {
+      if (loaded || !wide.matches) return
+      loaded = true
+      const poster = demo.dataset.poster
+      const src = demo.dataset.src
+      if (poster) demo.setAttribute('poster', poster)
+      if (src) demo.setAttribute('src', src)
+      if (reduce.matches) {
+        // Reduced motion: show the first frame (poster), never autoplay/loop.
+        demo.loop = false
+        demo.load()
+      } else {
+        demo.autoplay = true
+        demo.loop = true
+        demo.load()
+        demo.play().catch(() => {})
+      }
+    }
+    if (wide.matches) load()
+    // Handle a resize/rotation that first crosses into md.
+    else wide.addEventListener('change', load, { once: false })
   }
 </script>

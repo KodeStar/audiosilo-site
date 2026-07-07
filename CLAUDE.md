@@ -58,8 +58,9 @@ the live site, so keep work on branches until it's reviewed.
 ## Layout
 
 ```
-public/                 static assets: logo.svg, favicons, CNAME, shot-*.png (generated)
+public/                 static assets: logo.svg, favicons, CNAME, og.png, ios-app-demo.mp4
 src/
+  assets/screenshots/   shot-*.png (pipeline-generated); optimized via astro:assets
   components/           .astro components + React islands (.tsx)
   data/features.ts      home-page feature/benefit content
   layouts/              Base.astro (+ per-section layouts)
@@ -77,10 +78,12 @@ docs/DESIGN.md          the design brief - the visual direction all UI work foll
   soon**, web PWA live, manager private (no download CTA), server open source
   under **AGPLv3** (scope license claims to the server). Re-verify before
   upgrading any availability claim.
-- **Screenshots are generated, never hand-made.** `shot-*.png` in `public/`
-  come from the workspace pipeline (`../store/tools/`, see
-  [../SCREENSHOTS.md](../SCREENSHOTS.md)). To change one, fix the capture and
-  re-run the pipeline.
+- **Screenshots are generated, never hand-made.** `shot-*.png` live in
+  `src/assets/screenshots/` (imported via `astro:assets` `<Image>` so the build
+  emits responsive `webp` variants - never ship an oversized raw PNG from
+  `public/`). They come from the workspace pipeline (`../store/tools/`, which now
+  copies into `src/assets/screenshots/`, see [../SCREENSHOTS.md](../SCREENSHOTS.md)).
+  To change one, fix the capture and re-run the pipeline.
 - **Design tokens match the product**: pink `#db2777` accent, the player's
   dark navy grays (`#161f2c` / `#1a2331` / `#2c3340`), Roboto, dark-first.
   The full direction is in [docs/DESIGN.md](docs/DESIGN.md) - follow it, don't
