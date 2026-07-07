@@ -1,11 +1,15 @@
 ---
+// The raw public/logo.svg is authored upside down (owner-confirmed 2026-07-07);
+// the app and old site render it rotated 180deg. Every rendering here inherits
+// that rotation from this single component (Header + Footer are its only usages,
+// both want the corrected orientation).
 interface Props {
   class?: string
 }
 const { class: className = 'w-12' } = Astro.props
 ---
 <svg
-  class={className}
+  class={`${className} rotate-180`}
   xmlns="http://www.w3.org/2000/svg"
   viewBox="299.2254999999999 397.8038000000001 401.5409999999997 315.357"
   aria-hidden="true"

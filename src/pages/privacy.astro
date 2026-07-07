@@ -1,151 +1,168 @@
 ---
 import Base from '../layouts/Base.astro'
+
+const link = 'text-pink-500 underline underline-offset-2 transition-colors hover:text-pink-400'
 ---
 <Base
-  title="AudioSilo — Privacy Policy"
+  title="AudioSilo - Privacy Policy"
   description="Privacy policy for the AudioSilo self-hosted audiobook player."
 >
-  <div class="container py-12">
-    <div class="max-w-3xl mx-auto text-gray-700">
-      <h1 class="text-4xl font-extrabold text-pink-800 mb-1">Privacy Policy</h1>
-      <p class="text-gray-500 mb-8">Last updated: 25 June 2026</p>
+  <div class="container py-14 sm:py-16">
+    <div class="reveal mx-auto max-w-3xl text-body">
+      <h1 class="mb-1 text-4xl font-black tracking-tight text-hi">Privacy Policy</h1>
+      <p class="mb-8 text-dim">Last updated: 25 June 2026</p>
 
       <p class="mb-6 text-lg leading-relaxed">
-        AudioSilo is a <strong>self-hosted audiobook player</strong>. The AudioSilo app is a
-        <em>client</em> for an AudioSilo server that <strong>you</strong> (or whoever administers your
-        server) run and control. In normal use, the app communicates <strong>only</strong> with the
-        server address you provide, and the developer of AudioSilo operates
-        <strong>no service that receives, stores, or processes your data</strong>.
+        AudioSilo is a <strong class="text-hi">self-hosted audiobook player</strong>. The AudioSilo
+        app is a <em>client</em> for an AudioSilo server that <strong class="text-hi">you</strong>
+        (or whoever administers your server) run and control. In normal use, the app communicates
+        <strong class="text-hi">only</strong> with the server address you provide, and the developer
+        of AudioSilo operates
+        <strong class="text-hi">no service that receives, stores, or processes your data</strong>.
       </p>
 
-      <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Who we are</h2>
+      <h2 class="mb-3 mt-10 text-2xl font-bold text-pink-400">Who we are</h2>
       <p class="mb-4 leading-relaxed">
-        AudioSilo (&ldquo;the app&rdquo;) is published by <strong>KodeStar</strong>. Questions about this
-        policy can be sent to
-        <a class="text-pink-600 hover:underline" href="mailto:kode@audiosilo.app">kode@audiosilo.app</a>.
+        AudioSilo ("the app") is published by <strong class="text-hi">KodeStar</strong>. Questions
+        about this policy can be sent to
+        <a class={link} href="mailto:kode@audiosilo.app">kode@audiosilo.app</a>.
       </p>
 
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 my-8">
-        <p class="font-semibold text-gray-800 mb-2">The short version</p>
-        <ul class="list-disc pl-5 space-y-1">
-          <li>We do <strong>not</strong> collect, see, sell, or share your personal data.</li>
-          <li>We use <strong>no</strong> analytics, advertising, tracking, or crash-reporting services.</li>
+      <div class="my-8 rounded-xl border border-edge bg-surface p-6">
+        <p class="mb-2 font-semibold text-hi">The short version</p>
+        <ul class="list-disc space-y-1 pl-5">
+          <li>We do <strong class="text-hi">not</strong> collect, see, sell, or share your personal data.</li>
           <li>
-            All of your content and account data lives on <strong>your own AudioSilo server</strong> and
-            on <strong>your own device</strong> &mdash; not with us.
+            We use <strong class="text-hi">no</strong> analytics, advertising, tracking, or
+            crash-reporting services.
           </li>
-          <li>The app contacts only the server <strong>you</strong> tell it to connect to.</li>
+          <li>
+            All of your content and account data lives on
+            <strong class="text-hi">your own AudioSilo server</strong> and on
+            <strong class="text-hi">your own device</strong>, not with us.
+          </li>
+          <li>The app contacts only the server <strong class="text-hi">you</strong> tell it to connect to.</li>
         </ul>
       </div>
 
-      <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">What information the app handles</h2>
+      <h2 class="mb-3 mt-10 text-2xl font-bold text-pink-400">What information the app handles</h2>
       <p class="mb-4 leading-relaxed">
-        Because AudioSilo is self-hosted, almost everything stays between your device and the server you
-        connect to.
+        Because AudioSilo is self-hosted, almost everything stays between your device and the server
+        you connect to.
       </p>
-      <p class="font-semibold text-gray-800 mb-2">Stored on your device</p>
-      <ul class="list-disc pl-5 space-y-1 mb-4">
+      <p class="mb-2 font-semibold text-hi">Stored on your device</p>
+      <ul class="mb-4 list-disc space-y-1 pl-5">
         <li>
-          <strong>Your session token</strong> &mdash; kept in the operating system&rsquo;s encrypted secure
-          storage (Keychain on iOS, Keystore on Android) so you stay signed in.
+          <strong class="text-hi">Your session token</strong>, kept in the operating system's
+          encrypted secure storage (Keychain on iOS, Keystore on Android) so you stay signed in.
         </li>
         <li>
-          <strong>Downloaded audiobooks</strong> &mdash; audio files and cover art you choose to download
-          for offline listening, stored in the app&rsquo;s private storage.
+          <strong class="text-hi">Downloaded audiobooks</strong>: audio files and cover art you
+          choose to download for offline listening, stored in the app's private storage.
         </li>
         <li>
-          <strong>App preferences</strong> &mdash; settings such as playback speed, theme, and language,
-          plus a local cache of your listening position.
+          <strong class="text-hi">App preferences</strong>: settings such as playback speed, theme,
+          and language, plus a local cache of your listening position.
         </li>
       </ul>
-      <p class="font-semibold text-gray-800 mb-2">Sent to the server you choose</p>
-      <ul class="list-disc pl-5 space-y-1 mb-4">
+      <p class="mb-2 font-semibold text-hi">Sent to the server you choose</p>
+      <ul class="mb-4 list-disc space-y-1 pl-5">
         <li>
           When you sign in or pair, and as you listen, the app sends requests to the
-          <strong>AudioSilo server address you provide</strong>. Your account credentials, listening
-          progress, bookmarks, notes, and favourites are stored on <strong>that</strong> server, operated
-          by you or your server&rsquo;s administrator.
+          <strong class="text-hi">AudioSilo server address you provide</strong>. Your account
+          credentials, listening progress, bookmarks, notes, and favourites are stored on
+          <strong class="text-hi">that</strong> server, operated by you or your server's administrator.
         </li>
-        <li>We (KodeStar) have <strong>no access</strong> to your server, your account, or any data on it.</li>
+        <li>
+          We (KodeStar) have <strong class="text-hi">no access</strong> to your server, your account,
+          or any data on it.
+        </li>
       </ul>
       <p class="mb-4 leading-relaxed">
-        There is no central AudioSilo account system. Your account exists only on your self-hosted server.
+        There is no central AudioSilo account system. Your account exists only on your self-hosted
+        server.
       </p>
 
-      <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Device permissions</h2>
-      <ul class="list-disc pl-5 space-y-1 mb-4">
+      <h2 class="mb-3 mt-10 text-2xl font-bold text-pink-400">Device permissions</h2>
+      <ul class="mb-4 list-disc space-y-1 pl-5">
         <li>
-          <strong>Camera</strong> &mdash; used solely to scan a pairing QR code when connecting to your
-          server. Images are processed on-device to read the code and are never stored or transmitted to us.
+          <strong class="text-hi">Camera</strong>: used solely to scan a pairing QR code when
+          connecting to your server. Images are processed on-device to read the code and are never
+          stored or transmitted to us.
         </li>
         <li>
-          <strong>Background audio</strong> &mdash; so playback continues when the app is backgrounded or the
-          screen is locked.
+          <strong class="text-hi">Background audio</strong>: so playback continues when the app is
+          backgrounded or the screen is locked.
         </li>
-        <li><strong>Network access</strong> &mdash; to communicate with your AudioSilo server.</li>
+        <li>
+          <strong class="text-hi">Network access</strong>: to communicate with your AudioSilo server.
+        </li>
       </ul>
 
-      <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Optional public demo</h2>
+      <h2 class="mb-3 mt-10 text-2xl font-bold text-pink-400">Optional public demo</h2>
       <p class="mb-4 leading-relaxed">
         AudioSilo offers an optional, web-based public demo (at
-        <span class="font-mono text-sm">demo.audiosilo.app</span>) so people can try the player without
-        setting up a server. The demo server creates a <strong>temporary, throwaway guest session</strong>
-        with sample content; no personal account is created and demo data is ephemeral. Using the demo is
-        optional and separate from connecting to your own server.
+        <span class="rounded border border-edge bg-raised px-1.5 py-0.5 font-mono text-sm text-pink-300"
+          >demo.audiosilo.app</span
+        >) so people can try the player without setting up a server. The demo server creates a
+        <strong class="text-hi">temporary, throwaway guest session</strong> with sample content; no
+        personal account is created and demo data is ephemeral. Using the demo is optional and separate
+        from connecting to your own server.
       </p>
 
-      <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Analytics, advertising, and tracking</h2>
+      <h2 class="mb-3 mt-10 text-2xl font-bold text-pink-400">Analytics, advertising, and tracking</h2>
       <p class="mb-4 leading-relaxed">
-        AudioSilo contains <strong>no</strong> analytics, advertising, attribution, or third-party tracking
-        software. We do not profile you and do not build advertising identifiers. Nothing about your usage
-        is reported back to us.
+        AudioSilo contains <strong class="text-hi">no</strong> analytics, advertising, attribution, or
+        third-party tracking software. We do not profile you and do not build advertising identifiers.
+        Nothing about your usage is reported back to us.
       </p>
 
-      <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Third-party services</h2>
+      <h2 class="mb-3 mt-10 text-2xl font-bold text-pink-400">Third-party services</h2>
       <p class="mb-4 leading-relaxed">
-        The app integrates no third-party data-collecting services. The only third parties involved are the
-        <strong>app stores</strong> (Apple App Store, Google Play) that distribute the app, and the
-        <strong>server you connect to</strong> &mdash; each governed by its own operator&rsquo;s terms.
+        The app integrates no third-party data-collecting services. The only third parties involved
+        are the <strong class="text-hi">app stores</strong> (Apple App Store, Google Play) that
+        distribute the app, and the <strong class="text-hi">server you connect to</strong>, each
+        governed by its own operator's terms.
       </p>
 
-      <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Data retention and deletion</h2>
-      <ul class="list-disc pl-5 space-y-1 mb-4">
+      <h2 class="mb-3 mt-10 text-2xl font-bold text-pink-400">Data retention and deletion</h2>
+      <ul class="mb-4 list-disc space-y-1 pl-5">
         <li>
-          <strong>On your device:</strong> uninstalling the app removes its local data, including the
-          stored session token, downloaded audiobooks, and preferences.
+          <strong class="text-hi">On your device:</strong> uninstalling the app removes its local
+          data, including the stored session token, downloaded audiobooks, and preferences.
         </li>
         <li>
-          <strong>On your server:</strong> your account and listening data are retained according to your
-          server&rsquo;s configuration. Because the server is under your control, you can delete your account
-          and its data there at any time.
+          <strong class="text-hi">On your server:</strong> your account and listening data are
+          retained according to your server's configuration. Because the server is under your control,
+          you can delete your account and its data there at any time.
         </li>
       </ul>
 
-      <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Children&rsquo;s privacy</h2>
+      <h2 class="mb-3 mt-10 text-2xl font-bold text-pink-400">Children's privacy</h2>
       <p class="mb-4 leading-relaxed">
-        AudioSilo is a general-audience audiobook player and is not directed at children under 13. We do
-        not knowingly collect personal information from children &mdash; indeed, we collect personal
+        AudioSilo is a general-audience audiobook player and is not directed at children under 13. We
+        do not knowingly collect personal information from children; indeed, we collect personal
         information from no one.
       </p>
 
-      <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Security</h2>
+      <h2 class="mb-3 mt-10 text-2xl font-bold text-pink-400">Security</h2>
       <p class="mb-4 leading-relaxed">
-        Communication between the app and your server uses standard transport security (HTTPS, which your
-        server can be configured to enforce). Your session token is held in the device&rsquo;s encrypted
-        secure storage. Because we hold no user data centrally, there is no central store of your
-        information to be breached.
+        Communication between the app and your server uses standard transport security (HTTPS, which
+        your server can be configured to enforce). Your session token is held in the device's
+        encrypted secure storage. Because we hold no user data centrally, there is no central store of
+        your information to be breached.
       </p>
 
-      <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Changes to this policy</h2>
+      <h2 class="mb-3 mt-10 text-2xl font-bold text-pink-400">Changes to this policy</h2>
       <p class="mb-4 leading-relaxed">
-        We may update this policy as the app evolves. Material changes will be reflected by the
-        &ldquo;Last updated&rdquo; date above and published at the same URL.
+        We may update this policy as the app evolves. Material changes will be reflected by the "Last
+        updated" date above and published at the same URL.
       </p>
 
-      <h2 class="text-2xl font-semibold text-pink-800 mt-10 mb-3">Contact</h2>
+      <h2 class="mb-3 mt-10 text-2xl font-bold text-pink-400">Contact</h2>
       <p class="mb-4 leading-relaxed">
         Questions about this privacy policy can be sent to
-        <a class="text-pink-600 hover:underline" href="mailto:kode@audiosilo.app">kode@audiosilo.app</a>.
+        <a class={link} href="mailto:kode@audiosilo.app">kode@audiosilo.app</a>.
       </p>
     </div>
   </div>

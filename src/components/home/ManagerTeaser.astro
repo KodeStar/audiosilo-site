@@ -1,0 +1,57 @@
+---
+import Badge from '../Badge.astro'
+import Icon from '../Icon.astro'
+
+const points = [
+  {
+    title: 'Back up what you own',
+    body: 'Sign in with your own Audible account and pull the books you have already bought onto your own server as plain M4B files, using your own account keys, for your own personal listening.',
+  },
+  {
+    title: 'Lossless and complete',
+    body: 'Chapters, cover art and metadata are all preserved. It is a repackage, not a re-encode, so the audio quality is untouched.',
+  },
+  {
+    title: 'Skip what you already have',
+    body: 'The manager cross-checks your Audible library against your server and only offers the books you do not already have.',
+  },
+]
+---
+<section class="container py-16 sm:py-20">
+  <div
+    class="reveal relative overflow-hidden rounded-2xl border border-edge bg-surface p-8 sm:p-12"
+  >
+    <div class="glow right-0 top-0 h-[280px] w-[420px] max-w-[80vw]"></div>
+
+    <div class="relative z-10">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex items-center gap-3">
+          <span
+            class="flex h-11 w-11 items-center justify-center rounded-lg border border-pink-500/20 bg-pink-600/10 text-pink-400"
+          >
+            <Icon name="cube" class="h-6 w-6" />
+          </span>
+          <h2 class="text-2xl font-bold text-hi sm:text-3xl">Bring your Audible library home</h2>
+        </div>
+        <Badge variant="muted">In development</Badge>
+      </div>
+
+      <p class="mt-5 max-w-3xl text-body">
+        A desktop manager that lets you back up the audiobooks you already own onto infrastructure
+        you control. This is for your own personal use, not a general DRM tool and not for
+        redistribution.
+      </p>
+
+      <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
+        {
+          points.map((p) => (
+            <div>
+              <h3 class="font-semibold text-hi">{p.title}</h3>
+              <p class="mt-1.5 text-sm leading-relaxed text-body">{p.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

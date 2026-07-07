@@ -1,0 +1,36 @@
+---
+import SectionHeading from '../SectionHeading.astro'
+import Icon from '../Icon.astro'
+import Waveform from '../Waveform.astro'
+import { features } from '../../data/features.ts'
+---
+<section id="features" class="relative scroll-mt-24 py-20 sm:py-24">
+  <div class="glow left-1/2 top-24 h-[420px] w-[760px] max-w-[95vw] -translate-x-1/2"></div>
+
+  <div class="container relative z-10">
+    <SectionHeading
+      overline="The player"
+      title="Everything an audiobook player should do"
+      lede="Built for audiobooks specifically, on iOS, Android and the web from a single codebase, so every platform gets the same features at once."
+      class="reveal"
+    />
+
+    <div class="mt-6 flex justify-center">
+      <Waveform bars={48} class="opacity-50" />
+    </div>
+
+    <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        features.map((feature) => (
+          <div class="reveal group flex flex-col rounded-xl border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-pink-500/40">
+            <span class="mb-4 flex h-11 w-11 items-center justify-center rounded-lg border border-pink-500/20 bg-pink-600/10 text-pink-400">
+              <Icon name={feature.icon} class="h-6 w-6" />
+            </span>
+            <h3 class="text-lg font-semibold text-hi">{feature.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-body">{feature.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

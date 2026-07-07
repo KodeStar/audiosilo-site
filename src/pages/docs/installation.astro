@@ -23,7 +23,7 @@ docker compose logs        # first run prints the admin password + auth code ONC
 const binary = `# Run with a guided browser setup wizard (recommended for home users):
 ./audiosilo --setup --data ./data
 
-# Or run headless — it auto-creates an admin and prints the password + auth code once:
+# Or run headless - it auto-creates an admin and prints the password + auth code once:
 AUDIOSILO_TLS_MODE=off ./audiosilo --data ./data`
 
 const update = `docker compose pull && docker compose up -d`
@@ -41,14 +41,14 @@ const update = `docker compose pull && docker compose up -d`
   <h2>Requirements</h2>
   <ul>
     <li><strong>Docker</strong> (to run the published image), or a single downloaded binary.</li>
-    <li>A folder of audiobooks (m4b, or mp3 parts &mdash; the scanner figures out the shape).</li>
+    <li>A folder of audiobooks (m4b, or mp3 parts - the scanner figures out the shape).</li>
     <li>
-      <strong>ffmpeg/ffprobe</strong> is optional but recommended (durations and chapters). The Docker
+      <strong>ffmpeg/ffprobe</strong> is optional but recommended (durations and chapters), so the Docker
       image includes it; the native binaries fetch it automatically on first run if it isn't present.
     </li>
   </ul>
 
-  <h2>Option 1 — Docker (recommended)</h2>
+  <h2>Option 1: Docker (recommended)</h2>
   <p>Create a <code>docker-compose.yml</code>, mounting your audiobooks read-only and persisting <code>/data</code>:</p>
   <CodeBlock filename="docker-compose.yml" code={compose} />
   <p>Then start it and read the logs to grab your one-time admin credentials:</p>
@@ -62,7 +62,7 @@ const update = `docker compose pull && docker compose up -d`
   <p>Updating the server or the bundled player is always a new image:</p>
   <CodeBlock code={update} />
 
-  <h2>Option 2 — Native binary</h2>
+  <h2>Option 2: Native binary</h2>
   <p>
     Download the archive for your OS/arch from the
     <a href="https://github.com/KodeStar/audiosilo-server/releases" target="_blank" rel="noopener">server releases page</a>

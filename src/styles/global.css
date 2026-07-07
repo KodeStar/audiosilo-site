@@ -1,7 +1,39 @@
 @import 'tailwindcss';
 
-/* The one custom colour carried over from the old tailwind.config.js. */
+/* -------------------------------------------------------------------------
+   Design tokens (2026-07 redesign). Dark-only, mirrors the product palette.
+   See docs/DESIGN.md - do not invent new brand colours here.
+   ------------------------------------------------------------------------- */
 @theme {
+  /* Layered navy surfaces + hairline edge (the app's dark grays). */
+  --color-deep: #0b111b; /* page background (one step darker than the app) */
+  --color-surface: #161f2c; /* cards, panels (app gray-860) */
+  --color-raised: #1a2331; /* raised cards, code blocks (app gray-840) */
+  --color-edge: #2c3340; /* hairline borders (app gray-750) */
+
+  /* Text ramp. */
+  --color-hi: #f3f4f6; /* headings (gray-100) */
+  --color-body: #d1d5db; /* body (gray-300) */
+  --color-dim: #9ca3af; /* captions, meta (gray-400) */
+
+  /* "Available now" only. */
+  --color-success: #22c55e;
+
+  /* Pink is THE accent. Pin the scale to the product brand (#db2777) so every
+     existing `pink-*` utility renders the brand colour, not Tailwind v4's
+     shifted oklch pinks. primary = pink-600, primary-bright = pink-500. */
+  --color-pink-50: #fdf2f8;
+  --color-pink-100: #fce7f3;
+  --color-pink-200: #fbcfe8;
+  --color-pink-300: #f9a8d4;
+  --color-pink-400: #f472b6;
+  --color-pink-500: #ec4899;
+  --color-pink-600: #db2777;
+  --color-pink-700: #be185d;
+  --color-pink-800: #9d174d;
+  --color-pink-900: #831843;
+
+  /* One custom colour carried over from the old tailwind.config.js. */
   --color-gray-150: #eeedf2;
 }
 
@@ -28,19 +60,163 @@
   }
 }
 
+/* -------------------------------------------------------------------------
+   Dark-first page defaults.
+   ------------------------------------------------------------------------- */
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  /* Anchor jumps and the skip link land below the sticky header (~59px tall)
+     instead of underneath it. */
+  scroll-padding-top: 5rem;
+}
 body {
   font-family: 'Roboto', sans-serif;
+  background-color: var(--color-deep);
+  color: var(--color-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typed.js cursor — ported from the old assets/css/main.scss. */
-.typed-cursor {
+::selection {
+  background: rgba(219, 39, 119, 0.35);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-pink-500);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Subtle custom scrollbar. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-edge) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-edge);
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a4354;
+  background-clip: padding-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Sticky header: transparent over the hero, blurred + bordered once scrolled
+   (the `data-scrolled` attribute is toggled by a small script in Base.astro).
+   ------------------------------------------------------------------------- */
+.site-header {
+  transition:
+    background-color 0.3s ease,
+    backdrop-filter 0.3s ease,
+    border-color 0.3s ease;
+}
+.site-header[data-scrolled='true'] {
+  background-color: rgba(11, 17, 27, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom-color: var(--color-edge);
+}
+
+/* -------------------------------------------------------------------------
+   Soft radial glow (place absolutely, size + position with utilities).
+   ------------------------------------------------------------------------- */
+.glow {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 9999px;
+  filter: blur(80px);
+  background: radial-gradient(
+    closest-side,
+    rgba(236, 72, 153, 0.18),
+    rgba(99, 102, 241, 0.1),
+    transparent
+  );
+}
+
+/* -------------------------------------------------------------------------
+   Scroll-reveal: elements rise + fade in once (IntersectionObserver adds
+   `is-visible`). No-op under reduced motion.
+
+   The hidden initial state is scoped to `.js` (added to <html> by an early
+   inline script in Base.astro) so that with JavaScript disabled - crawlers,
+   brittle connections - every section stays fully visible instead of being
+   stuck at opacity 0.
+   ------------------------------------------------------------------------- */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.5s ease-out;
+  will-change: opacity, transform;
+}
+.js .reveal.is-visible {
   opacity: 1;
-  animation: typedjsBlink 0.7s infinite;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
-@keyframes typedjsBlink {
+/* -------------------------------------------------------------------------
+   Waveform motif: gently oscillating bars (hero) + a 3-bar equalizer glyph.
+   GPU-cheap transform:scaleY; frozen under reduced motion.
+   ------------------------------------------------------------------------- */
+.wave-bar {
+  transform-origin: bottom;
+  animation: wave 1.4s ease-in-out infinite;
+}
+@keyframes wave {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
   50% {
-    opacity: 0;
+    transform: scaleY(1);
+  }
+}
+
+.eq-bar {
+  height: 100%;
+  transform-origin: bottom;
+  animation: eq 0.9s ease-in-out infinite;
+}
+@keyframes eq {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave-bar,
+  .eq-bar {
+    animation: none;
   }
 }
 
@@ -102,3 +278,4 @@ body {
   font-style: italic;
   margin: 1.25rem 0;
 }
+</content>

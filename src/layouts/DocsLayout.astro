@@ -17,23 +17,26 @@ const docs = [
 
 const current = Astro.url.pathname.replace(/\/$/, '') || '/docs'
 ---
-<Base title={`${title} — AudioSilo Docs`} description={description}>
-  <div class="container py-10">
-    <div class="flex flex-col md:flex-row gap-10">
+<Base title={`${title} - AudioSilo Docs`} description={description}>
+  <div class="docs-dark container py-10 sm:py-14">
+    <div class="flex flex-col gap-10 md:flex-row">
       <aside class="md:w-60 md:flex-shrink-0">
-        <div class="md:sticky md:top-8">
-          <p class="text-xs uppercase tracking-wider text-gray-500 mb-3">Documentation</p>
-          <nav class="flex flex-col gap-1">
+        <div class="md:sticky md:top-24">
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-pink-500">
+            Documentation
+          </p>
+          <nav class="flex flex-col gap-1" aria-label="Documentation">
             {
               docs.map((d) => {
                 const active = current === d.href.replace(/\/$/, '')
                 return (
                   <a
                     href={d.href}
-                    class={`px-3 py-2 rounded text-sm transition-colors ${
+                    aria-current={active ? 'page' : undefined}
+                    class={`rounded-lg px-3 py-2 text-sm transition-colors ${
                       active
-                        ? 'bg-pink-600 text-white'
-                        : 'text-gray-700 hover:bg-gray-200'
+                        ? 'bg-pink-600 font-medium text-white'
+                        : 'text-body hover:bg-surface hover:text-hi'
                     }`}
                   >
                     {d.label}
@@ -42,16 +45,77 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/docs'
               })
             }
           </nav>
-          <div class="mt-6 border-t border-gray-300 pt-4 text-sm">
-            <a class="text-pink-600 hover:underline" href="/download">Download AudioSilo &rarr;</a>
+          <div class="mt-6 border-t border-edge pt-4 text-sm">
+            <a
+              class="inline-flex items-center gap-1 text-pink-500 transition-colors hover:text-pink-400"
+              href="/download"
+            >
+              Download AudioSilo &rarr;
+            </a>
           </div>
         </div>
       </aside>
 
-      <article class="docs-content max-w-3xl flex-grow">
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-pink-800 mb-6">{title}</h1>
+      <article class="docs-content min-w-0 max-w-[70ch] flex-grow">
+        <h1 class="mb-6 text-3xl font-bold tracking-tight text-hi sm:text-4xl">{title}</h1>
         <slot />
       </article>
     </div>
   </div>
 </Base>
+
+<!-- Dark palette overrides for the shared .docs-content typography (which is
+     tuned for light backgrounds in global.css, which we may not edit). Scoped
+     under .docs-dark so it only affects the documentation article. -->
+<style is:global>
+  .docs-dark .docs-content {
+    color: var(--color-body);
+  }
+  .docs-dark .docs-content h2 {
+    color: #f472b6; /* pink-400 - AA on the dark page background */
+    border-top: 1px solid var(--color-edge);
+    padding-top: 1.75rem;
+  }
+  .docs-dark .docs-content h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+  }
+  .docs-dark .docs-content h3 {
+    color: var(--color-hi);
+  }
+  .docs-dark .docs-content p {
+    color: var(--color-body);
+  }
+  .docs-dark .docs-content li {
+    color: var(--color-body);
+  }
+  .docs-dark .docs-content a {
+    color: var(--color-pink-500);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: rgba(236, 72, 153, 0.4);
+    transition: color 0.15s ease;
+  }
+  .docs-dark .docs-content a:hover {
+    color: var(--color-pink-400);
+    text-decoration-color: currentColor;
+  }
+  .docs-dark .docs-content strong {
+    color: var(--color-hi);
+  }
+  .docs-dark .docs-content :not(pre) > code {
+    background: var(--color-raised);
+    color: #f9a8d4; /* pink-300 */
+    border: 1px solid var(--color-edge);
+  }
+  .docs-dark .docs-content blockquote {
+    border-left-color: var(--color-pink-600);
+    background: var(--color-surface);
+    color: var(--color-dim);
+    border-radius: 0 0.5rem 0.5rem 0;
+    padding: 0.75rem 1rem;
+  }
+  .docs-dark .docs-content blockquote code {
+    background: var(--color-raised) !important;
+  }
+</style>

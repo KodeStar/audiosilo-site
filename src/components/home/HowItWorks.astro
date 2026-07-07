@@ -1,0 +1,114 @@
+---
+import { Image } from 'astro:assets'
+import SectionHeading from '../SectionHeading.astro'
+import CodeSnippet from '../CodeSnippet.astro'
+import Icon from '../Icon.astro'
+import shotConnect from '../../assets/screenshots/shot-connect.png'
+
+const compose = `# docker-compose.yml
+services:
+  audiosilo:
+    image: ghcr.io/kodestar/audiosilo-server:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data            # db, config, certs (first run prints admin creds once)
+      - /srv/audiobooks:/library:ro
+    environment:
+      PUID: "1000"              # owner of /data (Unraid: 99)
+      PGID: "1000"              # group of /data (Unraid: 100)
+      AUDIOSILO_WEB_DIR: /app/web
+      # AUDIOSILO_PUBLIC_URL: "https://books.example.com"  # used in QR/invite links
+      # AUDIOSILO_TLS_MODE: "off"                          # behind a TLS-terminating proxy`
+---
+<section id="how-it-works" class="container scroll-mt-24 py-20 sm:py-24">
+  <SectionHeading
+    overline="How it works"
+    title="Up and running in three steps"
+    lede="Run the server, pair your devices, and listen anywhere. No cloud account, no per-device licence."
+    class="reveal"
+  />
+
+  <div class="mx-auto mt-14 max-w-4xl">
+    <!-- Step 1 -->
+    <div class="reveal grid grid-cols-[2.75rem_1fr] gap-x-5 sm:grid-cols-[3rem_1fr] sm:gap-x-6">
+      <div class="flex flex-col items-center">
+        <span
+          class="flex h-11 w-11 items-center justify-center rounded-full border border-pink-500/50 bg-pink-600/10 font-bold text-pink-400"
+          >1</span
+        >
+        <span class="mt-2 w-px flex-1 bg-gradient-to-b from-pink-500/50 to-edge"></span>
+      </div>
+      <div class="pb-12">
+        <h3 class="text-xl font-bold text-hi">Run the server</h3>
+        <p class="mt-2 max-w-xl text-body">
+          Pull the Docker image, point it at your audiobooks folder, and start it. The first run
+          prints your admin credentials once. Prefer no Docker? Download a single self-contained
+          binary instead.
+        </p>
+        <div class="mt-5">
+          <CodeSnippet code={compose} filename="docker-compose.yml" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="reveal grid grid-cols-[2.75rem_1fr] gap-x-5 sm:grid-cols-[3rem_1fr] sm:gap-x-6">
+      <div class="flex flex-col items-center">
+        <span
+          class="flex h-11 w-11 items-center justify-center rounded-full border border-pink-500/50 bg-pink-600/10 font-bold text-pink-400"
+          >2</span
+        >
+        <span class="mt-2 w-px flex-1 bg-gradient-to-b from-pink-500/50 to-edge"></span>
+      </div>
+      <div class="pb-12">
+        <h3 class="text-xl font-bold text-hi">Invite your devices</h3>
+        <p class="mt-2 max-w-xl text-body">
+          Share a one-time invite link or scan a QR code from the built-in connect page. Each phone,
+          tablet or browser pairs in seconds, with no shared password to hand around.
+        </p>
+        <div
+          class="mt-5 overflow-hidden rounded-xl border border-edge bg-raised shadow-xl shadow-black/40"
+        >
+          <Image
+            src={shotConnect}
+            alt="The AudioSilo connect page, showing a pairing QR code and open-in-app buttons"
+            widths={[480, 640, 960, 1280]}
+            sizes="(min-width: 1024px) 640px, (min-width: 640px) 60vw, 100vw"
+            format="webp"
+            quality={72}
+            class="h-auto w-full"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="reveal grid grid-cols-[2.75rem_1fr] gap-x-5 sm:grid-cols-[3rem_1fr] sm:gap-x-6">
+      <div class="flex flex-col items-center">
+        <span
+          class="flex h-11 w-11 items-center justify-center rounded-full border border-pink-500/50 bg-pink-600/10 font-bold text-pink-400"
+          >3</span
+        >
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-hi">Listen everywhere</h3>
+        <p class="mt-2 max-w-xl text-body">
+          Start on your phone, carry on in the browser. Progress, bookmarks and notes sync across
+          every device, and downloaded books keep playing with no connection at all.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-2 text-sm text-dim">
+          <span class="inline-flex items-center gap-1.5">
+            <Icon name="check" class="h-4 w-4 text-pink-500" /> Cross-device sync
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <Icon name="check" class="h-4 w-4 text-pink-500" /> Offline downloads
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

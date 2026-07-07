@@ -3,7 +3,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro'
 import CodeBlock from '../../components/CodeBlock.astro'
 
 const creds = `# In the server's logs on first start:
-admin password: 9f3c… (shown once — save it)
+admin password: 9f3c... (shown once - save it)
 auth code:      ABCD-EFGH (redeem to pair a device)`
 
 const addLibrary = `# Get a session token by logging in as admin:
@@ -21,7 +21,7 @@ curl -X POST https://your-server/api/v1/admin/libraries \\
   <h2>1. Grab your admin credentials</h2>
   <p>
     On its very first start the server creates an admin account and prints the password plus an auth
-    code <strong>exactly once</strong> &mdash; save them. (With <code>--setup</code>, a browser wizard sets the
+    code <strong>exactly once</strong> - save them. (With <code>--setup</code>, a browser wizard sets the
     password for you instead.)
   </p>
   <CodeBlock code={creds} />
@@ -32,7 +32,7 @@ curl -X POST https://your-server/api/v1/admin/libraries \\
 
   <h2>2. Add a library</h2>
   <p>
-    Point a library at a folder of audiobooks &mdash; the one you mounted at <code>/library</code> in Docker,
+    Point a library at a folder of audiobooks - the one you mounted at <code>/library</code> in Docker,
     for example. You can do this in the admin console, or via the API:
   </p>
   <CodeBlock code={addLibrary} />
@@ -47,7 +47,7 @@ curl -X POST https://your-server/api/v1/admin/libraries \\
   <ul>
     <li>
       In the admin console, mint an auth code or click <strong>Copy invite</strong> to get a shareable
-      link (<code>/connect#code=…</code> &mdash; the code rides in the URL fragment, so it never hits the
+      link (<code>/connect#code=…</code> - the code rides in the URL fragment, so it never hits the
       server logs).
     </li>
     <li>

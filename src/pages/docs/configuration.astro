@@ -38,7 +38,7 @@ app_links:                    # native deep-linking (iOS/Android), YAML only
   <p>
     On first run the server writes <code>config.yaml</code> into the data directory with secure
     defaults. Edit it and restart, or override individual values with the environment variables shown
-    in brackets &mdash; handy for Docker. Command-line flags set the data dir and ffprobe path:
+    in brackets - handy for Docker. Command-line flags set the data dir and ffprobe path:
     <code>audiosilo --data ./data --ffprobe ffprobe</code>.
   </p>
 
@@ -47,20 +47,20 @@ app_links:                    # native deep-linking (iOS/Android), YAML only
   <h2>Networking</h2>
   <ul>
     <li>
-      <strong><code>bind</code></strong> &mdash; the address to listen on. Default <code>0.0.0.0:8080</code>.
+      <strong><code>bind</code></strong> - the address to listen on. Default <code>0.0.0.0:8080</code>.
     </li>
     <li>
-      <strong><code>public_url</code></strong> &mdash; the externally reachable base URL, used to build QR
+      <strong><code>public_url</code></strong> - the externally reachable base URL, used to build QR
       pairing payloads and copy-invite links. If empty it's derived from the incoming request; set it
       explicitly behind a reverse proxy.
     </li>
     <li>
-      <strong><code>trusted_proxies</code></strong> &mdash; CIDRs whose <code>X-Forwarded-For</code> header
+      <strong><code>trusted_proxies</code></strong> - CIDRs whose <code>X-Forwarded-For</code> header
       is trusted. Set this behind a proxy so client IPs (used for rate limiting) are accurate, e.g.
       <code>["127.0.0.1/32", "10.0.0.0/8"]</code>.
     </li>
     <li>
-      <strong><code>cors_origins</code></strong> &mdash; allowed browser origins. Empty grants no
+      <strong><code>cors_origins</code></strong> - allowed browser origins. Empty grants no
       cross-origin headers (native apps and same-origin web clients still work); <code>"*"</code> disables
       the check.
     </li>
@@ -69,16 +69,16 @@ app_links:                    # native deep-linking (iOS/Android), YAML only
   <h2>TLS</h2>
   <p>The <code>tls.mode</code> key takes one of three values:</p>
   <ul>
-    <li><strong><code>selfsigned</code></strong> (default) &mdash; generates and persists a self-signed cert. Good for a LAN; clients must accept it.</li>
-    <li><strong><code>autocert</code></strong> &mdash; automatic Let's Encrypt certificates (set <code>tls.hosts</code>). Needs a public hostname reachable on :443.</li>
-    <li><strong><code>off</code></strong> &mdash; plain HTTP for use behind a reverse proxy that terminates TLS. See <a href="/docs/reverse-proxy">reverse proxy &amp; TLS</a>.</li>
+    <li><strong><code>selfsigned</code></strong> (default) - generates and persists a self-signed cert. Good for a LAN; clients must accept it.</li>
+    <li><strong><code>autocert</code></strong> - automatic Let's Encrypt certificates (set <code>tls.hosts</code>). Needs a public hostname reachable on :443.</li>
+    <li><strong><code>off</code></strong> - plain HTTP for use behind a reverse proxy that terminates TLS. See <a href="/docs/reverse-proxy">reverse proxy &amp; TLS</a>.</li>
   </ul>
 
   <h2>Libraries</h2>
   <p>
     Declaring <code>libraries</code> here syncs them into the database and scans them on startup; you
     can also create libraries at runtime from the admin console. There's <strong>no folder layout to
-    configure</strong> &mdash; the scanner classifies each folder on its own (a directory of audio is one
+    configure</strong> - the scanner classifies each folder on its own (a directory of audio is one
     book; loose files at the root are single-file books), and any folder it gets wrong is fixed with a
     per-folder override (<code>book</code> | <code>collection</code>).
   </p>
