@@ -7,9 +7,12 @@
 interface Props {
   bars?: number
   animated?: boolean
+  /** Light tone: white bars at graduated opacity (+ solid white accents) so the
+      strip reads on a pink/coloured background (e.g. the final CTA band). */
+  light?: boolean
   class?: string
 }
-const { bars = 56, animated = false, class: className = '' } = Astro.props
+const { bars = 56, animated = false, light = false, class: className = '' } = Astro.props
 
 function mulberry32(seed: number): () => number {
   let a = seed
@@ -33,14 +36,23 @@ const items = Array.from({ length: bars }, (_, i) => {
   return { height, pink, delay }
 })
 ---
-<div class={`flex items-center gap-[3px] h-10 ${className}`} aria-hidden="true">
+<div class={`flex items-center justify-center gap-[3px] h-10 ${className}`} aria-hidden="true">
   {
-    items.map((b) => (
-      <span
-        class={`w-[3px] rounded-full ${b.pink ? 'bg-pink-500' : 'bg-edge'} ${animated ? 'wave-bar' : ''}`}
-        style={`height:${b.height}%;${animated ? `animation-delay:${b.delay}s` : ''}`}
-      />
-    ))
+    items.map((b) => {
+      const color = light
+        ? b.pink
+          ? 'bg-white'
+          : 'bg-white/40'
+        : b.pink
+          ? 'bg-pink-500'
+          : 'bg-edge'
+      return (
+        <span
+          class={`w-[3px] rounded-full ${color} ${animated ? 'wave-bar' : ''}`}
+          style={`height:${b.height}%;${animated ? `animation-delay:${b.delay}s` : ''}`}
+        />
+      )
+    })
   }
 </div>
 </content>

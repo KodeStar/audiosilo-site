@@ -65,16 +65,23 @@ An audio product should feel audible. One motif, used consistently:
 ## Page architecture (index)
 
 1. **Nav** - slim, transparent over the hero, backdrop-blur + border on
-   scroll. Logo + wordmark left (logo NOT rotated 180 - display it as
-   designed); links: Features, How it works, Download, Docs (external,
+   scroll. Logo + wordmark left. NOTE (owner-confirmed 2026-07-07): the raw
+   logo.svg is authored upside down - every rendering of it (header, footer,
+   og.png) must apply the 180-degree rotation, as the old site and the app
+   do. Links: Features, How it works, Download, Docs (external,
    docs.audiosilo.app), Demo (pink-tinted pill), GitHub icon.
 2. **Hero** - dark with a soft radial pink/indigo glow. Overline chip
    ("Open source (AGPLv3 server) - self-hosted - no subscription"), the big
    headline, one-sentence sub, two CTAs: primary "Get started" (-> /download),
    secondary "Try the live demo" (demo.audiosilo.app). Below: the real
    desktop screenshot (`/shot-desktop.png`) large, slight perspective lift,
-   pink-tinted drop shadow glow; the phone screenshot (`/shot-phone.png`)
-   overlapping its right edge. Animated waveform strip under the fold.
+   pink-tinted drop shadow glow; overlapping its right edge, the looping iOS
+   app demo video (`/ios-app-demo.mp4`, autoplay muted playsinline, paused
+   under reduced motion) in a rounded phone-style frame. Animated waveform
+   strip under the fold. Waveform strips are always horizontally centered;
+   the CTA band's strip is animated and uses light/white bars so it reads
+   on pink. Screenshots must be the CURRENT pipeline output
+   (store/tools/out/site) - stale shots are a release blocker.
 3. **Platform strip** - compact badge row: App Store (LIVE - real badge link
    to https://apps.apple.com/us/app/audiosilo/id6783431375), Web PWA
    "available now", Android "coming soon" (visibly muted), Docker + native
@@ -103,7 +110,8 @@ An audio product should feel audible. One motif, used consistently:
 9. **Final CTA band** - the one big pink moment (gradient band or pink-tinted
    panel): "Ready to own your audiobook library?" + Get started / Read the
    docs. Footer: link columns (Product / Resources / Community), logo,
-   AGPLv3 note for the server, privacy link, kode@audiosilo.app.
+   AGPLv3 note for the server, privacy link. No email address in the footer
+   (owner request 2026-07-07); the privacy page keeps its policy contact.
 
 ## Secondary pages
 

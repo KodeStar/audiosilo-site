@@ -7,9 +7,9 @@ import Waveform from '../Waveform.astro'
     class="reveal relative overflow-hidden rounded-3xl px-6 py-16 text-center sm:px-12 sm:py-20"
     style="background: linear-gradient(135deg, #db2777 0%, #9d174d 100%);"
   >
-    <!-- Decorative waveform, low opacity, top and bottom. -->
-    <div class="pointer-events-none absolute inset-x-0 top-6 flex justify-center opacity-20">
-      <Waveform bars={64} class="w-full max-w-2xl" />
+    <!-- Decorative animated waveform, top. Light/white bars so it reads on pink. -->
+    <div class="pointer-events-none absolute inset-x-0 top-6 flex justify-center opacity-60">
+      <Waveform bars={64} animated light class="w-full max-w-2xl" />
     </div>
 
     <div class="relative z-10 mx-auto max-w-2xl">
