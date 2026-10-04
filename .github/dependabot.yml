@@ -1,0 +1,40 @@
+version: 2
+
+# Keep the two dependency surfaces this repo actually has fresh, without turning
+# the pull request list into a dependency feed. Minor and patch updates are
+# GROUPED into one pull request per ecosystem per week - they are the bulk of the
+# traffic and are reviewed as one bump either way - while a major update still
+# arrives on its own, because that is the one that needs reading.
+updates:
+  # yarn 1 (yarn.lock); dependabot's npm ecosystem drives yarn.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      site-minor-and-patch:
+        update-types:
+          - minor
+          - patch
+    # An Astro major is a deliberate, separate change (CLAUDE.md), never a
+    # dependency pull request; the @astrojs/* integrations' majors track
+    # Astro's, so they wait for it too.
+    ignore:
+      - dependency-name: astro
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "@astrojs/*"
+        update-types:
+          - version-update:semver-major
+
+  # The workflow references actions by major tag (actions/checkout@v4), so the
+  # only update for them is the next major, which arrives on its own.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions-minor-and-patch:
+        update-types:
+          - minor
+          - patch
