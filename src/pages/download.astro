@@ -4,10 +4,10 @@ import Wash from '@/components/site/Wash.astro'
 import Arrow from '@/components/site/Arrow.astro'
 import InstallTabs from '@/components/site/InstallTabs.tsx'
 import CodeBlock from '@/components/CodeBlock.astro'
-import Icon from '@/components/Icon.astro'
 import VersionBadge from '@/components/VersionBadge.tsx'
-import { APP_STORE_URL, DEMO_URL, GITHUB_SERVER_RELEASES_URL, GITHUB_SERVER_URL } from '@/data/links'
-import { ANDROID_LIVE, ANDROID_NOTE, IOS_APP_NOTE } from '@/data/status'
+import { DEMO_URL, GITHUB_SERVER_RELEASES_URL, GITHUB_SERVER_URL } from '@/data/links'
+import AppCards from '@/components/site/AppCards.astro'
+import Icon from '@/components/Icon.astro'
 
 const source = `git clone ${GITHUB_SERVER_URL}
 cd audiosilo-server
@@ -101,27 +101,11 @@ const platforms = [
   <section id="apps" data-chapter="The apps" class="py-12 pb-24 sm:py-16 sm:pb-32">
     <div class="shell">
       <h2 class="t-display reveal">Then press play.</h2>
-      <div class="mt-10 grid gap-4 md:grid-cols-3">
-        <article class="tile reveal p-6 sm:p-7">
-          <p class="t-eyebrow">Web</p>
-          <h3 class="t-heading mt-2">Already on your server</h3>
+      <div class="mt-10">
+        <AppCards webTitle="Already on your server" pairNote="Pair it with an invite link or QR code.">
           <p class="mt-3 text-[0.9375rem] text-foreground/80">Open <span class="ic">/web</span> and add it to your home screen. Try it first on the demo.</p>
-          <a href={DEMO_URL} target="_blank" rel="noopener" class="group mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">Open the demo <Arrow /></a>
-        </article>
-        <article class="tile reveal reveal-d1 p-6 sm:p-7">
-          <p class="t-eyebrow">iPhone and iPad</p>
-          <h3 class="t-heading mt-2">On the App Store</h3>
-          <p class="mt-3 text-[0.9375rem] text-foreground/80">{IOS_APP_NOTE} Pair it with an invite link or QR code.</p>
-          <a href={APP_STORE_URL} target="_blank" rel="noopener" aria-label="Download AudioSilo on the App Store" class="mt-5 inline-flex items-center gap-2.5 rounded-xl bg-[#05070f] px-4 py-2 text-white ring-1 ring-white/15 transition-transform hover:-translate-y-0.5">
-            <Icon name="apple" class="size-6" />
-            <span class="flex flex-col leading-tight"><span class="text-[10px] tracking-wide uppercase opacity-80">Download on the</span><span class="text-base font-semibold">App Store</span></span>
-          </a>
-        </article>
-        <article class="tile reveal reveal-d2 p-6 sm:p-7">
-          <p class="t-eyebrow">Android</p>
-          <h3 class="t-heading mt-2">{ANDROID_LIVE ? 'On Google Play' : 'Coming soon'}</h3>
-          <p class="mt-3 text-[0.9375rem] text-foreground/80">{ANDROID_NOTE}</p>
-        </article>
+          <a href={DEMO_URL} target="_blank" rel="noopener" class="group mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold">Open the demo <Arrow /></a>
+        </AppCards>
       </div>
       <p class="reveal mt-10 text-sm text-muted-foreground">
         New to this? The <a href="/docs/installation" class="link">installation guide</a> walks through a Docker setup end to end.

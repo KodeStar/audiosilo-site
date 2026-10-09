@@ -73,11 +73,14 @@ docs/DESIGN.md          the design brief - the visual direction all UI work foll
 
 - **Copy must be true.** Only claim shipped, live things; the verified
   fact base and phrasing guidance live in [CROSS-REPO.md §16](../CROSS-REPO.md).
-  Current status (2026-07-06): iOS app **live**
-  (https://apps.apple.com/us/app/audiosilo/id6783431375), Android **coming
-  soon**, web PWA live, manager private (no download CTA), server open source
-  under **AGPLv3** (scope license claims to the server). Re-verify before
-  upgrading any availability claim.
+  Current status (2026-10-09): iOS app **live** on the App Store at **1.2.0**
+  (https://apps.apple.com/us/app/audiosilo/id6783431375; never claim 2.0 is
+  in the store); the redesigned 2.0 apps for iPhone, iPad and **Android** are
+  in **beta** (people ask on Discord); not on Google Play (no Play badge); the
+  2.0 web player is live on every v2.0 server and the demo; manager private
+  (no download CTA); server open source under **AGPLv3** (scope licence
+  claims to the server, meta tooling and sidecars). All of this reads from
+  `src/data/status.ts` flags: flip them there, re-verify first.
 - **Screenshots are generated, never hand-made.** `shot-*.png` live in
   `src/assets/screenshots/` (imported via `astro:assets` `<Image>` so the build
   emits responsive `webp` variants - never ship an oversized raw PNG from

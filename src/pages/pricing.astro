@@ -3,6 +3,7 @@ import Base from '@/layouts/Base.astro'
 import Wash from '@/components/site/Wash.astro'
 import Faq, { type FaqItem } from '@/components/site/Faq.tsx'
 import { DISCORD_URL, GITHUB_SERVER_URL, META_URL, SPONSORS_URL } from '@/data/links'
+import { APPS_BETA, BETA_NOTE, BETA_URL } from '@/data/status'
 
 const promises = ['No paid tier.', 'No feature behind a payment.', 'No account with us.', 'No ads.']
 
@@ -18,6 +19,14 @@ const faq: FaqItem[] = [
   { q: 'What do sponsors get?', a: ['A thank-you. No perks, no badges, nothing unlocked.', 'That is deliberate: AudioSilo is the same for everyone, whether or not they give.'] },
   { q: 'Why is the iPhone app free?', a: ['Because it is a player for your own server, and AudioSilo is free. There is nothing to buy in it.'] },
   { q: 'Can I self-host without donating?', a: ['Yes. That is the whole idea. Run it for as long as you like.'] },
+  {
+    q: 'Will AudioSilo keep asking me to donate?',
+    a: [
+      'No. Once a server has been in use for about a month, or has played a good number of books, the admin console shows its admins one small card. <em>I\'ve donated</em> hides it for good on that server, and it believes you: nothing is checked. <em>Not now</em> hides it for six months.',
+      'Beyond that there is a Support AudioSilo link in the console\'s help menu, and one line in the update notice and the release notes. Nothing in the player, ever.',
+    ],
+  },
+  ...(APPS_BETA ? [{ q: 'Can I try the new apps?', a: [`${BETA_NOTE} <a href="${BETA_URL}" target="_blank" rel="noopener">Join the Discord</a>.`] }] : []),
   { q: 'Is there a hosted AudioSilo, or an account with you?', a: ['No. You run the server, and your books, progress and accounts live on it. The only things the project runs are the public demo and meta.audiosilo.app.'] },
   { q: 'Is AudioSilo open source?', a: ['The server, the metadata tooling and the sidecars tool are open source under AGPLv3, and the metadata is open data (a CC0 core and a CC BY-SA community layer). The player\'s source is public on GitHub but is not under an open source licence.'] },
 ]
@@ -74,6 +83,11 @@ const faq: FaqItem[] = [
             <p class="mt-5 max-w-lg text-[1.0625rem] leading-relaxed text-foreground/80">
               Monthly or one-time, any amount. A donation unlocks nothing and changes nothing in the
               product. It's a thank-you, and it's taken as one.
+            </p>
+            <p class="mt-4 max-w-lg text-[0.9375rem] leading-relaxed text-muted-foreground">
+              The admin console will ask once, after a month, with a small card only admins see. Tell
+              it you've donated and it hides for good. It believes you; nothing is checked, because
+              there is nothing to unlock.
             </p>
             <div class="mt-8 flex flex-wrap items-center gap-4">
               <a

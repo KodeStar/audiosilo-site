@@ -10,6 +10,7 @@ import DemoEnd from '@/components/site/DemoEnd.astro'
 import Device from '@/components/media/Device.astro'
 import TourButton from '@/components/media/TourButton.astro'
 import { stills } from '@/data/media'
+import { demoLibrary } from '@/data/demo'
 import { META_STATS, STATS_AS_OF } from '@/data/status'
 import { DISCORD_URL, GITHUB_META_URL, GITHUB_SIDECARS_URL, META_URL } from '@/data/links'
 
@@ -202,7 +203,8 @@ const chapters = [
 
   <DemoEnd
     title="Try the player, then browse the database."
-    body="The demo runs the real web player on six public-domain classics. It has no community metadata, so for characters, recaps and series, browse meta.audiosilo.app or watch the console tour."
+    body={`The demo runs the real web player on ${demoLibrary.shelf}. To see what the database adds, browse meta.audiosilo.app or watch the console tour.`}
+    note={demoLibrary.metadataNote ?? undefined}
     palette="community"
   >
     <div class="reveal mt-8 flex flex-wrap justify-center gap-3">

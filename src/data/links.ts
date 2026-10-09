@@ -13,7 +13,7 @@ export const DOCS_URL = 'https://docs.audiosilo.app'
 /** The community metadata database (audiosilo-meta). */
 export const META_URL = 'https://meta.audiosilo.app'
 
-/** iOS app (live). Android is not on Google Play yet. */
+/** iOS app (live, the store has 1.2.0). Android is not on Google Play yet; the 2.0 apps are in beta (see status.ts). */
 export const APP_STORE_URL = 'https://apps.apple.com/us/app/audiosilo/id6783431375'
 
 export const SPONSORS_URL = 'https://github.com/sponsors/KodeStar'

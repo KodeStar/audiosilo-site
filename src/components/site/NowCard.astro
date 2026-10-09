@@ -5,7 +5,7 @@
  * demo link. Beside it, a minute's checklist and an honest note about what
  * the demo can't show.
  */
-import { demoBooks, demoChecklist } from '@/data/demo'
+import { demoBooks, demoChecklist, demoLibrary } from '@/data/demo'
 import { DEMO_URL } from '@/data/links'
 import DemoCover from './DemoCover.astro'
 import BarScrubber from './BarScrubber.astro'
@@ -26,7 +26,7 @@ const { headingId = 'try-tonight' } = Astro.props
       <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:gap-8">
         <DemoCover book="carol" class="w-36 shrink-0 sm:w-48" />
         <div class="min-w-0">
-          <p class="t-eyebrow text-foreground/70">Tonight in the demo &middot; 1 of 6 books</p>
+          <p class="t-eyebrow text-foreground/70">Tonight in the demo &middot; 1 of {demoLibrary.count} books</p>
           <h3 id={headingId} class="mt-2 font-display text-[clamp(2rem,4.2vw,3.25rem)] leading-[0.95] font-bold tracking-[-0.04em]">
             A Christmas Carol
           </h3>
@@ -73,12 +73,10 @@ const { headingId = 'try-tonight' } = Astro.props
     <div class="rounded-2xl bg-muted/70 p-5 text-sm leading-relaxed text-muted-foreground shadow-[inset_0_0_0_1px_var(--border)]">
       <p class="font-semibold text-foreground">What the demo can't show</p>
       <p class="mt-1.5">
-        Its library is six public-domain LibriVox classics with no community metadata, so series
-        bookcases, characters and recaps don't appear there, and visitors don't get the admin
-        console. The videos on this site show those. Your demo account is thrown away after a day
-        or so idle.
+        {demoLibrary.metadataNote} Visitors don't get the admin console either; the server tour
+        shows it. Your demo account is thrown away after a day or so idle.
       </p>
-      <ul class="mt-4 flex flex-wrap gap-2" aria-label="Books in the demo">
+      <ul class="mt-4 flex flex-wrap gap-2" aria-label={`The demo's library: ${demoLibrary.shelfLong}`}>
         {
           demoBooks.map((b) => (
             <li class="flex items-center gap-2 rounded-full bg-background/80 py-1 pr-3 pl-1 shadow-[inset_0_0_0_1px_var(--border)]">
