@@ -1,0 +1,127 @@
+---
+import Base from '@/layouts/Base.astro'
+import Wash from '@/components/site/Wash.astro'
+import Faq, { type FaqItem } from '@/components/site/Faq.tsx'
+import { DISCORD_URL, GITHUB_SERVER_URL, META_URL, SPONSORS_URL } from '@/data/links'
+
+const promises = ['No paid tier.', 'No feature behind a payment.', 'No account with us.', 'No ads.']
+
+const helps = [
+  { title: 'Add metadata', body: 'Characters, recaps and missing books on meta.audiosilo.app help everyone who listens to that book.', href: `${META_URL}/contribute`, cta: 'Contribute' },
+  { title: 'Report what breaks', body: 'A clear bug report with your server version is worth a lot.', href: `${GITHUB_SERVER_URL}/issues`, cta: 'Open an issue' },
+  { title: 'Star the repository', body: 'It helps other people find a project they can trust with their library.', href: GITHUB_SERVER_URL, cta: 'Star on GitHub' },
+  { title: 'Tell a friend', body: 'Especially the one with a hard drive full of audiobooks and no good way to play them.', href: DISCORD_URL, cta: 'Or say hello on Discord' },
+]
+
+const faq: FaqItem[] = [
+  { q: 'Is there a paid version?', a: ['No. The server, the player and the metadata database are free for everyone. There is no subscription and no per-device licence.'] },
+  { q: 'What do sponsors get?', a: ['A thank-you. No perks, no badges, nothing unlocked.', 'That is deliberate: AudioSilo is the same for everyone, whether or not they give.'] },
+  { q: 'Why is the iPhone app free?', a: ['Because it is a player for your own server, and AudioSilo is free. There is nothing to buy in it.'] },
+  { q: 'Can I self-host without donating?', a: ['Yes. That is the whole idea. Run it for as long as you like.'] },
+  { q: 'Is there a hosted AudioSilo, or an account with you?', a: ['No. You run the server, and your books, progress and accounts live on it. The only things the project runs are the public demo and meta.audiosilo.app.'] },
+  { q: 'Is AudioSilo open source?', a: ['The server, the metadata tooling and the sidecars tool are open source under AGPLv3, and the metadata is open data (a CC0 core and a CC BY-SA community layer). The player\'s source is public on GitHub but is not under an open source licence.'] },
+]
+---
+
+<Base
+  hasHero
+  title="Pricing - AudioSilo is free"
+  description="AudioSilo is free: no paid tier, no feature behind a payment, no account with us, no ads. If it earns its keep, you can sponsor it on GitHub, and that unlocks nothing."
+>
+  <section id="top" data-chapter="Free" class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-16 sm:pt-[calc(var(--header-h)+5rem)] sm:pb-24">
+    <Wash palette="ember" />
+    <div class="shell relative z-10">
+      <p class="t-eyebrow reveal">Pricing</p>
+      <h1 class="t-mega reveal reveal-d1 mt-6">Free.<br />All of it.</h1>
+      <ul class="mt-12 grid gap-x-8 gap-y-4 border-t border-border pt-8 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          promises.map((p, i) => (
+            <li class:list={['reveal font-display text-[clamp(1.375rem,2.4vw,1.875rem)] leading-tight font-semibold tracking-[-0.03em]', i > 0 && `reveal-d${Math.min(i, 3)}`]}>{p}</li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section id="sponsor" data-chapter="Sponsor" class="relative py-16 sm:py-24">
+    <div class="shell grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="reveal lg:col-span-5">
+        <h2 class="t-display">If it earns its keep.</h2>
+        <div class="mt-6 space-y-4 text-[1.0625rem] leading-relaxed text-foreground/80">
+          <p>
+            I build AudioSilo in the open and give it away. Some of it costs money to keep running:
+            meta.audiosilo.app and the public demo live on servers, and the iPhone app needs an
+            Apple developer account. Most of it is time.
+          </p>
+          <p>If AudioSilo has a place in your evenings, you can help cover that.</p>
+        </div>
+      </div>
+
+      <div class="reveal reveal-d1 lg:col-span-7">
+        <article class="tile relative overflow-hidden p-7 sm:p-10">
+          <Wash palette="ember" edge="none" class="opacity-70" />
+          <div class="relative z-10">
+            <div class="flex items-start justify-between gap-6">
+              <div>
+                <p class="t-eyebrow">GitHub Sponsors</p>
+                <h3 class="mt-3 font-display text-[clamp(2rem,4vw,3rem)] leading-[0.95] font-bold tracking-[-0.04em]">Leave a tip in the jar.</h3>
+              </div>
+              <svg class="hidden size-16 shrink-0 text-foreground/80 sm:block" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 10h24M22 10v6c-6 3-9 8-9 15v19a6 6 0 0 0 6 6h26a6 6 0 0 0 6-6V31c0-7-3-12-9-15v-6" />
+                <circle cx="32" cy="40" r="7" /><path d="M32 36.5v7M29.5 38.5h4a1.5 1.5 0 0 1 0 3h-3" />
+              </svg>
+            </div>
+            <p class="mt-5 max-w-lg text-[1.0625rem] leading-relaxed text-foreground/80">
+              Monthly or one-time, any amount. A donation unlocks nothing and changes nothing in the
+              product. It's a thank-you, and it's taken as one.
+            </p>
+            <div class="mt-8 flex flex-wrap items-center gap-4">
+              <a
+                href={SPONSORS_URL}
+                target="_blank"
+                rel="noopener"
+                data-pink
+                class="inline-flex h-12 items-center gap-2 rounded-full bg-brand px-6 text-[0.9375rem] font-semibold text-brand-foreground shadow-[0_10px_30px_-10px_color-mix(in_oklab,var(--brand)_70%,transparent)] transition-transform hover:-translate-y-0.5"
+              >
+                <svg class="size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C1 8.6 3 5 6.5 5c2 0 3.5 1.1 4.5 2.6C12 6.1 13.5 5 15.5 5 19 5 21 8.6 19.6 11.8 17.5 16.4 12 21 12 21Z" /></svg>
+                Sponsor on GitHub
+              </a>
+              <span class="text-sm text-muted-foreground">Opens github.com/sponsors/KodeStar</span>
+            </div>
+            <dl class="mt-10 grid gap-4 border-t border-border pt-6 text-sm sm:grid-cols-3">
+              <div><dt class="font-semibold">Running costs</dt><dd class="mt-1 text-muted-foreground">The metadata site and the demo server</dd></div>
+              <div><dt class="font-semibold">The App Store</dt><dd class="mt-1 text-muted-foreground">Apple's yearly developer fee</dd></div>
+              <div><dt class="font-semibold">Time</dt><dd class="mt-1 text-muted-foreground">Building, fixing and answering questions</dd></div>
+            </dl>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="help" data-chapter="Other ways to help" class="relative py-16 sm:py-24">
+    <div class="shell">
+      <h2 class="t-display reveal max-w-2xl">Other ways to help.</h2>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          helps.map((h, i) => (
+            <a href={h.href} target="_blank" rel="noopener" class:list={['tile group reveal flex flex-col p-6', i > 0 && `reveal-d${Math.min(i, 3)}`]}>
+              <h3 class="t-heading">{h.title}</h3>
+              <p class="mt-2 flex-1 text-[0.9375rem] text-muted-foreground">{h.body}</p>
+              <span class="mt-5 text-sm font-semibold underline decoration-foreground/30 underline-offset-4 group-hover:decoration-foreground">{h.cta}</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" data-chapter="Questions" class="relative pt-8 pb-24 sm:pb-32">
+    <div class="shell grid gap-10 lg:grid-cols-12">
+      <h2 class="t-display reveal lg:col-span-4">Questions.</h2>
+      <div class="reveal reveal-d1 lg:col-span-8">
+        <Faq client:visible items={faq} />
+      </div>
+    </div>
+  </section>
+</Base>

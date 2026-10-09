@@ -1,0 +1,50 @@
+---
+/**
+ * Phones only: a mini player docked above the bottom edge once the hero has
+ * scrolled away, so the demo is always one tap away. It hides while another
+ * pink demo moment is on screen (src/lib/site.ts sets data-show).
+ */
+import { DEMO_URL } from '@/data/links'
+---
+
+<div id="mini-bar" data-show="false" class="fixed inset-x-3 z-40 md:hidden" style="bottom: max(0.75rem, env(safe-area-inset-bottom))">
+  <a
+    href={DEMO_URL}
+    target="_blank"
+    rel="noopener"
+    class="glass flex h-14 items-center gap-3 rounded-2xl py-2 pr-2 pl-2 shadow-[var(--shadow-overlay)]"
+  >
+    <span class="pal-carol relative size-10 shrink-0 overflow-hidden rounded-[7px]" aria-hidden="true">
+      <span class="absolute inset-0" style="background: radial-gradient(120% 90% at 20% 15%, var(--w2), transparent 60%), radial-gradient(100% 100% at 90% 90%, var(--w3), transparent 55%), var(--w1)"></span>
+      <span class="absolute inset-x-1 bottom-1 font-display text-[7px] leading-none font-bold text-white/90">A Christmas Carol</span>
+    </span>
+    <span class="min-w-0 flex-1 leading-tight">
+      <span class="block truncate text-[0.9375rem] font-semibold">Try the demo</span>
+      <span class="block truncate text-xs text-muted-foreground">No sign-up. Opens in your browser.</span>
+    </span>
+    <span class="play-btn play-pink size-10" aria-hidden="true">
+      <svg class="size-4 translate-x-px" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" /></svg>
+    </span>
+  </a>
+</div>
+
+<style>
+  #mini-bar {
+    transition:
+      transform var(--dur-3) var(--ease-out),
+      opacity var(--dur-3) var(--ease-out);
+  }
+  #mini-bar[data-show='false'] {
+    transform: translateY(140%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  html:not(.js) #mini-bar {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #mini-bar {
+      transition: none;
+    }
+  }
+</style>

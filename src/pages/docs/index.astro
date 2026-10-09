@@ -1,4 +1,5 @@
 ---
+import { GITHUB_SERVER_URL } from '@/data/links'
 import DocsLayout from '../../layouts/DocsLayout.astro'
 import Icon from '../../components/Icon.astro'
 
@@ -35,31 +36,31 @@ const cards = [
 >
   <p>
     AudioSilo is a <strong>self-hosted audiobook platform</strong>: a small, open-source server written
-    in Go, plus a cross-platform player (native iOS &amp; Android apps and an installable web PWA, all from
-    one codebase). You run the server, point it at a folder of audiobooks, and connect from any device.
+    in Go (AGPLv3), plus a player for the web, iPhone and iPad (Android is coming soon). You run the
+    server, point it at a folder of audiobooks, and connect from any device.
   </p>
   <p>
     The server exposes a JSON API, a baked-in admin/connect web UI, and (in the Docker image and the
-    native binaries) the web player at <code>/web</code>. It's designed to be
+    native binaries) the web player at <code>/web</code>. It's designed with the goal of being
     <strong>safe to leave exposed to the internet</strong>: no default passwords, app-layer hardening
     (rate limiting and brute-force lockout), and configurable TLS.
   </p>
 
   <h2>Start here</h2>
-  <div class="grid sm:grid-cols-2 gap-4 not-prose mt-4">
+  <div class="mt-4 grid gap-4 sm:grid-cols-2">
     {
       cards.map((c) => (
         <a
           href={c.href}
-          class="group block rounded-xl border border-edge bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-pink-500/50"
+          class="tile group block p-5 !no-underline transition-transform duration-200 hover:-translate-y-0.5"
         >
           <div class="mb-2 flex items-center gap-2">
-            <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-pink-600/10 text-pink-400">
+            <span class="inline-flex size-9 items-center justify-center rounded-xl bg-foreground/[0.07] text-foreground">
               <Icon name={c.icon} class="h-5 w-5" />
             </span>
-            <span class="font-semibold text-hi">{c.title}</span>
+            <span class="font-semibold text-foreground">{c.title}</span>
           </div>
-          <p class="text-sm text-body">{c.body}</p>
+          <p class="text-sm font-normal text-muted-foreground">{c.body}</p>
         </a>
       ))
     }
@@ -70,6 +71,6 @@ const cards = [
     Head to the <a href="/download">download page</a> to grab the server, or jump straight to the
     <a href="/docs/installation">installation guide</a>. The server is licensed under
     <strong>AGPL-3.0</strong>; the source lives on
-    <a href="https://github.com/KodeStar/audiosilo-server" target="_blank" rel="noopener">GitHub</a>.
+    <a href={GITHUB_SERVER_URL} target="_blank" rel="noopener">GitHub</a>.
   </p>
 </DocsLayout>

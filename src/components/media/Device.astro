@@ -1,0 +1,41 @@
+---
+/**
+ * Hardware around a screen: a phone, a tablet, or a desktop window with a
+ * title bar that names the web player's address. The screen is the slot.
+ * Sizes are fluid; give the root a width with `class`.
+ */
+import { cn } from '@/lib/utils'
+
+interface Props {
+  kind: 'phone' | 'tablet' | 'window'
+  class?: string
+  screenClass?: string
+  /** Window only: the address shown in the title bar. */
+  address?: string
+  style?: string
+}
+
+const { kind, class: className, screenClass, address = 'your-server/web', style } = Astro.props
+---
+
+<div class={cn('device @container', `device-${kind}`, className)} style={style}>
+  {
+    kind === 'window' && (
+      <div class="flex h-8 items-center gap-3 rounded-t-[14px] border-b border-border bg-muted/80 px-3 sm:h-9" aria-hidden="true">
+        <span class="flex gap-1.5">
+          <i class="size-2.5 rounded-full bg-border-strong" />
+          <i class="size-2.5 rounded-full bg-border-strong" />
+          <i class="size-2.5 rounded-full bg-border-strong" />
+        </span>
+        <span class="mx-auto flex h-5 min-w-0 max-w-[60%] items-center gap-1.5 truncate rounded-md bg-background/70 px-3 font-mono text-[10.5px] text-muted-foreground shadow-[inset_0_0_0_1px_var(--border)] sm:h-6 sm:text-[11px]">
+          <svg class="size-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+          <span class="truncate">{address}</span>
+        </span>
+        <span class="w-[42px]"></span>
+      </div>
+    )
+  }
+  <div class={cn('device-screen', screenClass)}>
+    <slot />
+  </div>
+</div>

@@ -1,0 +1,34 @@
+---
+/**
+ * The demo, styled as the player's play button. Pink marks it as the view's
+ * one pink thing (and registers it with the pink handoff via data-pink);
+ * ink is for places where something else already carries the pink.
+ */
+import { DEMO_URL } from '@/data/links'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  size?: 'xl' | 'lg' | 'md'
+  tone?: 'pink' | 'ink'
+  rings?: boolean
+  label?: string
+  class?: string
+}
+
+const { size = 'lg', tone = 'pink', rings = tone === 'pink', label = 'Try the demo', class: className } = Astro.props
+const box = { xl: 'size-24 sm:size-28', lg: 'size-20', md: 'size-14' }[size]
+const glyph = { xl: 'size-9 sm:size-10', lg: 'size-8', md: 'size-5' }[size]
+---
+
+<a
+  href={DEMO_URL}
+  target="_blank"
+  rel="noopener"
+  class={cn('play-btn', tone === 'pink' ? 'play-pink' : 'play-ink', rings && 'play-rings', box, className)}
+  data-pink={tone === 'pink' ? '' : undefined}
+>
+  <svg class={cn(glyph, 'translate-x-[6%]')} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z"></path>
+  </svg>
+  <span class="sr-only">{label} (opens the demo in a new tab)</span>
+</a>

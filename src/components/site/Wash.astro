@@ -1,0 +1,26 @@
+---
+/**
+ * The now-playing wash: a cover palette drifting behind a section. Place it
+ * as the first child of a `relative isolate` section. CSS lives in global.css
+ * (.wash); it only animates on screen and never under reduced motion.
+ */
+import { cn } from '@/lib/utils'
+
+export type Palette = 'oz' | 'sherlock' | 'dracula' | 'treasure' | 'community' | 'console' | 'ember' | 'carol'
+
+interface Props {
+  palette: Palette
+  /** 'fade' (default) fades into the page at both edges; 'top' only at the bottom; 'none' no fade (inside tiles). */
+  edge?: 'fade' | 'top' | 'none'
+  class?: string
+}
+
+const { palette, edge = 'fade', class: className } = Astro.props
+---
+
+<div
+  class={cn('wash', `pal-${palette}`, edge === 'top' && 'wash-top', edge === 'none' && 'wash-none', className)}
+  aria-hidden="true"
+>
+  <i></i><i></i><i></i>
+</div>

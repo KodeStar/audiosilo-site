@@ -1,0 +1,48 @@
+---
+/**
+ * A still that follows the colour theme: the light capture in light, the dark
+ * one in dark (CSS `dark:` swap, so the right one paints before any JS and,
+ * being lazy and display:none, the other is never fetched). When a still only
+ * has one capture, one image is rendered.
+ *
+ *   <ThemedImage still={stills.serverOverview} widths={[800, 1600]} sizes="(min-width: 1024px) 60vw, 100vw" />
+ */
+import { Image } from 'astro:assets'
+import type { Still } from '@/data/media'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  still: Still
+  widths: number[]
+  sizes: string
+  class?: string
+  /** Above the fold: load eagerly with high priority. */
+  eager?: boolean
+  /** Override the still's alt text ('' for decorative). */
+  alt?: string
+}
+
+const { still, widths, sizes, class: className, eager = false, alt } = Astro.props
+const label = alt ?? still.alt
+const same = still.src.light === still.src.dark
+const common = {
+  widths,
+  sizes,
+  format: 'webp' as const,
+  quality: 82,
+  loading: eager ? ('eager' as const) : ('lazy' as const),
+  decoding: 'async' as const,
+  fetchpriority: eager ? ('high' as const) : undefined,
+}
+---
+
+{
+  same ? (
+    <Image src={still.src.dark} alt={label} class={cn('block h-auto w-full', className)} {...common} />
+  ) : (
+    <>
+      <Image src={still.src.light} alt={label} class={cn('block h-auto w-full dark:hidden', className)} {...common} />
+      <Image src={still.src.dark} alt={label} class={cn('hidden h-auto w-full dark:block', className)} {...common} />
+    </>
+  )
+}

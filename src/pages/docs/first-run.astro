@@ -2,9 +2,13 @@
 import DocsLayout from '../../layouts/DocsLayout.astro'
 import CodeBlock from '../../components/CodeBlock.astro'
 
-const creds = `# In the server's logs on first start:
-admin password: 9f3c... (shown once - save it)
-auth code:      ABCD-EFGH (redeem to pair a device)`
+const creds = `========================================================
+ AudioSilo first-run setup - store these now, shown once
+========================================================
+  Admin username : admin
+  Admin password : <generated password>
+  Auth code      : <generated code>
+  Config file    : /data/config.yaml`
 
 const addLibrary = `# Get a session token by logging in as admin:
 TOKEN=...   # from POST /api/v1/auth/login
@@ -24,7 +28,7 @@ curl -X POST https://your-server/api/v1/admin/libraries \\
     code <strong>exactly once</strong> - save them. (With <code>--setup</code>, a browser wizard sets the
     password for you instead.)
   </p>
-  <CodeBlock code={creds} />
+  <CodeBlock code={creds} filename="Server log" />
   <p>
     With Docker, run <code>docker compose logs</code> to see them. Sign in to the admin console at
     <code>/admin</code> with the username <code>admin</code> and that password.
@@ -46,8 +50,8 @@ curl -X POST https://your-server/api/v1/admin/libraries \\
   <p>The connect flow turns an auth code into a durable, device-scoped session:</p>
   <ul>
     <li>
-      In the admin console, mint an auth code or click <strong>Copy invite</strong> to get a shareable
-      link (<code>/connect#code=…</code> - the code rides in the URL fragment, so it never hits the
+      In the admin console, <strong>Invite someone</strong> creates the account, grants access and
+      shows an invite link and QR code (the code rides in the URL fragment, so it never hits the
       server logs).
     </li>
     <li>
@@ -63,8 +67,8 @@ curl -X POST https://your-server/api/v1/admin/libraries \\
   <h2>4. Open the web player</h2>
   <p>
     The Docker image and native binaries serve the installable web player at <code>/web</code>. Open it
-    in a browser and &ldquo;Add to Home Screen&rdquo; for an app-like experience, or wait for the native
-    apps (see the <a href="/download">download page</a>). Either way, your progress, bookmarks and notes
+    in a browser and &ldquo;Add to Home Screen&rdquo; for an app-like experience, or use the iPhone and
+    iPad app (see the <a href="/download">download page</a>). Either way, your progress, bookmarks and notes
     sync across every device you connect.
   </p>
 

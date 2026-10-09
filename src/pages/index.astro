@@ -1,21 +1,536 @@
 ---
-import Base from '../layouts/Base.astro'
-import Hero from '../components/home/Hero.astro'
-import PlatformStrip from '../components/home/PlatformStrip.astro'
-import HowItWorks from '../components/home/HowItWorks.astro'
-import FeatureCards from '../components/home/FeatureCards.astro'
-import SelfHosting from '../components/home/SelfHosting.astro'
-import Sharing from '../components/home/Sharing.astro'
-import ManagerTeaser from '../components/home/ManagerTeaser.astro'
-import FinalCta from '../components/home/FinalCta.astro'
+import Base from '@/layouts/Base.astro'
+import Wash from '@/components/site/Wash.astro'
+import PlayLink from '@/components/site/PlayLink.astro'
+import SectionHead from '@/components/site/SectionHead.astro'
+import Points from '@/components/site/Points.astro'
+import Arrow from '@/components/site/Arrow.astro'
+import Counter from '@/components/site/Counter.astro'
+import NowCard from '@/components/site/NowCard.astro'
+import CodeBlock from '@/components/CodeBlock.astro'
+import Device from '@/components/media/Device.astro'
+import Loop from '@/components/media/Loop.astro'
+import MediaThemeSwitch from '@/components/theme/MediaThemeSwitch.astro'
+import ThemedImage from '@/components/media/ThemedImage.astro'
+import TourButton from '@/components/media/TourButton.astro'
+import VersionBadge from '@/components/VersionBadge.tsx'
+import { loops, stills } from '@/data/media'
+import { META_STATS, REDESIGN_WHERE, STATS_AS_OF, ANDROID_LIVE } from '@/data/status'
+import { META_URL } from '@/data/links'
+import { dockerRun } from '@/data/install'
+
+
+
 ---
+
 <Base hasHero>
-  <Hero />
-  <PlatformStrip />
-  <HowItWorks />
-  <FeatureCards />
-  <SelfHosting />
-  <Sharing />
-  <ManagerTeaser />
-  <FinalCta />
+  <!-- ============ 1. Press play (hero) ============ -->
+  <section
+    id="top"
+    data-chapter="Press play"
+    class="relative isolate overflow-hidden pt-[calc(var(--header-h)+2.5rem)] pb-16 sm:pt-[calc(var(--header-h)+4rem)] lg:flex lg:min-h-[min(100svh,64rem)] lg:items-center lg:pb-24"
+  >
+    <Wash palette="oz" />
+    <div class="shell relative z-10 grid items-center gap-14 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-6">
+      <div class="max-w-xl">
+        <p class="t-eyebrow reveal">Self-hosted audiobooks &middot; free, no tiers</p>
+        <h1 class="t-hero reveal reveal-d1 mt-5">Press play on your own library.</h1>
+        <p class="t-lede reveal reveal-d2 mt-6 max-w-lg text-foreground/75">
+          AudioSilo is an audiobook server you run at home and a player for the web, iPhone and
+          iPad. Your books stay on your machine. Every screen picks up where you left off.
+        </p>
+
+        <div class="reveal reveal-d3 mt-10 flex items-center gap-5 sm:gap-6">
+          <PlayLink size="xl" label="Try the demo" />
+          <div>
+            <p class="font-display text-[1.625rem] leading-none font-bold tracking-[-0.03em]">Try the demo</p>
+            <p class="mt-2 text-sm text-foreground/70">No sign-up. Opens in your browser.</p>
+          </div>
+        </div>
+        <div class="reveal reveal-d3 mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+          <a href="#start" class="group inline-flex items-center gap-1.5 font-semibold">
+            Run your own server <Arrow />
+          </a>
+          <span class="text-muted-foreground">
+            Server <VersionBadge client:idle /> &middot; open source (AGPLv3)
+          </span>
+        </div>
+      </div>
+
+      <!-- The stage: the web player large and tilted, the phone in front. -->
+      <div class="hero-stage reveal reveal-d2 relative" aria-label="The AudioSilo player on a desktop browser and a phone" role="group">
+        <div class="hero-glow pal-oz" aria-hidden="true"></div>
+        <div class="hero-window">
+          <Device kind="window" class="w-full">
+            <Loop loop={loops.playerDesktop} eager />
+          </Device>
+        </div>
+        <div class="hero-phone">
+          <div class="float-slow">
+            <Device kind="phone" class="w-full">
+              <Loop loop={loops.playerMobile} eager />
+            </Device>
+          </div>
+        </div>
+        <div class="hero-switch"><MediaThemeSwitch /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. Three parts (bento) ============ -->
+  <section id="pillars" data-chapter="Three parts" class="relative py-20 sm:py-28">
+    <div class="shell">
+      <SectionHead
+        eyebrow="How it fits together"
+        title="Three parts. One quiet system."
+        lede="A server you run, a player for every screen, and a shared database that fills in the details your files got wrong."
+      />
+
+      <div class="mt-12 grid gap-4 sm:mt-16 lg:grid-cols-12 lg:gap-5">
+        <!-- Player -->
+        <a href="/player" class="tile group reveal flex flex-col lg:col-span-7 lg:row-span-2">
+          <Wash palette="oz" edge="none" />
+          <div class="relative z-10 p-6 sm:p-9">
+            <p class="t-eyebrow">01 &middot; The player</p>
+            <h3 class="t-title mt-3 max-w-md">A player that keeps your place.</h3>
+            <div class="mt-5 max-w-md">
+              <Points
+                items={[
+                  'Series bookcases, with the books you are missing shown as ghost spines',
+                  'A chapter seek bar that gives fine control in a 30-hour book',
+                  'A sleep timer that fades you out, and a bookmark where you drifted off',
+                ]}
+              />
+            </div>
+            <span class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold">Explore the player <Arrow /></span>
+          </div>
+          <!-- The iPad (landscape) with the phone in front of its right edge. -->
+          <div class="relative z-10 mt-auto px-6 pt-4 sm:px-9">
+            <div class="relative mx-auto max-w-[42rem] pr-[24%] pb-[28%]">
+              <Device kind="tablet" class="w-full translate-y-[6%] transition-transform duration-500 group-hover:translate-y-[4%]">
+                <ThemedImage still={stills.tabletSeries} widths={[480, 960]} sizes="(min-width: 1024px) 32rem, 70vw" alt="" />
+              </Device>
+              <div class="absolute right-0 bottom-0 w-[36%] translate-y-[6%] transition-transform duration-500 group-hover:translate-y-[5%]">
+                <Device kind="phone" class="w-full">
+                  <ThemedImage still={stills.phoneHome} widths={[260, 520]} sizes="(min-width: 1024px) 15rem, 34vw" alt="" />
+                </Device>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Server -->
+        <a href="/server" class="tile group reveal reveal-d1 flex flex-col lg:col-span-5">
+          <Wash palette="console" edge="none" />
+          <div class="relative z-10 p-6 sm:p-8">
+            <p class="t-eyebrow">02 &middot; The server</p>
+            <h3 class="t-title mt-3">Your books, your machine.</h3>
+            <div class="mt-4">
+              <Points
+                items={[
+                  'One Docker command or a single binary',
+                  'Edits live in the server, never in your files',
+                  'Invite the house with a QR code',
+                ]}
+              />
+            </div>
+            <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">Explore the server <Arrow /></span>
+          </div>
+          <div class="relative z-10 mt-auto h-52 overflow-hidden sm:h-64">
+            <Device kind="window" address="your-server/admin" class="absolute top-0 left-6 w-[125%] transition-transform duration-500 group-hover:-translate-y-2 sm:left-8">
+              <ThemedImage still={stills.serverOverview} widths={[700, 1400]} sizes="(min-width: 1024px) 42rem, 110vw" alt="" />
+            </Device>
+          </div>
+        </a>
+
+        <!-- Metadata -->
+        <a href="/metadata" class="tile group reveal reveal-d2 flex flex-col lg:col-span-5">
+          <Wash palette="community" edge="none" />
+          <div class="relative z-10 p-6 sm:p-8">
+            <p class="t-eyebrow">03 &middot; The metadata</p>
+            <h3 class="t-title mt-3">The details, filled in.</h3>
+            <div class="mt-4">
+              <Points
+                items={[
+                  `Over 280,000 works, with narrators, recordings and chapters`,
+                  'Matches messy tags and folder names to the right book',
+                  'Open data: a CC0 core and a CC BY-SA community layer',
+                ]}
+              />
+            </div>
+            <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">Explore the metadata <Arrow /></span>
+          </div>
+          <div class="relative z-10 mt-auto h-52 overflow-hidden sm:h-64">
+            <Device kind="window" address="meta.audiosilo.app" class="absolute top-0 left-6 w-[125%] transition-transform duration-500 group-hover:-translate-y-2 sm:left-8">
+              <ThemedImage still={stills.metaCharacters} widths={[700, 1400]} sizes="(min-width: 1024px) 42rem, 110vw" alt="" />
+            </Device>
+          </div>
+        </a>
+
+        <!-- How it fits -->
+        <div class="tile reveal p-6 sm:p-9 lg:col-span-12">
+          <p class="t-eyebrow">How they talk to each other</p>
+          <ol class="fit-flow mt-6 grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-stretch md:gap-4">
+            <li class="fit-node">
+              <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" /></svg>
+              <p class="font-semibold">Your books folder</p>
+              <p class="text-sm text-muted-foreground">.m4b, .mp3, .flac and friends. Read, never written to.</p>
+            </li>
+            <li class="fit-arrow" aria-hidden="true"></li>
+            <li class="fit-node fit-node-strong">
+              <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="7" rx="2" /><rect x="3" y="13" width="18" height="7" rx="2" /><path d="M7 7.5h.01M7 16.5h.01" /></svg>
+              <p class="font-semibold">Your AudioSilo server</p>
+              <p class="text-sm text-muted-foreground">Indexes, streams, keeps everyone's progress. Ships the web player.</p>
+            </li>
+            <li class="fit-arrow" aria-hidden="true"></li>
+            <li class="fit-node">
+              <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="14" height="10" rx="1.5" /><rect x="15" y="8" width="7" height="12" rx="1.5" /><path d="M6 18h6" /></svg>
+              <p class="font-semibold">Web, iPhone and iPad</p>
+              <p class="text-sm text-muted-foreground">{ANDROID_LIVE ? 'And Android. ' : 'Android coming soon. '}Progress follows you between them.</p>
+            </li>
+          </ol>
+          <div class="mt-3 grid md:grid-cols-[1fr_auto_1fr_auto_1fr] md:gap-4">
+            <div class="md:col-start-3">
+              <div class="fit-up mx-auto h-6 w-px md:h-8" aria-hidden="true"></div>
+              <div class="fit-node fit-node-dashed">
+                <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></svg>
+                <p class="font-semibold">meta.audiosilo.app</p>
+                <p class="text-sm text-muted-foreground">Your server asks it about a book by ASIN or ISBN. One switch turns it off.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. Every screen ============ -->
+  <section id="screens" data-chapter="Every screen" class="relative isolate overflow-hidden py-20 sm:py-28">
+    <Wash palette="treasure" />
+    <div class="shell relative z-10">
+      <SectionHead eyebrow="The player" title="One app, every screen." lede={REDESIGN_WHERE} align="center" />
+      <div class="screens mt-14 sm:mt-20">
+        <figure class="screens-desktop reveal">
+          <Device kind="window" class="w-full"><Loop loop={loops.playerDesktop} /></Device>
+          <figcaption>In your browser</figcaption>
+        </figure>
+        <figure class="screens-tablet reveal reveal-d1">
+          <Device kind="tablet" class="w-full"><Loop loop={loops.playerIpad} /></Device>
+          <figcaption>On iPad</figcaption>
+        </figure>
+        <figure class="screens-phone reveal reveal-d2">
+          <Device kind="phone" class="w-full"><Loop loop={loops.playerMobile} /></Device>
+          <figcaption>On iPhone</figcaption>
+        </figure>
+      </div>
+      <div class="reveal mt-12 flex flex-col items-center gap-4">
+        <p class="text-sm text-muted-foreground">Watch a tour at the size you listen</p>
+        <div class="flex flex-wrap justify-center gap-2">
+          <TourButton tour="playerDesktop" label="Desktop" size="pill" />
+          <TourButton tour="playerIpad" label="iPad" size="pill" />
+          <TourButton tour="playerMobile" label="Phone" size="pill" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. The admin console (cinema) ============ -->
+  <section id="tour" data-chapter="The admin console" class="stage relative isolate mx-2 overflow-hidden rounded-[2rem] py-20 sm:mx-4 sm:rounded-[2.75rem] sm:py-28">
+    <Wash palette="console" />
+    <div class="shell relative z-10">
+      <div class="grid items-end gap-8 lg:grid-cols-[1fr_auto]">
+        <SectionHead
+          eyebrow="Now showing"
+          title="The admin console."
+          lede="Match messy tags against community metadata, see who is listening right now, fix what needs attention. The console isn't part of the public demo, so here it is on a real household server."
+        />
+        <div class="reveal reveal-d2 lg:pb-2">
+          <TourButton tour="server" variant="default" />
+        </div>
+      </div>
+      <div class="cinema reveal mt-12 sm:mt-16">
+        <div class="overflow-hidden rounded-[14px]">
+          <Loop loop={loops.server} />
+        </div>
+      </div>
+      <dl class="mt-10 grid gap-6 text-sm sm:grid-cols-3">
+        <div class="reveal">
+          <dt class="font-semibold">Library and matching</dt>
+          <dd class="mt-1 text-muted-foreground">Click to edit any field, see where each value came from, take the community's one field at a time.</dd>
+        </div>
+        <div class="reveal reveal-d1">
+          <dt class="font-semibold">Health</dt>
+          <dd class="mt-1 text-muted-foreground">Missing covers, unmatched books, duplicates and offline libraries, each with a fix.</dd>
+        </div>
+        <div class="reveal reveal-d2">
+          <dt class="font-semibold">People and activity</dt>
+          <dd class="mt-1 text-muted-foreground">Invites, devices, listening now, and a Year in listening for the whole house.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 5. The metadata in numbers ============ -->
+  <section id="numbers" data-chapter="The metadata" class="relative isolate overflow-hidden py-20 sm:py-28">
+    <Wash palette="community" />
+    <div class="shell relative z-10">
+      <SectionHead
+        eyebrow={`meta.audiosilo.app, as of ${STATS_AS_OF}`}
+        title="A shared shelf behind every match."
+        lede="An open audiobook database built by listeners. Narrators, recordings and chapters are first-class, so your server can tell one reading of a book from another."
+      />
+      <div class="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:gap-x-16">
+        <Counter value={META_STATS.works} label="works" class="reveal" />
+        <Counter value={META_STATS.recordings} label="recordings" class="reveal reveal-d1" />
+        <Counter value={META_STATS.people} label="narrators and authors" class="reveal reveal-d2" />
+        <Counter value={META_STATS.chapters} label="chapters" class="reveal reveal-d3" />
+      </div>
+      <div class="reveal mt-14 flex flex-col gap-4 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between">
+        <p class="max-w-2xl text-[0.9375rem] text-muted-foreground">
+          Characters and chapter-by-chapter recaps, written by listeners and hidden until you reach
+          them, cover a growing number of books: {new Intl.NumberFormat('en-GB').format(META_STATS.withCharacters)} so far.
+        </p>
+        <div class="flex shrink-0 gap-5 text-sm font-semibold">
+          <a href="/metadata" class="group inline-flex items-center gap-1.5">How it works <Arrow /></a>
+          <a href={META_URL} target="_blank" rel="noopener" class="link">Browse it</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. Try it tonight ============ -->
+  <section id="demo" data-chapter="Try it tonight" class="relative py-20 sm:py-28">
+    <div class="shell">
+      <SectionHead
+        eyebrow="The demo"
+        title="Try it tonight."
+        lede="The demo is a real AudioSilo server. Press play and a throwaway account is made for you on the spot, signed in, with six classics on the shelf."
+      />
+      <div class="mt-12">
+        <NowCard />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. Free ============ -->
+  <section id="free" data-chapter="Free" class="relative overflow-hidden py-20 sm:py-28">
+    <div class="shell">
+      <div class="reveal grid items-end gap-8 lg:grid-cols-[auto_1fr] lg:gap-16">
+        <p class="t-mega text-[clamp(3.75rem,11vw,9.5rem)]" aria-hidden="true">Free.</p>
+        <div class="max-w-xl pb-2">
+          <h2 class="t-title">All of it, for everyone.</h2>
+          <p class="mt-3 text-[1.0625rem] text-foreground/80">
+            No paid tier, no feature behind a payment, no account with us, no ads. If your server
+            earns its keep, you can sponsor the project. That's a thank-you, nothing more.
+          </p>
+          <a href="/pricing" class="group mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">How AudioSilo is paid for <Arrow /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 8. Get started ============ -->
+  <section id="start" data-chapter="Get started" class="relative isolate overflow-hidden pt-10 pb-24 sm:pb-32">
+    <div class="shell">
+      <SectionHead
+        eyebrow="Get started"
+        title="Run it tonight."
+        lede="One container, your books mounted read-only. The image includes the web player and ffmpeg."
+      />
+      <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-14">
+        <div class="reveal min-w-0">
+          <CodeBlock code={dockerRun} filename="Docker" />
+          <p class="mt-4 text-sm text-muted-foreground">
+            Then open <span class="ic">https://your-server:8080/admin</span>, sign in as
+            <span class="ic">admin</span> and add <span class="ic">/library</span> as your first library.
+            The browser warns about the self-signed certificate the first time; that's expected.
+          </p>
+        </div>
+        <ul class="reveal reveal-d1 divide-y divide-border border-y border-border">
+          <li>
+            <a href="/download" class="group flex items-center justify-between gap-4 py-5">
+              <span><span class="block font-semibold">Docker Compose and native binaries</span><span class="text-sm text-muted-foreground">Linux, macOS and Windows; .deb and .rpm with a systemd unit</span></span>
+              <Arrow />
+            </a>
+          </li>
+          <li>
+            <a href="/server" class="group flex items-center justify-between gap-4 py-5">
+              <span><span class="block font-semibold">What the server does</span><span class="text-sm text-muted-foreground">First run, sharing, security defaults, the console</span></span>
+              <Arrow />
+            </a>
+          </li>
+          <li>
+            <a href="/player#get-it" class="group flex items-center justify-between gap-4 py-5">
+              <span><span class="block font-semibold">Get the app</span><span class="text-sm text-muted-foreground">Web player now; iPhone and iPad on the App Store</span></span>
+              <Arrow />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
 </Base>
+
+<style>
+  /* ---------- Hero stage ---------- */
+  .hero-stage {
+    perspective: 2200px;
+    aspect-ratio: 16 / 12;
+    margin-inline: -0.5rem;
+  }
+  .hero-glow {
+    position: absolute;
+    inset: 8% 2% 0 10%;
+    border-radius: 50%;
+    background:
+      radial-gradient(closest-side, color-mix(in oklab, var(--w1) 70%, transparent), transparent),
+      radial-gradient(closest-side at 70% 60%, color-mix(in oklab, var(--w2) 50%, transparent), transparent);
+    opacity: 0.55;
+    filter: blur(40px);
+  }
+  .hero-window {
+    position: absolute;
+    top: 4%;
+    left: 4%;
+    width: 112%;
+    transform: rotateY(-16deg) rotateX(5deg) rotateZ(0.6deg);
+    transform-origin: 0% 50%;
+  }
+  .hero-phone {
+    position: absolute;
+    left: -3%;
+    bottom: -6%;
+    width: 29%;
+    transform: rotateY(-6deg) rotateZ(-2deg);
+  }
+  /* The Dark | Light chip, tucked under the window to the right of the phone. */
+  .hero-switch {
+    position: absolute;
+    right: 3%;
+    bottom: -13%;
+    z-index: 2;
+  }
+  @media (width < 1024px) {
+    .hero-switch {
+      bottom: -16%;
+      right: 0;
+    }
+    .hero-stage {
+      aspect-ratio: 16 / 12.5;
+      margin-inline: 0;
+    }
+    .hero-window {
+      left: 6%;
+      width: 100%;
+      transform: rotateY(-12deg) rotateX(4deg);
+    }
+    .hero-phone {
+      left: 0;
+      width: 30%;
+    }
+  }
+
+  /* ---------- How it fits ---------- */
+  .fit-node {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    border-radius: 18px;
+    padding: 1.1rem 1.2rem;
+    background: color-mix(in oklab, var(--muted) 70%, transparent);
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+  .fit-node-strong {
+    background: var(--primary);
+    color: var(--primary-foreground);
+    box-shadow: none;
+  }
+  .fit-node-strong .text-muted-foreground {
+    color: color-mix(in oklab, var(--primary-foreground) 72%, transparent);
+  }
+  .fit-node-dashed {
+    background: transparent;
+    box-shadow: none;
+    border: 1.5px dashed var(--border-strong);
+  }
+  .fit-arrow {
+    position: relative;
+    min-height: 1.5rem;
+    min-width: 2.5rem;
+  }
+  .fit-arrow::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1.5px;
+    background: var(--border-strong);
+  }
+  .fit-arrow::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid var(--border-strong);
+    border-bottom: 1.5px solid var(--border-strong);
+    transform: translate(-50%, -1px) rotate(45deg);
+  }
+  .fit-up {
+    border-left: 1.5px dashed var(--border-strong);
+    width: 0;
+  }
+  @media (width >= 768px) {
+    .fit-arrow::before {
+      left: 0;
+      right: 0;
+      top: 50%;
+      bottom: auto;
+      width: auto;
+      height: 1.5px;
+    }
+    .fit-arrow::after {
+      left: auto;
+      right: 0;
+      top: 50%;
+      bottom: auto;
+      transform: translate(-1px, -50%) rotate(-45deg);
+    }
+  }
+
+  /* ---------- Every screen ---------- */
+  .screens {
+    display: grid;
+    grid-template-columns: 1.4fr 0.5fr;
+    grid-template-areas:
+      'desktop desktop'
+      'tablet phone';
+    gap: 2.5rem 1.25rem;
+    align-items: end;
+  }
+  .screens-desktop {
+    grid-area: desktop;
+  }
+  .screens-tablet {
+    grid-area: tablet;
+  }
+  .screens-phone {
+    grid-area: phone;
+  }
+  @media (width >= 900px) {
+    .screens {
+      grid-template-columns: 2.5fr 1.5fr 0.7fr;
+      grid-template-areas: 'desktop tablet phone';
+      gap: 2.5rem;
+    }
+  }
+  .screens figcaption {
+    margin-top: 1.25rem;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+  }
+</style>

@@ -1,0 +1,259 @@
+---
+import Base from '@/layouts/Base.astro'
+import Wash from '@/components/site/Wash.astro'
+import Arrow from '@/components/site/Arrow.astro'
+import ChapterList from '@/components/site/ChapterList.astro'
+import FeatureRow from '@/components/site/FeatureRow.astro'
+import Points from '@/components/site/Points.astro'
+import Counter from '@/components/site/Counter.astro'
+import DemoEnd from '@/components/site/DemoEnd.astro'
+import Device from '@/components/media/Device.astro'
+import ThemedImage from '@/components/media/ThemedImage.astro'
+import TourButton from '@/components/media/TourButton.astro'
+import { stills } from '@/data/media'
+import { META_STATS, STATS_AS_OF } from '@/data/status'
+import { DISCORD_URL, GITHUB_META_URL, GITHUB_SIDECARS_URL, META_URL } from '@/data/links'
+
+const fmt = new Intl.NumberFormat('en-GB')
+const chapters = [
+  { id: 'top', title: 'The database' },
+  { id: 'inside', title: 'What is in it' },
+  { id: 'library', title: 'For your library' },
+  { id: 'community', title: 'Characters and recaps' },
+  { id: 'open', title: 'Open data' },
+  { id: 'contribute', title: 'Contribute' },
+  { id: 'privacy', title: 'Privacy' },
+  { id: 'demo', title: 'See it' },
+]
+---
+
+<Base
+  hasHero
+  title="AudioSilo Meta - the open audiobook database"
+  description="meta.audiosilo.app is a free, open audiobook database built by listeners: works, recordings, narrators, series and chapters. AudioSilo servers use it to match tags, order series and show spoiler-safe characters and recaps."
+>
+  <!-- Hero -->
+  <section id="top" data-chapter="The database" class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-16 sm:pt-[calc(var(--header-h)+5rem)] sm:pb-24">
+    <Wash palette="community" />
+    <div class="shell relative z-10 grid items-center gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
+      <div class="max-w-xl">
+        <p class="t-eyebrow reveal">The metadata</p>
+        <h1 class="t-hero reveal reveal-d1 mt-5">The details, filled in by listeners.</h1>
+        <p class="t-lede reveal reveal-d2 mt-6 text-foreground/75">
+          AudioSilo Meta is a free, open audiobook database at meta.audiosilo.app. Your server uses
+          it to match messy tags, put a series in order and show its gaps, and, for a growing number
+          of books, spoiler-safe characters and recaps.
+        </p>
+        <div class="reveal reveal-d3 mt-8 flex flex-wrap items-center gap-3">
+          <a href={META_URL} target="_blank" rel="noopener" class="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-6 text-[0.9375rem] font-semibold text-primary-foreground transition-opacity hover:opacity-90">Browse meta.audiosilo.app</a>
+          <a href="#contribute" class="group inline-flex h-12 items-center gap-2 rounded-full px-5 text-[0.9375rem] font-semibold hover:bg-foreground/[0.06]">Contribute <Arrow /></a>
+        </div>
+      </div>
+      <div class="meta-stage reveal reveal-d2 relative">
+        <div class="meta-window">
+          <Device kind="window" address="meta.audiosilo.app" class="w-full">
+            <ThemedImage still={stills.metaCharacters} widths={[800, 1500]} sizes="(min-width: 1024px) 44rem, 96vw" eager />
+          </Device>
+        </div>
+        <div class="meta-phone float-slow">
+          <Device kind="phone" class="w-full">
+            <ThemedImage still={stills.phoneCharacters} widths={[240, 480]} sizes="12rem" eager alt="Characters inside the AudioSilo player on a phone: only the people already met, each from the chapter they first appear in" />
+          </Device>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="shell flex gap-12 xl:gap-16">
+    <ChapterList title="The metadata" chapters={chapters} />
+    <div class="min-w-0 flex-1">
+      <section id="inside" data-chapter="What is in it" class="scroll-mt-24 py-14 sm:py-20">
+        <div class="reveal max-w-2xl">
+          <p class="t-eyebrow mb-3">As of {STATS_AS_OF}</p>
+          <h2 class="t-title">Narrators, recordings and chapters come first.</h2>
+          <p class="mt-4 text-[1.0625rem] leading-relaxed text-foreground/80">
+            A work is the book; a recording is one reading of it, with its narrators, runtime,
+            publisher, chapters and the ASINs and ISBNs for each region. People and series sit
+            alongside, series with half-numbered entries and more than one reading order.
+          </p>
+        </div>
+        <div class="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
+          <Counter value={META_STATS.works} label="works" class="reveal" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
+          <Counter value={META_STATS.recordings} label="recordings" class="reveal reveal-d1" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
+          <Counter value={META_STATS.people} label="narrators and authors" class="reveal reveal-d2" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
+          <Counter value={META_STATS.series} label="series" class="reveal" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
+          <Counter value={META_STATS.chapters} label="chapters" class="reveal reveal-d1" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
+          <Counter value={META_STATS.languages} label="languages" class="reveal reveal-d2" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
+        </div>
+        <figure class="reveal mt-14">
+          <Device kind="window" address="meta.audiosilo.app" class="w-full">
+            <ThemedImage still={stills.metaWork} widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" />
+          </Device>
+          <figcaption class="mt-4 text-sm text-muted-foreground">One work, three recordings: each with its narrators, runtime, chapters and regional ASINs.</figcaption>
+        </figure>
+      </section>
+
+      <FeatureRow id="library" chapter="For your library" eyebrow="For your library" title="From a folder called “Book 3” to the right book." split="wide">
+        <div slot="media">
+          <Device kind="window" address="your-server/admin" class="w-full">
+            <ThemedImage still={stills.serverCompare} widths={[700, 1400]} sizes="(min-width: 1280px) 36rem, 92vw" />
+          </Device>
+        </div>
+        <p>
+          In the admin console, Match compares your tags and folder names with the database and
+          lets you take one field at a time, the cover included. Match automatically does a whole
+          library in the background and sorts the confident matches from the ones to check.
+        </p>
+        <Points
+          items={[
+            'Series in the right order, with the books you are missing shown as gaps',
+            'Publication, chronological or recommended reading orders',
+            'An About block on each book, with a link to its full entry',
+            'Your own edits are never replaced, and every community value can be reverted',
+          ]}
+        />
+      </FeatureRow>
+
+      <FeatureRow id="community" chapter="Characters and recaps" eyebrow="The community layer" title="Characters and recaps that wait for you." flip split="even">
+        <div slot="media" class="flex items-end justify-center gap-4 sm:gap-6">
+          <Device kind="phone" class="w-[44%] max-w-[15rem]">
+            <ThemedImage still={stills.metaCharactersPhone} widths={[260, 480]} sizes="(min-width: 1280px) 15rem, 44vw" />
+          </Device>
+          <Device kind="phone" class="w-[44%] max-w-[15rem] -translate-y-8">
+            <ThemedImage still={stills.phoneWhosWho} widths={[260, 480]} sizes="(min-width: 1280px) 15rem, 44vw" />
+          </Device>
+        </div>
+        <p>
+          Listeners write character sheets and chapter-by-chapter recaps in their own words. Each
+          recap is tagged with the chapter it is safe after, each character with the chapter they
+          first appear in, so the player only shows what you have reached.
+        </p>
+        <p>
+          This layer is young: {fmt.format(META_STATS.withCharacters)} works have characters and recaps so far, out of
+          {' '}{fmt.format(META_STATS.works)}. Every one added lights up Who's who, Story so far and Previously on for everyone listening to that book.
+        </p>
+      </FeatureRow>
+
+      <section id="open" data-chapter="Open data" class="scroll-mt-24 py-14 sm:py-20">
+        <div class="reveal max-w-2xl">
+          <p class="t-eyebrow mb-3">Open data</p>
+          <h2 class="t-title">The repository is the database.</h2>
+          <p class="mt-4 text-[1.0625rem] leading-relaxed text-foreground/80">
+            Every work, recording, person and series is a JSON file on GitHub, changed by pull
+            request, checked by tooling in CI and compiled into one SQLite file for each release.
+            Anyone can take the whole thing.
+          </p>
+        </div>
+        <div class="mt-10 grid gap-4 md:grid-cols-3">
+          <div class="tile reveal p-6">
+            <p class="font-display text-3xl font-bold tracking-[-0.04em]">CC0</p>
+            <p class="mt-2 text-[0.9375rem] text-muted-foreground">The core data: works, recordings, people and series. Public domain, no conditions.</p>
+          </div>
+          <div class="tile reveal reveal-d1 p-6">
+            <p class="font-display text-3xl font-bold tracking-[-0.04em] text-community">CC BY-SA 4.0</p>
+            <p class="mt-2 text-[0.9375rem] text-muted-foreground">The community layer: characters, recaps and descriptions, written by listeners and credited.</p>
+          </div>
+          <div class="tile reveal reveal-d2 p-6">
+            <p class="font-display text-3xl font-bold tracking-[-0.04em]">AGPLv3</p>
+            <p class="mt-2 text-[0.9375rem] text-muted-foreground">The tooling that validates, builds and serves it. It also works as an Audiobookshelf metadata provider.</p>
+          </div>
+        </div>
+        <p class="reveal mt-6 text-sm text-muted-foreground">
+          No publisher blurbs and no cover art are taken in; descriptions are written by the community and covers are links.
+          <a href={GITHUB_META_URL} target="_blank" rel="noopener" class="link">The repository</a>
+        </p>
+      </section>
+
+      <FeatureRow id="contribute" chapter="Contribute" eyebrow="Contribute" title="Add the book you know best." split="wide">
+        <div slot="media">
+          <Device kind="window" address="meta.audiosilo.app/contribute" class="w-full">
+            <ThemedImage still={stills.metaContribute} widths={[800, 1500]} sizes="(min-width: 1280px) 36rem, 92vw" />
+          </Device>
+        </div>
+        <p>
+          The contribute page lists the books that still need characters and recaps, with a guided
+          builder. Submissions arrive as an issue form or a pull request; automated checks validate
+          them and look for duplicates before they are merged.
+        </p>
+        <Points
+          items={[
+            `<strong>The sidecars tool</strong> (open source, AGPLv3): point it at an audiobook folder and it transcribes on your machine, then drafts and checks character sheets and recaps with your own Claude or ChatGPT account. Needs that account and a computer that can run speech recognition.`,
+            'Missing books in known series are filled in automatically.',
+            'Watch a series on the site and get new entries in a feed, or by message from the AudioSilo Discord bot.',
+          ]}
+        />
+        <div class="flex flex-wrap gap-x-6 gap-y-2 pt-2 text-sm font-semibold">
+          <a href={`${META_URL}/contribute`} target="_blank" rel="noopener" class="link">Start contributing</a>
+          <a href={GITHUB_SIDECARS_URL} target="_blank" rel="noopener" class="link">The sidecars tool</a>
+          <a href={DISCORD_URL} target="_blank" rel="noopener" class="link">Discord</a>
+        </div>
+      </FeatureRow>
+
+      <section id="privacy" data-chapter="Privacy" class="scroll-mt-24 py-14 sm:py-20">
+        <div class="grid gap-10 xl:grid-cols-12">
+          <div class="reveal xl:col-span-5">
+            <p class="t-eyebrow mb-3">Privacy</p>
+            <h2 class="t-title">Your server asks. Your player doesn't.</h2>
+          </div>
+          <div class="reveal reveal-d1 space-y-4 text-[1.0625rem] leading-relaxed text-foreground/80 xl:col-span-7">
+            <p>
+              Players never talk to meta.audiosilo.app; your server does. To look a book up it sends
+              the book's ASIN or ISBN, never a file path or who is listening. Answers are cached, so
+              they survive a restart or an outage.
+            </p>
+            <p>
+              Match sends a little more (title, author, series, length and up to three folder names),
+              and only when an admin opens Match or runs it on the library.
+            </p>
+            <p class="rounded-2xl bg-muted/70 p-5 text-[0.9375rem] shadow-[inset_0_0_0_1px_var(--border)]">
+              <strong class="font-semibold text-foreground">One switch turns it off.</strong>
+              <span class="text-muted-foreground"> Turn community metadata off in the server settings and every outbound lookup stops; players hide the features that need it.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <DemoEnd
+    title="Try the player, then browse the database."
+    body="The demo runs the real web player on six public-domain classics. It has no community metadata, so for characters, recaps and series, browse meta.audiosilo.app or watch the console tour."
+    palette="community"
+  >
+    <div class="reveal mt-8 flex flex-wrap justify-center gap-3">
+      <a href={META_URL} target="_blank" rel="noopener" class="inline-flex h-12 items-center rounded-full px-5 text-[0.9375rem] font-semibold shadow-[inset_0_0_0_1px_var(--border-strong)] hover:bg-foreground/[0.06]">Browse meta.audiosilo.app</a>
+      <TourButton tour="server" variant="outline" />
+    </div>
+  </DemoEnd>
+</Base>
+
+<style>
+  .meta-stage {
+    aspect-ratio: 16 / 11.5;
+    perspective: 2200px;
+  }
+  .meta-window {
+    position: absolute;
+    top: 0;
+    left: 8%;
+    width: 100%;
+    transform: rotateY(-14deg) rotateX(4deg);
+    transform-origin: 0 50%;
+  }
+  .meta-phone {
+    position: absolute;
+    left: 0;
+    bottom: -4%;
+    width: 25%;
+  }
+  @media (width < 1024px) {
+    .meta-window {
+      left: 4%;
+      width: 96%;
+      transform: rotateY(-10deg);
+    }
+    .meta-phone {
+      width: 28%;
+    }
+  }
+</style>

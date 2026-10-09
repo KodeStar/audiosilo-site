@@ -1,30 +1,21 @@
 ---
-import Base from '../layouts/Base.astro'
-import Button from '../components/Button.astro'
-import Waveform from '../components/Waveform.astro'
-import Icon from '../components/Icon.astro'
+import Base from '@/layouts/Base.astro'
+import Wash from '@/components/site/Wash.astro'
+import BarScrubber from '@/components/site/BarScrubber.astro'
 ---
-<Base
-  hasHero
-  title="Page not found - AudioSilo"
-  description="This page doesn't exist. Head back to the AudioSilo home page."
->
-  <section class="relative overflow-hidden">
-    <div class="glow left-1/2 top-1/4 h-[24rem] w-[34rem] -translate-x-1/2"></div>
-    <div class="container relative z-10 flex min-h-[70vh] flex-col items-center justify-center py-20 text-center">
-      <span class="mb-6 text-sm font-semibold uppercase tracking-[0.3em] text-pink-500">404</span>
-      <Waveform class="mb-8 opacity-70" />
-      <h1 class="text-4xl font-black tracking-tight text-hi sm:text-5xl">
-        This chapter doesn't exist.
-      </h1>
-      <p class="mx-auto mt-5 max-w-md text-lg leading-relaxed text-body">
-        The page you were after has moved or was never here. Let's get you back to the shelf.
-      </p>
-      <div class="mt-8">
-        <Button href="/">
-          <Icon name="arrowRight" class="h-5 w-5" /> Back to home
-        </Button>
-      </div>
+
+<Base hasHero miniBar={false} title="Page not found - AudioSilo" description="This page doesn't exist. Head back to the AudioSilo home page.">
+  <section class="relative isolate flex min-h-[86svh] items-center overflow-hidden pt-(--header-h)">
+    <Wash palette="dracula" />
+    <div class="shell relative z-10 flex flex-col items-center py-20 text-center">
+      <p class="t-eyebrow">404 &middot; Chapter not found</p>
+      <h1 class="t-hero mt-6 max-w-3xl">This chapter doesn't exist.</h1>
+      <p class="t-lede mx-auto mt-6 max-w-md">The page you were after has moved, or was never here.</p>
+      <BarScrubber class="mt-12 h-10 w-full max-w-md" bars={56} played={1} seed={404} />
+      <a href="/" class="mt-12 inline-flex h-12 items-center gap-2 rounded-full bg-primary px-6 text-[0.9375rem] font-semibold text-primary-foreground hover:opacity-90">
+        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7" /><path d="M3 4v5h5" /></svg>
+        Back to the beginning
+      </a>
     </div>
   </section>
 </Base>

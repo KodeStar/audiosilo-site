@@ -86,3 +86,9 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# Full tours are hosted off-repo (see TOUR_BASE in src/data/media.ts); only the
+# small hero loops are committed.
+public/media/**/*.mp4
+!public/media/server-*.mp4
+!public/media/player-*.mp4

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
+import { SERVER_VERSION } from '@/data/status'
 
-// Shown if the GitHub API can't be reached; keep in step with the latest server tag.
-const FALLBACK = 'v1.9.0'
+// Shown if the GitHub API can't be reached; bump SERVER_VERSION in src/data/status.ts.
+const FALLBACK = SERVER_VERSION
 
 interface Props {
   className?: string

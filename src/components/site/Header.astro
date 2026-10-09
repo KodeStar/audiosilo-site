@@ -1,0 +1,125 @@
+---
+import { DEMO_URL, GITHUB_SERVER_URL, DOCS_URL } from '@/data/links'
+import { primaryNav } from '@/data/nav'
+import Logo from '@/components/Logo.astro'
+import Icon from '@/components/Icon.astro'
+import ThemeMenu from '@/components/theme/ThemeMenu.tsx'
+import MobileNav from './MobileNav.tsx'
+
+const current = '/' + (Astro.url.pathname.split('/')[1] ?? '')
+---
+
+<header id="site-header" class="fixed inset-x-0 top-0 z-50" data-scrolled="false">
+  <div
+    class="header-bg pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="shell relative flex h-(--header-h) items-center gap-2 sm:gap-4">
+    <a href="/" class="group -ml-1 flex items-center gap-2.5 rounded-lg p-1" aria-label="AudioSilo home">
+      <Logo class="w-8 shrink-0 transition-transform duration-300 group-hover:scale-105" />
+      <span class="font-display text-[1.3rem] font-bold tracking-[-0.035em] text-foreground">AudioSilo</span>
+    </a>
+
+    <nav aria-label="Primary" class="ml-4 hidden items-center gap-1 md:flex lg:ml-8">
+      {
+        primaryNav.map((item) => (
+          <a
+            href={item.href}
+            aria-current={current === item.href ? 'page' : undefined}
+            class="relative rounded-full px-3.5 py-2 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3.5 aria-[current=page]:after:-bottom-0.5 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-foreground"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href={DOCS_URL}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:text-foreground"
+      >
+        Docs
+        <svg class="size-3 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+        <span class="sr-only">(opens in a new tab)</span>
+      </a>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-1 sm:gap-1.5">
+      <a
+        href={GITHUB_SERVER_URL}
+        target="_blank"
+        rel="noopener"
+        class="hidden size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground sm:inline-flex"
+        aria-label="AudioSilo server on GitHub"
+      >
+        <Icon name="github" class="size-[18px]" />
+      </a>
+      <ThemeMenu client:idle className="hidden md:inline-flex" />
+      <a
+        href={DEMO_URL}
+        target="_blank"
+        rel="noopener"
+        data-demo-pill
+        class="demo-pill ml-1 hidden h-9 items-center gap-2 rounded-full pr-4 pl-1.5 text-sm font-semibold md:inline-flex"
+      >
+        <span class="demo-pill-dot grid size-6 place-items-center rounded-full" aria-hidden="true">
+          <svg class="size-2.5 translate-x-px" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" /></svg>
+        </span>
+        Try the demo
+      </a>
+      <div class="md:hidden">
+        <MobileNav client:idle current={current} />
+      </div>
+    </div>
+  </div>
+  <div class="seekbar" data-seekbar aria-hidden="true"></div>
+</header>
+
+<style>
+  .header-bg {
+    background: var(--topbar);
+    -webkit-backdrop-filter: blur(18px) saturate(1.7);
+    backdrop-filter: blur(18px) saturate(1.7);
+    box-shadow: 0 1px 0 var(--glass-border);
+  }
+  #site-header[data-scrolled='true'] .header-bg {
+    opacity: 1;
+  }
+  #site-header:not([data-scrolled='true']) .seekbar {
+    opacity: 0;
+  }
+  .seekbar {
+    transition: opacity var(--dur-3);
+  }
+  /* The demo pill hands the page's one pink thing back and forth: ink while
+     a pink demo moment is on screen, pink otherwise. */
+  .demo-pill {
+    background: var(--brand);
+    color: var(--brand-foreground);
+    transition:
+      background-color var(--dur-3) var(--ease-out),
+      color var(--dur-3) var(--ease-out),
+      transform var(--dur-2) var(--ease-spring);
+  }
+  .demo-pill-dot {
+    background: rgb(255 255 255 / 0.22);
+    transition: background-color var(--dur-3);
+  }
+  :global(html[data-pink-in-view='true']) .demo-pill {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+  :global(html[data-pink-in-view='true']) .demo-pill-dot {
+    background: color-mix(in oklab, var(--primary-foreground) 16%, transparent);
+  }
+  .demo-pill:hover {
+    transform: translateY(-1px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .demo-pill,
+    .demo-pill-dot {
+      transition: none;
+    }
+  }
+</style>

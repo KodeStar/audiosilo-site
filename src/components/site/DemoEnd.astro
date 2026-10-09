@@ -1,0 +1,30 @@
+---
+/**
+ * The contextual demo invitation that closes a pillar page: one big pink
+ * play button and a line on what you'll find (and won't).
+ */
+import PlayLink from './PlayLink.astro'
+import Wash from './Wash.astro'
+import type { Palette } from './Wash.astro'
+
+interface Props {
+  id?: string
+  title: string
+  body: string
+  note?: string
+  palette?: Palette
+}
+const { id = 'demo', title, body, note, palette = 'carol' } = Astro.props
+---
+
+<section id={id} data-chapter="Try the demo" class="relative isolate overflow-hidden py-24 sm:py-32">
+  <Wash palette={palette} />
+  <div class="shell relative z-10 flex flex-col items-center text-center">
+    <PlayLink size="xl" class="reveal" />
+    <h2 class="t-display reveal reveal-d1 mt-10 max-w-3xl">{title}</h2>
+    <p class="t-lede reveal reveal-d2 mt-5 max-w-2xl">{body}</p>
+    <p class="reveal reveal-d2 mt-3 text-sm font-medium">No sign-up, nothing to install. It opens the real web player in a new tab.</p>
+    {note && <p class="reveal reveal-d3 mt-6 max-w-xl text-sm text-muted-foreground">{note}</p>}
+    <slot />
+  </div>
+</section>

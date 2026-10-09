@@ -58,7 +58,7 @@ the live site, so keep work on branches until it's reviewed.
 ## Layout
 
 ```
-public/                 static assets: logo.svg, favicons, CNAME, og.png, ios-app-demo.mp4
+public/                 static assets: logo.svg, favicons, CNAME, og.png, media/ (loops + tours)
 src/
   assets/screenshots/   shot-*.png (pipeline-generated); optimized via astro:assets
   components/           .astro components + React islands (.tsx)
