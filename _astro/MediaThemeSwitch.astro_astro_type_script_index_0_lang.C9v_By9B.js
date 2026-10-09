@@ -1,0 +1,1 @@
+import{s as r,b as n,a as o}from"./theme.B3upDmSm.js";function c(){const t=Array.from(document.querySelectorAll("[data-set-theme]:not([data-ts-ready])"));if(!t.length)return;const s=e=>{for(const a of t)a.setAttribute("aria-pressed",String(a.dataset.setTheme===e))};for(const e of t)e.dataset.tsReady="true",e.addEventListener("click",()=>r(e.dataset.setTheme));s(n()),o(s)}c();

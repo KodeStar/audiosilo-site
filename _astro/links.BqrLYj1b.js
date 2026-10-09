@@ -1,0 +1,1 @@
+const s="https://demo.audiosilo.app/web/demo",o="https://docs.audiosilo.app",t="https://github.com/KodeStar/audiosilo-server",a="https://api.github.com/repos/KodeStar/audiosilo-server/releases/latest";export{o as D,t as G,s as a,a as b};
