@@ -2,10 +2,10 @@
 /**
  * "Try it tonight": the demo as the player's Now card. Cover, title, a
  * whole-book scale and the bar seek bar; the round pink play button IS the
- * demo link. Beside it, a minute's checklist and an honest note about what
- * the demo can't show.
+ * demo link. Beside it, a minute's checklist and the demo's shelf: each
+ * series as a row of spines with the gaps as ghosts, then the standalones.
  */
-import { demoBooks, demoChecklist, demoLibrary } from '@/data/demo'
+import { demoChecklist, demoFeatured as book, demoLibrary, demoSeries, demoStandalones } from '@/data/demo'
 import { DEMO_URL } from '@/data/links'
 import DemoCover from './DemoCover.astro'
 import BarScrubber from './BarScrubber.astro'
@@ -17,7 +17,6 @@ interface Props {
   headingId?: string
 }
 const { headingId = 'try-tonight' } = Astro.props
-const book = demoBooks.find((b) => b.key === 'carol')!
 ---
 
 <div class="grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-8">
@@ -25,19 +24,19 @@ const book = demoBooks.find((b) => b.key === 'carol')!
     <Wash palette="carol" edge="none" />
     <div class="relative z-10">
       <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:gap-8">
-        <DemoCover book={book.key} class="w-36 shrink-0 sm:w-48" />
+        <DemoCover book="carol" class="w-36 shrink-0 sm:w-48" />
         <div class="min-w-0">
           <p class="t-eyebrow text-foreground/70">Tonight in the demo &middot; 1 of {demoLibrary.count} books</p>
           <h3 id={headingId} class="mt-2 font-display text-[clamp(2rem,4.2vw,3.25rem)] leading-[0.95] font-bold tracking-[-0.04em]">
             {book.title}
           </h3>
-          <p class="mt-2 text-[0.9375rem] text-foreground/75">{book.author} &middot; {book.hours} &middot; a LibriVox recording</p>
+          <p class="mt-2 text-[0.9375rem] text-foreground/75">{book.author} &middot; {book.hours} h &middot; read by {book.narrator} for LibriVox</p>
         </div>
       </div>
 
       <BarScrubber class="mt-8 h-12 sm:h-14" bars={84} played={0.06} seed={12} />
       <div class="mt-2 flex justify-between font-mono text-[11px] text-foreground/60 tabular-nums" aria-hidden="true">
-        <span>0:12</span><span>1x</span><span>-3:29:48</span>
+        <span>0:12</span><span>1x</span><span>-3:31:59</span>
       </div>
 
       <div class="mt-6 flex items-center justify-center gap-6 sm:gap-10">
@@ -72,22 +71,54 @@ const book = demoBooks.find((b) => b.key === 'carol')!
     </div>
 
     <div class="rounded-2xl bg-muted/70 p-5 text-sm leading-relaxed text-muted-foreground shadow-[inset_0_0_0_1px_var(--border)]">
-      <p class="font-semibold text-foreground">What the demo can't show</p>
+      <p class="font-semibold text-foreground">On the shelf</p>
       <p class="mt-1.5">
-        {demoLibrary.metadataNote} Visitors don't get the admin console either; the server tour
-        shows it. Your demo account is thrown away after a day or so idle.
+        {demoLibrary.shelfLong}, {demoLibrary.hours}, in series and on their own. Dashed spines
+        are the books the demo doesn't have.
       </p>
       <ul class="mt-4 flex flex-wrap gap-2" aria-label={`The demo's library: ${demoLibrary.shelfLong}`}>
         {
-          demoBooks.map((b) => (
-            <li class="flex items-center gap-2 rounded-full bg-background/80 py-1 pr-3 pl-1 shadow-[inset_0_0_0_1px_var(--border)]">
-              <DemoCover book={b.key} class="w-6 rounded-[3px]" />
+          demoSeries.map((s) => (
+            <li class="flex h-8 items-center gap-2 rounded-full bg-background/80 pr-3 pl-2.5 shadow-[inset_0_0_0_1px_var(--border)]">
+              <span class="flex h-4 items-end gap-px" aria-hidden="true">
+                {s.slots.map((b) => (b ? <span class="spine-mini" style={`background:${b.spine}`} /> : <span class="spine-mini spine-ghost" />))}
+              </span>
+              <span class="text-xs text-foreground/85">
+                {s.name} <span class="text-muted-foreground">&middot; {s.count}</span>
+                <span class="sr-only">{s.count === 1 ? 'book' : 'books'}</span>
+              </span>
+            </li>
+          ))
+        }
+        {
+          demoStandalones.map((b) => (
+            <li class="flex h-8 items-center gap-2 rounded-full bg-background/80 pr-3 pl-1 shadow-[inset_0_0_0_1px_var(--border)]">
+              <DemoCover book={b.cover!} class="w-6 rounded-[3px]" />
               <span class="text-xs text-foreground/85">{b.title}</span>
             </li>
           ))
         }
       </ul>
+      <p class="mt-4">
+        Not in the demo: the admin console, which the server tour shows. Your demo account is
+        thrown away after a day or so idle.
+      </p>
     </div>
     <a href={DEMO_URL} target="_blank" rel="noopener" class="link w-fit text-sm font-semibold">Open the demo in a new tab</a>
   </div>
 </div>
+
+<style>
+  /* A spine in the book's cover colour; a ghost is a dashed outline, as in the player. */
+  .spine-mini {
+    width: 4px;
+    height: 100%;
+    border-radius: 1px;
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--foreground) 22%, transparent);
+  }
+  .spine-ghost {
+    height: 85%;
+    box-shadow: none;
+    border: 1px dashed color-mix(in oklab, var(--foreground) 45%, transparent);
+  }
+</style>

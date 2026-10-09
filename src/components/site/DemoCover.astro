@@ -1,19 +1,19 @@
 ---
 /**
- * Typographic covers for the six books in the public demo (the Stacks idea
+ * Typographic covers for the public demo's standalone books (the Stacks idea
  * of a procedural cover: no fake art, just the book's own title set well).
  * Sized by its container; text scales with container units.
  */
-import { demoBooks, type DemoBookKey } from '@/data/demo'
+import { demoStandalones, type DemoCoverKey } from '@/data/demo'
 import { cn } from '@/lib/utils'
 
 interface Props {
-  book: DemoBookKey
+  book: DemoCoverKey
   class?: string
 }
 
 const { book, class: className } = Astro.props
-const b = demoBooks.find((x) => x.key === book)!
+const b = demoStandalones.find((x) => x.cover === book)!
 const serif = "font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif"
 ---
 
@@ -46,37 +46,14 @@ const serif = "font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Ge
     )
   }
   {
-    book === 'pride' && (
-      <>
-        <div class="absolute inset-0 bg-[#e9d9cc]" />
-        <div class="absolute inset-[7%] border-[1.5px] border-[#7b4a52]/70" />
-        <div class="absolute inset-[10%] border border-[#7b4a52]/40" />
-        <p class="absolute inset-x-[14%] top-[28%] text-center text-[13cqw] leading-[0.95] text-[#5a2c36] italic" style={serif}>Pride and Prejudice</p>
-        <div class="absolute top-[68%] left-1/2 h-px w-[20%] -translate-x-1/2 bg-[#7b4a52]/60" />
-        <p class="absolute inset-x-0 bottom-[16%] text-center text-[5.2cqw] tracking-[0.22em] text-[#7b4a52] uppercase">Jane Austen</p>
-      </>
-    )
-  }
-  {
     book === 'alice' && (
       <>
-        <div class="absolute inset-0 bg-[radial-gradient(80%_80%_at_70%_20%,#2fb3a8,transparent_70%),#0d5c63]" />
+        <div class="absolute inset-0 bg-[#0d5c63]" />
+        <div class="absolute inset-0 bg-[radial-gradient(80%_80%_at_70%_20%,#2fb3a8,transparent_70%)]" />
         <div class="absolute top-[12%] left-[12%] grid h-[34%] w-[26%] rotate-[-10deg] place-items-center rounded-[4px] bg-[#fdf6e9] text-[14cqw] leading-none text-[#c23a4f] shadow-lg" style={serif}>&hearts;</div>
         <div class="absolute top-[16%] left-[34%] grid h-[34%] w-[26%] rotate-[8deg] place-items-center rounded-[4px] bg-[#fdf6e9] text-[14cqw] leading-none text-[#14213d] shadow-lg" style={serif}>&spades;</div>
         <p class="absolute inset-x-[10%] bottom-[20%] text-[12cqw] leading-[0.95] font-semibold text-[#fdf6e9]" style={serif}>Alice in Wonderland</p>
         <p class="absolute inset-x-[10%] bottom-[9%] text-[5cqw] tracking-[0.16em] text-[#bfeee8] uppercase">Lewis Carroll</p>
-      </>
-    )
-  }
-  {
-    book === 'sherlock' && (
-      <>
-        <div class="absolute inset-0 bg-[linear-gradient(150deg,#3b1418,#1c0a0c)]" />
-        <div class="absolute top-[13%] left-1/2 size-[30%] -translate-x-1/2 rounded-full border-[3px] border-[#d9a441]" />
-        <div class="absolute top-[38%] left-[58%] h-[16%] w-[3%] rotate-[-40deg] rounded-full bg-[#d9a441]" />
-        <p class="absolute inset-x-[8%] top-[56%] text-center text-[5.2cqw] tracking-[0.2em] text-[#d9a441] uppercase">The Adventures of</p>
-        <p class="absolute inset-x-[8%] top-[64%] text-center text-[12.5cqw] leading-[0.95] font-semibold text-[#f3e6cf]" style={serif}>Sherlock Holmes</p>
-        <p class="absolute inset-x-0 bottom-[7%] text-center text-[4.6cqw] tracking-[0.16em] text-[#d9a441]/80 uppercase">Arthur Conan Doyle</p>
       </>
     )
   }

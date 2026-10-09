@@ -6,6 +6,7 @@ import InstallTabs from '@/components/site/InstallTabs.tsx'
 import CodeBlock from '@/components/CodeBlock.astro'
 import VersionBadge from '@/components/VersionBadge.tsx'
 import { DEMO_URL, GITHUB_SERVER_RELEASES_URL, GITHUB_SERVER_URL } from '@/data/links'
+import { demoLibrary } from '@/data/demo'
 import AppCards from '@/components/site/AppCards.astro'
 import Icon from '@/components/Icon.astro'
 import { APP_PLATFORMS } from '@/data/status'
@@ -104,7 +105,7 @@ const platforms = [
       <h2 class="t-display reveal">Then press play.</h2>
       <div class="mt-10">
         <AppCards webTitle="Already on your server" pairNote="Pair it with an invite link or QR code.">
-          <p class="mt-3 text-[0.9375rem] text-foreground/80">Open <span class="ic">/web</span> and add it to your home screen. Try it first on the demo.</p>
+          <p class="mt-3 text-[0.9375rem] text-foreground/80">Open <span class="ic">/web</span> and add it to your home screen. Try it first on the demo, with {demoLibrary.shelf} on the shelf.</p>
           <a href={DEMO_URL} target="_blank" rel="noopener" class="group mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold">Open the demo <Arrow /></a>
         </AppCards>
       </div>

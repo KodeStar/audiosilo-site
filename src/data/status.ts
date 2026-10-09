@@ -18,13 +18,12 @@ export const APPS_BETA = !(IOS_2_IN_STORE && ANDROID_LIVE)
 
 /**
  * The admin console's sponsor card (and its Support AudioSilo link) is in a
- * server release. Today it is an open PR (audiosilo-server#112), so the copy
- * describes it as coming; flip this once a release carries it.
+ * server release: shipped in v2.2.0 (2026-10-09). False words it as coming.
  */
-export const SUPPORT_CARD_LIVE = false
+export const SUPPORT_CARD_LIVE = true
 
 /** Latest server release, the fallback when the live GitHub lookup fails. */
-export const SERVER_VERSION = 'v2.1.0'
+export const SERVER_VERSION = 'v2.2.0'
 
 /** The native apps' platforms, for "the iPhone and iPad app" or "on iPhone and iPad". */
 export const APP_PLATFORMS = ANDROID_LIVE ? 'iPhone, iPad and Android' : 'iPhone and iPad'

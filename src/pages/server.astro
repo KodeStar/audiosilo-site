@@ -16,6 +16,7 @@ import VersionBadge from '@/components/VersionBadge.tsx'
 import { loops, stills, type Still } from '@/data/media'
 import { firstRunBanner } from '@/data/install'
 import { GITHUB_SERVER_RELEASES_URL, DOCS_URL } from '@/data/links'
+import { demoLibrary } from '@/data/demo'
 import { SUPPORT_CARD_LIVE } from '@/data/status'
 import { chapterTitle } from '@/lib/chapters'
 
@@ -249,7 +250,7 @@ const security = [
         </div>
         <p class="reveal mt-12 rounded-2xl bg-muted/70 px-5 py-4 text-sm text-muted-foreground shadow-[inset_0_0_0_1px_var(--border)]">
           AudioSilo is free; sponsors keep it going. {SUPPORT_CARD_LIVE ? 'After a month or so, the admin console shows' : 'In a coming server update, after a month or so, the admin console shows'}
-          its admins one small card about sponsoring: <em>I've donated</em> hides it for good on that
+          its admins one small card about sponsoring on the Overview: <em>I've donated</em> hides it for good on that
           server, <em>Not now</em> for six months. It's never in the player, and giving unlocks
           nothing. <a href="/pricing" class="link font-semibold">How AudioSilo is paid for</a>.
           Full reference in the <a href={DOCS_URL} target="_blank" rel="noopener" class="link">documentation</a>.
@@ -261,7 +262,7 @@ const security = [
   <DemoEnd
     chapter={chapter('demo')}
     title="Try the player your server ships."
-    body="The demo is a real AudioSilo server running the same web player, with a throwaway account made for you."
+    body={`The demo is a real AudioSilo server running the same web player, with a throwaway account made for you and ${demoLibrary.shelf} matched to community metadata.`}
     note="Demo visitors don't get the admin console; the tour above shows it."
     palette="console"
   />

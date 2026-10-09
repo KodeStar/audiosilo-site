@@ -23,7 +23,7 @@ const faq: FaqItem[] = [
     q: 'Will AudioSilo keep asking me to donate?',
     a: [
       `No. ${SUPPORT_CARD_LIVE ? 'Once' : 'From a coming server update, once'} a server has been in use for about a month, or has played a good number of books, the admin console shows its admins one small card. <em>I've donated</em> hides it for good on that server, and it believes you: nothing is checked. <em>Not now</em> hides it for six months.`,
-      `Beyond that there ${SUPPORT_CARD_LIVE ? 'is' : 'will be'} a Support AudioSilo link in the console's account menu, and one line in the update notice and the release notes. Nothing in the player, ever.`,
+      `Beyond that there ${SUPPORT_CARD_LIVE ? 'is' : 'will be'} a Support AudioSilo link in the console's account menu and on its About page, and one line in the update notice and the release notes. Nothing in the player, ever.`,
     ],
   },
   ...(APPS_BETA ? [{ q: 'Can I try the new apps?', a: [`${BETA_NOTE} <a href="${BETA_URL}" target="_blank" rel="noopener">Join the Discord</a>.`] }] : []),
@@ -85,7 +85,7 @@ const faq: FaqItem[] = [
               product. It's a thank-you, and it's taken as one.
             </p>
             <p class="mt-4 max-w-lg text-[0.9375rem] leading-relaxed text-muted-foreground">
-              {SUPPORT_CARD_LIVE ? 'The admin console asks once' : 'From a coming server update, the admin console will ask once'}, after a month, with a small card only admins see. Tell
+              {SUPPORT_CARD_LIVE ? 'The admin console asks' : 'From a coming server update, the admin console will ask'} after a month or so, with a small card only admins see. Tell
               it you've donated and it hides for good. It believes you; nothing is checked, because
               there is nothing to unlock.
             </p>
