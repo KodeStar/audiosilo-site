@@ -1,0 +1,22 @@
+---
+/**
+ * A media loop from src/data/media.ts: ThemedVideo with the loop's recorded
+ * first-frame poster (/media/<name>-<theme>.webp, ThemedVideo's default) at
+ * the video's own aspect ratio. The video loads lazily, plays only on screen
+ * and never on its own under reduced motion (the poster shows instead).
+ */
+import ThemedVideo from './ThemedVideo.astro'
+import type { LoopMedia } from '@/data/media'
+
+interface Props {
+  loop: LoopMedia
+  class?: string
+  eager?: boolean
+  /** How wide the loop renders, for the poster's srcset. */
+  sizes?: string
+}
+
+const { loop, class: className, eager = false, sizes } = Astro.props
+---
+
+<ThemedVideo name={loop.name} label={loop.label} aspect={loop.aspect} eager={eager} posterWidths={loop.posterWidths} sizes={sizes} class={className} />

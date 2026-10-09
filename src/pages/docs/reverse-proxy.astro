@@ -32,7 +32,7 @@ const nginx = `server {
   description="Expose AudioSilo Server safely on the internet: TLS modes, a reverse-proxy example, and trusted proxies."
 >
   <p>
-    AudioSilo Server is designed to be <strong>safe to leave exposed to the internet</strong>. App-layer
+    AudioSilo Server is designed with the goal of being <strong>safe to leave exposed to the internet</strong>. App-layer
     protections are always on: per-IP request rate limiting, brute-force lockout on login and auth-code
     redemption, argon2id password hashing, hashed revocable tokens, strict path-traversal containment,
     and body-size limits. What you choose here is just how TLS is handled.

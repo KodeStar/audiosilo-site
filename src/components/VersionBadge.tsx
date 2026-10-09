@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { GITHUB_SERVER_LATEST_API } from '@/data/links'
+import { SERVER_VERSION } from '@/data/status'
 
-// Shown if the GitHub API can't be reached; keep in step with the latest server tag.
-const FALLBACK = 'v1.9.0'
+// Shown if the GitHub API can't be reached; bump SERVER_VERSION in src/data/status.ts.
+const FALLBACK = SERVER_VERSION
 
 interface Props {
   className?: string
@@ -12,7 +14,7 @@ export default function VersionBadge({ className = '' }: Props) {
 
   useEffect(() => {
     let cancelled = false
-    fetch('https://api.github.com/repos/KodeStar/audiosilo-server/releases/latest')
+    fetch(GITHUB_SERVER_LATEST_API)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!cancelled && data && data.tag_name) setVersion(data.tag_name)

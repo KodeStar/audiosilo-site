@@ -1,0 +1,43 @@
+---
+/**
+ * The quiet "Dark | Light" glass chip that sits by the big media (Home's
+ * stage, the /player trio, the /server cinema). After Hours is dark by
+ * default; this puts the light look one click away and swaps the loops and
+ * stills right next to it. Same persisted preference as the header menu
+ * (which follows along). Pressed state paints from the `dark:` variant, so
+ * it is right before any JS; hidden without JS. Never pink.
+ */
+import { MoonIcon, SunIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+const seg =
+  'inline-flex h-8 items-center gap-1.5 rounded-full px-3.5 text-[0.8125rem] font-semibold transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none [&_svg]:size-3.5'
+---
+
+<div
+  role="group"
+  aria-label="Show the site and its screenshots in dark or light"
+  class="glass inline-flex items-center gap-0.5 rounded-full p-1 [html:not(.js)_&]:hidden"
+>
+  <button
+    type="button"
+    data-set-theme="dark"
+    aria-pressed="true"
+    class={cn(seg, 'text-foreground/60 hover:text-foreground dark:bg-foreground/[0.12] dark:text-foreground')}
+  >
+    <MoonIcon aria-hidden="true" /> Dark
+  </button>
+  <button
+    type="button"
+    data-set-theme="light"
+    aria-pressed="false"
+    class={cn(seg, 'bg-foreground/[0.08] text-foreground dark:bg-transparent dark:text-foreground/60 dark:hover:text-foreground')}
+  >
+    <SunIcon aria-hidden="true" /> Light
+  </button>
+</div>
+
+<script>
+  import { initThemeSwitches } from '@/lib/theme-switch'
+  initThemeSwitches()
+</script>

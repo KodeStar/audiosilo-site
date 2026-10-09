@@ -1,0 +1,102 @@
+---
+/**
+ * Hardware around a screen. One component for every device class:
+ *
+ * - phone   an iPhone-shaped bezel (screens are 1170x2532-ish portrait)
+ * - tablet  an iPad bezel in landscape
+ * - window  a desktop browser window, with a title bar naming the address
+ * - cinema  a plain dark mat around a wide video (the admin console tour)
+ * - card    no hardware: a rounded story card (a shared Year in listening card)
+ *
+ * The screen opening always takes the aspect ratio of the media it shows,
+ * so the media fills it exactly: no letterbox bars, no cropping, nothing
+ * poking out. The media is clipped to the screen's corner radius on both
+ * the screen (overflow + clip-path) and the media itself (border-radius:
+ * inherit), which keeps the corners clean inside 3D-tilted stages too.
+ *
+ *   <Device kind="phone" still={stills.phoneHome} widths={[260, 520]} sizes="15rem" />
+ *   <Device kind="window" loop={loops.playerDesktop} eager />
+ *   <Device kind="window" aspect="2000/1250"><div class="device-media">...</div></Device>
+ *
+ * Give the root its width with `class` (it is a size container, so it never
+ * sizes to its content); the height follows from the ratio.
+ * Slotted custom content should carry `device-media` to fill the screen.
+ */
+import Loop from './Loop.astro'
+import ThemedImage from './ThemedImage.astro'
+import type { LoopMedia, Still } from '@/data/media'
+import { cn } from '@/lib/utils'
+
+type Kind = 'phone' | 'tablet' | 'window' | 'cinema' | 'card'
+
+interface Props {
+  kind: Kind
+  /** A still from src/data/media.ts: the screen takes its pixel ratio. */
+  still?: Still
+  /** A loop from src/data/media.ts: the screen takes the video's ratio. */
+  loop?: LoopMedia
+  /** Ratio for slotted content, as "w/h". Required without still or loop. */
+  aspect?: string
+  /** Still only: responsive widths for astro:assets. */
+  widths?: number[]
+  /** How wide the device renders (srcset `sizes` for the still or the loop's poster). Defaults per kind. */
+  sizes?: string
+  /** Above the fold: load the poster or still eagerly. */
+  eager?: boolean
+  /** Still only: override its alt text ('' when decorative). */
+  alt?: string
+  /** Window only: the address shown in the title bar. */
+  address?: string
+  class?: string
+  style?: string
+}
+
+/** Rough rendered widths when a page doesn't say: enough to pick the small poster on phones. */
+const DEFAULT_SIZES: Record<Kind, string> = {
+  phone: '(min-width: 1024px) 16vw, 30vw',
+  tablet: '(min-width: 1024px) 32vw, 60vw',
+  window: '(min-width: 1024px) 60vw, 90vw',
+  cinema: '(min-width: 1024px) 75vw, 92vw',
+  card: '(min-width: 1024px) 16vw, 40vw',
+}
+
+const { kind, still, loop, widths = [480, 960], sizes = DEFAULT_SIZES[Astro.props.kind], eager = false, alt, address = 'your-server/web', class: className, style } = Astro.props
+
+function stillAspect(s: Still): string {
+  const { light, dark } = s.src
+  // Light and dark captures must share a ratio, or one theme would not fit the opening.
+  if (Math.abs(light.width / light.height - dark.width / dark.height) > 0.002) {
+    throw new Error(`Device: light and dark stills differ in ratio (${light.src}, ${dark.src})`)
+  }
+  return `${dark.width}/${dark.height}`
+}
+
+const aspect = still ? stillAspect(still) : loop ? loop.aspect : Astro.props.aspect
+if (!aspect) throw new Error('Device: pass a still, a loop or an aspect')
+---
+
+<div class={cn('device @container', `device-${kind}`, className)} style={style} data-aspect={aspect}>
+  <div class="device-body">
+  {
+    kind === 'window' && (
+      <div class="device-bar flex h-8 items-center gap-3 rounded-t-[inherit] border-b border-border bg-muted/80 px-3 sm:h-9" aria-hidden="true">
+        <span class="flex gap-1.5">
+          <i class="size-2.5 rounded-full bg-border-strong" />
+          <i class="size-2.5 rounded-full bg-border-strong" />
+          <i class="size-2.5 rounded-full bg-border-strong" />
+        </span>
+        <span class="mx-auto flex h-5 min-w-0 max-w-[60%] items-center gap-1.5 truncate rounded-md bg-background/70 px-3 text-[11px] font-medium tracking-[0.01em] text-muted-foreground shadow-[inset_0_0_0_1px_var(--border)] sm:h-6 sm:text-[11px]">
+          <svg class="size-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+          <span class="truncate">{address}</span>
+        </span>
+        <span class="w-[42px]" />
+      </div>
+    )
+  }
+  <div class="device-screen" style={`aspect-ratio: ${aspect}`}>
+    {still && <ThemedImage still={still} widths={widths} sizes={sizes} eager={eager} alt={alt} class="device-media" />}
+    {loop && <Loop loop={loop} eager={eager} sizes={sizes} class="device-media" />}
+    <slot />
+  </div>
+  </div>
+</div>

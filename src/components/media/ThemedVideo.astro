@@ -1,0 +1,206 @@
+---
+/**
+ * A video that follows the colour theme: /media/<name>-light.mp4 in light,
+ * /media/<name>-dark.mp4 in dark, swapping live (position kept) when the
+ * theme changes. Only the visible variant downloads. Behaviour lives in
+ * src/lib/themed-video.ts; the file contract in public/media/README.md.
+ *
+ *   <ThemedVideo name="player-desktop" label="The web player's library" aspect="16/10" />
+ *   <ThemedVideo name="server" label="Admin console tour" mode="controls" captions />
+ *
+ * Styling hooks (no visual design here, designers restyle freely): the root
+ * has data-themed-video, data-mode, data-state (idle|playing|paused|error)
+ * and data-loaded (first frame decoded); parts carry data-slot.
+ */
+import type { ImageMetadata } from 'astro'
+import { cn } from '@/lib/utils'
+import Icon from '@/components/Icon.astro'
+import { promoteVisibleImg } from '@/lib/promote-visible'
+
+type Src = string | ImageMetadata
+type Themed<T> = T | { light: T; dark: T }
+
+interface Props {
+  /** File stem, e.g. "player-desktop" -> /media/player-desktop-{light,dark}.mp4 */
+  name: string
+  /** Accessible name for the box and the video (posters are decorative). */
+  label: string
+  /** CSS aspect-ratio of the box, e.g. "16/9" (the box never shifts). Default 16/9. */
+  aspect?: string
+  /** 'loop' (default): muted, looping, plays while on screen. 'controls': native controls, plays on demand. */
+  mode?: 'loop' | 'controls'
+  /** Poster override: one image, or one per theme (path or astro:assets import). Default /media/<name>-{theme}.webp. false = no poster (neutral placeholder). */
+  poster?: Themed<Src> | false
+  /** Captions: true = <base>/<name>-{theme}.vtt; a string = one file for both themes. */
+  captions?: boolean | string
+  captionsLabel?: string
+  captionsLang?: string
+  /** Folder the files live in. Default /media (full tours live in /media/tours). */
+  base?: string
+  /** Above-the-fold use: fetch the poster eagerly with high priority. */
+  eager?: boolean
+  /**
+   * Default posters only: the pixel widths of /media/<name>-<theme>-sm.webp
+   * and /media/<name>-<theme>.webp, offered as a srcset with `sizes`.
+   */
+  posterWidths?: [small: number, full: number]
+  /** How wide the box renders (the posters' `sizes`). */
+  sizes?: string
+  /** How media fills the box. Default cover. */
+  fit?: 'cover' | 'contain'
+  class?: string
+}
+
+const {
+  name,
+  label,
+  aspect = '16/9',
+  mode = 'loop',
+  poster,
+  captions = false,
+  captionsLabel = 'English',
+  captionsLang = 'en',
+  base = '/media',
+  eager = false,
+  posterWidths,
+  sizes = '100vw',
+  fit = 'cover',
+  class: className,
+} = Astro.props
+
+const dir = base.replace(/\/$/, '')
+const file = (theme: 'light' | 'dark', ext: string) => `${dir}/${name}-${theme}.${ext}`
+const url = (s: Src) => (typeof s === 'string' ? s : s.src)
+
+const posters =
+  poster === false
+    ? null
+    : poster === undefined
+      ? { light: file('light', 'webp'), dark: file('dark', 'webp') }
+      : typeof poster === 'object' && 'light' in poster
+        ? { light: url(poster.light), dark: url(poster.dark) }
+        : { light: url(poster), dark: url(poster) }
+
+const captionSrc =
+  captions === false
+    ? null
+    : captions === true
+      ? { light: file('light', 'vtt'), dark: file('dark', 'vtt') }
+      : { light: captions, dark: captions }
+
+const srcsetFor = (theme: 'light' | 'dark') =>
+  poster === undefined && posterWidths
+    ? `${dir}/${name}-${theme}-sm.webp ${posterWidths[0]}w, ${file(theme, 'webp')} ${posterWidths[1]}w`
+    : undefined
+
+const loop = mode === 'loop'
+/** Runs where it stands (right after the two posters): eager-load the visible one. */
+const promotePoster = promoteVisibleImg('data-slot', 'poster-')
+const fitClass = fit === 'contain' ? 'object-contain' : 'object-cover'
+---
+
+<div
+  data-themed-video
+  data-mode={mode}
+  data-state="idle"
+  data-src-light={file('light', 'mp4')}
+  data-src-dark={file('dark', 'mp4')}
+  data-poster-light={posters?.light}
+  data-poster-dark={posters?.dark}
+  data-captions-light={captionSrc?.light}
+  data-captions-dark={captionSrc?.dark}
+  role="group"
+  aria-label={label}
+  class={cn('group/tv relative isolate overflow-hidden bg-muted', className)}
+  style={`aspect-ratio: ${aspect}`}
+>
+  {
+    posters && (
+      <>
+        <img
+          data-slot="poster-light"
+          src={posters.light}
+          srcset={srcsetFor('light')}
+          sizes={srcsetFor('light') && sizes}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          onerror="this.style.visibility='hidden'"
+          class={cn('absolute inset-0 size-full dark:hidden', fitClass)}
+        />
+        <img
+          data-slot="poster-dark"
+          src={posters.dark}
+          srcset={srcsetFor('dark')}
+          sizes={srcsetFor('dark') && sizes}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          onerror="this.style.visibility='hidden'"
+          class={cn('absolute inset-0 hidden size-full dark:block', fitClass)}
+        />
+        {
+          // Above the fold: promote only the poster of the theme being shown
+          // (both are lazy, and the hidden one is display:none, so it never loads).
+          eager && (
+            <script is:inline set:html={promotePoster} />
+          )
+        }
+      </>
+    )
+  }
+
+  <video
+    data-slot="video"
+    aria-label={label}
+    preload="none"
+    playsinline
+    muted={loop}
+    loop={loop}
+    controls={!loop}
+    disablepictureinpicture={loop}
+    class={cn(
+      'absolute inset-0 size-full transition-opacity duration-300 group-data-[state=error]/tv:invisible',
+      fitClass,
+      // Loop mode: stay transparent (poster shows through) until a frame is decoded.
+      loop && 'opacity-0 group-data-loaded/tv:opacity-100'
+    )}
+  >
+    {
+      captionSrc && (
+        <track kind="captions" src={captionSrc.dark} srclang={captionsLang} label={captionsLabel} default />
+      )
+    }
+  </video>
+
+  {
+    loop && (
+      <button
+        type="button"
+        data-tv-toggle
+        data-slot="toggle"
+        aria-label="Play video"
+        class={cn(
+          'absolute right-3 bottom-3 z-10 inline-flex size-10 items-center justify-center rounded-full bg-background/80 text-foreground shadow-sm backdrop-blur-sm',
+          'focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none',
+          // While playing, only show on hover/focus; hidden when nothing can play.
+          'group-data-[state=playing]/tv:opacity-0 group-data-[state=playing]/tv:group-hover/tv:opacity-100 group-data-[state=playing]/tv:focus-visible:opacity-100',
+          'group-data-[state=error]/tv:hidden',
+          // No JS, nothing to toggle.
+          '[html:not(.js)_&]:hidden'
+        )}
+      >
+        <Icon name="play" data-slot="icon-play" class="size-4 translate-x-px group-data-[state=playing]/tv:hidden" />
+        <svg data-slot="icon-pause" class="hidden size-4 group-data-[state=playing]/tv:block" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <rect x="6" y="4.5" width="4" height="15" rx="1" />
+          <rect x="14" y="4.5" width="4" height="15" rx="1" />
+        </svg>
+      </button>
+    )
+  }
+</div>
+
+<script>
+  import { initThemedVideos } from '@/lib/themed-video'
+  initThemedVideos()
+</script>

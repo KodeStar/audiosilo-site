@@ -1,0 +1,81 @@
+---
+/**
+ * The three sizes in one frame: desktop window centre stage, the iPad (in
+ * landscape) in front at the lower left, the phone in front on the right.
+ * Loops from src/data/media.ts; each device takes its loop's own ratio.
+ */
+import Device from '@/components/media/Device.astro'
+import { loops } from '@/data/media'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  class?: string
+  eager?: boolean
+}
+const { class: className, eager = false } = Astro.props
+---
+
+<div class={cn('trio relative', className)} role="group" aria-label="The AudioSilo player on a desktop browser, an iPad and a phone">
+  <div class="trio-glow" aria-hidden="true"></div>
+  <div class="trio-window">
+    <Device kind="window" class="w-full" loop={loops.playerDesktop} eager={eager} />
+  </div>
+  <div class="trio-tablet float-slower">
+    <Device kind="tablet" class="w-full" loop={loops.playerIpad} />
+  </div>
+  <div class="trio-phone float-slow">
+    <Device kind="phone" class="w-full" loop={loops.playerMobile} eager={eager} />
+  </div>
+</div>
+
+<style>
+  .trio {
+    aspect-ratio: 16 / 8.6;
+    perspective: 2400px;
+  }
+  .trio-glow {
+    position: absolute;
+    inset: 10% 15%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in oklab, var(--w1, #db2777) 60%, transparent), transparent);
+    filter: blur(50px);
+    opacity: 0.5;
+  }
+  .trio-window {
+    position: absolute;
+    left: 17%;
+    top: 0;
+    width: 66%;
+    transform: rotateX(4deg);
+    transform-origin: 50% 100%;
+  }
+  .trio-tablet {
+    position: absolute;
+    left: 0;
+    bottom: 1%;
+    width: 31%;
+  }
+  .trio-phone {
+    position: absolute;
+    right: 3%;
+    bottom: -2%;
+    width: 13.5%;
+  }
+  @media (width < 768px) {
+    .trio {
+      aspect-ratio: 16 / 12;
+    }
+    .trio-window {
+      left: 0;
+      width: 88%;
+    }
+    .trio-tablet {
+      display: none;
+    }
+    .trio-phone {
+      right: 0;
+      bottom: 0;
+      width: 30%;
+    }
+  }
+</style>

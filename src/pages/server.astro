@@ -1,0 +1,282 @@
+---
+import { Image } from 'astro:assets'
+import Base from '@/layouts/Base.astro'
+import Wash from '@/components/site/Wash.astro'
+import Arrow from '@/components/site/Arrow.astro'
+import ChapterList from '@/components/site/ChapterList.astro'
+import FeatureRow from '@/components/site/FeatureRow.astro'
+import Points from '@/components/site/Points.astro'
+import DemoEnd from '@/components/site/DemoEnd.astro'
+import InstallTabs from '@/components/site/InstallTabs.tsx'
+import CodeBlock from '@/components/CodeBlock.astro'
+import Device from '@/components/media/Device.astro'
+import MediaThemeSwitch from '@/components/theme/MediaThemeSwitch.astro'
+import TourButton from '@/components/media/TourButton.astro'
+import VersionBadge from '@/components/VersionBadge.tsx'
+import { loops, stills, type Still } from '@/data/media'
+import { firstRunBanner } from '@/data/install'
+import { GITHUB_SERVER_RELEASES_URL, DOCS_URL } from '@/data/links'
+import { demoLibrary } from '@/data/demo'
+import { SUPPORT_CARD_LIVE } from '@/data/status'
+import { chapterTitle } from '@/lib/chapters'
+
+const chapters = [
+  { id: 'top', title: 'Served from home' },
+  { id: 'install', title: 'Install' },
+  { id: 'first-run', title: 'First run' },
+  { id: 'files', title: 'Your files' },
+  { id: 'people', title: 'Invites and sharing' },
+  { id: 'security', title: 'Security defaults' },
+  { id: 'console', title: 'The admin console' },
+  { id: 'demo', title: 'Try the demo' },
+]
+const chapter = chapterTitle(chapters)
+
+const gallery: { still: Still; title: string; body: string; span?: boolean }[] = [
+  { still: stills.serverCompare, title: 'Compare, field by field', body: 'Each value on your server is marked File tag or Path, next to the community one. Take only the fields you tick: here a book tagged with its title and author swapped gets its real title, author, narrator, series and cover. Your own edits are never overwritten unless you tick them.', span: true },
+  { still: stills.serverMatch, title: 'Match', body: 'Match reads the folder names as well as the tags, so the right book comes first, with its cover, and each edition\'s length is checked against your files.' },
+  { still: stills.serverHealth, title: 'Health', body: 'Missing covers, unmatched books, unreadable files, duplicates and offline libraries, each with a fix. Match automatically sorts the confident matches from the ones to review.' },
+  { still: stills.serverSeries, title: 'Series', body: 'Each series in order on a shelf. With community metadata on, the books you don\'t have show up as gaps.' },
+  { still: stills.serverActivity, title: 'Activity', body: 'Hours per day by person, the year day by day, and when the household listens, plus who is listening right now.' },
+  { still: stills.serverYear, title: 'Year in listening', body: 'The whole household\'s year, on its own page.' },
+  { still: stills.serverPeople, title: 'People', body: 'Everyone in the house, what they are listening to and their devices, one page each.' },
+]
+
+const security = [
+  ['Passwords', 'Hashed with argon2id. There is never a default password.'],
+  ['Tokens', 'Random 256-bit, stored only as SHA-256 hashes, revocable per device.'],
+  ['Lockout', '10 failed sign-ins in 15 minutes locks out that address. Requests are rate limited too.'],
+  ['TLS', 'Self-signed out of the box, automatic Let\'s Encrypt, or off behind your own proxy.'],
+  ['Secrets', 'Pairing codes ride in the URL fragment, so they never reach a server log.'],
+  ['Outbound', 'An update check once a day and community metadata lookups. Each has one switch.'],
+]
+---
+
+<Base
+  hasHero
+  title="AudioSilo Server - your audiobooks, served from home"
+  description="AudioSilo Server: one Docker container or a single binary. It indexes, streams and keeps everyone's place, never writes to your files, and comes with an admin console."
+>
+  <!-- Hero -->
+  <section id="top" data-chapter={chapter('top')} class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-16 sm:pt-[calc(var(--header-h)+5rem)] sm:pb-24">
+    <Wash palette="console" />
+    <div class="shell relative z-10">
+      <div class="grid gap-8">
+        <div class="max-w-5xl">
+          <p class="t-eyebrow reveal">The server &middot; <VersionBadge client:settled /></p>
+          <h1 class="t-hero reveal reveal-d1 mt-5">Your audiobooks, served from home.</h1>
+          <p class="t-lede reveal reveal-d2 mt-6 max-w-2xl text-foreground/75">
+            One Docker container or a single binary. Point it at your books folder and it indexes,
+            streams and keeps everyone's place, and it never writes to your files. Open source under
+            AGPLv3.
+          </p>
+        </div>
+        <div class="reveal reveal-d3 flex flex-wrap gap-3">
+          <TourButton tour="server" variant="default" />
+          <a href="#install" class="group inline-flex h-12 items-center gap-2 rounded-full px-5 text-[0.9375rem] font-semibold hover:bg-foreground/[0.06]">Install it <Arrow /></a>
+        </div>
+      </div>
+      <Device kind="cinema" class="reveal mt-14 sm:mt-20" loop={loops.server} eager />
+      <div class="reveal mt-8 flex justify-center"><MediaThemeSwitch /></div>
+    </div>
+  </section>
+
+  <div class="shell flex gap-12 xl:gap-16">
+    <ChapterList title="The server" chapters={chapters} />
+    <div class="min-w-0 flex-1">
+      <section id="install" data-chapter={chapter('install')} class="scroll-mt-24 py-14 sm:py-20">
+        <div class="reveal max-w-2xl">
+          <p class="t-eyebrow mb-3">Install</p>
+          <h2 class="t-title">One command, or one file.</h2>
+        </div>
+        <div class="reveal mt-4 grid gap-x-12 gap-y-4 text-[1.0625rem] leading-relaxed text-foreground/80 xl:grid-cols-2">
+          <p>
+            The Docker image bundles the server, the web player and ffmpeg, for amd64 and arm64.
+            Mount your books read-only: the server never needs to write to them.
+          </p>
+          <p>
+            Prefer no Docker? Native builds for Linux, macOS and Windows embed the web player and
+            fetch ffmpeg on first use. Linux also gets .deb and .rpm packages with a systemd unit.
+          </p>
+        </div>
+        <div class="reveal reveal-d1 mt-8 min-w-0">
+          <InstallTabs client:visible />
+        </div>
+        <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold">
+          <a href="/download" class="group inline-flex items-center gap-1.5">All downloads <Arrow /></a>
+          <a href={GITHUB_SERVER_RELEASES_URL} target="_blank" rel="noopener" class="link">GitHub Releases</a>
+        </div>
+      </section>
+
+      <FeatureRow id="first-run" chapter={chapter('first-run')} eyebrow="First run" title="No default password. Ever." split="wide" textFirst>
+        <div slot="media">
+          <CodeBlock code={firstRunBanner} filename="docker compose logs" />
+        </div>
+        <p>
+          On its very first start the server makes an admin account and prints a random password and
+          an auth code, once. Only their hashes are kept, so they can't be shown again.
+        </p>
+        <p>
+          Or start it with <span class="ic">--setup</span> for a browser wizard; its one-time link
+          switches off the moment an admin exists. Then add your books folder in the console and
+          the scanner indexes it: details, covers and lengths.
+        </p>
+      </FeatureRow>
+
+      <FeatureRow id="files" chapter={chapter('files')} eyebrow="Filesystem first" title="Your files are the truth." flip split="even">
+        <div slot="media" class="relative isolate overflow-hidden rounded-[28px] p-5 sm:p-8">
+          <Wash palette="treasure" edge="none" />
+          <div class="glass relative z-10 rounded-3xl p-5 font-mono text-[12.5px] leading-[1.9] shadow-[var(--shadow-overlay)] sm:p-6 sm:text-[13px]">
+            <p class="text-muted-foreground">/srv/audiobooks <span class="rounded bg-foreground/10 px-1.5 py-0.5 text-[11px] text-foreground">read-only</span></p>
+            <p class="pl-4">James S. A. Corey/</p>
+            <p class="pl-8">The Expanse/</p>
+            <p class="pl-12">01 - Leviathan Wakes/</p>
+            <p class="pl-12">02 - Caliban's War/</p>
+            <p class="pl-12">03 - Abaddon's Gate/</p>
+            <p class="pl-16 text-muted-foreground">CD1/ &nbsp;CD2/ &nbsp;<span class="text-foreground">&rarr; one book</span></p>
+            <div class="mt-4 border-t border-border pt-4 font-sans text-[13px] leading-relaxed">
+              <p class="font-semibold">In the server's database</p>
+              <p class="text-muted-foreground">Your edits, custom covers, matches, ignore rules, everyone's progress and bookmarks.</p>
+            </div>
+          </div>
+        </div>
+        <p>
+          The database is an index you could rebuild. Progress, bookmarks and shares follow the path,
+          and a fingerprint follows a book when you rename or move it, so listening history goes with
+          it.
+        </p>
+        <Points
+          items={[
+            'Edits are overrides kept by the server; a rescan keeps them and Revert brings back what the scan found',
+            'Folder shapes detected for you, disc folders joined into one book, ignore rules per library',
+            'Book details from tags first, or from folder names first, per library',
+            'Indexes .m4b .m4a .mp4 .mp3 .flac .ogg .opus; the web player gets an MP3 version of anything a browser can\'t play',
+            'Scheduled scans, and a scan never empties your library if a network share drops',
+          ]}
+        />
+      </FeatureRow>
+
+      <FeatureRow id="people" chapter={chapter('people')} eyebrow="People" title="Invite the house with a QR code." split="wide">
+        <div slot="media">
+          <Device kind="window" address="your-server/admin" class="w-full" still={stills.serverInvite} widths={[700, 1400]} sizes="(min-width: 1280px) 38rem, 92vw" />
+        </div>
+        <p>
+          One dialog makes the account, grants what they can open and shows an invite link and QR
+          code. Scan it and the app or the web player opens, signed in. No email, no password needed.
+        </p>
+        <Points
+          items={[
+            'Shares are named sets of folders: the whole library, an author, a series or one book',
+            'Someone new sees nothing until you share it; search and playback follow the same rules',
+            'Everyone keeps their own progress, bookmarks and notes',
+            'See every device and sign out the one that went missing',
+            'Personal API keys for dashboards and home automation tiles',
+          ]}
+        />
+      </FeatureRow>
+
+      <section id="security" data-chapter={chapter('security')} class="scroll-mt-24 py-14 sm:py-20">
+        <div class="reveal max-w-2xl">
+          <p class="t-eyebrow mb-3">Security defaults</p>
+          <h2 class="t-title">Built to be left on the internet.</h2>
+          <p class="mt-4 text-[1.0625rem] leading-relaxed text-foreground/80">
+            That's the design goal, not an audit. Here is what it means in practice.
+          </p>
+        </div>
+        <dl class="mt-10 grid gap-px overflow-hidden rounded-3xl bg-border shadow-[inset_0_0_0_1px_var(--border)] sm:grid-cols-2 xl:grid-cols-3">
+          {
+            security.map(([t, d], i) => (
+              <div class:list={['reveal bg-background p-6', i % 3 === 1 && 'reveal-d1', i % 3 === 2 && 'reveal-d2']}>
+                <dt class="font-display text-lg font-semibold tracking-[-0.02em]">{t}</dt>
+                <dd class="mt-2 text-[0.9375rem] leading-relaxed text-muted-foreground">{d}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section id="console" data-chapter={chapter('console')} class="scroll-mt-24 py-14 sm:py-20">
+        <div class="grid items-end gap-6 lg:grid-cols-[1fr_auto]">
+          <div class="reveal max-w-2xl">
+            <p class="t-eyebrow mb-3">The admin console</p>
+            <h2 class="t-title">Everything about your library, in one place.</h2>
+            <p class="mt-4 text-[1.0625rem] leading-relaxed text-foreground/80">
+              At <span class="ic">/admin</span> on your server, in light or dark and six languages. It
+              isn't in the public demo, so the tour is the way to see it move.
+            </p>
+          </div>
+          <div class="reveal reveal-d1"><TourButton tour="server" variant="outline" /></div>
+        </div>
+
+        <!-- Light and dark, one image split down the diagonal. -->
+        <figure class="reveal mt-10">
+          <Device kind="window" address="your-server/admin" class="w-full" aspect={`${stills.serverOverview.src.dark.width}/${stills.serverOverview.src.dark.height}`}>
+            <div class="device-media">
+              <Image src={stills.serverOverview.src.light} alt="The admin console overview in the light theme" widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" format="webp" quality={82} class="absolute inset-0 size-full object-cover" loading="lazy" />
+              <Image src={stills.serverOverview.src.dark} alt="The same overview in the dark theme" widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" format="webp" quality={82} class="theme-split-dark absolute inset-0 size-full object-cover" loading="lazy" />
+              <span class="theme-split-line" aria-hidden="true"></span>
+            </div>
+          </Device>
+          <figcaption class="mt-4 text-sm text-muted-foreground">The overview: who is listening now, totals, recent listening and what needs attention. Light, dark or your system's.</figcaption>
+        </figure>
+
+        <div class="mt-10 grid gap-x-6 gap-y-10 lg:grid-cols-2">
+          {
+            gallery.map((g, i) => (
+              <figure class:list={['reveal', g.span && 'lg:col-span-2', i % 2 === 0 && !g.span && 'reveal-d1']}>
+                <Device kind="window" address="your-server/admin" class="w-full" still={g.still} widths={g.span ? [800, 1600] : [600, 1200]} sizes={g.span ? '(min-width: 1280px) 60rem, 92vw' : '(min-width: 1024px) 30rem, 92vw'} />
+                <figcaption class="mt-4">
+                  <span class="font-semibold">{g.title}.</span>
+                  <span class="text-muted-foreground"> {g.body}</span>
+                </figcaption>
+              </figure>
+            ))
+          }
+        </div>
+
+        <div class="reveal mt-12 grid gap-6 border-t border-border pt-8 text-sm sm:grid-cols-3">
+          <div>
+            <p class="font-semibold">Backups and updates</p>
+            <p class="mt-1 text-muted-foreground">A snapshot every night at 03:00, seven kept, on by default. Download or restore from the console.</p>
+          </div>
+          <div>
+            <p class="font-semibold">Notifications, logs, audit</p>
+            <p class="mt-1 text-muted-foreground">Webhook, ntfy or Discord for new books, failed scans and more. A live log with secrets redacted, and an audit log.</p>
+          </div>
+          <div>
+            <p class="font-semibold">Coming from Audiobookshelf?</p>
+            <p class="mt-1 text-muted-foreground">Import listening history per person, review it, apply it, undo it. Audiobookshelf is only read.</p>
+          </div>
+        </div>
+        <p class="reveal mt-12 rounded-2xl bg-muted/70 px-5 py-4 text-sm text-muted-foreground shadow-[inset_0_0_0_1px_var(--border)]">
+          AudioSilo is free; sponsors keep it going. {SUPPORT_CARD_LIVE ? 'After a month or so, the admin console shows' : 'In a coming server update, after a month or so, the admin console shows'}
+          its admins one small card about sponsoring on the Overview: <em>I've donated</em> hides it for good on that
+          server, <em>Not now</em> for six months. It's never in the player, and giving unlocks
+          nothing. <a href="/pricing" class="link font-semibold">How AudioSilo is paid for</a>.
+          Full reference in the <a href={DOCS_URL} target="_blank" rel="noopener" class="link">documentation</a>.
+        </p>
+      </section>
+    </div>
+  </div>
+
+  <DemoEnd
+    chapter={chapter('demo')}
+    title="Try the player your server ships."
+    body={`The demo is a real AudioSilo server running the same web player, with a throwaway account made for you and ${demoLibrary.shelf} matched to community metadata.`}
+    note="Demo visitors don't get the admin console; the tour above shows it."
+    palette="console"
+  />
+</Base>
+
+<style>
+  .theme-split-dark {
+    clip-path: polygon(58% 0, 100% 0, 100% 100%, 42% 100%);
+  }
+  .theme-split-line {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    clip-path: polygon(57.8% 0, 58.2% 0, 42.2% 100%, 41.8% 100%);
+    background: rgb(255 255 255 / 0.75);
+  }
+</style>

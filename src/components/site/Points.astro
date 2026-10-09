@@ -1,0 +1,18 @@
+---
+/** A short list of specifics under a caption: small ink ticks, tight lines. */
+interface Props {
+  items: string[]
+}
+const { items } = Astro.props
+---
+
+<ul class="space-y-2 text-[0.9375rem] text-foreground/80">
+  {
+    items.map((t) => (
+      <li class="flex gap-2.5">
+        <svg class="mt-[5px] size-3.5 shrink-0 text-foreground/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17 19 7" /></svg>
+        <span set:html={t} />
+      </li>
+    ))
+  }
+</ul>

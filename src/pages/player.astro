@@ -1,0 +1,207 @@
+---
+import Base from '@/layouts/Base.astro'
+import Wash from '@/components/site/Wash.astro'
+import Trio from '@/components/site/Trio.astro'
+import ChapterList from '@/components/site/ChapterList.astro'
+import FeatureRow from '@/components/site/FeatureRow.astro'
+import Points from '@/components/site/Points.astro'
+import DemoEnd from '@/components/site/DemoEnd.astro'
+import Device from '@/components/media/Device.astro'
+import MediaThemeSwitch from '@/components/theme/MediaThemeSwitch.astro'
+import TourButton from '@/components/media/TourButton.astro'
+import AppCards from '@/components/site/AppCards.astro'
+import { stills } from '@/data/media'
+import { demoLibrary } from '@/data/demo'
+import { DEMO_URL } from '@/data/links'
+import { APPS_WITH_2, PLAYER_PLATFORMS, REDESIGN_WHERE } from '@/data/status'
+import { chapterTitle } from '@/lib/chapters'
+
+const chapters = [
+  { id: 'top', title: 'Every screen' },
+  { id: 'library', title: 'Your bookcase' },
+  { id: 'book', title: 'Who\'s who' },
+  { id: 'player', title: 'The full player' },
+  { id: 'notes', title: 'Up next and notes' },
+  { id: 'you', title: 'You and your year' },
+  { id: 'offline', title: 'Offline and away' },
+  { id: 'get-it', title: 'Get it' },
+  { id: 'demo', title: 'Try the demo' },
+]
+const chapter = chapterTitle(chapters)
+---
+
+<Base
+  hasHero
+  title="The AudioSilo player - one app, every screen"
+  description={`The AudioSilo audiobook player for ${PLAYER_PLATFORMS}: a household bookcase, a seek bar built for long books, spoiler-safe characters and recaps, a sleep timer that fades you out.`}
+>
+  <!-- Hero -->
+  <section id="top" data-chapter={chapter('top')} class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-16 sm:pt-[calc(var(--header-h)+5rem)] sm:pb-24">
+    <Wash palette="oz" />
+    <div class="shell relative z-10">
+      <div class="mx-auto max-w-4xl text-center">
+        <p class="t-eyebrow reveal">The player</p>
+        <h1 class="t-hero reveal reveal-d1 mt-5">Every book, right where you left it.</h1>
+        <p class="t-lede reveal reveal-d2 mx-auto mt-6 max-w-2xl text-foreground/75">
+          One app for {PLAYER_PLATFORMS}: a bookcase for the whole house, a seek bar built
+          for 30-hour books, and the details filled in by a community database.
+        </p>
+        <div class="reveal reveal-d3 mt-8 flex flex-wrap justify-center gap-2">
+          <TourButton tour="playerDesktop" label="Desktop tour" size="pill" />
+          <TourButton tour="playerIpad" label="iPad tour" size="pill" />
+          <TourButton tour="playerMobile" label="Phone tour" size="pill" />
+        </div>
+      </div>
+      <Trio class="reveal reveal-d2 mt-14 sm:mt-20" eager />
+      <div class="reveal mt-12 flex justify-center"><MediaThemeSwitch /></div>
+      <p class="reveal mx-auto mt-6 max-w-2xl text-center text-sm text-muted-foreground">{REDESIGN_WHERE}</p>
+    </div>
+  </section>
+
+  <div class="shell flex gap-12 xl:gap-16">
+    <ChapterList title="The player" chapters={chapters} />
+    <div class="min-w-0 flex-1">
+      <FeatureRow id="library" chapter={chapter('library')} eyebrow="Home and library" title="A bookcase for the whole house." split="wide">
+        <div slot="media" class="relative pr-[19%] pb-[12%]">
+          <Device kind="tablet" class="w-full" still={stills.tabletSeries} widths={[600, 1200]} sizes="(min-width: 1280px) 32rem, 76vw" />
+          <div class="absolute right-0 bottom-0 w-[27%]">
+            <Device kind="phone" class="w-full" still={stills.phoneHome} widths={[240, 400]} sizes="(min-width: 1280px) 11rem, 26vw" />
+          </div>
+        </div>
+        <p>
+          Home opens on the book you're on, tinted with its cover: the chapter, the time left at
+          your speed and the day you'll finish at your pace. A series is a row of spines in reading
+          order, and with community metadata on, the books you don't have stand among them as dashed
+          ghosts with their real titles.
+        </p>
+        <Points
+          items={[
+            'Smart shelves: Finish what you started, Short listens under 5 h, Added this week',
+            'Browse by book, author, series, narrator, collection or folder',
+            'Publication, chronological or recommended order, where the community knows them',
+            'Search finds characters too, but only the ones you have already met',
+          ]}
+        />
+      </FeatureRow>
+
+      <FeatureRow id="book" chapter={chapter('book')} eyebrow="The book page" title="Who's who, without the spoilers." flip split="tall">
+        <div slot="media" class="flex justify-center">
+          <Device kind="phone" class="w-[56%] max-w-[17rem]" still={stills.phoneCharacters} widths={[300, 560]} sizes="(min-width: 1280px) 17rem, 54vw" />
+        </div>
+        <p>
+          When listeners have written characters and recaps for a book, they appear on its page and
+          beside the player, gated by your position. Anything past where you are is counted, not
+          shown: "16 hidden to avoid spoilers". The whole-book summary waits behind a tap until you
+          finish.
+        </p>
+        <p>
+          Away for twelve days or more? <em>Previously on</em> picks up where you were and offers to
+          resume with 30 seconds of overlap.
+        </p>
+        <p class="text-sm text-muted-foreground">
+          Characters and recaps cover a growing number of books, about 3,000 so far. <a href="/metadata#community" class="link">Where they come from</a>
+        </p>
+      </FeatureRow>
+
+      <FeatureRow id="player" chapter={chapter('player')} eyebrow="The full player" title="A seek bar for 30-hour books." split="wide">
+        <div slot="media" class="flex justify-center">
+          <Device kind="tablet" class="w-full max-w-[40rem]" still={stills.tabletPlayer} widths={[600, 1200]} sizes="(min-width: 1280px) 38rem, 92vw" />
+        </div>
+        <p>
+          The seek bar works within the chapter, so even a long book gives you fine control. Under
+          it, a slim timeline of the whole book: chapters sized by length, bookmarks and notes pinned
+          on. Jump more than a minute and a "Back to 17:26:50" chip offers the way home.
+        </p>
+        <Points
+          items={[
+            'Speed from 0.5x to 2x in 0.05 steps, pitch-corrected and remembered per book',
+            'Time left at your speed everywhere, and the clock time the chapter ends',
+            'Sleep after minutes, a chapter or the book; minutes timers fade out over the last 30 seconds, and in the apps a shake restarts the timer',
+            'A "Fell asleep" bookmark, so you can jump back to where you drifted off',
+            'AirPlay, or the Cast picker, where your device offers it',
+          ]}
+        />
+      </FeatureRow>
+
+      <FeatureRow id="notes" chapter={chapter('notes')} eyebrow="Up next, bookmarks, Journal" title="Up next, and everything you noted." flip split="wide">
+        <div slot="media" class="relative pb-[14%] pl-[9%]">
+          <Device kind="window" class="w-full" still={stills.desktopUpnext} widths={[700, 1400]} sizes="(min-width: 1280px) 40rem, 84vw" />
+          <div class="absolute bottom-0 left-0 w-[24%] max-w-[10rem]">
+            <Device kind="phone" class="w-full" still={stills.phoneJournal} widths={[200, 400]} sizes="(min-width: 1280px) 10rem, 22vw" />
+          </div>
+        </div>
+        <p>
+          Up next is kept on your server, so the queue follows you from phone to laptop. Bookmarks
+          carry labels (Quote, Favourite, Re-listen, Funny, Question) and notes pin a thought to a
+          moment.
+        </p>
+        <p>
+          The Journal gathers them from every book on every server, with a diary of each day's
+          listening, and exports to Markdown or CSV.
+        </p>
+      </FeatureRow>
+
+      <FeatureRow id="you" chapter={chapter('you')} eyebrow="You" title="Your listening, kept by your server." split="even">
+        <div slot="media" class="flex items-end justify-center gap-4 sm:gap-6">
+          <Device kind="phone" class="w-[40%] max-w-[14rem]" still={stills.phoneStats} widths={[260, 480]} sizes="(min-width: 1280px) 14rem, 40vw" />
+          <Device kind="card" class="w-[40%] max-w-[14rem] -translate-y-8" still={stills.yearCard} widths={[260, 520]} sizes="(min-width: 1280px) 14rem, 40vw" />
+        </div>
+        <p>
+          Your week, your streak and a goal ring; a listening calendar, the hours of the day you
+          listen, your top authors and narrators. At the end of the year, up to eight story cards,
+          each one shareable as an image.
+        </p>
+        <p class="text-sm text-muted-foreground">Nothing leaves your server unless you share a card.</p>
+      </FeatureRow>
+
+      <FeatureRow id="offline" chapter={chapter('offline')} eyebrow="Offline, servers, addresses" title="On the train, at home, away." flip split="even">
+        <div slot="media" class="relative isolate overflow-hidden rounded-[28px] p-5 sm:p-8">
+          <Wash palette="treasure" edge="none" />
+          <div class="glass relative z-10 mx-auto max-w-sm rounded-3xl p-2 shadow-[var(--shadow-overlay)]">
+            <p class="t-eyebrow px-4 pt-3 pb-2">Downloads</p>
+            <dl class="divide-y divide-border text-sm">
+              <div class="flex items-center justify-between gap-4 px-4 py-3"><dt>Download automatically</dt><dd class="font-semibold">On Wi-Fi</dd></div>
+              <div class="flex items-center justify-between gap-4 px-4 py-3"><dt>Keep the next books ready</dt><dd class="font-semibold tabular-nums">2</dd></div>
+              <div class="flex items-center justify-between gap-4 px-4 py-3"><dt>Remove when finished</dt><dd class="font-semibold">On</dd></div>
+            </dl>
+            <p class="t-eyebrow px-4 pt-5 pb-2">Servers</p>
+            <ul class="divide-y divide-border text-sm">
+              <li class="flex items-center justify-between gap-4 px-4 py-3"><span>Home Library</span><span class="text-muted-foreground">Synced just now</span></li>
+              <li class="flex items-center justify-between gap-4 px-4 py-3"><span>Mum's books</span><span class="text-muted-foreground">Synced 7 min ago</span></li>
+            </ul>
+          </div>
+        </div>
+        <p>
+          Download a book, or let the app keep the next ones ready from Up next and the series,
+          always leaving storage free. It works in the web player too, over https. Progress made
+          offline syncs when you're back, and a book never quietly restarts from zero.
+        </p>
+        <p>
+          Sign in to more than one server and Home, search and favourites merge them.
+          {APPS_WITH_2} switch between your server's home and public address on their own.
+        </p>
+      </FeatureRow>
+
+      <section id="get-it" data-chapter={chapter('get-it')} class="scroll-mt-24 py-14 sm:py-20">
+        <h2 class="t-display reveal max-w-2xl">Where to get it.</h2>
+        <div class="mt-10">
+          <AppCards webTitle="In your browser, now">
+            <p class="mt-3 text-[0.9375rem] text-foreground/80">
+              Every AudioSilo server serves the player at <span class="ic">/web</span>. Add it to your
+              home screen and it behaves like an app. Safari 16.4, Chrome 111, Firefox 128 or newer.
+            </p>
+            <a href={DEMO_URL} target="_blank" rel="noopener" class="link mt-auto inline-block w-fit pt-5 text-sm font-semibold">Open the demo</a>
+          </AppCards>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <DemoEnd
+    chapter={chapter('demo')}
+    title="Hear it for yourself."
+    body={`The demo runs the same web player your server ships, with ${demoLibrary.shelf} to try it on, ${demoLibrary.hours} of listening: ${demoLibrary.highlights} among them.`}
+    note={demoLibrary.metadataNote ?? undefined}
+    palette="oz"
+  />
+</Base>

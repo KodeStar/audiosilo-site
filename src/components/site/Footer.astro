@@ -1,0 +1,87 @@
+---
+import {
+  DEMO_URL,
+  DISCORD_URL,
+  DOCS_URL,
+  GITHUB_SERVER_RELEASES_URL,
+  GITHUB_SERVER_URL,
+  META_URL,
+} from '@/data/links'
+import Logo from '@/components/Logo.astro'
+import { APPS_BETA, BETA_LABEL, BETA_NOTE, BETA_URL } from '@/data/status'
+import { primaryNav } from '@/data/nav'
+
+const columns = [
+  {
+    title: 'AudioSilo',
+    links: [...primaryNav, { label: 'Download', href: '/download' }],
+  },
+  {
+    title: 'Try and learn',
+    links: [
+      { label: 'Live demo', href: DEMO_URL, external: true },
+      { label: 'Documentation', href: DOCS_URL, external: true },
+      { label: 'Server releases', href: GITHUB_SERVER_RELEASES_URL, external: true },
+      { label: 'meta.audiosilo.app', href: META_URL, external: true },
+    ],
+  },
+  {
+    title: 'Community',
+    links: [
+      { label: 'Discord', href: DISCORD_URL, external: true },
+      { label: 'Server on GitHub', href: GITHUB_SERVER_URL, external: true },
+      { label: 'Contribute metadata', href: `${META_URL}/contribute`, external: true },
+      { label: 'Privacy', href: '/privacy' },
+    ],
+  },
+]
+---
+
+<footer class="relative mt-auto overflow-hidden border-t border-border">
+  <div class="shell grid gap-12 py-14 md:grid-cols-[1.2fr_2fr] md:py-20">
+    <div class="max-w-xs">
+      <a href="/" class="flex items-center gap-2.5" aria-label="AudioSilo home">
+        <Logo class="w-8 shrink-0" />
+        <span class="font-display text-xl font-bold tracking-[-0.035em]">AudioSilo</span>
+      </a>
+      <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
+        Your audiobooks on your own server, with a player for every screen. Free, with no account
+        anywhere but your own.
+      </p>
+      {
+        APPS_BETA && (
+          <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
+            {BETA_NOTE}{' '}
+            <a href={BETA_URL} target="_blank" rel="noopener" class="link font-semibold text-foreground">{BETA_LABEL}</a>
+          </p>
+        )
+      }
+    </div>
+    <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
+      {
+        columns.map((col) => (
+          <div>
+            <h2 class="t-eyebrow mb-4">{col.title}</h2>
+            <ul class="space-y-2.5 text-[0.9375rem]">
+              {col.links.map((l) => (
+                <li>
+                  <a
+                    href={l.href}
+                    class="text-foreground/80 transition-colors hover:text-foreground"
+                    {...('external' in l && l.external ? { target: '_blank', rel: 'noopener' } : {})}
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <div class="shell flex flex-col gap-2 border-t border-border py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+    <p>The server, the metadata tooling and the sidecars tool are open source under AGPLv3.</p>
+    <p>&copy; 2026 KodeStar</p>
+  </div>
+</footer>

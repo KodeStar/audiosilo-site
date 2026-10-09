@@ -1,115 +1,260 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
+/* shadcn's Base UI helpers: data-open / data-closed / data-checked ... variants
+   and the accordion keyframes the base-nova components rely on. */
+@import 'shadcn/tailwind.css';
+
+/* =========================================================================
+   Direction B - "After Hours".
+   Stacks tokens (the player's design system) on an immersive, dark-first
+   canvas: cover-colour washes, the bar-style seek bar, deep ink. Light is
+   porcelain with the same washes, pastel. See docs/DESIGN.md.
+   ========================================================================= */
+
+/* Class-based dark mode: `.dark` on <html> is set by the no-flash script in
+   Base.astro (from localStorage 'theme'; dark when nothing is stored). */
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* -------------------------------------------------------------------------
-   Design tokens (2026-07 redesign). Dark-only, mirrors the product palette.
-   See docs/DESIGN.md - do not invent new brand colours here.
+   Tokens: Stacks section 3, verbatim where they exist, plus the site's own
+   wash/glow/seek tokens.
    ------------------------------------------------------------------------- */
-@theme {
-  /* Layered navy surfaces + hairline edge (the app's dark grays). */
-  --color-deep: #0b111b; /* page background (one step darker than the app) */
-  --color-surface: #161f2c; /* cards, panels (app gray-860) */
-  --color-raised: #1a2331; /* raised cards, code blocks (app gray-840) */
-  --color-edge: #2c3340; /* hairline borders (app gray-750) */
+:root {
+  --radius: 14px;
 
-  /* Text ramp. */
-  --color-hi: #f3f4f6; /* headings (gray-100) */
-  --color-body: #d1d5db; /* body (gray-300) */
-  --color-dim: #9ca3af; /* captions, meta (gray-400) */
+  --background: #f5f7fa;
+  --foreground: #121c36;
+  --card: #ffffff;
+  --card-foreground: #121c36;
+  --popover: #ffffff;
+  --popover-foreground: #121c36;
+  --primary: #15203d;
+  --primary-foreground: #f5f7fa;
+  --secondary: #eaedf3;
+  --secondary-foreground: #18244a;
+  --muted: #eef1f5;
+  --muted-foreground: #5b6680;
+  --subtle-foreground: #737e95;
+  --accent: #e8ecf3;
+  --accent-foreground: #121c36;
+  --destructive: #c42b3c;
+  --border: #e0e5ed;
+  --border-strong: #cdd4df;
+  --input: #d4dae4;
+  --ring: #db2777;
 
-  /* "Available now" only. */
-  --color-success: #22c55e;
+  --brand: #db2777;
+  --brand-foreground: #ffffff;
+  --brand-soft: #fce7f1;
+  --brand-ink: #a3195a;
 
-  /* Pink is THE accent. Pin the scale to the product brand (#db2777) so every
-     existing `pink-*` utility renders the brand colour, not Tailwind v4's
-     shifted oklch pinks. primary = pink-600, primary-bright = pink-500. */
-  --color-pink-50: #fdf2f8;
-  --color-pink-100: #fce7f3;
-  --color-pink-200: #fbcfe8;
-  --color-pink-300: #f9a8d4;
-  --color-pink-400: #f472b6;
-  --color-pink-500: #ec4899;
-  --color-pink-600: #db2777;
-  --color-pink-700: #be185d;
-  --color-pink-800: #9d174d;
-  --color-pink-900: #831843;
+  --success: #0d7f5a;
+  --success-soft: #e1f5ec;
+  --warning: #a86206;
+  --info: #2c56c9;
+  --community: #6a3fd4;
+  --community-soft: #efe9fd;
 
-  /* One custom colour carried over from the old tailwind.config.js. */
-  --color-gray-150: #eeedf2;
+  --chart-1: #db2777;
+  --chart-2: #3b5bdb;
+  --chart-3: #0d9488;
+  --chart-4: #d97706;
+  --chart-5: #7c3aed;
+
+  --topbar: rgb(245 247 250 / 0.78);
+  --glass: rgb(255 255 255 / 0.66);
+  --glass-strong: rgb(255 255 255 / 0.86);
+  --glass-border: rgb(18 28 54 / 0.09);
+  --overlay: rgb(14 20 38 / 0.38);
+
+  /* Device bezels are hardware: dark in both themes. */
+  --bezel: #0b1020;
+  --bezel-edge: #2a3350;
+
+  /* Wash: blob opacity and the strength of the page-coloured fade at the
+     section edges. Light washes are pastel (mixed toward white). */
+  --wash-o: 0.55;
+  --wash-mix: 46%;
+  --grain-o: 0.035;
+
+  --shadow-cover:
+    0 1px 1px rgb(18 28 54 / 0.1), 0 4px 8px -2px rgb(18 28 54 / 0.14),
+    0 16px 28px -10px rgb(18 28 54 / 0.3);
+  --shadow-overlay: 0 24px 64px -16px rgb(14 22 48 / 0.3), 0 2px 6px rgb(14 22 48 / 0.08);
+  --shadow-device:
+    0 2px 4px rgb(14 22 48 / 0.08), 0 30px 60px -20px rgb(14 22 48 / 0.35),
+    0 60px 120px -40px var(--glow, rgb(14 22 48 / 0.25));
+
+  --font-display: 'Bricolage Grotesque Variable', 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-text: 'Figtree Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-code: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.36, 0.64, 1);
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 320ms;
+  --dur-4: 520ms;
+
+  --header-h: 4rem;
 }
 
-/* Replicate the old Tailwind v2 `container` (center: true) under v4, where the
-   container utility no longer centres by default. */
-@utility container {
-  width: 100%;
-  margin-inline: auto;
-  padding-inline: 1rem;
-  @media (width >= 640px) {
-    max-width: 640px;
-  }
-  @media (width >= 768px) {
-    max-width: 768px;
-  }
-  @media (width >= 1024px) {
-    max-width: 1024px;
-  }
-  @media (width >= 1280px) {
-    max-width: 1280px;
-  }
-  @media (width >= 1536px) {
-    max-width: 1536px;
-  }
+.dark,
+:root[data-theme='dark'],
+.stage {
+  --background: #0a0f1e;
+  --foreground: #e7ebf4;
+  --card: #10172b;
+  --card-foreground: #e7ebf4;
+  --popover: #131b31;
+  --popover-foreground: #e7ebf4;
+  --primary: #eef1f8;
+  --primary-foreground: #0a0f1e;
+  --secondary: #1a2340;
+  --secondary-foreground: #dfe5f2;
+  --muted: #151d34;
+  --muted-foreground: #9aa5bd;
+  --subtle-foreground: #7b87a1;
+  --accent: #1a2340;
+  --accent-foreground: #e7ebf4;
+  --brand: #ec4f95;
+  --brand-foreground: #ffffff;
+  --brand-soft: #3a1530;
+  --brand-ink: #f78bbb;
+  --destructive: #f0606e;
+  --success: #3cc994;
+  --success-soft: #0f2e26;
+  --warning: #f0b04d;
+  --info: #7d9bf2;
+  --community: #b59cff;
+  --community-soft: #251b45;
+  --border: #1d2640;
+  --border-strong: #2a3555;
+  --input: #283252;
+  --ring: #ec4f95;
+  --chart-1: #e4458b;
+  --chart-2: #6680ec;
+  --chart-3: #17a093;
+  --chart-4: #cc7f16;
+  --chart-5: #8f72f2;
+
+  --topbar: rgb(10 15 30 / 0.72);
+  --glass: rgb(22 30 54 / 0.62);
+  --glass-strong: rgb(16 23 43 / 0.88);
+  --glass-border: rgb(255 255 255 / 0.08);
+  --overlay: rgb(3 6 14 / 0.62);
+
+  --wash-o: 0.62;
+  --wash-mix: 100%;
+  --grain-o: 0.06;
+
+  --shadow-cover:
+    0 1px 1px rgb(0 0 0 / 0.4), 0 8px 16px -4px rgb(0 0 0 / 0.55),
+    0 18px 40px -12px var(--glow, rgb(236 79 149 / 0.18));
+  --shadow-overlay: 0 30px 80px -10px rgb(0 0 0 / 0.7), 0 0 0 1px rgb(255 255 255 / 0.04);
+  --shadow-device:
+    0 2px 4px rgb(0 0 0 / 0.4), 0 40px 80px -24px rgb(0 0 0 / 0.75),
+    0 60px 140px -30px var(--glow, rgb(236 79 149 / 0.25));
+}
+
+@theme inline {
+  --font-sans: var(--font-text);
+  --font-heading: var(--font-display);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-code);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-ink: var(--brand-ink);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-community: var(--community);
+  --color-community-soft: var(--community-soft);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+  --color-glass-border: var(--glass-border);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 2px);
+  --radius-2xl: calc(var(--radius) + 6px);
+  --radius-3xl: calc(var(--radius) + 10px);
+  --radius-4xl: calc(var(--radius) + 18px);
+  --ease-out: var(--ease-out);
+  --ease-spring: var(--ease-spring);
 }
 
 /* -------------------------------------------------------------------------
-   Dark-first page defaults.
+   Base
    ------------------------------------------------------------------------- */
-html {
-  color-scheme: dark;
-  scroll-behavior: smooth;
-  /* Anchor jumps and the skip link land below the sticky header (~59px tall)
-     instead of underneath it. */
-  scroll-padding-top: 5rem;
-}
-body {
-  font-family: 'Roboto', sans-serif;
-  background-color: var(--color-deep);
-  color: var(--color-body);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-::selection {
-  background: rgba(219, 39, 119, 0.35);
-  color: #fff;
-}
-
-:focus-visible {
-  outline: 2px solid var(--color-pink-500);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
-
-/* Subtle custom scrollbar. */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-edge) transparent;
-}
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-edge);
-  border: 2px solid transparent;
-  border-radius: 9999px;
-  background-clip: padding-box;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #3a4354;
-  background-clip: padding-box;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 1.5rem);
+    -webkit-text-size-adjust: 100%;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-text);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--brand) 32%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -119,89 +264,390 @@ body {
 }
 
 /* -------------------------------------------------------------------------
-   Sticky header: transparent over the hero, blurred + bordered once scrolled
-   (the `data-scrolled` attribute is toggled by a small script in Base.astro).
+   Type roles (Bricolage display scale tuned for a cinematic page).
    ------------------------------------------------------------------------- */
-.site-header {
-  transition:
-    background-color 0.3s ease,
-    backdrop-filter 0.3s ease,
-    border-color 0.3s ease;
+@utility t-mega {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 15vw, 13.5rem);
+  line-height: 0.84;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  font-variation-settings: 'opsz' 96;
 }
-.site-header[data-scrolled='true'] {
-  background-color: rgba(11, 17, 27, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom-color: var(--color-edge);
+@utility t-hero {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 7.2vw, 6.75rem);
+  line-height: 0.92;
+  font-weight: 780;
+  letter-spacing: -0.045em;
+  font-variation-settings: 'opsz' 96;
+}
+@utility t-display {
+  font-family: var(--font-display);
+  font-size: clamp(2.125rem, 4.4vw, 4rem);
+  line-height: 0.98;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  font-variation-settings: 'opsz' 72;
+}
+@utility t-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 2.1vw, 1.875rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.028em;
+}
+@utility t-heading {
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  line-height: 1.2;
+  font-weight: 680;
+  letter-spacing: -0.02em;
+}
+@utility t-lede {
+  font-size: clamp(1.0625rem, 1.5vw, 1.3125rem);
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+@utility t-eyebrow {
+  font-family: var(--font-text);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+@utility t-stat {
+  font-family: var(--font-display);
+  font-weight: 780;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Page width + gutters: 16px on phones, growing to 40px. */
+@utility shell {
+  width: 100%;
+  max-width: 82rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 640px) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 1024px) {
+    padding-inline: 2.5rem;
+  }
 }
 
 /* -------------------------------------------------------------------------
-   Soft radial glow (place absolutely, size + position with utilities).
+   Signature motif 1: the now-playing wash.
+   Three soft radial blobs in a cover palette drift slowly behind a section,
+   faded into the page at the top and bottom edges, with static grain. CSS
+   only, transform-animated, paused off screen (Base.astro toggles
+   data-wash-live) and frozen under reduced motion.
+
+     <div class="wash pal-oz" aria-hidden="true"><i></i><i></i><i></i></div>
    ------------------------------------------------------------------------- */
-.glow {
+.wash {
   position: absolute;
+  inset: 0;
+  overflow: hidden;
   pointer-events: none;
   z-index: 0;
-  border-radius: 9999px;
-  filter: blur(80px);
+  contain: strict;
+}
+.wash > i {
+  position: absolute;
+  border-radius: 50%;
+  opacity: var(--wash-o);
+  will-change: transform;
   background: radial-gradient(
     closest-side,
-    rgba(236, 72, 153, 0.18),
-    rgba(99, 102, 241, 0.1),
-    transparent
+    color-mix(in oklab, var(--c) var(--wash-mix), white),
+    color-mix(in oklab, var(--c) calc(var(--wash-mix) * 0.5), transparent) 45%,
+    transparent 72%
   );
 }
-
-/* -------------------------------------------------------------------------
-   Scroll-reveal: elements rise + fade in once (IntersectionObserver adds
-   `is-visible`). No-op under reduced motion.
-
-   The hidden initial state is scoped to `.js` (added to <html> by an early
-   inline script in Base.astro) so that with JavaScript disabled - crawlers,
-   brittle connections - every section stays fully visible instead of being
-   stuck at opacity 0.
-   ------------------------------------------------------------------------- */
-.js .reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity 0.5s ease-out,
-    transform 0.5s ease-out;
-  will-change: opacity, transform;
+.wash > i:nth-child(1) {
+  --c: var(--w1);
+  width: 72%;
+  height: 95%;
+  left: -16%;
+  top: -22%;
+  animation: wash-drift-1 38s ease-in-out infinite alternate;
 }
-.js .reveal.is-visible {
-  opacity: 1;
-  transform: none;
+.wash > i:nth-child(2) {
+  --c: var(--w2);
+  width: 64%;
+  height: 85%;
+  right: -16%;
+  top: 4%;
+  animation: wash-drift-2 44s ease-in-out infinite alternate;
 }
-@media (prefers-reduced-motion: reduce) {
-  .js .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+.wash > i:nth-child(3) {
+  --c: var(--w3);
+  width: 58%;
+  height: 80%;
+  left: 24%;
+  bottom: -34%;
+  animation: wash-drift-3 41s ease-in-out infinite alternate;
 }
-
-/* -------------------------------------------------------------------------
-   Waveform motif: gently oscillating bars (hero) + a 3-bar equalizer glyph.
-   GPU-cheap transform:scaleY; frozen under reduced motion.
-   ------------------------------------------------------------------------- */
-.wave-bar {
-  transform-origin: bottom;
-  animation: wave 1.4s ease-in-out infinite;
+/* Paused unless on screen (src/lib/site.ts). After the per-child rules on
+   purpose: their `animation` shorthand resets the play state to running. */
+.wash:not([data-wash-live]) > i {
+  animation-play-state: paused;
 }
-@keyframes wave {
-  0%,
-  100% {
-    transform: scaleY(0.35);
+/* Static grain on its own layer (opacity per theme), then the edge fade
+   that lets the wash flow into the sections around it. */
+.wash::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: var(--grain-o);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 1 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+}
+.wash::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to bottom, var(--background), transparent 22%, transparent 70%, var(--background));
+}
+.wash.wash-none::after {
+  content: none;
+}
+@keyframes wash-drift-1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0);
   }
   50% {
-    transform: scaleY(1);
+    transform: translate3d(10%, 8%, 0) scale(1.14) rotate(14deg);
+  }
+  100% {
+    transform: translate3d(-5%, 14%, 0) scale(0.96) rotate(-8deg);
+  }
+}
+@keyframes wash-drift-2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-12%, 7%, 0) scale(1.18);
+  }
+  100% {
+    transform: translate3d(-4%, -9%, 0) scale(1.04);
+  }
+}
+@keyframes wash-drift-3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.08);
+  }
+  50% {
+    transform: translate3d(9%, -12%, 0) scale(0.92);
+  }
+  100% {
+    transform: translate3d(-10%, -4%, 0) scale(1.12);
   }
 }
 
-.eq-bar {
+/* Cover palettes, sampled from the showcase library's covers.
+   --w1..3 feed the wash; --glow is the far shadow of devices and covers. */
+.pal-oz {
+  --w1: #1f8a55;
+  --w2: #d9a52b;
+  --w3: #7a2f63;
+  --glow: rgb(31 138 85 / 0.38);
+}
+.pal-dracula {
+  --w1: #4440b8;
+  --w2: #b0244a;
+  --w3: #6b2d9a;
+  --glow: rgb(68 64 184 / 0.4);
+}
+.pal-treasure {
+  --w1: #127a86;
+  --w2: #caa35c;
+  --w3: #1f4f9c;
+  --glow: rgb(18 122 134 / 0.38);
+}
+.pal-community {
+  --w1: #6a3fd4;
+  --w2: #3b5bdb;
+  --w3: #b04aa8;
+  --glow: rgb(106 63 212 / 0.4);
+}
+.pal-console {
+  --w1: #2c56c9;
+  --w2: #0d9488;
+  --w3: #6a3fd4;
+  --glow: rgb(44 86 201 / 0.36);
+}
+.pal-ember {
+  --w1: #b4531a;
+  --w2: #d99a2b;
+  --w3: #6a3fd4;
+  --glow: rgb(180 83 26 / 0.34);
+}
+.pal-carol {
+  --w1: #a3213a;
+  --w2: #1f6b4a;
+  --w3: #c99a3b;
+  --glow: rgb(163 33 58 / 0.36);
+}
+
+/* -------------------------------------------------------------------------
+   Signature motif 2: the seek bar (reading progress in the header).
+   One segment per page "chapter" (sections marked data-chapter), sized by
+   the section's height, the way the player's timeline sizes chapters by
+   duration. Past chapters ink, the current one fills, upcoming ones faint.
+   ------------------------------------------------------------------------- */
+.seekbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 9px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  padding-inline: 2px;
+}
+.seekbar-seg {
+  position: relative;
+  height: 3px;
+  flex: var(--w, 1) 1 0;
+  min-width: 2px;
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--foreground) 12%, transparent);
+  overflow: hidden;
+  transition: height var(--dur-2) var(--ease-out);
+  cursor: pointer;
+}
+.seekbar-seg > span {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform: scaleX(var(--p, 0));
+  background: color-mix(in oklab, var(--foreground) 78%, transparent);
+}
+.seekbar:hover .seekbar-seg {
+  height: 6px;
+}
+.seekbar-tip {
+  position: absolute;
+  top: calc(100% + 8px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-1);
+}
+.seekbar:hover .seekbar-tip[data-show] {
+  opacity: 1;
+}
+
+/* -------------------------------------------------------------------------
+   The play button (Stacks transport, scaled up): round, filled glyph. The
+   demo link is styled as one. `.play-pink` is the page's one pink thing.
+   ------------------------------------------------------------------------- */
+.play-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 9999px;
+  flex-shrink: 0;
+  transition:
+    transform var(--dur-2) var(--ease-spring),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+.play-btn:hover {
+  transform: scale(1.05);
+}
+.play-btn:active {
+  transform: scale(0.96);
+}
+.play-pink {
+  background: var(--brand);
+  color: var(--brand-foreground);
+  box-shadow:
+    0 10px 30px -8px color-mix(in oklab, var(--brand) 70%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 0.25);
+}
+.play-ink {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: 0 10px 24px -10px rgb(0 0 0 / 0.45);
+}
+/* Two soft rings breathing out of the button. */
+.play-rings::before,
+.play-rings::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid color-mix(in oklab, var(--brand) 55%, transparent);
+  animation: play-ring 3.2s var(--ease-out) infinite;
+  pointer-events: none;
+}
+.play-rings::after {
+  animation-delay: 1.6s;
+}
+@keyframes play-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Bar-style scrubber (the player's seek bar pattern, not a waveform: the
+   heights say nothing about loudness). Bars are generated in BarScrubber.astro.
+   ------------------------------------------------------------------------- */
+.bars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.bars > i {
+  flex: 1 1 0;
+  min-width: 1.5px;
+  border-radius: 2px;
+  height: calc(var(--h) * 100%);
+  background: color-mix(in oklab, var(--foreground) 22%, transparent);
+}
+.bars > i.played {
+  background: var(--foreground);
+}
+
+@layer components {
+/* Live equaliser (marks the current chapter in chapter lists). */
+.eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+.eq > i {
+  width: 2.5px;
   height: 100%;
+  border-radius: 1px;
+  background: currentColor;
   transform-origin: bottom;
-  animation: eq 0.9s ease-in-out infinite;
+  animation: eq 0.95s ease-in-out infinite;
+}
+.eq > i:nth-child(2) {
+  animation-delay: -0.35s;
+}
+.eq > i:nth-child(3) {
+  animation-delay: -0.6s;
+}
 }
 @keyframes eq {
   0%,
@@ -213,69 +659,328 @@ body {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .wave-bar,
-  .eq-bar {
-    animation: none;
+/* -------------------------------------------------------------------------
+   Device frames (src/components/media/Device.astro). Hardware is dark in
+   both themes; the screen is the media. Each kind sets --r, the screen's
+   corner radius; the screen's aspect-ratio is the media's own, so the media
+   fills it exactly. The radius is applied three times on purpose: overflow
+   on the screen, a clip-path (WebKit drops overflow clipping for composited
+   video inside 3D transforms) and border-radius on the media itself.
+   ------------------------------------------------------------------------- */
+/* .device is the size container (a box can't query itself, so the visible
+   body sits one level in and its cqw units mean "% of the device width"). */
+.device {
+  min-width: 0;
+}
+.device-body {
+  position: relative;
+  border-radius: calc(var(--r) + var(--pad));
+  padding: var(--pad);
+  background: var(--bezel);
+  box-shadow:
+    var(--shadow-device),
+    inset 0 0 0 1px var(--bezel-edge);
+}
+.device-phone {
+  /* iPhone screens round at about 13% of their width. */
+  --pad: clamp(4px, 3cqw, 11px);
+  --r: max(8px, calc(13cqw - var(--pad)));
+}
+.device-tablet {
+  --pad: clamp(5px, 2.4cqw, 16px);
+  --r: clamp(5px, 2cqw, 18px);
+}
+.device-window {
+  --pad: 0px;
+  --r: 0 0 13px 13px;
+}
+.device-window > .device-body {
+  border-radius: 14px;
+  padding: 0 1px 1px;
+  background: var(--card);
+  box-shadow:
+    var(--shadow-device),
+    0 0 0 1px var(--glass-border);
+}
+.device-cinema {
+  --pad: clamp(6px, 1vw, 12px);
+  --r: 14px;
+}
+.device-cinema > .device-body {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.01)) border-box var(--bezel);
+  box-shadow:
+    var(--shadow-device),
+    inset 0 0 0 1px var(--glass-border);
+}
+.device-card {
+  --pad: 0px;
+  --r: 7cqw;
+}
+.device-card > .device-body {
+  background: transparent;
+  box-shadow: var(--shadow-device);
+}
+.device-screen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--r);
+  clip-path: inset(0 round var(--r));
+  background: var(--bezel);
+}
+.device-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+.device-media img,
+.device-media video,
+img.device-media {
+  object-fit: cover;
+  border-radius: inherit;
+}
+/* Inner screen gloss. */
+.device-phone .device-screen::after,
+.device-tablet .device-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgb(255 255 255 / 0.07), transparent 38%);
+  z-index: 2;
+}
+
+/* -------------------------------------------------------------------------
+   Motion: float, tilt, reveal. All transform/opacity; all off for reduced
+   motion.
+   ------------------------------------------------------------------------- */
+.float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+.float-slower {
+  animation: float 11s ease-in-out infinite reverse;
+}
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -10px;
   }
 }
 
-/* Documentation article typography (no typography plugin needed). */
-.docs-content {
-  color: #374151;
-  line-height: 1.7;
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
+  transition-delay: var(--reveal-delay);
 }
-.docs-content h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #9d174d;
-  margin-top: 2.5rem;
-  margin-bottom: 0.75rem;
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
 }
-.docs-content h3 {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-top: 1.75rem;
-  margin-bottom: 0.5rem;
+/* Stagger: the delay is a custom property so the scroll transition and the
+   hero animation share it; .reveal resets it so a nested reveal doesn't
+   inherit its parent's delay. */
+.reveal {
+  --reveal-delay: 0s;
 }
-.docs-content p {
-  margin-bottom: 1rem;
+.reveal-d1 {
+  --reveal-delay: 0.08s;
 }
-.docs-content ul {
+.reveal-d2 {
+  --reveal-delay: 0.16s;
+}
+.reveal-d3 {
+  --reveal-delay: 0.24s;
+}
+/* The hero (each page's first section) rises in on CSS alone from the first
+   paint: it never waits for JS, and it is usually the LCP. It starts at a
+   near-zero opacity rather than 0 so the browser counts it as painted. */
+.js main > section:first-of-type .reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
+  animation: rise-in 0.7s var(--ease-out) var(--reveal-delay) both;
+}
+@keyframes rise-in {
+  from {
+    opacity: 0.01;
+    transform: translateY(18px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wash > i,
+  .play-rings::before,
+  .play-rings::after,
+  .float-slow,
+  .float-slower,
+  .eq > i {
+    animation: none !important;
+  }
+  .play-rings::before,
+  .play-rings::after {
+    display: none;
+  }
+  .js .reveal,
+  .js main > section:first-of-type .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+  .play-btn,
+  .seekbar-seg {
+    transition: none;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Surfaces
+   ------------------------------------------------------------------------- */
+.glass {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  backdrop-filter: blur(20px) saturate(1.6);
+  box-shadow: inset 0 0 0 1px var(--glass-border);
+}
+.tile {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--card);
+  box-shadow:
+    inset 0 0 0 1px var(--border),
+    0 1px 2px rgb(14 22 48 / 0.04);
+}
+.dark .tile {
+  background: color-mix(in oklab, var(--card) 82%, transparent);
+  box-shadow: inset 0 0 0 1px var(--glass-border);
+}
+
+/* Inline code chip in prose. */
+.ic {
+  font-family: var(--font-code);
+  font-size: 0.86em;
+  padding: 0.1em 0.38em;
+  border-radius: 6px;
+  background: var(--muted);
+  box-shadow: inset 0 0 0 1px var(--border);
+  color: var(--foreground);
+  white-space: nowrap;
+}
+
+/* Underlined text link. Ink, not pink: pink is kept for the view's one
+   pink thing. */
+.link {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--foreground) 35%, transparent);
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--dur-1);
+}
+.link:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Long-form text (docs, privacy). */
+.prose-as {
+  color: var(--foreground);
+  line-height: 1.75;
+  font-size: 1.0625rem;
+}
+.prose-as > * + * {
+  margin-top: 1rem;
+}
+.prose-as h2 {
+  font-family: var(--font-display);
+  font-size: 1.625rem;
+  font-weight: 720;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-top: 2.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+}
+.prose-as h2:first-child,
+.prose-as h1 + h2 {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.prose-as h3 {
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  font-weight: 680;
+  letter-spacing: -0.02em;
+  margin-top: 2rem;
+}
+.prose-as p,
+.prose-as li {
+  color: color-mix(in oklab, var(--foreground) 86%, var(--background));
+}
+.prose-as ul {
   list-style: disc;
   padding-left: 1.25rem;
-  margin-bottom: 1rem;
 }
-.docs-content ol {
+.prose-as ol {
   list-style: decimal;
   padding-left: 1.25rem;
-  margin-bottom: 1rem;
 }
-.docs-content li {
-  margin-bottom: 0.35rem;
+.prose-as li + li {
+  margin-top: 0.4rem;
 }
-.docs-content a {
-  color: #db2777;
+.prose-as li::marker {
+  color: var(--subtle-foreground);
+}
+.prose-as a {
+  color: var(--foreground);
+  font-weight: 550;
   text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--foreground) 35%, transparent);
+  text-underline-offset: 3px;
 }
-.docs-content strong {
-  font-weight: 600;
-  color: #1f2937;
+.prose-as a:hover {
+  text-decoration-color: currentColor;
 }
-.docs-content :not(pre) > code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.85em;
-  background: #eeedf2;
-  color: #9d174d;
-  padding: 0.1rem 0.35rem;
-  border-radius: 0.25rem;
+.prose-as strong {
+  font-weight: 650;
+  color: var(--foreground);
 }
-.docs-content blockquote {
-  border-left: 3px solid #db2777;
-  padding-left: 1rem;
-  color: #4b5563;
-  font-style: italic;
-  margin: 1.25rem 0;
+.prose-as :not(pre) > code {
+  font-family: var(--font-code);
+  font-size: 0.86em;
+  padding: 0.1em 0.38em;
+  border-radius: 6px;
+  background: var(--muted);
+  box-shadow: inset 0 0 0 1px var(--border);
 }
-</content>
+.prose-as blockquote {
+  border-left: 3px solid var(--border-strong);
+  padding: 0.75rem 1rem;
+  border-radius: 0 12px 12px 0;
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+/* Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+/* A stage: a section that is dark in both themes (the cinema). It takes the
+   dark tokens without the `.dark` class, so media inside still follow the
+   page theme. */
+.stage {
+  color-scheme: dark;
+  background: var(--background);
+  color: var(--foreground);
+}

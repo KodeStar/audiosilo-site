@@ -1,0 +1,42 @@
+---
+/**
+ * "Watch the tour": a button that opens a full, captioned tour video
+ * (VideoDialog) from src/data/media.ts. The dialog's poster is the loop's
+ * recorded first frame; its video box takes the tour's own aspect ratio, and
+ * a tall (phone) tour gets a narrow dialog so it fits the viewport. The file
+ * URLs come from tourFiles() (TOUR_BASE in src/data/media.ts).
+ */
+import VideoDialog from './VideoDialog.tsx'
+import { tourFiles, tours, type Tour } from '@/data/media'
+import Icon from '@/components/Icon.astro'
+
+interface Props {
+  tour: keyof typeof tours
+  label?: string
+  variant?: 'default' | 'outline' | 'glass' | 'secondary' | 'ghost'
+  size?: 'xl' | 'pill'
+  class?: string
+}
+
+const { tour: key, label, variant = 'glass', size = 'xl', class: className } = Astro.props
+const tour: Tour = tours[key]
+const [w, h] = tour.aspect.split('/').map(Number)
+const portrait = h > w
+const text = label ?? `Watch the ${tour.length} tour`
+const files = tourFiles(tour)
+---
+
+<VideoDialog
+  client:settled
+  files={files}
+  title={tour.title}
+  description={tour.description}
+  aspect={tour.aspect}
+  contentClassName={portrait ? 'sm:max-w-md' : undefined}
+  triggerVariant={variant}
+  triggerSize={size}
+  triggerClassName={className}
+>
+  <Icon name="play" class="size-3.5" />
+  {text}
+</VideoDialog>

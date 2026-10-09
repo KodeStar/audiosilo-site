@@ -1,0 +1,133 @@
+WEBVTT
+
+1
+00:00:00.995 --> 00:00:10.370
+The overview: who’s listening right now, with the book, the chapter and how far through.
+
+2
+00:00:10.370 --> 00:00:17.259
+Health checks run on every scan: duplicates, missing covers, books that aren’t matched yet.
+
+3
+00:00:17.259 --> 00:00:20.960
+Search is everywhere. Press ⌘K and type.
+
+4
+00:00:20.960 --> 00:00:27.598
+This one has a problem. Its title is <b>Bernard Cornwell</b> and its author is <b>Sharpe’s Eagle</b>.
+
+5
+00:00:29.531 --> 00:00:36.108
+The tags are swapped and there’s no cover. Each field shows where its value came from.
+
+6
+00:00:36.108 --> 00:00:42.622
+But the folders say <b>Bernard Cornwell / Richard Sharpe / Sharpe - 08 - Sharpe’s Eagle</b>.
+
+7
+00:00:42.622 --> 00:00:47.948
+Match looks it up in the community database, folder names and all.
+
+8
+00:00:47.948 --> 00:00:55.337
+The right book comes first, with its cover, and each edition’s length is checked against the files.
+
+9
+00:00:55.337 --> 00:01:03.497
+Then field by field. It had no cover, so the community one is ticked too.
+
+10
+00:01:03.497 --> 00:01:09.885
+Fixed. The files aren’t touched: it’s stored as overrides that a rescan won’t undo.
+
+11
+00:01:09.885 --> 00:01:15.431
+The author, narrator and series are links to the rest of their books.
+
+12
+00:01:18.361 --> 00:01:25.784
+The library opens on what’s new, and on books that could do with some attention.
+
+13
+00:01:25.784 --> 00:01:36.284
+Filters for everything the server knows: format, codec, cover, chapters, matched or not.
+
+14
+00:01:36.284 --> 00:01:46.962
+A library can take book details from folder names instead, for folders named better than they’re tagged.
+
+15
+00:01:47.933 --> 00:01:55.204
+Community data puts each series in order. A complete one gets a full shelf.
+
+16
+00:01:55.204 --> 00:02:02.239
+Books you don’t have yet show up as gaps on the shelf.
+
+17
+00:02:02.239 --> 00:02:10.774
+One folder, one book, unless I say otherwise. These Narnia files are seven separate books, and rescans remember.
+
+18
+00:02:13.812 --> 00:02:22.009
+Health turns scan results into a to-do list. Unmatched books can be looked up all at once.
+
+19
+00:02:22.009 --> 00:02:32.164
+The server does it in the background. Nothing changes until I’ve reviewed it.
+
+20
+00:02:32.164 --> 00:02:39.117
+I choose what gets written: just the IDs, what’s missing, or the community’s values.
+
+21
+00:02:39.117 --> 00:02:46.910
+Less certain ones wait for a closer look, with each book’s folder and the match’s series.
+
+22
+00:02:46.910 --> 00:02:53.214
+Scans run in a queue, on a schedule per library, with a log for each run.
+
+23
+00:02:56.247 --> 00:03:02.386
+Everyone on the server, what they’re in the middle of, and who’s listening now.
+
+24
+00:03:02.386 --> 00:03:14.493
+Each person gets their own year in listening, and a list of every device they’ve signed in on.
+
+25
+00:03:14.493 --> 00:03:24.810
+Adding someone is an invite: a link or a QR code they scan with the app. No password needed.
+
+26
+00:03:28.091 --> 00:03:35.413
+Activity: hours, sessions, books finished. All on the server, no third-party analytics.
+
+27
+00:03:35.413 --> 00:03:45.062
+When the household listens, which apps they use, and what needed converting to play.
+
+28
+00:03:45.062 --> 00:03:51.289
+And a year in listening for the whole server.
+
+29
+00:03:54.391 --> 00:04:02.272
+Settings live in the console. The apps know the home address and the public one, and switch on their own.
+
+30
+00:04:02.272 --> 00:04:08.223
+Moving from Audiobookshelf? Import brings everyone’s listening history over.
+
+31
+00:04:08.223 --> 00:04:19.369
+Scheduled database backups, and alerts to a webhook, ntfy or Discord.
+
+32
+00:04:19.369 --> 00:04:28.162
+Live logs, and an audit log of every change an admin makes.
+
+33
+00:04:30.649 --> 00:04:34.412
+Light or dark, or it follows your system.

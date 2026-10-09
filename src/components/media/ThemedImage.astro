@@ -1,0 +1,51 @@
+---
+/**
+ * A still that follows the colour theme: the light capture in light, the dark
+ * one in dark (CSS `dark:` swap, so the right one paints before any JS and,
+ * being lazy and display:none, the other is never fetched). When a still only
+ * has one capture, one image is rendered. `eager` (above the fold) promotes
+ * only the capture of the theme being shown, from an inline script that runs
+ * as the images are parsed, so the hidden theme's file is never fetched.
+ *
+ *   <ThemedImage still={stills.serverOverview} widths={[800, 1600]} sizes="(min-width: 1024px) 60vw, 100vw" />
+ */
+import { Image } from 'astro:assets'
+import type { Still } from '@/data/media'
+import { cn } from '@/lib/utils'
+import { promoteVisibleImg } from '@/lib/promote-visible'
+
+interface Props {
+  still: Still
+  widths: number[]
+  sizes: string
+  class?: string
+  /** Above the fold: load eagerly with high priority. */
+  eager?: boolean
+  /** Override the still's alt text ('' for decorative). */
+  alt?: string
+}
+
+const { still, widths, sizes, class: className, eager = false, alt } = Astro.props
+const label = alt ?? still.alt
+const same = still.src.light === still.src.dark
+const common = {
+  widths,
+  sizes,
+  format: 'webp' as const,
+  quality: 82,
+  decoding: 'async' as const,
+}
+const promote = promoteVisibleImg('data-theme-img')
+---
+
+{
+  same ? (
+    <Image src={still.src.dark} alt={label} class={cn('block h-auto w-full', className)} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} {...common} />
+  ) : (
+    <>
+      <Image src={still.src.light} alt={label} class={cn('block h-auto w-full dark:hidden', className)} loading="lazy" data-theme-img="light" {...common} />
+      <Image src={still.src.dark} alt={label} class={cn('hidden h-auto w-full dark:block', className)} loading="lazy" data-theme-img="dark" {...common} />
+      {eager && <script is:inline set:html={promote} />}
+    </>
+  )
+}

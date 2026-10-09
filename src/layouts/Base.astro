@@ -1,111 +1,154 @@
 ---
-import '@fontsource/roboto/400.css'
-import '@fontsource/roboto/500.css'
-import '@fontsource/roboto/700.css'
-import '@fontsource/roboto/900.css'
+// Fonts: woff2, latin only, declared inline below (fontsource's own CSS would
+// add vietnamese, latin-ext, cyrillic and greek faces too). Bricolage and
+// Figtree are split once more: a small "basic" face (ASCII plus the few
+// punctuation marks the copy uses; src/assets/fonts, made with pyftsubset,
+// see docs/PERFORMANCE.md) that every page needs, and fontsource's full latin
+// face for everything else, which a browser fetches only if a page uses one
+// of those characters.
+import bricolageBasicUrl from '@/assets/fonts/bricolage-grotesque-basic-opsz.woff2?url'
+import bricolageUrl from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url'
+import figtreeBasicUrl from '@/assets/fonts/figtree-basic-wght.woff2?url'
+import figtreeUrl from '@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url'
+import jetbrainsUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url'
 import '../styles/global.css'
-import Header from '../components/Header.astro'
-import Footer from '../components/Footer.astro'
+import Header from '@/components/site/Header.astro'
+import Footer from '@/components/site/Footer.astro'
+import MiniBar from '@/components/site/MiniBar.astro'
+import { DEFAULT_PREFERENCE, THEME_COLOR, THEME_STORAGE_KEY } from '@/lib/theme'
+import { PLAYER_PLATFORMS } from '@/data/status'
 
 interface Props {
   title?: string
   description?: string
-  /** Render the shared site Header. The home page passes false and supplies
-      its own hero-integrated nav. */
-  solidHeader?: boolean
-  /** Set on pages whose first section is a full-bleed hero that manages its
-      own generous top spacing (home, download, 404). Plain content pages leave
-      it false so <main> gets a consistent spacer clearing the sticky header. */
+  /** The page's first section is a full-bleed hero that runs under the header. */
   hasHero?: boolean
+  /** Show the phone mini bar (off on pages that are themselves about the demo's limits, never needed). */
+  miniBar?: boolean
+  /** Keep the page out of search results, with no canonical URL (the 404 page). */
+  noindex?: boolean
 }
 
 const {
-  title = 'AudioSilo - Self-hosted multi-platform audiobook player',
-  description = 'AudioSilo is a self-hosted, multi-platform audiobook player for iOS, Android and the web, backed by its own open-source Go server. Stream and download your own DRM-free audiobooks with bookmarks, notes, sleep timer and cross-device progress sync.',
-  solidHeader = true,
+  title = 'AudioSilo - your audiobooks, your server, every screen',
+  description = `AudioSilo is a free, self-hosted audiobook server with a player for ${PLAYER_PLATFORMS}, and an open community metadata database. Try the demo in your browser, no sign-up.`,
   hasHero = false,
+  miniBar = true,
+  noindex = false,
 } = Astro.props
+
+const LATIN =
+  'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD'
+/**
+ * What the basic subsets serve: their glyphs (keep in step with the pyftsubset
+ * command in docs/PERFORMANCE.md) plus the C0/C1 controls, which have no glyph
+ * but would otherwise pull in the full face for a newline in a text node.
+ */
+const BASIC = 'U+0000-007E,U+007F-00A0,U+00A9,U+00B7,U+00BD,U+00D7,U+2013-2014,U+2018-201D,U+2022,U+2026'
+/** LATIN minus BASIC: served by the full latin faces. */
+const LATIN_REST =
+  'U+00A1-00A8,U+00AA-00B6,U+00B8-00BC,U+00BE-00D6,U+00D8-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-2012,U+2015-2017,U+201E-2021,U+2023-2025,U+2027-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD'
+const face = (family: string, url: string, weight: string, range: string) =>
+  `@font-face{font-family:'${family}';font-style:normal;font-display:swap;font-weight:${weight};src:url(${url}) format('woff2-variations');unicode-range:${range}}`
+const fontFaces = [
+  face('Bricolage Grotesque Variable', bricolageBasicUrl, '200 800', BASIC),
+  face('Bricolage Grotesque Variable', bricolageUrl, '200 800', LATIN_REST),
+  face('Figtree Variable', figtreeBasicUrl, '300 900', BASIC),
+  face('Figtree Variable', figtreeUrl, '300 900', LATIN_REST),
+].join('')
+// Code is never above the fold, so the mono face is added two seconds after
+// load (until then code shows in the system monospace) and stays off the
+// LCP's path.
+const lateFont = `addEventListener('load',function(){setTimeout(function(){if(!window.FontFace)return;var f=new FontFace('JetBrains Mono Variable',"url(${jetbrainsUrl}) format('woff2-variations')",{weight:'100 800',display:'swap',unicodeRange:'${LATIN}'});document.fonts.add(f);f.load().catch(function(){})},2000)})`
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href
 const ogImage = new URL('/og.png', Astro.site).href
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en-GB" class="dark" data-theme="dark" style="color-scheme: dark">
   <head>
-    <!-- Mark the document as JS-capable as early as possible so the scroll-
-         reveal styles (scoped to `.js .reveal`) only hide content when they
-         can also un-hide it. Without JS the sections stay fully visible. -->
-    <script is:inline>
-      document.documentElement.classList.add('js')
-    </script>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Dark is the default; the script below repoints this at the resolved theme. -->
+    <meta name="theme-color" content={THEME_COLOR.dark} />
+    <!-- Before first paint: mark JS, then resolve the theme with no flash
+         (localStorage 'theme': light | dark | system). No stored choice means
+         dark, the site default; only 'system' follows the OS. The constants
+         come from src/lib/theme.ts; keep the logic in step with it. -->
+    <script is:inline define:vars={{ KEY: THEME_STORAGE_KEY, DEFAULT: DEFAULT_PREFERENCE, COLOR: THEME_COLOR }}>
+      var root = document.documentElement
+      root.classList.add('js')
+      var mq = window.matchMedia('(prefers-color-scheme: dark)')
+      function stored() {
+        try {
+          var v = localStorage.getItem(KEY)
+          if (v === 'light' || v === 'dark' || v === 'system') return v
+        } catch (e) {}
+        return DEFAULT // no stored choice (or storage blocked): the dark default
+      }
+      function apply(pref) {
+        var dark = pref === 'dark' || (pref === 'system' && mq.matches)
+        root.classList.toggle('dark', dark)
+        root.dataset.theme = dark ? 'dark' : 'light'
+        root.dataset.themePreference = pref
+        root.style.colorScheme = dark ? 'dark' : 'light'
+        var meta = document.querySelector('meta[name="theme-color"]')
+        if (meta) meta.setAttribute('content', dark ? COLOR.dark : COLOR.light)
+      }
+      apply(stored())
+      mq.addEventListener('change', function () {
+        if (root.dataset.themePreference === 'system') apply('system')
+      })
+      window.addEventListener('storage', function (e) {
+        if (e.key === KEY || e.key === null) apply(stored())
+      })
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Headlines (usually the LCP) are set in Bricolage: fetch it with the HTML. -->
+    <link rel="preload" href={bricolageBasicUrl} as="font" type="font/woff2" crossorigin />
+    <style is:inline set:html={fontFaces} />
     <meta name="format-detection" content="telephone=no" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
 
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <!-- PNG icons only: the 15 KB multi-size favicon.ico stays for clients that ask for it by name. -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#db2777" />
-    <meta name="theme-color" content="#0b111b" />
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="AudioSilo" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="AudioSilo - your audiobooks, your server, every device" />
-
-    <!-- Twitter -->
+    <meta property="og:image:alt" content="AudioSilo - your audiobooks, your server, every screen" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
   </head>
-  <body class="bg-deep text-body min-h-screen flex flex-col">
+  <body class="flex min-h-screen flex-col">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-md focus:bg-pink-600 focus:px-4 focus:py-2 focus:text-white"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
     >
       Skip to content
     </a>
-    {solidHeader && <Header />}
-    <main id="main" class:list={['flex-grow', !hasHero && 'pt-6 sm:pt-8']}>
+    <Header />
+    <main id="main" class:list={['flex-grow', !hasHero && 'pt-(--header-h)']}>
       <slot />
     </main>
     <Footer />
-
-    <!-- Scroll-reveal: add `is-visible` once, then stop observing. Reveals
-         everything immediately under prefers-reduced-motion. -->
+    {miniBar && <MiniBar />}
+    <script is:inline set:html={lateFont} />
     <script>
-      const reveals = document.querySelectorAll<HTMLElement>('.reveal')
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      if (reduce || !('IntersectionObserver' in window)) {
-        reveals.forEach((el) => el.classList.add('is-visible'))
-      } else {
-        const io = new IntersectionObserver(
-          (entries, observer) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible')
-                observer.unobserve(entry.target)
-              }
-            })
-          },
-          { rootMargin: '0px 0px -10% 0px', threshold: 0.05 }
-        )
-        reveals.forEach((el) => io.observe(el))
-      }
+      import '@/lib/site'
     </script>
   </body>
 </html>
-</content>

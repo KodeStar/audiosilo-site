@@ -1,254 +1,117 @@
 ---
-import Base from '../layouts/Base.astro'
-import Icon from '../components/Icon.astro'
-import CodeSnippet from '../components/CodeSnippet.astro'
-import SectionHeading from '../components/SectionHeading.astro'
-import Badge from '../components/Badge.astro'
-import Button from '../components/Button.astro'
-import Waveform from '../components/Waveform.astro'
-import VersionBadge from '../components/VersionBadge.tsx'
+import Base from '@/layouts/Base.astro'
+import Wash from '@/components/site/Wash.astro'
+import Arrow from '@/components/site/Arrow.astro'
+import InstallTabs from '@/components/site/InstallTabs.tsx'
+import CodeBlock from '@/components/CodeBlock.astro'
+import VersionBadge from '@/components/VersionBadge.tsx'
+import { DEMO_URL, GITHUB_SERVER_RELEASES_URL, GITHUB_SERVER_URL } from '@/data/links'
+import { demoLibrary } from '@/data/demo'
+import AppCards from '@/components/site/AppCards.astro'
+import Icon from '@/components/Icon.astro'
+import { APP_PLATFORMS } from '@/data/status'
 
-const SERVER_RELEASES = 'https://github.com/KodeStar/audiosilo-server/releases'
-const SERVER_REPO = 'https://github.com/KodeStar/audiosilo-server'
-const FRONTEND_REPO = 'https://github.com/KodeStar/audiosilo-frontend'
-const APP_STORE = 'https://apps.apple.com/us/app/audiosilo/id6783431375'
-const DEMO = 'https://demo.audiosilo.app'
-
-const compose = `services:
-  audiosilo:
-    image: ghcr.io/kodestar/audiosilo-server:latest
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./data:/data            # db, config, certs (first run prints admin creds once)
-      - /srv/audiobooks:/library:ro
-    environment:
-      PUID: "1000"              # owner of /data (Unraid: 99)
-      PGID: "1000"              # group of /data (Unraid: 100)
-      AUDIOSILO_WEB_DIR: /app/web
-      # AUDIOSILO_PUBLIC_URL: "https://books.example.com"  # used in QR/invite links
-      # AUDIOSILO_TLS_MODE: "off"                          # behind a TLS-terminating proxy`
-
-const composeRun = `docker compose up -d
-docker compose logs        # first run prints the admin password + auth code ONCE`
-
-const source = `git clone https://github.com/KodeStar/audiosilo-server
+const source = `git clone ${GITHUB_SERVER_URL}
 cd audiosilo-server
 go build -o bin/audiosilo ./cmd/audiosilo
 
-# First run prints the admin password + auth code once. Save them.
+# First run prints the admin password and auth code once. Save them.
 AUDIOSILO_TLS_MODE=off ./bin/audiosilo --data ./data`
 
-// Inline code chip used in prose on this dark page.
-const ic =
-  'rounded border border-edge bg-raised px-1.5 py-0.5 font-mono text-[0.8em] text-pink-300'
-// Shared card shell.
-const card = 'rounded-2xl border border-edge bg-surface p-6 sm:p-8'
-const chip = 'inline-flex h-11 w-11 items-center justify-center rounded-xl bg-pink-600/10 text-pink-400'
+const platforms = [
+  ['Linux', 'amd64 and arm64: .tar.gz, .deb and .rpm (with a systemd unit)'],
+  ['macOS', 'Apple silicon and Intel: .tar.gz'],
+  ['Windows', 'amd64 and arm64: .zip'],
+]
 ---
+
 <Base
   hasHero
-  title="Download AudioSilo - self-hosted audiobook server"
-  description="Download and run AudioSilo Server. Docker is the recommended path; native binaries, build-from-source, the live iOS app and the installable web player are all here."
+  title="Download AudioSilo - server and apps"
+  description={`Run AudioSilo Server with Docker or a native binary for Linux, macOS or Windows, then listen in the web player, on ${APP_PLATFORMS}.`}
 >
-  <!-- Hero header -->
-  <section class="relative overflow-hidden border-b border-edge">
-    <div class="glow left-1/2 top-[-6rem] h-[26rem] w-[38rem] -translate-x-1/2"></div>
-    <div class="container relative z-10 py-16 text-center sm:py-20">
-      <span class="mb-4 inline-block text-xs font-semibold uppercase tracking-[0.2em] text-pink-500">
-        Self-hosted server - open source (AGPLv3) - no subscription
-      </span>
-      <h1 class="text-4xl font-black tracking-tight text-hi sm:text-5xl">Download AudioSilo</h1>
-      <p class="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-body">
-        AudioSilo Server is the only thing you install. It bundles the web player and serves the API
-        the apps connect to. Pick the option that suits you;
-        <strong class="text-hi">Docker is recommended</strong> for always-on and multi-user setups.
+  <section id="top" data-chapter="Download" class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-12 sm:pt-[calc(var(--header-h)+5rem)]">
+    <Wash palette="console" />
+    <div class="shell relative z-10 max-w-4xl">
+      <p class="t-eyebrow reveal">Download &middot; server <VersionBadge client:settled /></p>
+      <h1 class="t-hero reveal reveal-d1 mt-5">Install one thing.</h1>
+      <p class="t-lede reveal reveal-d2 mt-6 max-w-2xl text-foreground/75">
+        The server is the only thing you install. It serves the web player and the API the apps
+        connect to. Docker is the easy path for a NAS, a home server or a VPS.
       </p>
-      <div class="mt-8 flex justify-center">
-        <Waveform animated class="opacity-80" />
-      </div>
     </div>
   </section>
 
-  <div class="container space-y-6 py-14">
-    <!-- Docker (recommended) -->
-    <article class={`reveal ${card} border-pink-500/30 ring-1 ring-pink-500/20`}>
-      <div class="mb-4 flex flex-wrap items-center gap-3">
-        <span class={chip}><Icon name="cube" class="h-6 w-6" /></span>
-        <h2 class="text-2xl font-bold text-hi">Docker</h2>
-        <Badge variant="pink">Recommended</Badge>
+  <section id="docker" data-chapter="Docker" class="py-12 sm:py-16">
+    <div class="shell grid gap-10 lg:grid-cols-12">
+      <div class="reveal lg:col-span-4">
+        <h2 class="t-title">Docker <span class="ml-1 align-middle text-xs font-semibold tracking-[0.1em] text-muted-foreground uppercase">Recommended</span></h2>
+        <p class="mt-4 text-[1.0625rem] leading-relaxed text-foreground/80">
+          <span class="ic">ghcr.io/kodestar/audiosilo-server</span> for amd64 and arm64, with the web
+          player and ffmpeg inside. Only <span class="ic">/data</span> is persisted; mount your books
+          read-only.
+        </p>
+        <p class="mt-4 text-[0.9375rem] text-muted-foreground">
+          Updating is a new image: <span class="ic">docker compose pull &amp;&amp; docker compose up -d</span>.
+          Back up the data folder first.
+        </p>
       </div>
-      <p class="mb-5 max-w-3xl text-body">
-        The published image bundles the server <strong class="text-hi">and</strong> a pinned web
-        player; ffmpeg is included. Only <code class={ic}>/data</code> (database, config, certs) is
-        persisted. Updating the server or the bundled player is always a new image:
-        <code class={ic}>docker compose pull &amp;&amp; docker compose up -d</code>.
-      </p>
-      <CodeSnippet filename="docker-compose.yml" code={compose} class="mb-4" />
-      <CodeSnippet code={composeRun} class="mb-5" />
-      <p class="mb-6 max-w-3xl text-sm text-dim">
-        Mount your audiobooks read-only, set <code class={ic}>PUID</code>/<code class={ic}>PGID</code>
-        to the user that should own <code class={ic}>/data</code>, and set
-        <code class={ic}>AUDIOSILO_PUBLIC_URL</code> so QR and invite links are correct.
-      </p>
-      <div class="flex flex-wrap gap-3">
-        <Button href={SERVER_RELEASES} external>
-          <Icon name="download" class="h-5 w-5" /> Server releases
-        </Button>
-        <Button href="/docs/installation" variant="secondary">
-          Installation guide <Icon name="arrowRight" class="h-4 w-4" />
-        </Button>
-      </div>
-    </article>
+      <div class="reveal reveal-d1 min-w-0 lg:col-span-8"><InstallTabs client:visible /></div>
+    </div>
+  </section>
 
-    <!-- Native binaries -->
-    <article class={`reveal ${card}`}>
-      <div class="mb-4 flex flex-wrap items-center gap-3">
-        <span class={chip}><Icon name="download" class="h-6 w-6" /></span>
-        <h2 class="text-2xl font-bold text-hi">Native binaries</h2>
-        <span class="text-sm text-dim">
-          Latest <span class="font-medium text-pink-400"><VersionBadge client:load /></span>
-        </span>
+  <section id="binaries" data-chapter="Binaries" class="py-12 sm:py-16">
+    <div class="shell grid gap-10 lg:grid-cols-12">
+      <div class="reveal lg:col-span-4">
+        <h2 class="t-title">Native binaries</h2>
+        <p class="mt-4 text-[1.0625rem] leading-relaxed text-foreground/80">
+          One download per system on GitHub Releases. The web player is built in, and ffmpeg is
+          fetched on first use if you don't have it. Run with <span class="ic">--setup</span> for a
+          browser wizard.
+        </p>
+        <a href={GITHUB_SERVER_RELEASES_URL} target="_blank" rel="noopener" class="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground hover:opacity-90">
+          <Icon name="download" class="size-4" /> Server releases
+        </a>
       </div>
-      <p class="mb-5 max-w-3xl text-body">
-        One self-contained download per OS and architecture, published to GitHub Releases on every
-        tagged version. Ideal for running directly on a home machine.
-      </p>
-      <ul class="mb-6 space-y-2.5 text-sm text-body">
-        <li class="flex gap-2.5">
-          <Icon name="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-pink-400" />
-          <span
-            ><strong class="text-hi">Web player embedded</strong> in the binary, so
-            <code class={ic}>/web</code> just works with no extra setup.</span
-          >
-        </li>
-        <li class="flex gap-2.5">
-          <Icon name="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-pink-400" />
-          <span
-            ><strong class="text-hi">ffmpeg auto-fetched</strong> on first run if it isn't already
-            installed, then cached.</span
-          >
-        </li>
-        <li class="flex gap-2.5">
-          <Icon name="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-pink-400" />
-          <span
-            >Formats: <code class={ic}>.tar.gz</code> (Linux/macOS), <code class={ic}>.zip</code>
-            (Windows), and <code class={ic}>.deb</code>/<code class={ic}>.rpm</code> (Linux, with a
-            systemd unit), plus <code class={ic}>checksums.txt</code>.</span
-          >
-        </li>
-        <li class="flex gap-2.5">
-          <Icon name="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-pink-400" />
-          <span
-            >Run with <code class={ic}>--setup</code> for a guided browser wizard to set the admin
-            password and pick your books folder.</span
-          >
-        </li>
+      <ul class="reveal reveal-d1 divide-y divide-border self-start border-y border-border lg:col-span-8">
+        {
+          platforms.map(([os, files]) => (
+            <li class="flex flex-col gap-1 py-5 sm:flex-row sm:items-baseline sm:gap-8">
+              <span class="w-28 shrink-0 font-display text-xl font-semibold tracking-[-0.02em]">{os}</span>
+              <span class="text-[0.9375rem] text-muted-foreground">{files}</span>
+            </li>
+          ))
+        }
+        <li class="py-5 text-[0.9375rem] text-muted-foreground">Every release also carries <span class="ic">checksums.txt</span>.</li>
       </ul>
-      <Button href={SERVER_RELEASES} external>
-        <Icon name="download" class="h-5 w-5" /> Browse server releases
-      </Button>
-    </article>
+    </div>
+  </section>
 
-    <!-- Build from source -->
-    <article class={`reveal ${card}`}>
-      <div class="mb-4 flex items-center gap-3">
-        <span class={chip}><Icon name="terminal" class="h-6 w-6" /></span>
-        <h2 class="text-2xl font-bold text-hi">Build from source</h2>
+  <section id="source" data-chapter="From source" class="py-12 sm:py-16">
+    <div class="shell grid gap-10 lg:grid-cols-12">
+      <div class="reveal lg:col-span-4">
+        <h2 class="t-title">From source</h2>
+        <p class="mt-4 text-[1.0625rem] leading-relaxed text-foreground/80">
+          Pure Go with no C toolchain needed (SQLite is pure Go too), so it builds wherever Go 1.26
+          does. AGPLv3.
+        </p>
       </div>
-      <p class="mb-5 max-w-3xl text-body">
-        For developers and unsupported platforms. The server is CGO-free (pure-Go SQLite), so it
-        builds anywhere Go does. Requires <strong class="text-hi">Go 1.25+</strong>.
+      <div class="reveal reveal-d1 min-w-0 lg:col-span-8"><CodeBlock code={source} /></div>
+    </div>
+  </section>
+
+  <section id="apps" data-chapter="The apps" class="py-12 pb-24 sm:py-16 sm:pb-32">
+    <div class="shell">
+      <h2 class="t-display reveal">Then press play.</h2>
+      <div class="mt-10">
+        <AppCards webTitle="Already on your server" pairNote="Pair it with an invite link or QR code.">
+          <p class="mt-3 text-[0.9375rem] text-foreground/80">Open <span class="ic">/web</span> and add it to your home screen. Try it first on the demo, with {demoLibrary.shelf} on the shelf.</p>
+          <a href={DEMO_URL} target="_blank" rel="noopener" class="group mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold">Open the demo <Arrow /></a>
+        </AppCards>
+      </div>
+      <p class="reveal mt-10 text-sm text-muted-foreground">
+        New to this? The <a href="/docs/installation" class="link">installation guide</a> walks through a Docker setup end to end.
       </p>
-      <CodeSnippet code={source} class="mb-5" />
-      <Button href={SERVER_REPO} variant="secondary" external>
-        <Icon name="code" class="h-5 w-5" /> View the source on GitHub
-      </Button>
-    </article>
-
-    <!-- The player apps -->
-    <section class="reveal pt-6">
-      <SectionHeading
-        align="left"
-        overline="The player"
-        title="Get the app"
-        lede="The player connects to your own server. Install it natively on iOS, add the web player to any home screen, or open the live demo before you host anything."
-        class="mb-8"
-      />
-      <div class="grid gap-4 sm:grid-cols-3">
-        <!-- iOS -->
-        <div class={card}>
-          <div class="mb-3 flex items-center gap-2">
-            <Icon name="apple" class="h-5 w-5 text-hi" />
-            <h3 class="font-semibold text-hi">iOS</h3>
-            <Badge variant="success"><Icon name="check" class="h-3 w-3" /> Available now</Badge>
-          </div>
-          <p class="mb-5 text-sm text-body">
-            The native iPhone and iPad app is live on the App Store. Pair it to your server with an
-            invite link or QR code and you're listening.
-          </p>
-          <a
-            href={APP_STORE}
-            target="_blank"
-            rel="noopener"
-            class="inline-flex items-center gap-3 rounded-xl border border-edge bg-black px-4 py-2.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-pink-500/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-500"
-            aria-label="Download AudioSilo on the App Store"
-          >
-            <Icon name="apple" class="h-7 w-7 text-white" />
-            <span class="flex flex-col text-left leading-tight">
-              <span class="text-[0.6rem] uppercase tracking-wide text-gray-300">Download on the</span>
-              <span class="text-lg font-semibold text-white">App Store</span>
-            </span>
-          </a>
-        </div>
-
-        <!-- Web PWA -->
-        <div class={card}>
-          <div class="mb-3 flex items-center gap-2">
-            <Icon name="globe" class="h-5 w-5 text-pink-400" />
-            <h3 class="font-semibold text-hi">Web app (PWA)</h3>
-            <Badge variant="success"><Icon name="check" class="h-3 w-3" /> Available now</Badge>
-          </div>
-          <p class="mb-5 text-sm text-body">
-            Your server hosts the installable web player at <code class={ic}>/web</code>. Open it in
-            any browser and "Add to Home Screen" for an app-like experience, with nothing to install
-            separately. Try it on the live demo first.
-          </p>
-          <Button href={DEMO} variant="secondary" external class="text-sm">
-            Try the live demo <Icon name="arrowRight" class="h-4 w-4" />
-          </Button>
-        </div>
-
-        <!-- Android -->
-        <div class={card}>
-          <div class="mb-3 flex items-center gap-2">
-            <Icon name="phone" class="h-5 w-5 text-dim" />
-            <h3 class="font-semibold text-hi">Android</h3>
-            <Badge variant="muted">Coming soon</Badge>
-          </div>
-          <p class="mb-5 text-sm text-body">
-            The Android app is built from the same codebase and is working through Google Play's
-            release process. In the meantime the web player runs everywhere.
-          </p>
-          <a
-            href={FRONTEND_REPO}
-            target="_blank"
-            rel="noopener"
-            class="inline-flex items-center gap-1 text-sm text-dim transition-colors hover:text-pink-400"
-          >
-            <Icon name="github" class="h-4 w-4" /> Follow progress on GitHub
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <p class="pt-4 text-center text-sm text-dim">
-      Not sure where to start? The
-      <a class="text-pink-500 transition-colors hover:text-pink-400" href="/docs/installation"
-        >installation guide</a
-      >
-      walks through a Docker setup end to end.
-    </p>
-  </div>
+    </div>
+  </section>
 </Base>
