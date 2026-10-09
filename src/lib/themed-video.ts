@@ -33,15 +33,30 @@ const pageSettled = new Promise<void>((resolve) => {
   else window.addEventListener('load', idle, { once: true })
 })
 
-/** Resolves once the visible poster (if any) has loaded, so it paints before any video bytes are asked for. */
+/**
+ * Resolves once the visible poster (if any) has loaded, so it paints before
+ * any video bytes are asked for. "Visible" is re-read on every load and theme
+ * change: a lazy poster hidden by a theme switch (display:none) never loads.
+ */
 function posterReady(root: HTMLElement): Promise<void> {
-  const img = [...root.querySelectorAll<HTMLImageElement>('img[data-slot^="poster"]')].find(
-    (i) => getComputedStyle(i).display !== 'none',
-  )
-  if (!img || img.complete) return Promise.resolve()
+  const posters = [...root.querySelectorAll<HTMLImageElement>('img[data-slot^="poster"]')]
+  const ready = () => {
+    const img = posters.find((i) => getComputedStyle(i).display !== 'none')
+    return !img || img.complete
+  }
+  if (ready()) return Promise.resolve()
   return new Promise((resolve) => {
-    img.addEventListener('load', () => resolve(), { once: true })
-    img.addEventListener('error', () => resolve(), { once: true })
+    let stop = () => {}
+    const check = () => {
+      if (!ready()) return
+      stop()
+      resolve()
+    }
+    stop = onThemeChange(check)
+    for (const img of posters) {
+      img.addEventListener('load', check)
+      img.addEventListener('error', check)
+    }
   })
 }
 
@@ -67,11 +82,8 @@ function init(root: HTMLElement) {
 
   const setState = (state: 'idle' | 'playing' | 'paused' | 'error') => {
     root.dataset.state = state
-    if (button) {
-      const playing = state === 'playing'
-      button.setAttribute('aria-label', playing ? 'Pause video' : 'Play video')
-      button.setAttribute('aria-pressed', String(playing))
-    }
+    // The label says what a press does; no aria-pressed on top (it would read "Pause video, pressed").
+    button?.setAttribute('aria-label', state === 'playing' ? 'Pause video' : 'Play video')
   }
 
   let current = '' // the file the <source> points at ('' = nothing loaded yet)

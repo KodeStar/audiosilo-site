@@ -41,8 +41,13 @@ const settled: ClientDirective = (load, _options, el) => {
   async function start() {
     if (started) return
     started = true
-    const hydrate = await load()
-    await hydrate()
+    try {
+      const hydrate = await load()
+      await hydrate()
+    } catch (err) {
+      // The island failed to load: stop holding clicks, so links in it still work.
+      console.error(err)
+    }
     hydrated = true
     cleanup()
     if (heldClick?.isConnected) {

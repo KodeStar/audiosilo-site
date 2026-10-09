@@ -16,6 +16,8 @@ import VersionBadge from '@/components/VersionBadge.tsx'
 import { loops, stills, type Still } from '@/data/media'
 import { firstRunBanner } from '@/data/install'
 import { GITHUB_SERVER_RELEASES_URL, DOCS_URL } from '@/data/links'
+import { SUPPORT_CARD_LIVE } from '@/data/status'
+import { chapterTitle } from '@/lib/chapters'
 
 const chapters = [
   { id: 'top', title: 'Served from home' },
@@ -27,6 +29,7 @@ const chapters = [
   { id: 'console', title: 'The admin console' },
   { id: 'demo', title: 'Try the demo' },
 ]
+const chapter = chapterTitle(chapters)
 
 const gallery: { still: Still; title: string; body: string; span?: boolean }[] = [
   { still: stills.serverCompare, title: 'Compare, field by field', body: 'Each value on your server is marked File tag or Path, next to the community one. Take only the fields you tick: here a book tagged with its title and author swapped gets its real title, author, narrator, series and cover. Your own edits are never overwritten unless you tick them.', span: true },
@@ -54,7 +57,7 @@ const security = [
   description="AudioSilo Server: one Docker container or a single binary. It indexes, streams and keeps everyone's place, never writes to your files, and comes with an admin console."
 >
   <!-- Hero -->
-  <section id="top" data-chapter="Served from home" class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-16 sm:pt-[calc(var(--header-h)+5rem)] sm:pb-24">
+  <section id="top" data-chapter={chapter('top')} class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-16 sm:pt-[calc(var(--header-h)+5rem)] sm:pb-24">
     <Wash palette="console" />
     <div class="shell relative z-10">
       <div class="grid gap-8">
@@ -80,7 +83,7 @@ const security = [
   <div class="shell flex gap-12 xl:gap-16">
     <ChapterList title="The server" chapters={chapters} />
     <div class="min-w-0 flex-1">
-      <section id="install" data-chapter="Install" class="scroll-mt-24 py-14 sm:py-20">
+      <section id="install" data-chapter={chapter('install')} class="scroll-mt-24 py-14 sm:py-20">
         <div class="reveal max-w-2xl">
           <p class="t-eyebrow mb-3">Install</p>
           <h2 class="t-title">One command, or one file.</h2>
@@ -104,7 +107,7 @@ const security = [
         </div>
       </section>
 
-      <FeatureRow id="first-run" chapter="First run" eyebrow="First run" title="No default password. Ever." split="wide" textFirst>
+      <FeatureRow id="first-run" chapter={chapter('first-run')} eyebrow="First run" title="No default password. Ever." split="wide" textFirst>
         <div slot="media">
           <CodeBlock code={firstRunBanner} filename="docker compose logs" />
         </div>
@@ -114,12 +117,12 @@ const security = [
         </p>
         <p>
           Or start it with <span class="ic">--setup</span> for a browser wizard; its one-time link
-          switches off the moment an admin exists. Then add your books folder in the console: it's
-          browsable straight away while the scanner fills in details, covers and lengths.
+          switches off the moment an admin exists. Then add your books folder in the console and
+          the scanner indexes it: details, covers and lengths.
         </p>
       </FeatureRow>
 
-      <FeatureRow id="files" chapter="Your files" eyebrow="Filesystem first" title="Your files are the truth." flip split="even">
+      <FeatureRow id="files" chapter={chapter('files')} eyebrow="Filesystem first" title="Your files are the truth." flip split="even">
         <div slot="media" class="relative isolate overflow-hidden rounded-[28px] p-5 sm:p-8">
           <Wash palette="treasure" edge="none" />
           <div class="glass relative z-10 rounded-3xl p-5 font-mono text-[12.5px] leading-[1.9] shadow-[var(--shadow-overlay)] sm:p-6 sm:text-[13px]">
@@ -152,7 +155,7 @@ const security = [
         />
       </FeatureRow>
 
-      <FeatureRow id="people" chapter="Invites and sharing" eyebrow="People" title="Invite the house with a QR code." split="wide">
+      <FeatureRow id="people" chapter={chapter('people')} eyebrow="People" title="Invite the house with a QR code." split="wide">
         <div slot="media">
           <Device kind="window" address="your-server/admin" class="w-full" still={stills.serverInvite} widths={[700, 1400]} sizes="(min-width: 1280px) 38rem, 92vw" />
         </div>
@@ -171,7 +174,7 @@ const security = [
         />
       </FeatureRow>
 
-      <section id="security" data-chapter="Security defaults" class="scroll-mt-24 py-14 sm:py-20">
+      <section id="security" data-chapter={chapter('security')} class="scroll-mt-24 py-14 sm:py-20">
         <div class="reveal max-w-2xl">
           <p class="t-eyebrow mb-3">Security defaults</p>
           <h2 class="t-title">Built to be left on the internet.</h2>
@@ -191,7 +194,7 @@ const security = [
         </dl>
       </section>
 
-      <section id="console" data-chapter="The admin console" class="scroll-mt-24 py-14 sm:py-20">
+      <section id="console" data-chapter={chapter('console')} class="scroll-mt-24 py-14 sm:py-20">
         <div class="grid items-end gap-6 lg:grid-cols-[1fr_auto]">
           <div class="reveal max-w-2xl">
             <p class="t-eyebrow mb-3">The admin console</p>
@@ -245,8 +248,8 @@ const security = [
           </div>
         </div>
         <p class="reveal mt-12 rounded-2xl bg-muted/70 px-5 py-4 text-sm text-muted-foreground shadow-[inset_0_0_0_1px_var(--border)]">
-          AudioSilo is free; sponsors keep it going. After a month or so, the admin console shows its
-          admins one small card about sponsoring: <em>I've donated</em> hides it for good on that
+          AudioSilo is free; sponsors keep it going. {SUPPORT_CARD_LIVE ? 'After a month or so, the admin console shows' : 'In a coming server update, after a month or so, the admin console shows'}
+          its admins one small card about sponsoring: <em>I've donated</em> hides it for good on that
           server, <em>Not now</em> for six months. It's never in the player, and giving unlocks
           nothing. <a href="/pricing" class="link font-semibold">How AudioSilo is paid for</a>.
           Full reference in the <a href={DOCS_URL} target="_blank" rel="noopener" class="link">documentation</a>.
@@ -256,6 +259,7 @@ const security = [
   </div>
 
   <DemoEnd
+    chapter={chapter('demo')}
     title="Try the player your server ships."
     body="The demo is a real AudioSilo server running the same web player, with a throwaway account made for you."
     note="Demo visitors don't get the admin console; the tour above shows it."

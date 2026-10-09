@@ -13,7 +13,8 @@ import AppCards from '@/components/site/AppCards.astro'
 import { stills } from '@/data/media'
 import { demoLibrary } from '@/data/demo'
 import { DEMO_URL } from '@/data/links'
-import { APPS_WITH_2, REDESIGN_WHERE } from '@/data/status'
+import { APPS_WITH_2, PLAYER_PLATFORMS, REDESIGN_WHERE } from '@/data/status'
+import { chapterTitle } from '@/lib/chapters'
 
 const chapters = [
   { id: 'top', title: 'Every screen' },
@@ -26,22 +27,23 @@ const chapters = [
   { id: 'get-it', title: 'Get it' },
   { id: 'demo', title: 'Try the demo' },
 ]
+const chapter = chapterTitle(chapters)
 ---
 
 <Base
   hasHero
   title="The AudioSilo player - one app, every screen"
-  description="The AudioSilo audiobook player for the web, iPhone and iPad: a household bookcase, a seek bar built for long books, spoiler-safe characters and recaps, a sleep timer that fades you out."
+  description={`The AudioSilo audiobook player for ${PLAYER_PLATFORMS}: a household bookcase, a seek bar built for long books, spoiler-safe characters and recaps, a sleep timer that fades you out.`}
 >
   <!-- Hero -->
-  <section id="top" data-chapter="Every screen" class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-16 sm:pt-[calc(var(--header-h)+5rem)] sm:pb-24">
+  <section id="top" data-chapter={chapter('top')} class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-16 sm:pt-[calc(var(--header-h)+5rem)] sm:pb-24">
     <Wash palette="oz" />
     <div class="shell relative z-10">
       <div class="mx-auto max-w-4xl text-center">
         <p class="t-eyebrow reveal">The player</p>
         <h1 class="t-hero reveal reveal-d1 mt-5">Every book, right where you left it.</h1>
         <p class="t-lede reveal reveal-d2 mx-auto mt-6 max-w-2xl text-foreground/75">
-          One app for the web, iPhone and iPad: a bookcase for the whole house, a seek bar built
+          One app for {PLAYER_PLATFORMS}: a bookcase for the whole house, a seek bar built
           for 30-hour books, and the details filled in by a community database.
         </p>
         <div class="reveal reveal-d3 mt-8 flex flex-wrap justify-center gap-2">
@@ -59,7 +61,7 @@ const chapters = [
   <div class="shell flex gap-12 xl:gap-16">
     <ChapterList title="The player" chapters={chapters} />
     <div class="min-w-0 flex-1">
-      <FeatureRow id="library" chapter="Your bookcase" eyebrow="Home and library" title="A bookcase for the whole house." split="wide">
+      <FeatureRow id="library" chapter={chapter('library')} eyebrow="Home and library" title="A bookcase for the whole house." split="wide">
         <div slot="media" class="relative pr-[19%] pb-[12%]">
           <Device kind="tablet" class="w-full" still={stills.tabletSeries} widths={[600, 1200]} sizes="(min-width: 1280px) 32rem, 76vw" />
           <div class="absolute right-0 bottom-0 w-[27%]">
@@ -82,7 +84,7 @@ const chapters = [
         />
       </FeatureRow>
 
-      <FeatureRow id="book" chapter="Who's who" eyebrow="The book page" title="Who's who, without the spoilers." flip split="tall">
+      <FeatureRow id="book" chapter={chapter('book')} eyebrow="The book page" title="Who's who, without the spoilers." flip split="tall">
         <div slot="media" class="flex justify-center">
           <Device kind="phone" class="w-[56%] max-w-[17rem]" still={stills.phoneCharacters} widths={[300, 560]} sizes="(min-width: 1280px) 17rem, 54vw" />
         </div>
@@ -101,7 +103,7 @@ const chapters = [
         </p>
       </FeatureRow>
 
-      <FeatureRow id="player" chapter="The full player" eyebrow="The full player" title="A seek bar for 30-hour books." split="wide">
+      <FeatureRow id="player" chapter={chapter('player')} eyebrow="The full player" title="A seek bar for 30-hour books." split="wide">
         <div slot="media" class="flex justify-center">
           <Device kind="tablet" class="w-full max-w-[40rem]" still={stills.tabletPlayer} widths={[600, 1200]} sizes="(min-width: 1280px) 38rem, 92vw" />
         </div>
@@ -121,7 +123,7 @@ const chapters = [
         />
       </FeatureRow>
 
-      <FeatureRow id="notes" chapter="Up next and notes" eyebrow="Up next, bookmarks, Journal" title="Up next, and everything you noted." flip split="wide">
+      <FeatureRow id="notes" chapter={chapter('notes')} eyebrow="Up next, bookmarks, Journal" title="Up next, and everything you noted." flip split="wide">
         <div slot="media" class="relative pb-[14%] pl-[9%]">
           <Device kind="window" class="w-full" still={stills.desktopUpnext} widths={[700, 1400]} sizes="(min-width: 1280px) 40rem, 84vw" />
           <div class="absolute bottom-0 left-0 w-[24%] max-w-[10rem]">
@@ -139,7 +141,7 @@ const chapters = [
         </p>
       </FeatureRow>
 
-      <FeatureRow id="you" chapter="You and your year" eyebrow="You" title="Your listening, kept by your server." split="even">
+      <FeatureRow id="you" chapter={chapter('you')} eyebrow="You" title="Your listening, kept by your server." split="even">
         <div slot="media" class="flex items-end justify-center gap-4 sm:gap-6">
           <Device kind="phone" class="w-[40%] max-w-[14rem]" still={stills.phoneStats} widths={[260, 480]} sizes="(min-width: 1280px) 14rem, 40vw" />
           <Device kind="card" class="w-[40%] max-w-[14rem] -translate-y-8" still={stills.yearCard} widths={[260, 520]} sizes="(min-width: 1280px) 14rem, 40vw" />
@@ -152,7 +154,7 @@ const chapters = [
         <p class="text-sm text-muted-foreground">Nothing leaves your server unless you share a card.</p>
       </FeatureRow>
 
-      <FeatureRow id="offline" chapter="Offline and away" eyebrow="Offline, servers, addresses" title="On the train, at home, away." flip split="even">
+      <FeatureRow id="offline" chapter={chapter('offline')} eyebrow="Offline, servers, addresses" title="On the train, at home, away." flip split="even">
         <div slot="media" class="relative isolate overflow-hidden rounded-[28px] p-5 sm:p-8">
           <Wash palette="treasure" edge="none" />
           <div class="glass relative z-10 mx-auto max-w-sm rounded-3xl p-2 shadow-[var(--shadow-overlay)]">
@@ -180,7 +182,7 @@ const chapters = [
         </p>
       </FeatureRow>
 
-      <section id="get-it" data-chapter="Get it" class="scroll-mt-24 py-14 sm:py-20">
+      <section id="get-it" data-chapter={chapter('get-it')} class="scroll-mt-24 py-14 sm:py-20">
         <h2 class="t-display reveal max-w-2xl">Where to get it.</h2>
         <div class="mt-10">
           <AppCards webTitle="In your browser, now">
@@ -196,6 +198,7 @@ const chapters = [
   </div>
 
   <DemoEnd
+    chapter={chapter('demo')}
     title="Hear it for yourself."
     body={`The demo runs the same web player your server ships, with ${demoLibrary.shelf} to try it on.`}
     note={demoLibrary.metadataNote ?? undefined}

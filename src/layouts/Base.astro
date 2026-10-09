@@ -16,6 +16,7 @@ import Header from '@/components/site/Header.astro'
 import Footer from '@/components/site/Footer.astro'
 import MiniBar from '@/components/site/MiniBar.astro'
 import { DEFAULT_PREFERENCE, THEME_COLOR, THEME_STORAGE_KEY } from '@/lib/theme'
+import { PLAYER_PLATFORMS } from '@/data/status'
 
 interface Props {
   title?: string
@@ -24,13 +25,16 @@ interface Props {
   hasHero?: boolean
   /** Show the phone mini bar (off on pages that are themselves about the demo's limits, never needed). */
   miniBar?: boolean
+  /** Keep the page out of search results, with no canonical URL (the 404 page). */
+  noindex?: boolean
 }
 
 const {
   title = 'AudioSilo - your audiobooks, your server, every screen',
-  description = 'AudioSilo is a free, self-hosted audiobook server with a player for the web, iPhone and iPad, and an open community metadata database. Try the demo in your browser, no sign-up.',
+  description = `AudioSilo is a free, self-hosted audiobook server with a player for ${PLAYER_PLATFORMS}, and an open community metadata database. Try the demo in your browser, no sign-up.`,
   hasHero = false,
   miniBar = true,
+  noindex = false,
 } = Astro.props
 
 const LATIN =
@@ -107,7 +111,7 @@ const ogImage = new URL('/og.png', Astro.site).href
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
 
     <!-- PNG icons only: the 15 KB multi-size favicon.ico stays for clients that ask for it by name. -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -119,7 +123,7 @@ const ogImage = new URL('/og.png', Astro.site).href
     <meta property="og:site_name" content="AudioSilo" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

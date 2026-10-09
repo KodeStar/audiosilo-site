@@ -8,6 +8,7 @@ import VersionBadge from '@/components/VersionBadge.tsx'
 import { DEMO_URL, GITHUB_SERVER_RELEASES_URL, GITHUB_SERVER_URL } from '@/data/links'
 import AppCards from '@/components/site/AppCards.astro'
 import Icon from '@/components/Icon.astro'
+import { APP_PLATFORMS } from '@/data/status'
 
 const source = `git clone ${GITHUB_SERVER_URL}
 cd audiosilo-server
@@ -26,7 +27,7 @@ const platforms = [
 <Base
   hasHero
   title="Download AudioSilo - server and apps"
-  description="Run AudioSilo Server with Docker or a native binary for Linux, macOS or Windows, then listen in the web player, on iPhone and iPad."
+  description={`Run AudioSilo Server with Docker or a native binary for Linux, macOS or Windows, then listen in the web player, on ${APP_PLATFORMS}.`}
 >
   <section id="top" data-chapter="Download" class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-12 sm:pt-[calc(var(--header-h)+5rem)]">
     <Wash palette="console" />

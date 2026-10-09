@@ -33,11 +33,14 @@ import Icon from '@/components/Icon.astro'
   #mini-bar {
     transition:
       transform var(--dur-3) var(--ease-out),
-      opacity var(--dur-3) var(--ease-out);
+      opacity var(--dur-3) var(--ease-out),
+      visibility var(--dur-3);
   }
+  /* Hidden means out of the tab order too (visibility flips after the slide out). */
   #mini-bar[data-show='false'] {
     transform: translateY(140%);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
   }
   html:not(.js) #mini-bar {

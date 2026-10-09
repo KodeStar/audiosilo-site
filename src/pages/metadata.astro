@@ -14,6 +14,7 @@ import { demoLibrary } from '@/data/demo'
 import { META_STATS, STATS_AS_OF } from '@/data/status'
 import { DISCORD_URL, GITHUB_META_URL, GITHUB_SIDECARS_URL, META_URL } from '@/data/links'
 import { cn } from '@/lib/utils'
+import { chapterTitle } from '@/lib/chapters'
 
 const fmt = new Intl.NumberFormat('en-GB')
 const metaCounters = [
@@ -32,8 +33,9 @@ const chapters = [
   { id: 'open', title: 'Open data' },
   { id: 'contribute', title: 'Contribute' },
   { id: 'privacy', title: 'Privacy' },
-  { id: 'demo', title: 'See it' },
+  { id: 'demo', title: 'Try the demo' },
 ]
+const chapter = chapterTitle(chapters)
 ---
 
 <Base
@@ -42,7 +44,7 @@ const chapters = [
   description="meta.audiosilo.app is a free, open audiobook database built by listeners: works, recordings, narrators, series and chapters. AudioSilo servers use it to match tags, order series and show spoiler-safe characters and recaps."
 >
   <!-- Hero -->
-  <section id="top" data-chapter="The database" class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-16 sm:pt-[calc(var(--header-h)+5rem)] sm:pb-24">
+  <section id="top" data-chapter={chapter('top')} class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-16 sm:pt-[calc(var(--header-h)+5rem)] sm:pb-24">
     <Wash palette="community" />
     <div class="shell relative z-10 grid items-center gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
       <div class="max-w-xl">
@@ -72,7 +74,7 @@ const chapters = [
   <div class="shell flex gap-12 xl:gap-16">
     <ChapterList title="The metadata" chapters={chapters} />
     <div class="min-w-0 flex-1">
-      <section id="inside" data-chapter="What is in it" class="scroll-mt-24 py-14 sm:py-20">
+      <section id="inside" data-chapter={chapter('inside')} class="scroll-mt-24 py-14 sm:py-20">
         <div class="reveal max-w-2xl">
           <p class="t-eyebrow mb-3">As of {STATS_AS_OF}</p>
           <h2 class="t-title">Narrators, recordings and chapters come first.</h2>
@@ -95,7 +97,7 @@ const chapters = [
         </figure>
       </section>
 
-      <FeatureRow id="library" chapter="For your library" eyebrow="For your library" title="From a folder called “Book 3” to the right book." split="wide">
+      <FeatureRow id="library" chapter={chapter('library')} eyebrow="For your library" title="From a folder called “Book 3” to the right book." split="wide">
         <div slot="media">
           <Device kind="window" address="your-server/admin" class="w-full" still={stills.serverCompare} widths={[700, 1400]} sizes="(min-width: 1280px) 36rem, 92vw" />
         </div>
@@ -114,7 +116,7 @@ const chapters = [
         />
       </FeatureRow>
 
-      <FeatureRow id="community" chapter="Characters and recaps" eyebrow="The community layer" title="Characters and recaps that wait for you." flip split="even">
+      <FeatureRow id="community" chapter={chapter('community')} eyebrow="The community layer" title="Characters and recaps that wait for you." flip split="even">
         <div slot="media" class="flex items-end justify-center gap-4 sm:gap-6">
           <Device kind="phone" class="w-[44%] max-w-[15rem]" still={stills.metaCharactersPhone} widths={[260, 480]} sizes="(min-width: 1280px) 15rem, 44vw" />
           <Device kind="phone" class="w-[44%] max-w-[15rem] -translate-y-8" still={stills.phoneWhosWho} widths={[260, 480]} sizes="(min-width: 1280px) 15rem, 44vw" />
@@ -130,7 +132,7 @@ const chapters = [
         </p>
       </FeatureRow>
 
-      <section id="open" data-chapter="Open data" class="scroll-mt-24 py-14 sm:py-20">
+      <section id="open" data-chapter={chapter('open')} class="scroll-mt-24 py-14 sm:py-20">
         <div class="reveal max-w-2xl">
           <p class="t-eyebrow mb-3">Open data</p>
           <h2 class="t-title">The repository is the database.</h2>
@@ -160,7 +162,7 @@ const chapters = [
         </p>
       </section>
 
-      <FeatureRow id="contribute" chapter="Contribute" eyebrow="Contribute" title="Add the book you know best." split="wide">
+      <FeatureRow id="contribute" chapter={chapter('contribute')} eyebrow="Contribute" title="Add the book you know best." split="wide">
         <div slot="media">
           <Device kind="window" address="meta.audiosilo.app/contribute" class="w-full" still={stills.metaContribute} widths={[800, 1500]} sizes="(min-width: 1280px) 36rem, 92vw" />
         </div>
@@ -183,7 +185,7 @@ const chapters = [
         </div>
       </FeatureRow>
 
-      <section id="privacy" data-chapter="Privacy" class="scroll-mt-24 py-14 sm:py-20">
+      <section id="privacy" data-chapter={chapter('privacy')} class="scroll-mt-24 py-14 sm:py-20">
         <div class="grid gap-10 xl:grid-cols-12">
           <div class="reveal xl:col-span-5">
             <p class="t-eyebrow mb-3">Privacy</p>
@@ -210,6 +212,7 @@ const chapters = [
   </div>
 
   <DemoEnd
+    chapter={chapter('demo')}
     title="Try the player, then browse the database."
     body={`The demo runs the real web player on ${demoLibrary.shelf}. To see what the database adds, browse meta.audiosilo.app or watch the console tour.`}
     note={demoLibrary.metadataNote ?? undefined}

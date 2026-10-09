@@ -13,7 +13,7 @@ import PlayLink from './PlayLink.astro'
 import Wash from './Wash.astro'
 
 interface Props {
-  /** Heading level for the card title. */
+  /** id of the card title (the article's aria-labelledby); unique per page. */
   headingId?: string
 }
 const { headingId = 'try-tonight' } = Astro.props

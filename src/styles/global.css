@@ -362,7 +362,6 @@
   border-radius: 50%;
   opacity: var(--wash-o);
   will-change: transform;
-  animation-play-state: paused;
   background: radial-gradient(
     closest-side,
     color-mix(in oklab, var(--c) var(--wash-mix), white),
@@ -394,8 +393,10 @@
   bottom: -34%;
   animation: wash-drift-3 41s ease-in-out infinite alternate;
 }
-.wash[data-wash-live] > i {
-  animation-play-state: running;
+/* Paused unless on screen (src/lib/site.ts). After the per-child rules on
+   purpose: their `animation` shorthand resets the play state to running. */
+.wash:not([data-wash-live]) > i {
+  animation-play-state: paused;
 }
 /* Static grain on its own layer (opacity per theme), then the edge fade
    that lets the wash flow into the sections around it. */

@@ -35,13 +35,14 @@ interface Props {
  * follows the theme (swapping live, position kept). The <video> exists only
  * while the dialog is open (the popup unmounts on close), so nothing loads
  * before it opens and a closed dialog holds no stale signed redirect URL
- * (GitHub's expire after an hour). Hydrate with `client:visible`.
+ * (GitHub's expire after an hour). Hydrate with `client:settled` (as
+ * TourButton.astro does), which replays a click that lands before hydration.
  *
  * The file is a typed <source> (Safari won't play an mp4 served as
  * application/octet-stream without the type) and the element never sets
  * `crossorigin` (GitHub's asset redirects send no CORS headers).
  *
- *   <VideoDialog client:visible files={tourFiles(tours.server)} title="A tour of the admin console">
+ *   <VideoDialog client:settled files={tourFiles(tours.server)} title="A tour of the admin console">
  *     Watch the tour
  *   </VideoDialog>
  */

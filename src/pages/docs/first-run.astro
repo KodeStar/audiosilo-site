@@ -1,6 +1,7 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro'
 import CodeBlock from '../../components/CodeBlock.astro'
+import { APP_PLATFORMS } from '@/data/status'
 
 const creds = `========================================================
  AudioSilo first-run setup - store these now, shown once
@@ -67,8 +68,8 @@ curl -X POST https://your-server/api/v1/admin/libraries \\
   <h2>4. Open the web player</h2>
   <p>
     The Docker image and native binaries serve the installable web player at <code>/web</code>. Open it
-    in a browser and &ldquo;Add to Home Screen&rdquo; for an app-like experience, or use the iPhone and
-    iPad app (see the <a href="/download">download page</a>). Either way, your progress, bookmarks and notes
+    in a browser and &ldquo;Add to Home Screen&rdquo; for an app-like experience, or use the {APP_PLATFORMS}
+    app (see the <a href="/download">download page</a>). Either way, your progress, bookmarks and notes
     sync across every device you connect.
   </p>
 

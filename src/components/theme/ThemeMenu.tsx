@@ -40,7 +40,7 @@ export default function ThemeMenu({ className }: { className?: string }) {
           onValueChange={(v) => setPreference(v as ThemePreference)}
         >
           {OPTIONS.map(({ value, label, Icon }) => (
-            <DropdownMenuRadioItem key={value} value={value} className="gap-2 rounded-lg py-2">
+            <DropdownMenuRadioItem key={value} value={value} closeOnClick className="gap-2 rounded-lg py-2">
               <Icon className="size-4 text-muted-foreground" aria-hidden="true" />
               {label}
             </DropdownMenuRadioItem>

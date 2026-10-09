@@ -13,7 +13,7 @@ import MediaThemeSwitch from '@/components/theme/MediaThemeSwitch.astro'
 import TourButton from '@/components/media/TourButton.astro'
 import VersionBadge from '@/components/VersionBadge.tsx'
 import { loops, stills } from '@/data/media'
-import { GET_APP_LINE, META_STATS, PLATFORMS_LINE, REDESIGN_WHERE, STATS_AS_OF } from '@/data/status'
+import { GET_APP_LINE, META_STATS, PLATFORMS_LINE, PLAYER_PLATFORMS, REDESIGN_WHERE, STATS_AS_OF } from '@/data/status'
 import { META_URL } from '@/data/links'
 import { dockerRun } from '@/data/install'
 import { demoLibrary } from '@/data/demo'
@@ -32,8 +32,8 @@ import { demoLibrary } from '@/data/demo'
         <p class="t-eyebrow reveal">Self-hosted audiobooks &middot; free, no tiers</p>
         <h1 class="t-hero reveal reveal-d1 mt-5">Press play on your own library.</h1>
         <p class="t-lede reveal reveal-d2 mt-6 max-w-lg text-foreground/75">
-          AudioSilo is an audiobook server you run at home and a player for the web, iPhone and
-          iPad. Your books stay on your machine. Every screen picks up where you left off.
+          AudioSilo is an audiobook server you run at home and a player for {PLAYER_PLATFORMS}.
+          Your books stay on your machine. Every screen picks up where you left off.
         </p>
 
         <div class="reveal reveal-d3 mt-10 flex items-center gap-5 sm:gap-6">
