@@ -207,9 +207,9 @@ const security = [
         <!-- Light and dark, one image split down the diagonal. -->
         <figure class="reveal mt-10">
           <Device kind="window" address="your-server/admin" class="w-full" aspect={`${stills.serverOverview.src.dark.width}/${stills.serverOverview.src.dark.height}`}>
-            <div class="theme-split device-media">
-              <Image src={stills.serverOverview.src.light} alt="The admin console overview in the light theme" widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" format="webp" class="absolute inset-0 size-full object-cover" loading="lazy" />
-              <Image src={stills.serverOverview.src.dark} alt="The same overview in the dark theme" widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" format="webp" class="theme-split-dark absolute inset-0 size-full object-cover" loading="lazy" />
+            <div class="device-media">
+              <Image src={stills.serverOverview.src.light} alt="The admin console overview in the light theme" widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" format="webp" quality={82} class="absolute inset-0 size-full object-cover" loading="lazy" />
+              <Image src={stills.serverOverview.src.dark} alt="The same overview in the dark theme" widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" format="webp" quality={82} class="theme-split-dark absolute inset-0 size-full object-cover" loading="lazy" />
               <span class="theme-split-line" aria-hidden="true"></span>
             </div>
           </Device>
@@ -271,12 +271,6 @@ const security = [
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(
-      to bottom right,
-      transparent calc(50% - 1px),
-      rgb(255 255 255 / 0.7) 50%,
-      transparent calc(50% + 1px)
-    );
     clip-path: polygon(57.8% 0, 58.2% 0, 42.2% 100%, 41.8% 100%);
     background: rgb(255 255 255 / 0.75);
   }

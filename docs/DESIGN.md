@@ -63,7 +63,7 @@ Bricolage Grotesque (display, `opsz` axis), Figtree (text), JetBrains Mono
 ## Motifs
 
 1. **The now-playing wash** (`Wash.astro`, `.wash`): three radial blobs in a
-   cover palette (`pal-oz`, `pal-sherlock`, `pal-dracula`, `pal-treasure`,
+   cover palette (`pal-oz`, `pal-dracula`, `pal-treasure`,
    `pal-carol` from the showcase/demo covers; `pal-console`, `pal-community`,
    `pal-ember` for the pillars) drift on 38-44 s transform loops, with static
    grain and a fade into the page at the section edges. Animates only while on

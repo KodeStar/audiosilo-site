@@ -15,6 +15,7 @@ import '../styles/global.css'
 import Header from '@/components/site/Header.astro'
 import Footer from '@/components/site/Footer.astro'
 import MiniBar from '@/components/site/MiniBar.astro'
+import { DEFAULT_PREFERENCE, THEME_COLOR, THEME_STORAGE_KEY } from '@/lib/theme'
 
 interface Props {
   title?: string
@@ -65,40 +66,38 @@ const ogImage = new URL('/og.png', Astro.site).href
   <head>
     <meta charset="utf-8" />
     <!-- Dark is the default; the script below repoints this at the resolved theme. -->
-    <meta name="theme-color" content="#0a0f1e" />
+    <meta name="theme-color" content={THEME_COLOR.dark} />
     <!-- Before first paint: mark JS, then resolve the theme with no flash
          (localStorage 'theme': light | dark | system). No stored choice means
-         dark, the site default; only 'system' follows the OS. Keep in step
-         with src/lib/theme.ts. -->
-    <script is:inline>
-      ;(function () {
-        var root = document.documentElement
-        root.classList.add('js')
-        var mq = window.matchMedia('(prefers-color-scheme: dark)')
-        function stored() {
-          try {
-            var v = localStorage.getItem('theme')
-            if (v === 'light' || v === 'dark' || v === 'system') return v
-          } catch (e) {}
-          return 'dark' // no stored choice (or storage blocked): the dark default
-        }
-        function apply(pref) {
-          var dark = pref === 'dark' || (pref === 'system' && mq.matches)
-          root.classList.toggle('dark', dark)
-          root.dataset.theme = dark ? 'dark' : 'light'
-          root.dataset.themePreference = pref
-          root.style.colorScheme = dark ? 'dark' : 'light'
-          var meta = document.querySelector('meta[name="theme-color"]')
-          if (meta) meta.setAttribute('content', dark ? '#0a0f1e' : '#f5f7fa')
-        }
-        apply(stored())
-        mq.addEventListener('change', function () {
-          if (root.dataset.themePreference === 'system') apply('system')
-        })
-        window.addEventListener('storage', function (e) {
-          if (e.key === 'theme' || e.key === null) apply(stored())
-        })
-      })()
+         dark, the site default; only 'system' follows the OS. The constants
+         come from src/lib/theme.ts; keep the logic in step with it. -->
+    <script is:inline define:vars={{ KEY: THEME_STORAGE_KEY, DEFAULT: DEFAULT_PREFERENCE, COLOR: THEME_COLOR }}>
+      var root = document.documentElement
+      root.classList.add('js')
+      var mq = window.matchMedia('(prefers-color-scheme: dark)')
+      function stored() {
+        try {
+          var v = localStorage.getItem(KEY)
+          if (v === 'light' || v === 'dark' || v === 'system') return v
+        } catch (e) {}
+        return DEFAULT // no stored choice (or storage blocked): the dark default
+      }
+      function apply(pref) {
+        var dark = pref === 'dark' || (pref === 'system' && mq.matches)
+        root.classList.toggle('dark', dark)
+        root.dataset.theme = dark ? 'dark' : 'light'
+        root.dataset.themePreference = pref
+        root.style.colorScheme = dark ? 'dark' : 'light'
+        var meta = document.querySelector('meta[name="theme-color"]')
+        if (meta) meta.setAttribute('content', dark ? COLOR.dark : COLOR.light)
+      }
+      apply(stored())
+      mq.addEventListener('change', function () {
+        if (root.dataset.themePreference === 'system') apply('system')
+      })
+      window.addEventListener('storage', function (e) {
+        if (e.key === KEY || e.key === null) apply(stored())
+      })
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <!-- Headlines (usually the LCP) are set in Bricolage: fetch it with the HTML. -->

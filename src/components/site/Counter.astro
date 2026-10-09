@@ -10,14 +10,15 @@ interface Props {
   value: number
   label: string
   class?: string
-  numberClass?: string
+  /** 'lg' (default) for a section's headline numbers, 'md' for a denser grid. */
+  size?: 'lg' | 'md'
 }
-const { value, label, class: className, numberClass } = Astro.props
+const { value, label, class: className, size = 'lg' } = Astro.props
 const text = new Intl.NumberFormat('en-GB').format(value)
 ---
 
 <div class={cn('min-w-0', className)}>
-  <p class={cn('t-stat grid text-[clamp(3rem,7.4vw,7rem)]', numberClass)}>
+  <p class={cn('t-stat grid', size === 'md' ? 'text-[clamp(2.75rem,4.2vw,3.75rem)]' : 'text-[clamp(3rem,7.4vw,7rem)]')}>
     <span class="invisible col-start-1 row-start-1" aria-hidden="true">{text}</span>
     <span class="col-start-1 row-start-1" data-count={value} aria-hidden="true">{text}</span>
     <span class="sr-only">{text}</span>

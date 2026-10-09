@@ -13,8 +13,17 @@ import { stills } from '@/data/media'
 import { demoLibrary } from '@/data/demo'
 import { META_STATS, STATS_AS_OF } from '@/data/status'
 import { DISCORD_URL, GITHUB_META_URL, GITHUB_SIDECARS_URL, META_URL } from '@/data/links'
+import { cn } from '@/lib/utils'
 
 const fmt = new Intl.NumberFormat('en-GB')
+const metaCounters = [
+  ['works', 'works'],
+  ['recordings', 'recordings'],
+  ['people', 'narrators and authors'],
+  ['series', 'series'],
+  ['chapters', 'chapters'],
+  ['languages', 'languages'],
+] as const
 const chapters = [
   { id: 'top', title: 'The database' },
   { id: 'inside', title: 'What is in it' },
@@ -74,12 +83,11 @@ const chapters = [
           </p>
         </div>
         <div class="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
-          <Counter value={META_STATS.works} label="works" class="reveal" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
-          <Counter value={META_STATS.recordings} label="recordings" class="reveal reveal-d1" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
-          <Counter value={META_STATS.people} label="narrators and authors" class="reveal reveal-d2" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
-          <Counter value={META_STATS.series} label="series" class="reveal" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
-          <Counter value={META_STATS.chapters} label="chapters" class="reveal reveal-d1" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
-          <Counter value={META_STATS.languages} label="languages" class="reveal reveal-d2" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
+          {
+            metaCounters.map(([key, label], i) => (
+              <Counter value={META_STATS[key]} label={label} class={cn('reveal', i % 3 === 1 && 'reveal-d1', i % 3 === 2 && 'reveal-d2')} size="md" />
+            ))
+          }
         </div>
         <figure class="reveal mt-14">
           <Device kind="window" address="meta.audiosilo.app" class="w-full" still={stills.metaWork} widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" />

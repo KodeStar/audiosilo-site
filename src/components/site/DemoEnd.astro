@@ -8,16 +8,15 @@ import Wash from './Wash.astro'
 import type { Palette } from './Wash.astro'
 
 interface Props {
-  id?: string
   title: string
   body: string
   note?: string
-  palette?: Palette
+  palette: Palette
 }
-const { id = 'demo', title, body, note, palette = 'carol' } = Astro.props
+const { title, body, note, palette } = Astro.props
 ---
 
-<section id={id} data-chapter="Try the demo" class="relative isolate overflow-hidden py-24 sm:py-32">
+<section id="demo" data-chapter="Try the demo" class="relative isolate overflow-hidden py-24 sm:py-32">
   <Wash palette={palette} />
   <div class="shell relative z-10 flex flex-col items-center text-center">
     <PlayLink size="xl" class="reveal" />

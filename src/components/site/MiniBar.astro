@@ -5,6 +5,7 @@
  * pink demo moment is on screen (src/lib/site.ts sets data-show).
  */
 import { DEMO_URL } from '@/data/links'
+import Icon from '@/components/Icon.astro'
 ---
 
 <div id="mini-bar" data-show="false" class="fixed inset-x-3 z-40 md:hidden" style="bottom: max(0.75rem, env(safe-area-inset-bottom))">
@@ -23,7 +24,7 @@ import { DEMO_URL } from '@/data/links'
       <span class="block truncate text-xs text-muted-foreground">No sign-up. Opens in your browser.</span>
     </span>
     <span class="play-btn play-pink size-10" aria-hidden="true">
-      <svg class="size-4 translate-x-px" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" /></svg>
+      <Icon name="play" class="size-4 translate-x-px" />
     </span>
   </a>
 </div>

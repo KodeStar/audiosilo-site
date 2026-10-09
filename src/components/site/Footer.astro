@@ -9,17 +9,12 @@ import {
 } from '@/data/links'
 import Logo from '@/components/Logo.astro'
 import { APPS_BETA, BETA_LABEL, BETA_NOTE, BETA_URL } from '@/data/status'
+import { primaryNav } from '@/data/nav'
 
 const columns = [
   {
     title: 'AudioSilo',
-    links: [
-      { label: 'Player', href: '/player' },
-      { label: 'Server', href: '/server' },
-      { label: 'Metadata', href: '/metadata' },
-      { label: 'Pricing', href: '/pricing' },
-      { label: 'Download', href: '/download' },
-    ],
+    links: [...primaryNav, { label: 'Download', href: '/download' }],
   },
   {
     title: 'Try and learn',

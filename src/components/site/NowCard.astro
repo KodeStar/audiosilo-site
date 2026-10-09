@@ -17,20 +17,21 @@ interface Props {
   headingId?: string
 }
 const { headingId = 'try-tonight' } = Astro.props
+const book = demoBooks.find((b) => b.key === 'carol')!
 ---
 
 <div class="grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-8">
-  <article class="tile reveal relative overflow-hidden p-5 sm:p-8" aria-labelledby={headingId}>
+  <article class="tile reveal p-5 sm:p-8" aria-labelledby={headingId}>
     <Wash palette="carol" edge="none" />
     <div class="relative z-10">
       <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:gap-8">
-        <DemoCover book="carol" class="w-36 shrink-0 sm:w-48" />
+        <DemoCover book={book.key} class="w-36 shrink-0 sm:w-48" />
         <div class="min-w-0">
           <p class="t-eyebrow text-foreground/70">Tonight in the demo &middot; 1 of {demoLibrary.count} books</p>
           <h3 id={headingId} class="mt-2 font-display text-[clamp(2rem,4.2vw,3.25rem)] leading-[0.95] font-bold tracking-[-0.04em]">
-            A Christmas Carol
+            {book.title}
           </h3>
-          <p class="mt-2 text-[0.9375rem] text-foreground/75">Charles Dickens &middot; 3.5 h &middot; a LibriVox recording</p>
+          <p class="mt-2 text-[0.9375rem] text-foreground/75">{book.author} &middot; {book.hours} &middot; a LibriVox recording</p>
         </div>
       </div>
 

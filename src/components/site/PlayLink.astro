@@ -6,6 +6,7 @@
  */
 import { DEMO_URL } from '@/data/links'
 import { cn } from '@/lib/utils'
+import Icon from '@/components/Icon.astro'
 
 interface Props {
   size?: 'xl' | 'lg' | 'md'
@@ -27,8 +28,6 @@ const glyph = { xl: 'size-9 sm:size-10', lg: 'size-8', md: 'size-5' }[size]
   class={cn('play-btn', tone === 'pink' ? 'play-pink' : 'play-ink', rings && 'play-rings', box, className)}
   data-pink={tone === 'pink' ? '' : undefined}
 >
-  <svg class={cn(glyph, 'translate-x-[6%]')} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z"></path>
-  </svg>
+  <Icon name="play" class={cn(glyph, 'translate-x-[6%]')} />
   <span class="sr-only">{label} (opens the demo in a new tab)</span>
 </a>

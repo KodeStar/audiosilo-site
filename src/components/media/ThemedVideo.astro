@@ -14,6 +14,8 @@
  */
 import type { ImageMetadata } from 'astro'
 import { cn } from '@/lib/utils'
+import Icon from '@/components/Icon.astro'
+import { promoteVisibleImg } from '@/lib/promote-visible'
 
 type Src = string | ImageMetadata
 type Themed<T> = T | { light: T; dark: T }
@@ -93,7 +95,7 @@ const srcsetFor = (theme: 'light' | 'dark') =>
 
 const loop = mode === 'loop'
 /** Runs where it stands (right after the two posters): eager-load the visible one. */
-const promotePoster = `(function(s){var d=document.documentElement.classList.contains('dark');var i=s.parentNode.querySelector('img[data-slot="poster-'+(d?'dark':'light')+'"]');if(i){i.fetchPriority='high';i.loading='eager'}})(document.currentScript)`
+const promotePoster = promoteVisibleImg('data-slot', 'poster-')
 const fitClass = fit === 'contain' ? 'object-contain' : 'object-cover'
 ---
 
@@ -189,9 +191,7 @@ const fitClass = fit === 'contain' ? 'object-contain' : 'object-cover'
           '[html:not(.js)_&]:hidden'
         )}
       >
-        <svg data-slot="icon-play" class="size-4 translate-x-px group-data-[state=playing]/tv:hidden" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" />
-        </svg>
+        <Icon name="play" data-slot="icon-play" class="size-4 translate-x-px group-data-[state=playing]/tv:hidden" />
         <svg data-slot="icon-pause" class="hidden size-4 group-data-[state=playing]/tv:block" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <rect x="6" y="4.5" width="4" height="15" rx="1" />
           <rect x="14" y="4.5" width="4" height="15" rx="1" />

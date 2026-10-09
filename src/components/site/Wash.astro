@@ -6,12 +6,12 @@
  */
 import { cn } from '@/lib/utils'
 
-export type Palette = 'oz' | 'sherlock' | 'dracula' | 'treasure' | 'community' | 'console' | 'ember' | 'carol'
+export type Palette = 'oz' | 'dracula' | 'treasure' | 'community' | 'console' | 'ember' | 'carol'
 
 interface Props {
   palette: Palette
-  /** 'fade' (default) fades into the page at both edges; 'top' only at the bottom; 'none' no fade (inside tiles). */
-  edge?: 'fade' | 'top' | 'none'
+  /** 'fade' (default) fades into the page at both edges; 'none' no fade (inside tiles). */
+  edge?: 'fade' | 'none'
   class?: string
 }
 
@@ -19,7 +19,7 @@ const { palette, edge = 'fade', class: className } = Astro.props
 ---
 
 <div
-  class={cn('wash', `pal-${palette}`, edge === 'top' && 'wash-top', edge === 'none' && 'wash-none', className)}
+  class={cn('wash', `pal-${palette}`, edge === 'none' && 'wash-none', className)}
   aria-hidden="true"
 >
   <i></i><i></i><i></i>

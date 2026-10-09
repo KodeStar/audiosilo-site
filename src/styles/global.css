@@ -415,11 +415,8 @@
   z-index: 1;
   background: linear-gradient(to bottom, var(--background), transparent 22%, transparent 70%, var(--background));
 }
-.wash.wash-flat::after {
-  background: linear-gradient(to bottom, var(--background), transparent 30%, transparent 70%, var(--background));
-}
-.wash.wash-top::after {
-  background: linear-gradient(to bottom, transparent 55%, var(--background));
+.wash.wash-none::after {
+  content: none;
 }
 @keyframes wash-drift-1 {
   0% {
@@ -462,12 +459,6 @@
   --w2: #d9a52b;
   --w3: #7a2f63;
   --glow: rgb(31 138 85 / 0.38);
-}
-.pal-sherlock {
-  --w1: #9b2335;
-  --w2: #c98330;
-  --w3: #2d3f78;
-  --glow: rgb(155 35 53 / 0.36);
 }
 .pal-dracula {
   --w1: #4440b8;
@@ -786,19 +777,26 @@ img.device-media {
   transition:
     opacity 0.7s var(--ease-out),
     transform 0.7s var(--ease-out);
+  transition-delay: var(--reveal-delay);
 }
 .js .reveal.is-visible {
   opacity: 1;
   transform: none;
 }
-.js .reveal-d1 {
-  transition-delay: 0.08s;
+/* Stagger: the delay is a custom property so the scroll transition and the
+   hero animation share it; .reveal resets it so a nested reveal doesn't
+   inherit its parent's delay. */
+.reveal {
+  --reveal-delay: 0s;
 }
-.js .reveal-d2 {
-  transition-delay: 0.16s;
+.reveal-d1 {
+  --reveal-delay: 0.08s;
 }
-.js .reveal-d3 {
-  transition-delay: 0.24s;
+.reveal-d2 {
+  --reveal-delay: 0.16s;
+}
+.reveal-d3 {
+  --reveal-delay: 0.24s;
 }
 /* The hero (each page's first section) rises in on CSS alone from the first
    paint: it never waits for JS, and it is usually the LCP. It starts at a
@@ -807,16 +805,7 @@ img.device-media {
   opacity: 1;
   transform: none;
   transition: none;
-  animation: rise-in 0.7s var(--ease-out) both;
-}
-.js main > section:first-of-type .reveal-d1 {
-  animation-delay: 0.08s;
-}
-.js main > section:first-of-type .reveal-d2 {
-  animation-delay: 0.16s;
-}
-.js main > section:first-of-type .reveal-d3 {
-  animation-delay: 0.24s;
+  animation: rise-in 0.7s var(--ease-out) var(--reveal-delay) both;
 }
 @keyframes rise-in {
   from {
@@ -873,12 +862,6 @@ img.device-media {
 .dark .tile {
   background: color-mix(in oklab, var(--card) 82%, transparent);
   box-shadow: inset 0 0 0 1px var(--glass-border);
-}
-.tile > .wash::after {
-  background: none;
-}
-.hairline {
-  box-shadow: inset 0 0 0 1px var(--border);
 }
 
 /* Inline code chip in prose. */
@@ -990,10 +973,6 @@ img.device-media {
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) transparent;
-}
-
-.wash.wash-none::after {
-  content: none;
 }
 
 /* A stage: a section that is dark in both themes (the cinema). It takes the

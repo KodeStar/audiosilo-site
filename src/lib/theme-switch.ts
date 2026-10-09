@@ -2,8 +2,7 @@
  * Behaviour for the in-page theme switch by the hero media (vanilla, tiny).
  *
  * Markup contract: any button with `data-set-theme="light" | "dark"` sets
- * that preference (persisted, so it survives reloads); `data-set-theme="toggle"`
- * flips the resolved theme. Buttons with a fixed value get `aria-pressed`
+ * that preference (persisted, so it survives reloads) and gets `aria-pressed`
  * kept in step with the painted theme, whoever changed it (this switch, the
  * header toggle, the OS while on 'system'). Visual state should come from the
  * `dark:` variant so it is right before this runs; the header toggle follows
@@ -16,18 +15,12 @@ export function initThemeSwitches(): void {
   if (!buttons.length) return
   const sync = (theme: ResolvedTheme) => {
     for (const b of buttons) {
-      const v = b.dataset.setTheme
-      if (v === 'light' || v === 'dark') b.setAttribute('aria-pressed', String(v === theme))
+      b.setAttribute('aria-pressed', String(b.dataset.setTheme === theme))
     }
   }
   for (const b of buttons) {
     b.dataset.tsReady = 'true'
-    b.addEventListener('click', () => {
-      const v = b.dataset.setTheme
-      const next: ResolvedTheme =
-        v === 'light' || v === 'dark' ? v : getResolvedTheme() === 'dark' ? 'light' : 'dark'
-      setPreference(next)
-    })
+    b.addEventListener('click', () => setPreference(b.dataset.setTheme as ResolvedTheme))
   }
   sync(getResolvedTheme())
   onThemeChange(sync)

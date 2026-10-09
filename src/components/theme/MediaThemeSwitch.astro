@@ -10,10 +10,6 @@
 import { MoonIcon, SunIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-interface Props {
-  class?: string
-}
-const { class: className } = Astro.props
 const seg =
   'inline-flex h-8 items-center gap-1.5 rounded-full px-3.5 text-[0.8125rem] font-semibold transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none [&_svg]:size-3.5'
 ---
@@ -21,7 +17,7 @@ const seg =
 <div
   role="group"
   aria-label="Show the site and its screenshots in dark or light"
-  class={cn('glass inline-flex items-center gap-0.5 rounded-full p-1 [html:not(.js)_&]:hidden', className)}
+  class="glass inline-flex items-center gap-0.5 rounded-full p-1 [html:not(.js)_&]:hidden"
 >
   <button
     type="button"

@@ -10,12 +10,11 @@ import {
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { useResolvedTheme } from '@/lib/use-theme'
-
-type Themed<T> = { light: T; dark: T }
+import type { TourFiles } from '@/data/media'
 
 interface Props {
   /** Per-theme URLs: the tour file, its same-origin WebVTT captions and a poster (tourFiles() in src/data/media.ts). */
-  files: { video: Themed<string>; captions: Themed<string>; poster?: Themed<string> }
+  files: TourFiles
   /** Dialog heading (also the video's accessible name). */
   title: string
   description?: string
@@ -90,7 +89,7 @@ function TourPlayer({
 
   const src = files.video[theme]
   const captions = files.captions[theme]
-  const posterSrc = files.poster?.[theme]
+  const posterSrc = files.poster[theme]
 
   // Autoplay on open (the viewer asked for it) unless they prefer reduced motion.
   const [autoPlay] = useState(

@@ -12,6 +12,7 @@
 import { Image } from 'astro:assets'
 import type { Still } from '@/data/media'
 import { cn } from '@/lib/utils'
+import { promoteVisibleImg } from '@/lib/promote-visible'
 
 interface Props {
   still: Still
@@ -34,7 +35,7 @@ const common = {
   quality: 82,
   decoding: 'async' as const,
 }
-const promote = `(function(s){var d=document.documentElement.classList.contains('dark');var i=s.parentNode.querySelector('img[data-theme-img="'+(d?'dark':'light')+'"]');if(i){i.fetchPriority='high';i.loading='eager'}})(document.currentScript)`
+const promote = promoteVisibleImg('data-theme-img')
 ---
 
 {

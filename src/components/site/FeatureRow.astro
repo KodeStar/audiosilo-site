@@ -16,14 +16,13 @@ interface Props {
   split?: 'wide' | 'even' | 'tall'
   /** On phones, put the caption above the media (for code, not screens). */
   textFirst?: boolean
-  class?: string
 }
-const { id, chapter, eyebrow, title, flip = false, split = 'wide', textFirst = false, class: className } = Astro.props
+const { id, chapter, eyebrow, title, flip = false, split = 'wide', textFirst = false } = Astro.props
 const media = { wide: 'xl:col-span-7', even: 'xl:col-span-6', tall: 'xl:col-span-5' }[split]
 const text = { wide: 'xl:col-span-5', even: 'xl:col-span-6', tall: 'xl:col-span-7' }[split]
 ---
 
-<section id={id} data-chapter={chapter} class={cn('relative scroll-mt-24 py-14 sm:py-20', className)}>
+<section id={id} data-chapter={chapter} class="relative scroll-mt-24 py-14 sm:py-20">
   <div class="grid items-center gap-8 xl:grid-cols-12 xl:gap-12">
     <div class={cn('reveal min-w-0', media, flip && 'xl:order-2', textFirst && 'order-2 xl:order-none')}>
       <slot name="media" />

@@ -227,7 +227,7 @@ export const TOUR_BASE: string =
  * Captions stay on this site (public/media/tours/<name>-<theme>.vtt): a
  * <track> on a video without `crossorigin` must be same-origin.
  */
-export const TOUR_CAPTIONS_BASE = '/media/tours'
+const TOUR_CAPTIONS_BASE = '/media/tours'
 
 export interface TourFiles {
   video: Themed<string>

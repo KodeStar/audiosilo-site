@@ -6,8 +6,6 @@
 /** One-click demo entry: provisions a throwaway demo account, signs this
     browser into the web player and shows a QR to continue on a phone. */
 export const DEMO_URL = 'https://demo.audiosilo.app/web/demo'
-/** The demo server's root (currently redirects to DEMO_URL). */
-export const DEMO_HOME = 'https://demo.audiosilo.app'
 
 export const DOCS_URL = 'https://docs.audiosilo.app'
 /** The community metadata database (audiosilo-meta). */
@@ -21,6 +19,7 @@ export const DISCORD_URL = 'https://discord.gg/nFFqRbkRn6'
 
 export const GITHUB_SERVER_URL = 'https://github.com/KodeStar/audiosilo-server'
 export const GITHUB_SERVER_RELEASES_URL = `${GITHUB_SERVER_URL}/releases`
-export const GITHUB_FRONTEND_URL = 'https://github.com/KodeStar/audiosilo-frontend'
+/** GitHub API: the server's latest release (VersionBadge reads its tag). */
+export const GITHUB_SERVER_LATEST_API = 'https://api.github.com/repos/KodeStar/audiosilo-server/releases/latest'
 export const GITHUB_META_URL = 'https://github.com/KodeStar/audiosilo-meta'
 export const GITHUB_SIDECARS_URL = 'https://github.com/KodeStar/audiosilo-sidecars'

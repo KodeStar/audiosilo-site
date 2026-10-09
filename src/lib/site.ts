@@ -18,7 +18,10 @@ const root = document.documentElement
 function header() {
   const el = document.getElementById('site-header')
   if (!el) return
-  const update = () => (el.dataset.scrolled = window.scrollY > 8 ? 'true' : 'false')
+  const update = () => {
+    const next = window.scrollY > 8 ? 'true' : 'false'
+    if (el.dataset.scrolled !== next) el.dataset.scrolled = next
+  }
   update()
   window.addEventListener('scroll', update, { passive: true })
 }
@@ -179,8 +182,10 @@ function seekBar() {
     })
   }
   window.addEventListener('scroll', schedule, { passive: true })
-  window.addEventListener('resize', measure)
-  if ('ResizeObserver' in window) new ResizeObserver(() => measure()).observe(document.body)
+  // Layout changes re-measure (the body observer sees width changes too); a
+  // viewport-only resize (a phone's URL bar) only moves the playhead.
+  window.addEventListener('resize', schedule)
+  new ResizeObserver(() => measure()).observe(document.body)
   measure()
 }
 
@@ -211,14 +216,13 @@ function counters() {
     },
     { threshold: 0.6 },
   )
-  items.forEach((el) => {
-    // Only count numbers that start off screen; anything already visible stays put.
-    const r = el.getBoundingClientRect()
-    if (r.top > window.innerHeight) {
-      el.textContent = '0'
-      io.observe(el)
-    }
-  })
+  // Only count numbers that start off screen; anything already visible stays
+  // put. All reads first, then the writes, so layout is computed once.
+  const below = Array.from(items).filter((el) => el.getBoundingClientRect().top > window.innerHeight)
+  for (const el of below) {
+    el.textContent = '0'
+    io.observe(el)
+  }
 }
 
 // After the first paint: none of this is needed to draw the page, and its

@@ -57,7 +57,7 @@ function resolve(pref: ThemePreference): ResolvedTheme {
 }
 
 /** Paint a preference onto <html> without persisting it. */
-export function applyTheme(pref: ThemePreference): void {
+function applyTheme(pref: ThemePreference): void {
   const root = document.documentElement
   const resolved = resolve(pref)
   root.classList.toggle('dark', resolved === 'dark')
@@ -81,21 +81,26 @@ export function setPreference(pref: ThemePreference): void {
   applyTheme(pref)
 }
 
-/**
- * Call `cb` whenever the resolved theme changes, whoever changed it (the
- * toggle, the OS while on 'system', another script). Returns an unsubscribe.
- */
-export function onThemeChange(cb: (theme: ResolvedTheme) => void): () => void {
-  let last = getResolvedTheme()
+/** Call `cb` with `read()` whenever it changes after a mutation of `attr` on <html>. */
+function watchRoot<T>(attr: string, read: () => T, cb: (value: T) => void): () => void {
+  let last = read()
   const mo = new MutationObserver(() => {
-    const next = getResolvedTheme()
+    const next = read()
     if (next !== last) {
       last = next
       cb(next)
     }
   })
-  mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+  mo.observe(document.documentElement, { attributes: true, attributeFilter: [attr] })
   return () => mo.disconnect()
+}
+
+/**
+ * Call `cb` whenever the resolved theme changes, whoever changed it (the
+ * toggle, the OS while on 'system', another script). Returns an unsubscribe.
+ */
+export function onThemeChange(cb: (theme: ResolvedTheme) => void): () => void {
+  return watchRoot('data-theme', getResolvedTheme, cb)
 }
 
 /**
@@ -103,14 +108,5 @@ export function onThemeChange(cb: (theme: ResolvedTheme) => void): () => void {
  * in-page "see it in light" control stay in step). Returns an unsubscribe.
  */
 export function onPreferenceChange(cb: (pref: ThemePreference) => void): () => void {
-  let last = getPreference()
-  const mo = new MutationObserver(() => {
-    const next = getPreference()
-    if (next !== last) {
-      last = next
-      cb(next)
-    }
-  })
-  mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme-preference'] })
-  return () => mo.disconnect()
+  return watchRoot('data-theme-preference', getPreference, cb)
 }
