@@ -5,7 +5,6 @@
  * Loops from src/data/media.ts; each device takes its loop's own ratio.
  */
 import Device from '@/components/media/Device.astro'
-import Loop from '@/components/media/Loop.astro'
 import { loops } from '@/data/media'
 import { cn } from '@/lib/utils'
 
@@ -19,13 +18,13 @@ const { class: className, eager = false } = Astro.props
 <div class={cn('trio relative', className)} role="group" aria-label="The AudioSilo player on a desktop browser, an iPad and a phone">
   <div class="trio-glow" aria-hidden="true"></div>
   <div class="trio-window">
-    <Device kind="window" class="w-full"><Loop loop={loops.playerDesktop} eager={eager} /></Device>
+    <Device kind="window" class="w-full" loop={loops.playerDesktop} eager={eager} />
   </div>
   <div class="trio-tablet float-slower">
-    <Device kind="tablet" class="w-full"><Loop loop={loops.playerIpad} /></Device>
+    <Device kind="tablet" class="w-full" loop={loops.playerIpad} />
   </div>
   <div class="trio-phone float-slow">
-    <Device kind="phone" class="w-full"><Loop loop={loops.playerMobile} eager={eager} /></Device>
+    <Device kind="phone" class="w-full" loop={loops.playerMobile} eager={eager} />
   </div>
 </div>
 

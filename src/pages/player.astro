@@ -8,7 +8,6 @@ import Points from '@/components/site/Points.astro'
 import DemoEnd from '@/components/site/DemoEnd.astro'
 import Device from '@/components/media/Device.astro'
 import MediaThemeSwitch from '@/components/theme/MediaThemeSwitch.astro'
-import ThemedImage from '@/components/media/ThemedImage.astro'
 import TourButton from '@/components/media/TourButton.astro'
 import Icon from '@/components/Icon.astro'
 import { stills } from '@/data/media'
@@ -61,13 +60,9 @@ const chapters = [
     <div class="min-w-0 flex-1">
       <FeatureRow id="library" chapter="Your bookcase" eyebrow="Home and library" title="A bookcase for the whole house." split="wide">
         <div slot="media" class="relative pr-[19%] pb-[12%]">
-          <Device kind="tablet" class="w-full">
-            <ThemedImage still={stills.tabletSeries} widths={[600, 1200]} sizes="(min-width: 1280px) 32rem, 76vw" />
-          </Device>
+          <Device kind="tablet" class="w-full" still={stills.tabletSeries} widths={[600, 1200]} sizes="(min-width: 1280px) 32rem, 76vw" />
           <div class="absolute right-0 bottom-0 w-[27%]">
-            <Device kind="phone" class="w-full">
-              <ThemedImage still={stills.phoneHome} widths={[240, 400]} sizes="(min-width: 1280px) 11rem, 26vw" />
-            </Device>
+            <Device kind="phone" class="w-full" still={stills.phoneHome} widths={[240, 400]} sizes="(min-width: 1280px) 11rem, 26vw" />
           </div>
         </div>
         <p>
@@ -88,9 +83,7 @@ const chapters = [
 
       <FeatureRow id="book" chapter="Who's who" eyebrow="The book page" title="Who's who, without the spoilers." flip split="tall">
         <div slot="media" class="flex justify-center">
-          <Device kind="phone" class="w-[56%] max-w-[17rem]">
-            <ThemedImage still={stills.phoneCharacters} widths={[300, 560]} sizes="(min-width: 1280px) 17rem, 54vw" />
-          </Device>
+          <Device kind="phone" class="w-[56%] max-w-[17rem]" still={stills.phoneCharacters} widths={[300, 560]} sizes="(min-width: 1280px) 17rem, 54vw" />
         </div>
         <p>
           When listeners have written characters and recaps for a book, they appear on its page and
@@ -109,9 +102,7 @@ const chapters = [
 
       <FeatureRow id="player" chapter="The full player" eyebrow="The full player" title="A seek bar for 30-hour books." split="wide">
         <div slot="media" class="flex justify-center">
-          <Device kind="tablet" class="w-full max-w-[40rem]">
-            <ThemedImage still={stills.tabletPlayer} widths={[600, 1200]} sizes="(min-width: 1280px) 38rem, 92vw" />
-          </Device>
+          <Device kind="tablet" class="w-full max-w-[40rem]" still={stills.tabletPlayer} widths={[600, 1200]} sizes="(min-width: 1280px) 38rem, 92vw" />
         </div>
         <p>
           The seek bar works within the chapter, so even a long book gives you fine control. Under
@@ -131,13 +122,9 @@ const chapters = [
 
       <FeatureRow id="notes" chapter="Up next and notes" eyebrow="Up next, bookmarks, Journal" title="Up next, and everything you noted." flip split="wide">
         <div slot="media" class="relative pb-[14%] pl-[9%]">
-          <Device kind="window" class="w-full">
-            <ThemedImage still={stills.desktopUpnext} widths={[700, 1400]} sizes="(min-width: 1280px) 40rem, 84vw" />
-          </Device>
+          <Device kind="window" class="w-full" still={stills.desktopUpnext} widths={[700, 1400]} sizes="(min-width: 1280px) 40rem, 84vw" />
           <div class="absolute bottom-0 left-0 w-[24%] max-w-[10rem]">
-            <Device kind="phone" class="w-full">
-              <ThemedImage still={stills.phoneJournal} widths={[200, 400]} sizes="(min-width: 1280px) 10rem, 22vw" />
-            </Device>
+            <Device kind="phone" class="w-full" still={stills.phoneJournal} widths={[200, 400]} sizes="(min-width: 1280px) 10rem, 22vw" />
           </div>
         </div>
         <p>
@@ -153,12 +140,8 @@ const chapters = [
 
       <FeatureRow id="you" chapter="You and your year" eyebrow="You" title="Your listening, kept by your server." split="even">
         <div slot="media" class="flex items-end justify-center gap-4 sm:gap-6">
-          <Device kind="phone" class="w-[40%] max-w-[14rem]">
-            <ThemedImage still={stills.phoneStats} widths={[260, 480]} sizes="(min-width: 1280px) 14rem, 40vw" />
-          </Device>
-          <Device kind="phone" class="w-[40%] max-w-[14rem] -translate-y-8">
-            <ThemedImage still={stills.phoneYear} widths={[260, 480]} sizes="(min-width: 1280px) 14rem, 40vw" />
-          </Device>
+          <Device kind="phone" class="w-[40%] max-w-[14rem]" still={stills.phoneStats} widths={[260, 480]} sizes="(min-width: 1280px) 14rem, 40vw" />
+          <Device kind="card" class="w-[40%] max-w-[14rem] -translate-y-8" still={stills.yearCard} widths={[260, 520]} sizes="(min-width: 1280px) 14rem, 40vw" />
         </div>
         <p>
           Your week, your streak and a goal ring; a listening calendar, the hours of the day you

@@ -8,7 +8,6 @@ import Points from '@/components/site/Points.astro'
 import Counter from '@/components/site/Counter.astro'
 import DemoEnd from '@/components/site/DemoEnd.astro'
 import Device from '@/components/media/Device.astro'
-import ThemedImage from '@/components/media/ThemedImage.astro'
 import TourButton from '@/components/media/TourButton.astro'
 import { stills } from '@/data/media'
 import { META_STATS, STATS_AS_OF } from '@/data/status'
@@ -51,14 +50,10 @@ const chapters = [
       </div>
       <div class="meta-stage reveal reveal-d2 relative">
         <div class="meta-window">
-          <Device kind="window" address="meta.audiosilo.app" class="w-full">
-            <ThemedImage still={stills.metaCharacters} widths={[800, 1500]} sizes="(min-width: 1024px) 44rem, 96vw" eager />
-          </Device>
+          <Device kind="window" address="meta.audiosilo.app" class="w-full" still={stills.metaCharacters} widths={[800, 1500]} sizes="(min-width: 1024px) 44rem, 96vw" eager />
         </div>
         <div class="meta-phone float-slow">
-          <Device kind="phone" class="w-full">
-            <ThemedImage still={stills.phoneCharacters} widths={[240, 480]} sizes="12rem" eager alt="Characters inside the AudioSilo player on a phone: only the people already met, each from the chapter they first appear in" />
-          </Device>
+          <Device kind="phone" class="w-full" still={stills.phoneCharacters} widths={[240, 480]} sizes="12rem" eager alt="Characters inside the AudioSilo player on a phone: only the people already met, each from the chapter they first appear in" />
         </div>
       </div>
     </div>
@@ -86,18 +81,14 @@ const chapters = [
           <Counter value={META_STATS.languages} label="languages" class="reveal reveal-d2" numberClass="text-[clamp(2.75rem,4.2vw,3.75rem)]" />
         </div>
         <figure class="reveal mt-14">
-          <Device kind="window" address="meta.audiosilo.app" class="w-full">
-            <ThemedImage still={stills.metaWork} widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" />
-          </Device>
+          <Device kind="window" address="meta.audiosilo.app" class="w-full" still={stills.metaWork} widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" />
           <figcaption class="mt-4 text-sm text-muted-foreground">One work, three recordings: each with its narrators, runtime, chapters and regional ASINs.</figcaption>
         </figure>
       </section>
 
       <FeatureRow id="library" chapter="For your library" eyebrow="For your library" title="From a folder called “Book 3” to the right book." split="wide">
         <div slot="media">
-          <Device kind="window" address="your-server/admin" class="w-full">
-            <ThemedImage still={stills.serverCompare} widths={[700, 1400]} sizes="(min-width: 1280px) 36rem, 92vw" />
-          </Device>
+          <Device kind="window" address="your-server/admin" class="w-full" still={stills.serverCompare} widths={[700, 1400]} sizes="(min-width: 1280px) 36rem, 92vw" />
         </div>
         <p>
           In the admin console, Match compares your tags and folder names with the database and
@@ -116,12 +107,8 @@ const chapters = [
 
       <FeatureRow id="community" chapter="Characters and recaps" eyebrow="The community layer" title="Characters and recaps that wait for you." flip split="even">
         <div slot="media" class="flex items-end justify-center gap-4 sm:gap-6">
-          <Device kind="phone" class="w-[44%] max-w-[15rem]">
-            <ThemedImage still={stills.metaCharactersPhone} widths={[260, 480]} sizes="(min-width: 1280px) 15rem, 44vw" />
-          </Device>
-          <Device kind="phone" class="w-[44%] max-w-[15rem] -translate-y-8">
-            <ThemedImage still={stills.phoneWhosWho} widths={[260, 480]} sizes="(min-width: 1280px) 15rem, 44vw" />
-          </Device>
+          <Device kind="phone" class="w-[44%] max-w-[15rem]" still={stills.metaCharactersPhone} widths={[260, 480]} sizes="(min-width: 1280px) 15rem, 44vw" />
+          <Device kind="phone" class="w-[44%] max-w-[15rem] -translate-y-8" still={stills.phoneWhosWho} widths={[260, 480]} sizes="(min-width: 1280px) 15rem, 44vw" />
         </div>
         <p>
           Listeners write character sheets and chapter-by-chapter recaps in their own words. Each
@@ -166,9 +153,7 @@ const chapters = [
 
       <FeatureRow id="contribute" chapter="Contribute" eyebrow="Contribute" title="Add the book you know best." split="wide">
         <div slot="media">
-          <Device kind="window" address="meta.audiosilo.app/contribute" class="w-full">
-            <ThemedImage still={stills.metaContribute} widths={[800, 1500]} sizes="(min-width: 1280px) 36rem, 92vw" />
-          </Device>
+          <Device kind="window" address="meta.audiosilo.app/contribute" class="w-full" still={stills.metaContribute} widths={[800, 1500]} sizes="(min-width: 1280px) 36rem, 92vw" />
         </div>
         <p>
           The contribute page lists the books that still need characters and recaps, with a guided

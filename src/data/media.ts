@@ -24,8 +24,7 @@ import mobileWhosWhoL from '@/assets/stills/player-mobile-player-whoswho-light.w
 import mobileWhosWhoD from '@/assets/stills/player-mobile-player-whoswho-dark.webp'
 import mobileStatsL from '@/assets/stills/player-mobile-stats-light.webp'
 import mobileStatsD from '@/assets/stills/player-mobile-stats-dark.webp'
-import mobileYearL from '@/assets/stills/player-mobile-year-light.webp'
-import mobileYearD from '@/assets/stills/player-mobile-year-dark.webp'
+import yearCard from '@/assets/stills/player-mobile-year-card.webp'
 import mobileJournalL from '@/assets/stills/player-mobile-journal-light.webp'
 import mobileJournalD from '@/assets/stills/player-mobile-journal-dark.webp'
 import ipadSeriesL from '@/assets/stills/player-ipad-series-light.webp'
@@ -69,11 +68,13 @@ export interface Still {
 }
 
 const pair = (light: ImageMetadata, dark: ImageMetadata): Themed<ImageMetadata> => ({ light, dark })
-/** meta.audiosilo.app only: the site is dark in both themes. */
+/** One capture for both themes (meta.audiosilo.app is dark only; so is the Year story). */
 const one = (img: ImageMetadata): Themed<ImageMetadata> => ({ light: img, dark: img })
 
 export const stills = {
-  // Player 2.0: phone (1170x2532), iPad landscape (2000x1390), desktop browser (1920x1080).
+  // Player 2.0 (re-encoded from the 2x/3x captures): phone 780x1688, iPad
+  // landscape 1600x1112, desktop browser 1600x900. Device frames take each
+  // still's own ratio.
   phoneHome: {
     src: pair(mobileHomeL, mobileHomeD),
     alt: 'Home on a phone: Mark of the Fool 3 with its chapter, a seek bar with bookmark pins, 45% through, time left at 1.3x and the day you will finish, and Resume',
@@ -90,9 +91,11 @@ export const stills = {
     src: pair(mobileStatsL, mobileStatsD),
     alt: 'Your listening on a phone: 8h 49m this week, a 42-day streak, a daily average and a listening calendar',
   },
-  phoneYear: {
-    src: pair(mobileYearL, mobileYearD),
-    alt: "The first Year in listening card on a phone: maya's 2026 in listening, 116 hours, with a Share this card button",
+  // The story card alone (cropped from the phone capture to its 9:16 card; the
+  // story is dark in both themes). Shown as a card, not inside a phone.
+  yearCard: {
+    src: one(yearCard),
+    alt: "The first Year in listening card: maya's 2026 in listening, 116 hours, across 160 sessions and 13 books",
   },
   phoneJournal: {
     src: pair(mobileJournalL, mobileJournalD),

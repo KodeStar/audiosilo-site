@@ -9,9 +9,7 @@ import Counter from '@/components/site/Counter.astro'
 import NowCard from '@/components/site/NowCard.astro'
 import CodeBlock from '@/components/CodeBlock.astro'
 import Device from '@/components/media/Device.astro'
-import Loop from '@/components/media/Loop.astro'
 import MediaThemeSwitch from '@/components/theme/MediaThemeSwitch.astro'
-import ThemedImage from '@/components/media/ThemedImage.astro'
 import TourButton from '@/components/media/TourButton.astro'
 import VersionBadge from '@/components/VersionBadge.tsx'
 import { loops, stills } from '@/data/media'
@@ -61,15 +59,11 @@ import { dockerRun } from '@/data/install'
       <div class="hero-stage reveal reveal-d2 relative" aria-label="The AudioSilo player on a desktop browser and a phone" role="group">
         <div class="hero-glow pal-oz" aria-hidden="true"></div>
         <div class="hero-window">
-          <Device kind="window" class="w-full">
-            <Loop loop={loops.playerDesktop} eager />
-          </Device>
+          <Device kind="window" class="w-full" loop={loops.playerDesktop} eager />
         </div>
         <div class="hero-phone">
           <div class="float-slow">
-            <Device kind="phone" class="w-full">
-              <Loop loop={loops.playerMobile} eager />
-            </Device>
+            <Device kind="phone" class="w-full" loop={loops.playerMobile} eager />
           </div>
         </div>
         <div class="hero-switch"><MediaThemeSwitch /></div>
@@ -107,13 +101,9 @@ import { dockerRun } from '@/data/install'
           <!-- The iPad (landscape) with the phone in front of its right edge. -->
           <div class="relative z-10 mt-auto px-6 pt-4 sm:px-9">
             <div class="relative mx-auto max-w-[42rem] pr-[24%] pb-[28%]">
-              <Device kind="tablet" class="w-full translate-y-[6%] transition-transform duration-500 group-hover:translate-y-[4%]">
-                <ThemedImage still={stills.tabletSeries} widths={[480, 960]} sizes="(min-width: 1024px) 32rem, 70vw" alt="" />
-              </Device>
+              <Device kind="tablet" class="w-full translate-y-[6%] transition-transform duration-500 group-hover:translate-y-[4%]" still={stills.tabletSeries} widths={[480, 960]} sizes="(min-width: 1024px) 32rem, 70vw" alt="" />
               <div class="absolute right-0 bottom-0 w-[36%] translate-y-[6%] transition-transform duration-500 group-hover:translate-y-[5%]">
-                <Device kind="phone" class="w-full">
-                  <ThemedImage still={stills.phoneHome} widths={[260, 520]} sizes="(min-width: 1024px) 15rem, 34vw" alt="" />
-                </Device>
+                <Device kind="phone" class="w-full" still={stills.phoneHome} widths={[260, 520]} sizes="(min-width: 1024px) 15rem, 34vw" alt="" />
               </div>
             </div>
           </div>
@@ -137,9 +127,7 @@ import { dockerRun } from '@/data/install'
             <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">Explore the server <Arrow /></span>
           </div>
           <div class="relative z-10 mt-auto h-52 overflow-hidden sm:h-64">
-            <Device kind="window" address="your-server/admin" class="absolute top-0 left-6 w-[125%] transition-transform duration-500 group-hover:-translate-y-2 sm:left-8">
-              <ThemedImage still={stills.serverOverview} widths={[700, 1400]} sizes="(min-width: 1024px) 42rem, 110vw" alt="" />
-            </Device>
+            <Device kind="window" address="your-server/admin" class="absolute top-0 left-6 w-[125%] transition-transform duration-500 group-hover:-translate-y-2 sm:left-8" still={stills.serverOverview} widths={[700, 1400]} sizes="(min-width: 1024px) 42rem, 110vw" alt="" />
           </div>
         </a>
 
@@ -161,9 +149,7 @@ import { dockerRun } from '@/data/install'
             <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">Explore the metadata <Arrow /></span>
           </div>
           <div class="relative z-10 mt-auto h-52 overflow-hidden sm:h-64">
-            <Device kind="window" address="meta.audiosilo.app" class="absolute top-0 left-6 w-[125%] transition-transform duration-500 group-hover:-translate-y-2 sm:left-8">
-              <ThemedImage still={stills.metaCharacters} widths={[700, 1400]} sizes="(min-width: 1024px) 42rem, 110vw" alt="" />
-            </Device>
+            <Device kind="window" address="meta.audiosilo.app" class="absolute top-0 left-6 w-[125%] transition-transform duration-500 group-hover:-translate-y-2 sm:left-8" still={stills.metaCharacters} widths={[700, 1400]} sizes="(min-width: 1024px) 42rem, 110vw" alt="" />
           </div>
         </a>
 
@@ -211,15 +197,15 @@ import { dockerRun } from '@/data/install'
       <SectionHead eyebrow="The player" title="One app, every screen." lede={REDESIGN_WHERE} align="center" />
       <div class="screens mt-14 sm:mt-20">
         <figure class="screens-desktop reveal">
-          <Device kind="window" class="w-full"><Loop loop={loops.playerDesktop} /></Device>
+          <Device kind="window" class="w-full" loop={loops.playerDesktop} />
           <figcaption>In your browser</figcaption>
         </figure>
         <figure class="screens-tablet reveal reveal-d1">
-          <Device kind="tablet" class="w-full"><Loop loop={loops.playerIpad} /></Device>
+          <Device kind="tablet" class="w-full" loop={loops.playerIpad} />
           <figcaption>On iPad</figcaption>
         </figure>
         <figure class="screens-phone reveal reveal-d2">
-          <Device kind="phone" class="w-full"><Loop loop={loops.playerMobile} /></Device>
+          <Device kind="phone" class="w-full" loop={loops.playerMobile} />
           <figcaption>On iPhone</figcaption>
         </figure>
       </div>
@@ -248,11 +234,7 @@ import { dockerRun } from '@/data/install'
           <TourButton tour="server" variant="default" />
         </div>
       </div>
-      <div class="cinema reveal mt-12 sm:mt-16">
-        <div class="overflow-hidden rounded-[14px]">
-          <Loop loop={loops.server} />
-        </div>
-      </div>
+      <Device kind="cinema" class="reveal mt-12 sm:mt-16" loop={loops.server} />
       <dl class="mt-10 grid gap-6 text-sm sm:grid-cols-3">
         <div class="reveal">
           <dt class="font-semibold">Library and matching</dt>

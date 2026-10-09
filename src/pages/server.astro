@@ -10,9 +10,7 @@ import DemoEnd from '@/components/site/DemoEnd.astro'
 import InstallTabs from '@/components/site/InstallTabs.tsx'
 import CodeBlock from '@/components/CodeBlock.astro'
 import Device from '@/components/media/Device.astro'
-import Loop from '@/components/media/Loop.astro'
 import MediaThemeSwitch from '@/components/theme/MediaThemeSwitch.astro'
-import ThemedImage from '@/components/media/ThemedImage.astro'
 import TourButton from '@/components/media/TourButton.astro'
 import VersionBadge from '@/components/VersionBadge.tsx'
 import { loops, stills, type Still } from '@/data/media'
@@ -74,11 +72,7 @@ const security = [
           <a href="#install" class="group inline-flex h-12 items-center gap-2 rounded-full px-5 text-[0.9375rem] font-semibold hover:bg-foreground/[0.06]">Install it <Arrow /></a>
         </div>
       </div>
-      <div class="cinema reveal mt-14 sm:mt-20">
-        <div class="overflow-hidden rounded-[14px]">
-          <Loop loop={loops.server} eager />
-        </div>
-      </div>
+      <Device kind="cinema" class="reveal mt-14 sm:mt-20" loop={loops.server} eager />
       <div class="reveal mt-8 flex justify-center"><MediaThemeSwitch /></div>
     </div>
   </section>
@@ -160,9 +154,7 @@ const security = [
 
       <FeatureRow id="people" chapter="Invites and sharing" eyebrow="People" title="Invite the house with a QR code." split="wide">
         <div slot="media">
-          <Device kind="window" address="your-server/admin" class="w-full">
-            <ThemedImage still={stills.serverInvite} widths={[700, 1400]} sizes="(min-width: 1280px) 38rem, 92vw" />
-          </Device>
+          <Device kind="window" address="your-server/admin" class="w-full" still={stills.serverInvite} widths={[700, 1400]} sizes="(min-width: 1280px) 38rem, 92vw" />
         </div>
         <p>
           One dialog makes the account, grants what they can open and shows an invite link and QR
@@ -214,10 +206,10 @@ const security = [
 
         <!-- Light and dark, one image split down the diagonal. -->
         <figure class="reveal mt-10">
-          <Device kind="window" address="your-server/admin" class="w-full">
-            <div class="theme-split relative">
-              <Image src={stills.serverOverview.src.light} alt="The admin console overview in the light theme" widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" format="webp" class="block h-auto w-full" loading="lazy" />
-              <Image src={stills.serverOverview.src.dark} alt="The same overview in the dark theme" widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" format="webp" class="theme-split-dark absolute inset-0 block h-auto w-full" loading="lazy" />
+          <Device kind="window" address="your-server/admin" class="w-full" aspect={`${stills.serverOverview.src.dark.width}/${stills.serverOverview.src.dark.height}`}>
+            <div class="theme-split device-media">
+              <Image src={stills.serverOverview.src.light} alt="The admin console overview in the light theme" widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" format="webp" class="absolute inset-0 size-full object-cover" loading="lazy" />
+              <Image src={stills.serverOverview.src.dark} alt="The same overview in the dark theme" widths={[800, 1600]} sizes="(min-width: 1280px) 56rem, 92vw" format="webp" class="theme-split-dark absolute inset-0 size-full object-cover" loading="lazy" />
               <span class="theme-split-line" aria-hidden="true"></span>
             </div>
           </Device>
@@ -228,9 +220,7 @@ const security = [
           {
             gallery.map((g, i) => (
               <figure class:list={['reveal', g.span && 'lg:col-span-2', i % 2 === 0 && !g.span && 'reveal-d1']}>
-                <Device kind="window" address="your-server/admin" class="w-full">
-                  <ThemedImage still={g.still} widths={g.span ? [800, 1600] : [600, 1200]} sizes={g.span ? '(min-width: 1280px) 60rem, 92vw' : '(min-width: 1024px) 30rem, 92vw'} />
-                </Device>
+                <Device kind="window" address="your-server/admin" class="w-full" still={g.still} widths={g.span ? [800, 1600] : [600, 1200]} sizes={g.span ? '(min-width: 1280px) 60rem, 92vw' : '(min-width: 1024px) 30rem, 92vw'} />
                 <figcaption class="mt-4">
                   <span class="font-semibold">{g.title}.</span>
                   <span class="text-muted-foreground"> {g.body}</span>

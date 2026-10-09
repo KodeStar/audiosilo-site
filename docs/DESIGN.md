@@ -78,9 +78,21 @@ Bricolage Grotesque (display, `opsz` axis), Figtree (text), JetBrains Mono
    Now card (`NowCard.astro`) with the bar-style scrubber (`BarScrubber.astro`,
    a pattern, never called a waveform) and typographic covers of the six demo
    books (`DemoCover.astro`).
-4. **Devices** (`Device.astro`): phone, tablet, desktop window (address bar
-   reads `your-server/web`). Hero stages tilt them in 3D and float the phone.
-   The server tour sits in a `cinema` frame on a dark `stage`.
+4. **Devices** (`Device.astro`): one component for every frame - `phone`,
+   `tablet` (landscape iPad), `window` (desktop browser; the address bar reads
+   `your-server/web` unless told otherwise), `cinema` (the dark mat around the
+   server tour) and `card` (a frameless story card, used for the Year in
+   listening card, which is a 9:16 crop of the phone capture). Pass the media
+   (`still=` or `loop=`, or `aspect=` for slotted content) and the **screen
+   opening takes the media's own pixel ratio**, so media always fills it
+   exactly: no letterbox bars, no cropping, nothing poking out. The media is
+   clipped to the screen radius three ways (overflow, a `clip-path` for
+   WebKit's composited video inside 3D transforms, and `border-radius:
+   inherit` on the media). `.device` is the size container; `.device-body`
+   draws the hardware, so its `cqw` radii scale with the device. Hero stages
+   tilt devices in 3D and float the phone; the bento tiles let a window run
+   off the tile's edge on purpose (a peek, the frame is cut by the tile, the
+   media never leaves the frame).
 
 Motion is transform/opacity only: wash drift, device float, ring pulse, reveal
 on scroll, counters (`Counter.astro`, count up once). `prefers-reduced-motion`
