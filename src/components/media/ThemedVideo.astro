@@ -37,6 +37,13 @@ interface Props {
   base?: string
   /** Above-the-fold use: fetch the poster eagerly with high priority. */
   eager?: boolean
+  /**
+   * Default posters only: the pixel widths of /media/<name>-<theme>-sm.webp
+   * and /media/<name>-<theme>.webp, offered as a srcset with `sizes`.
+   */
+  posterWidths?: [small: number, full: number]
+  /** How wide the box renders (the posters' `sizes`). */
+  sizes?: string
   /** How media fills the box. Default cover. */
   fit?: 'cover' | 'contain'
   class?: string
@@ -53,6 +60,8 @@ const {
   captionsLang = 'en',
   base = '/media',
   eager = false,
+  posterWidths,
+  sizes = '100vw',
   fit = 'cover',
   class: className,
 } = Astro.props
@@ -77,7 +86,14 @@ const captionSrc =
       ? { light: file('light', 'vtt'), dark: file('dark', 'vtt') }
       : { light: captions, dark: captions }
 
+const srcsetFor = (theme: 'light' | 'dark') =>
+  poster === undefined && posterWidths
+    ? `${dir}/${name}-${theme}-sm.webp ${posterWidths[0]}w, ${file(theme, 'webp')} ${posterWidths[1]}w`
+    : undefined
+
 const loop = mode === 'loop'
+/** Runs where it stands (right after the two posters): eager-load the visible one. */
+const promotePoster = `(function(s){var d=document.documentElement.classList.contains('dark');var i=s.parentNode.querySelector('img[data-slot="poster-'+(d?'dark':'light')+'"]');if(i){i.fetchPriority='high';i.loading='eager'}})(document.currentScript)`
 const fitClass = fit === 'contain' ? 'object-contain' : 'object-cover'
 ---
 
@@ -102,9 +118,10 @@ const fitClass = fit === 'contain' ? 'object-contain' : 'object-cover'
         <img
           data-slot="poster-light"
           src={posters.light}
+          srcset={srcsetFor('light')}
+          sizes={srcsetFor('light') && sizes}
           alt=""
-          loading={eager ? 'eager' : 'lazy'}
-          fetchpriority={eager ? 'high' : undefined}
+          loading="lazy"
           decoding="async"
           onerror="this.style.visibility='hidden'"
           class={cn('absolute inset-0 size-full dark:hidden', fitClass)}
@@ -112,13 +129,21 @@ const fitClass = fit === 'contain' ? 'object-contain' : 'object-cover'
         <img
           data-slot="poster-dark"
           src={posters.dark}
+          srcset={srcsetFor('dark')}
+          sizes={srcsetFor('dark') && sizes}
           alt=""
-          loading={eager ? 'eager' : 'lazy'}
-          fetchpriority={eager ? 'high' : undefined}
+          loading="lazy"
           decoding="async"
           onerror="this.style.visibility='hidden'"
           class={cn('absolute inset-0 hidden size-full dark:block', fitClass)}
         />
+        {
+          // Above the fold: promote only the poster of the theme being shown
+          // (both are lazy, and the hidden one is display:none, so it never loads).
+          eager && (
+            <script is:inline set:html={promotePoster} />
+          )
+        }
       </>
     )
   }

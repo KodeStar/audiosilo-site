@@ -37,8 +37,9 @@ interface Props {
   loop?: LoopMedia
   /** Ratio for slotted content, as "w/h". Required without still or loop. */
   aspect?: string
-  /** Still only: responsive widths and sizes for astro:assets. */
+  /** Still only: responsive widths for astro:assets. */
   widths?: number[]
+  /** How wide the device renders (srcset `sizes` for the still or the loop's poster). Defaults per kind. */
   sizes?: string
   /** Above the fold: load the poster or still eagerly. */
   eager?: boolean
@@ -50,7 +51,16 @@ interface Props {
   style?: string
 }
 
-const { kind, still, loop, widths = [480, 960], sizes = '100vw', eager = false, alt, address = 'your-server/web', class: className, style } = Astro.props
+/** Rough rendered widths when a page doesn't say: enough to pick the small poster on phones. */
+const DEFAULT_SIZES: Record<Kind, string> = {
+  phone: '(min-width: 1024px) 16vw, 30vw',
+  tablet: '(min-width: 1024px) 32vw, 60vw',
+  window: '(min-width: 1024px) 60vw, 90vw',
+  cinema: '(min-width: 1024px) 75vw, 92vw',
+  card: '(min-width: 1024px) 16vw, 40vw',
+}
+
+const { kind, still, loop, widths = [480, 960], sizes = DEFAULT_SIZES[Astro.props.kind], eager = false, alt, address = 'your-server/web', class: className, style } = Astro.props
 
 function stillAspect(s: Still): string {
   const { light, dark } = s.src
@@ -75,7 +85,7 @@ if (!aspect) throw new Error('Device: pass a still, a loop or an aspect')
           <i class="size-2.5 rounded-full bg-border-strong" />
           <i class="size-2.5 rounded-full bg-border-strong" />
         </span>
-        <span class="mx-auto flex h-5 min-w-0 max-w-[60%] items-center gap-1.5 truncate rounded-md bg-background/70 px-3 font-mono text-[10.5px] text-muted-foreground shadow-[inset_0_0_0_1px_var(--border)] sm:h-6 sm:text-[11px]">
+        <span class="mx-auto flex h-5 min-w-0 max-w-[60%] items-center gap-1.5 truncate rounded-md bg-background/70 px-3 text-[11px] font-medium tracking-[0.01em] text-muted-foreground shadow-[inset_0_0_0_1px_var(--border)] sm:h-6 sm:text-[11px]">
           <svg class="size-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
           <span class="truncate">{address}</span>
         </span>
@@ -85,7 +95,7 @@ if (!aspect) throw new Error('Device: pass a still, a loop or an aspect')
   }
   <div class="device-screen" style={`aspect-ratio: ${aspect}`}>
     {still && <ThemedImage still={still} widths={widths} sizes={sizes} eager={eager} alt={alt} class="device-media" />}
-    {loop && <Loop loop={loop} eager={eager} class="device-media" />}
+    {loop && <Loop loop={loop} eager={eager} sizes={sizes} class="device-media" />}
     <slot />
   </div>
   </div>

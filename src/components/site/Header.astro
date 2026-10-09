@@ -55,7 +55,7 @@ const current = '/' + (Astro.url.pathname.split('/')[1] ?? '')
       >
         <Icon name="github" class="size-[18px]" />
       </a>
-      <ThemeMenu client:idle className="hidden md:inline-flex" />
+      <ThemeMenu client:settled className="hidden md:inline-flex" />
       <a
         href={DEMO_URL}
         target="_blank"
@@ -69,7 +69,7 @@ const current = '/' + (Astro.url.pathname.split('/')[1] ?? '')
         Try the demo
       </a>
       <div class="md:hidden">
-        <MobileNav client:idle current={current} />
+        <MobileNav client:settled current={current} />
       </div>
     </div>
   </div>

@@ -27,24 +27,31 @@ against server v2.0.1; each poster is the loop's first frame, same pixel size.
 | `player-ipad` | `player-ipad-{light,dark}.{mp4,webp}` | 1180x820 (landscape) | 1180/820 | 16.8 s | iPad: home, full player, speed sheet, reveal, ghost spines, a Year in listening card |
 | `player-mobile` | `player-mobile-{light,dark}.{mp4,webp}` | 590x1278 | 590/1278 | 16.8 s | Phone: the same beats as the iPad |
 
-The mp4 files are gitignored (copied in for previews and deploys); the
-webp posters are committed.
+The loops and their posters are committed (about 1 MB per loop). Each poster
+also has a small variant, `<name>-<theme>-sm.webp` (720 px wide, 300 px for
+the phone), offered in a `srcset` so phones fetch the small one; widths are
+in `loops` in `src/data/media.ts`. A loop's mp4 is requested only after the
+page has loaded and its poster has painted, and only while it is on screen.
 
-## Full tours (`public/media/tours/`)
+## Full tours (off-repo; captions in `public/media/tours/`)
 
-Clean takes (no burned-in captions, no title cards) opened from a
-`VideoDialog`, with WebVTT captions timed to each file:
+The full tours are too big for the repo. They are assets of the
+`media-2026-10` release of audiosilo-site (`TOUR_BASE` in
+`src/data/media.ts`), named `<name>-<theme>.mp4`. Only their WebVTT captions
+live here, because a `<track>` on a video without `crossorigin` must be
+same-origin. Clean takes (no burned-in captions, no title cards):
 
-| Name | Files | Pixels | Length |
-|---|---|---|---|
-| `server` | `server-{light,dark}.{mp4,vtt}` | 1920x1080 | 4:35 / 4:36 |
-| `player-desktop` | `player-desktop-{light,dark}.{mp4,vtt}` | 1920x1080 | 3:18 / 3:24 |
-| `player-ipad` | `player-ipad-{light,dark}.{mp4,vtt}` | 1770x1230 | 1:29 |
-| `player-mobile` | `player-mobile-{light,dark}.{mp4,vtt}` | 1080x2338 | 1:24 |
+| Name | Release assets | Captions here | Pixels | Length |
+|---|---|---|---|---|
+| `server` | `server-{light,dark}.mp4` (the clean encode) | `tours/server-{light,dark}.vtt` | 1920x1080 | 4:35 / 4:36 |
+| `player-desktop` | `player-desktop-{light,dark}.mp4` | `tours/player-desktop-{light,dark}.vtt` | 1920x1080 | 3:18 / 3:24 |
+| `player-ipad` | `player-ipad-{light,dark}.mp4` | `tours/player-ipad-{light,dark}.vtt` | 1770x1230 | 1:29 |
+| `player-mobile` | `player-mobile-{light,dark}.mp4` | `tours/player-mobile-{light,dark}.vtt` | 1080x2338 | 1:24 |
 
-The dialog shows the matching loop poster (`/media/<name>-<theme>.webp`)
-until the tour starts, and sizes its video box to the tour's aspect ratio
-(`tours` in `src/data/media.ts`).
+To preview against local copies, put them in `public/media/tours/` (ignored
+by git) and build with `PUBLIC_TOUR_BASE=/media/tours`. The dialog shows the
+matching loop poster until the tour starts and sizes its box to the tour's
+aspect ratio (`tours` in `src/data/media.ts`).
 
 ## Stills (`src/assets/stills/`)
 

@@ -11,8 +11,9 @@
  *   the one dark capture in both (`one()`).
  * - `loops`: short silent videos in public/media/<name>-{light,dark}.mp4
  *   with first-frame posters /media/<name>-{light,dark}.webp.
- * - `tours`: full videos in public/media/tours/<name>-<theme>.mp4 with
- *   WebVTT captions, opened from a VideoDialog.
+ * - `tours`: full videos hosted off-repo (TOUR_BASE, a GitHub release on
+ *   audiosilo-site) with WebVTT captions kept on this site, opened from a
+ *   VideoDialog.
  */
 import type { ImageMetadata } from 'astro'
 
@@ -177,6 +178,8 @@ export interface LoopMedia {
   label: string
   /** CSS aspect-ratio of the recorded video (pixel size of the file). */
   aspect: string
+  /** Poster widths: /media/<name>-<theme>-sm.webp and the full first frame /media/<name>-<theme>.webp. */
+  posterWidths: [small: number, full: number]
 }
 
 export const loops = {
@@ -184,26 +187,68 @@ export const loops = {
     name: 'player-desktop',
     label: 'The AudioSilo web player in a desktop browser: home, a series with ghost spines, a book page and the full player',
     aspect: '16/9',
+    posterWidths: [720, 1280],
   },
   playerIpad: {
     name: 'player-ipad',
     label: 'The AudioSilo player on an iPad in landscape',
     aspect: '1180/820',
+    posterWidths: [720, 1180],
   },
   playerMobile: {
     name: 'player-mobile',
     label: 'The AudioSilo player on a phone',
     aspect: '590/1278',
+    posterWidths: [300, 590],
   },
   server: {
     name: 'server',
     label: 'The AudioSilo admin console: live listeners, library shelves, series with gaps and the match dialog',
     aspect: '16/9',
+    posterWidths: [720, 1600],
   },
 } satisfies Record<string, LoopMedia>
 
+/**
+ * Where the full tours live: the `media-2026-10` release of audiosilo-site,
+ * one asset per tour and theme, `<name>-<theme>.mp4` (the server pair is the
+ * clean encode, so its timing matches the captions). Too big for the repo.
+ * PUBLIC_TOUR_BASE overrides it, e.g. `PUBLIC_TOUR_BASE=/media/tours` to
+ * preview against local copies. Moving to another host (YouTube included)
+ * needs only this block and VideoDialog.tsx.
+ *
+ * The <video> must not set `crossorigin`: GitHub's asset redirects send no
+ * CORS headers, and the browser would refuse the file.
+ */
+export const TOUR_BASE: string =
+  import.meta.env.PUBLIC_TOUR_BASE || 'https://github.com/KodeStar/audiosilo-site/releases/download/media-2026-10'
+
+/**
+ * Captions stay on this site (public/media/tours/<name>-<theme>.vtt): a
+ * <track> on a video without `crossorigin` must be same-origin.
+ */
+export const TOUR_CAPTIONS_BASE = '/media/tours'
+
+export interface TourFiles {
+  video: Themed<string>
+  captions: Themed<string>
+  /** The loop's first-frame poster, shown until the tour starts. */
+  poster: Themed<string>
+}
+
+/** Every URL a tour needs, per theme. */
+export function tourFiles(tour: Tour): TourFiles {
+  const per = (f: (t: 'light' | 'dark') => string): Themed<string> => ({ light: f('light'), dark: f('dark') })
+  const base = TOUR_BASE.replace(/\/$/, '')
+  return {
+    video: per((t) => `${base}/${tour.name}-${t}.mp4`),
+    captions: per((t) => `${TOUR_CAPTIONS_BASE}/${tour.name}-${t}.vtt`),
+    poster: per((t) => `/media/${tour.name}-${t}.webp`),
+  }
+}
+
 export interface Tour {
-  /** File stem in /media/tours (and the loop whose poster it borrows). */
+  /** File stem of the tour (and of the loop whose poster it borrows). */
   name: string
   title: string
   description: string

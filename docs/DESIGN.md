@@ -94,6 +94,8 @@ Bricolage Grotesque (display, `opsz` axis), Figtree (text), JetBrains Mono
    off the tile's edge on purpose (a peek, the frame is cut by the tile, the
    media never leaves the frame).
 
+Performance budget and how it is kept: [PERFORMANCE.md](PERFORMANCE.md).
+
 Motion is transform/opacity only: wash drift, device float, ring pulse, reveal
 on scroll, counters (`Counter.astro`, count up once). `prefers-reduced-motion`
 turns all of it off; counters render their final value in HTML.
@@ -101,7 +103,7 @@ turns all of it off; counters render their final value in HTML.
 ## Components
 
 shadcn (base-nova on Base UI): Button (+ `brand`, `glass`, `xl`, `pill`),
-Dialog (`VideoDialog` tours), Sheet (`MobileNav`), DropdownMenu (`ThemeMenu`),
+Dialog (`VideoDialog` tours, see Media hosting), Sheet (`MobileNav`), DropdownMenu (`ThemeMenu`),
 ToggleGroup (`ThemeToggle` in the sheet), `MediaThemeSwitch` (static, vanilla
 `src/lib/theme-switch.ts`), Tabs (`InstallTabs`), Accordion
 (`Faq`). Static elsewhere. Media: every image/video is declared once in
@@ -120,3 +122,26 @@ loop's recorded aspect, with its first-frame `/media/<name>-<theme>.webp` poster
 - `/pricing`: "Free. All of it.", four promises, one Sponsor card, other ways
   to help, FAQ.
 - `/download`, `/docs/*`, `/privacy`, `404` restyled on the same tokens.
+
+## Media hosting
+
+- **Hero loops** (`public/media/<name>-<theme>.mp4`, about 0.8-1.3 MB each)
+  and their first-frame `.webp` posters are committed. `ThemedVideo` keeps
+  them lazy: `preload="none"`, poster first, a typed `<source
+  type="video/mp4">` is added only once the page has loaded, the visible
+  poster has painted and the loop is on screen (IntersectionObserver); only
+  the current theme's file is fetched; reduced motion shows the poster and a
+  play button.
+- **Full tours** are off-repo: `TOUR_BASE` in `src/data/media.ts` (the
+  `media-2026-10` release of audiosilo-site, assets `<name>-<theme>.mp4`;
+  `PUBLIC_TOUR_BASE=/media/tours` points a local preview at copies). Their
+  `.vtt` captions stay on the site (`public/media/tours/`), because a `<track>`
+  on a video without `crossorigin` must be same-origin. `VideoDialog` creates
+  the `<video>` only while the dialog is open (signed redirect URLs expire
+  after an hour), uses a typed `<source>` (Safari won't play
+  `application/octet-stream` otherwise) and never sets `crossorigin` (the
+  redirects send no CORS headers). If tours move to YouTube, only `media.ts`
+  (`TOUR_BASE`/`tourFiles`) and `VideoDialog.tsx` (an embed instead of the
+  `<video>`) need to change.
+- If a CSP is ever added, `media-src` must allow `https://github.com` and
+  `https://release-assets.githubusercontent.com`.

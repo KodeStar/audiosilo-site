@@ -800,6 +800,30 @@ img.device-media {
 .js .reveal-d3 {
   transition-delay: 0.24s;
 }
+/* The hero (each page's first section) rises in on CSS alone from the first
+   paint: it never waits for JS, and it is usually the LCP. It starts at a
+   near-zero opacity rather than 0 so the browser counts it as painted. */
+.js main > section:first-of-type .reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
+  animation: rise-in 0.7s var(--ease-out) both;
+}
+.js main > section:first-of-type .reveal-d1 {
+  animation-delay: 0.08s;
+}
+.js main > section:first-of-type .reveal-d2 {
+  animation-delay: 0.16s;
+}
+.js main > section:first-of-type .reveal-d3 {
+  animation-delay: 0.24s;
+}
+@keyframes rise-in {
+  from {
+    opacity: 0.01;
+    transform: translateY(18px);
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .wash > i,
@@ -814,10 +838,12 @@ img.device-media {
   .play-rings::after {
     display: none;
   }
-  .js .reveal {
+  .js .reveal,
+  .js main > section:first-of-type .reveal {
     opacity: 1;
     transform: none;
     transition: none;
+    animation: none;
   }
   .play-btn,
   .seekbar-seg {

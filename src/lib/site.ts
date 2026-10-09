@@ -221,9 +221,15 @@ function counters() {
   })
 }
 
-header()
-reveals()
-washes()
-pinkHandoff()
-seekBar()
-counters()
+// After the first paint: none of this is needed to draw the page, and its
+// layout reads would otherwise hold the first paint back.
+requestAnimationFrame(() =>
+  setTimeout(() => {
+    header()
+    reveals()
+    washes()
+    pinkHandoff()
+    seekBar()
+    counters()
+  }),
+)

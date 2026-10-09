@@ -12,9 +12,11 @@ interface Props {
   loop: LoopMedia
   class?: string
   eager?: boolean
+  /** How wide the loop renders, for the poster's srcset. */
+  sizes?: string
 }
 
-const { loop, class: className, eager = false } = Astro.props
+const { loop, class: className, eager = false, sizes } = Astro.props
 ---
 
-<ThemedVideo name={loop.name} label={loop.label} aspect={loop.aspect} eager={eager} class={className} />
+<ThemedVideo name={loop.name} label={loop.label} aspect={loop.aspect} eager={eager} posterWidths={loop.posterWidths} sizes={sizes} class={className} />

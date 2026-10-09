@@ -51,7 +51,7 @@ import { demoLibrary } from '@/data/demo'
             Run your own server <Arrow />
           </a>
           <span class="text-muted-foreground">
-            Server <VersionBadge client:idle /> &middot; open source (AGPLv3)
+            Server <VersionBadge client:settled /> &middot; open source (AGPLv3)
           </span>
         </div>
       </div>
@@ -102,9 +102,9 @@ import { demoLibrary } from '@/data/demo'
           <!-- The iPad (landscape) with the phone in front of its right edge. -->
           <div class="relative z-10 mt-auto px-6 pt-4 sm:px-9">
             <div class="relative mx-auto max-w-[42rem] pr-[24%] pb-[28%]">
-              <Device kind="tablet" class="w-full translate-y-[6%] transition-transform duration-500 group-hover:translate-y-[4%]" still={stills.tabletSeries} widths={[480, 960]} sizes="(min-width: 1024px) 32rem, 70vw" alt="" />
+              <Device kind="tablet" class="w-full translate-y-[6%] transition-transform duration-500 group-hover:translate-y-[4%]" still={stills.tabletSeries} widths={[480, 640, 960]} sizes="(min-width: 1024px) 32rem, 70vw" alt="" />
               <div class="absolute right-0 bottom-0 w-[36%] translate-y-[6%] transition-transform duration-500 group-hover:translate-y-[5%]">
-                <Device kind="phone" class="w-full" still={stills.phoneHome} widths={[260, 520]} sizes="(min-width: 1024px) 15rem, 34vw" alt="" />
+                <Device kind="phone" class="w-full" still={stills.phoneHome} widths={[260, 400, 520]} sizes="(min-width: 1024px) 15rem, 30vw" alt="" />
               </div>
             </div>
           </div>
@@ -128,7 +128,7 @@ import { demoLibrary } from '@/data/demo'
             <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">Explore the server <Arrow /></span>
           </div>
           <div class="relative z-10 mt-auto h-52 overflow-hidden sm:h-64">
-            <Device kind="window" address="your-server/admin" class="absolute top-0 left-6 w-[125%] transition-transform duration-500 group-hover:-translate-y-2 sm:left-8" still={stills.serverOverview} widths={[700, 1400]} sizes="(min-width: 1024px) 42rem, 110vw" alt="" />
+            <Device kind="window" address="your-server/admin" class="absolute top-0 left-6 w-[125%] transition-transform duration-500 group-hover:-translate-y-2 sm:left-8" still={stills.serverOverview} widths={[600, 800, 1400]} sizes="(min-width: 1024px) 42rem, 110vw" alt="" />
           </div>
         </a>
 
@@ -150,7 +150,7 @@ import { demoLibrary } from '@/data/demo'
             <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">Explore the metadata <Arrow /></span>
           </div>
           <div class="relative z-10 mt-auto h-52 overflow-hidden sm:h-64">
-            <Device kind="window" address="meta.audiosilo.app" class="absolute top-0 left-6 w-[125%] transition-transform duration-500 group-hover:-translate-y-2 sm:left-8" still={stills.metaCharacters} widths={[700, 1400]} sizes="(min-width: 1024px) 42rem, 110vw" alt="" />
+            <Device kind="window" address="meta.audiosilo.app" class="absolute top-0 left-6 w-[125%] transition-transform duration-500 group-hover:-translate-y-2 sm:left-8" still={stills.metaCharacters} widths={[600, 800, 1400]} sizes="(min-width: 1024px) 42rem, 110vw" alt="" />
           </div>
         </a>
 
