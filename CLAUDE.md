@@ -87,8 +87,9 @@ docs/PERFORMANCE.md     the performance budget and how it is kept
   in the store); the redesigned 2.0 apps for iPhone, iPad and **Android** are
   in **beta** (people ask on Discord); not on Google Play (no Play badge); the
   2.0 web player is live on every v2.0 server and the demo; manager private
-  (no download CTA); server open source under **AGPLv3** (scope licence
-  claims to the server, meta tooling and sidecars). All of this reads from
+  (no download CTA); the server, player, meta tooling and sidecars are open
+  source under **AGPLv3** (scope licence claims to those four; the manager is
+  private). All of this reads from
   `src/data/status.ts` flags: flip them there, re-verify first.
 - **Screenshots are generated, never hand-made.** Stills live in
   `src/assets/stills/` (declared in `src/data/media.ts`, imported via
