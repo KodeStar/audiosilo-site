@@ -5,6 +5,8 @@
  * community metadata database. `spine` is the book's cover colour as the
  * server reports it (`cover_color.bg`), the colour the player gives its spine.
  */
+import { ANDROID_LIVE } from './status'
+
 interface DemoBook {
   title: string
   author: string
@@ -116,5 +118,5 @@ export const demoChecklist = [
   'Set a speed and a sleep timer, then check the time left at your speed.',
   'Drop a bookmark with a label and a note.',
   'Press Cmd+K (Ctrl+K) for quick search and actions.',
-  'Scan the QR code to carry on in the iPhone app with the same account.',
+  `Scan the QR code to carry on in the ${ANDROID_LIVE ? 'iPhone or Android' : 'iPhone'} app with the same account.`,
 ] as const

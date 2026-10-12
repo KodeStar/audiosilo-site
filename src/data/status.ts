@@ -1,17 +1,17 @@
 /**
  * Availability switches. Every sentence on the site that depends on what is
  * in which store reads from here, so the owner can flip wording in one place
- * when a release lands. Verified 2026-10-09 (FACTS.md sections 0 and 4, plus
- * the owner: the 2.0 apps for iPhone, iPad and Android are in a beta that
- * people join by asking on Discord).
+ * when a release lands. Verified live 2026-10-12 (FACTS.md sections 0 and 4):
+ * the App Store has 2.0.0 (since 2026-10-10, per the iTunes lookup) and Google
+ * Play has 2.0.0 (since 2026-10-12), so both stores carry the redesign.
  */
 import { DISCORD_URL } from './links'
 
-/** The redesigned 2.0 iOS/iPadOS app is live in the App Store (today: 1.2.0, the older design). */
-export const IOS_2_IN_STORE = false
+/** The redesigned 2.0 iOS/iPadOS app is live in the App Store (2.0.0, since 2026-10-10). */
+export const IOS_2_IN_STORE = true
 
-/** The Android app is live on Google Play (today: not listed; no Play badge until it is). */
-export const ANDROID_LIVE = false
+/** The Android app is live on Google Play (2.0.0, since 2026-10-12). */
+export const ANDROID_LIVE = true
 
 /** The 2.0 apps are in a beta testers join through Discord. Turn off once both stores carry 2.0. */
 export const APPS_BETA = !(IOS_2_IN_STORE && ANDROID_LIVE)
@@ -51,7 +51,7 @@ export const IOS_APP_NOTE = IOS_2_IN_STORE
 export const ANDROID_HEADING = ANDROID_LIVE ? 'On Google Play' : 'In beta'
 
 export const ANDROID_NOTE = ANDROID_LIVE
-  ? 'Free on Google Play.'
+  ? 'Free on Google Play for Android phones and tablets.'
   : 'The Android app is in beta and not on Google Play yet. Ask on Discord to try it. Until then, the web player installs to your home screen like an app.'
 
 /** One line for the platforms list (home "how it fits", docs). */
