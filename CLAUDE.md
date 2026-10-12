@@ -82,10 +82,11 @@ docs/PERFORMANCE.md     the performance budget and how it is kept
 
 - **Copy must be true.** Only claim shipped, live things; the verified
   fact base and phrasing guidance live in [CROSS-REPO.md §16](../CROSS-REPO.md).
-  Current status (2026-10-09): iOS app **live** on the App Store at **1.2.0**
-  (https://apps.apple.com/us/app/audiosilo/id6783431375; never claim 2.0 is
-  in the store); the redesigned 2.0 apps for iPhone, iPad and **Android** are
-  in **beta** (people ask on Discord); not on Google Play (no Play badge); the
+  Current status (2026-10-12): iOS app **live** on the App Store at **2.0.0**
+  since 2026-10-10 (https://apps.apple.com/us/app/audiosilo/id6783431375);
+  **Android 2.0.0 is live on Google Play**
+  (https://play.google.com/store/apps/details?id=app.audiosilo); both stores
+  carry the redesign, so there is no app beta CTA; the
   2.0 web player is live on every v2.0 server and the demo; manager private
   (no download CTA); the server, player, meta tooling and sidecars are open
   source under **AGPLv3** (scope licence claims to those four; the manager is

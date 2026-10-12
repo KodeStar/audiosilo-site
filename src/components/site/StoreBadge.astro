@@ -1,0 +1,30 @@
+---
+/**
+ * An app store badge (App Store, Google Play): store glyph plus a two-line
+ * label. The visible label is the accessible name, plus the site's
+ * "(opens in a new tab)" hint.
+ */
+import Icon from '@/components/Icon.astro'
+
+interface Props {
+  href: string
+  icon: 'apple' | 'googleplay'
+  eyebrow: string
+  label: string
+}
+const { href, icon, eyebrow, label } = Astro.props
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener"
+  class="inline-flex items-center gap-2.5 rounded-xl bg-[#05070f] px-4 py-2 text-white ring-1 ring-white/15 transition-transform hover:-translate-y-0.5"
+>
+  <Icon name={icon} class="size-6" />
+  <span class="flex flex-col leading-tight">
+    <span class="text-[10px] tracking-wide uppercase opacity-80">{eyebrow}</span>
+    <span class="text-base font-semibold">{label}</span>
+  </span>
+  <span class="sr-only">(opens in a new tab)</span>
+</a>
