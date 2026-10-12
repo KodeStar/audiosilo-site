@@ -1,5 +1,5 @@
 ---
-import { GITHUB_SERVER_RELEASES_URL } from '@/data/links'
+import { GITHUB_SERVER_RELEASES_URL, LSIO_REPO_URL, UNRAID_DOCS_URL } from '@/data/links'
 import DocsLayout from '../../layouts/DocsLayout.astro'
 import CodeBlock from '../../components/CodeBlock.astro'
 
@@ -31,11 +31,11 @@ const update = `docker compose pull && docker compose up -d`
 ---
 <DocsLayout
   title="Installation"
-  description="Install AudioSilo Server with Docker (recommended) or a native binary."
+  description="Install AudioSilo Server with Docker (recommended), on Unraid from Community Applications, or as a native binary."
 >
   <p>
-    AudioSilo Server is the only thing you install. The Docker image and the native binaries both
-    include the web player, so the apps work out of the box. <strong>Docker is the recommended path</strong>
+    AudioSilo Server is the only thing you install. Every option below includes the web player, so
+    the apps work out of the box. <strong>Docker is the recommended path</strong>
     for always-on, NAS, VPS and multi-user setups.
   </p>
 
@@ -63,7 +63,26 @@ const update = `docker compose pull && docker compose up -d`
   <p>Updating the server or the bundled player is always a new image:</p>
   <CodeBlock code={update} />
 
-  <h2>Option 2: Native binary</h2>
+  <h2>Option 2: Unraid</h2>
+  <p>
+    On Unraid, install from <strong>Community Applications</strong>: search the Apps tab for
+    <code>AudioSilo</code>. The app is the
+    <a href={LSIO_REPO_URL} target="_blank" rel="noopener">LinuxServer.io</a> image,
+    <code>lscr.io/linuxserver/audiosilo</code>, with the web player and ffmpeg inside, rebuilt for every
+    server release.
+  </p>
+  <p>
+    Point <strong>Appdata</strong> (<code>/config</code>) at a cache or pool path such as
+    <code>/mnt/cache/appdata/audiosilo</code>, and <strong>Audiobooks</strong> (<code>/audiobooks</code>) at
+    your books share. Leave <code>PUID</code>/<code>PGID</code> at <code>99</code>/<code>100</code>. On
+    first start the admin password and auth code are printed once in the container log (in the Docker
+    tab, click the AudioSilo icon, then Logs). In the admin console, add <code>/audiobooks</code> as your
+    library: the path inside the container, not your <code>/mnt/user</code> share. The
+    <a href={UNRAID_DOCS_URL} target="_blank" rel="noopener">Unraid install guide</a> covers the template
+    fields, reverse proxies and moving from the image above.
+  </p>
+
+  <h2>Option 3: Native binary</h2>
   <p>
     Download the archive for your OS/arch from the
     <a href={GITHUB_SERVER_RELEASES_URL} target="_blank" rel="noopener">server releases page</a>
