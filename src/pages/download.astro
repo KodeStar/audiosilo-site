@@ -5,7 +5,7 @@ import Arrow from '@/components/site/Arrow.astro'
 import InstallTabs from '@/components/site/InstallTabs.tsx'
 import CodeBlock from '@/components/CodeBlock.astro'
 import VersionBadge from '@/components/VersionBadge.tsx'
-import { DEMO_URL, GITHUB_SERVER_RELEASES_URL, GITHUB_SERVER_URL } from '@/data/links'
+import { DEMO_URL, GITHUB_SERVER_RELEASES_URL, GITHUB_SERVER_URL, LSIO_REPO_URL, UNRAID_DOCS_URL } from '@/data/links'
 import { demoLibrary } from '@/data/demo'
 import AppCards from '@/components/site/AppCards.astro'
 import Icon from '@/components/Icon.astro'
@@ -28,7 +28,7 @@ const platforms = [
 <Base
   hasHero
   title="Download AudioSilo - server and apps"
-  description={`Run AudioSilo Server with Docker or a native binary for Linux, macOS or Windows, then listen in the web player, on ${APP_PLATFORMS}.`}
+  description={`Run AudioSilo Server with Docker, on Unraid, or as a native binary for Linux, macOS or Windows, then listen in the web player, on ${APP_PLATFORMS}.`}
 >
   <section id="top" data-chapter="Download" class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-12 sm:pt-[calc(var(--header-h)+5rem)]">
     <Wash palette="console" />
@@ -57,6 +57,34 @@ const platforms = [
         </p>
       </div>
       <div class="reveal reveal-d1 min-w-0 lg:col-span-8"><InstallTabs client:visible /></div>
+    </div>
+  </section>
+
+  <section id="unraid" data-chapter="Unraid" class="py-12 sm:py-16">
+    <div class="shell grid gap-10 lg:grid-cols-12">
+      <div class="reveal lg:col-span-4">
+        <h2 class="t-title">Unraid</h2>
+        <p class="mt-4 text-[1.0625rem] leading-relaxed text-foreground/80">
+          In Community Applications: search the Apps tab for <span class="ic">AudioSilo</span>.
+        </p>
+        <a href={UNRAID_DOCS_URL} target="_blank" rel="noopener" class="group mt-6 inline-flex items-center gap-1.5 text-sm font-semibold">
+          Unraid install guide <Arrow />
+        </a>
+      </div>
+      <ul class="reveal reveal-d1 divide-y divide-border self-start border-y border-border lg:col-span-8">
+        <li class="py-5 text-[0.9375rem] text-muted-foreground">
+          It's the <a href={LSIO_REPO_URL} target="_blank" rel="noopener" class="link">LinuxServer.io</a> image,
+          <span class="ic">lscr.io/linuxserver/audiosilo</span>, for amd64 and arm64, with the web player and ffmpeg inside.
+        </li>
+        <li class="py-5 text-[0.9375rem] text-muted-foreground">
+          Point <span class="ic">/config</span> at an appdata folder on your cache or pool and <span class="ic">/audiobooks</span> at your books
+          (mounted read-only), then add <span class="ic">/audiobooks</span> as a library in the admin console.
+          The admin password and auth code are printed once in the container log on first start, so save them.
+        </li>
+        <li class="py-5 text-[0.9375rem] text-muted-foreground">
+          Rebuilt automatically for every server release; update it from Unraid's Docker tab.
+        </li>
+      </ul>
     </div>
   </section>
 

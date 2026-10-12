@@ -8,6 +8,10 @@
 export const DEMO_URL = 'https://demo.audiosilo.app/web/demo'
 
 export const DOCS_URL = 'https://docs.audiosilo.app'
+/** The Unraid install guide (Community Applications, the LinuxServer.io image). */
+export const UNRAID_DOCS_URL = `${DOCS_URL}/users/getting-started/install-unraid`
+/** LinuxServer.io's image repo: lscr.io/linuxserver/audiosilo, the app Unraid's Community Applications lists. */
+export const LSIO_REPO_URL = 'https://github.com/linuxserver/docker-audiosilo'
 /** The community metadata database (audiosilo-meta). */
 export const META_URL = 'https://meta.audiosilo.app'
 
