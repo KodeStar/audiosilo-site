@@ -130,8 +130,9 @@ loop's recorded aspect, with its first-frame `/media/<name>-<theme>.webp` poster
   bar is the reading progress (CSS scroll-driven), the contents as a chapter
   list with "start times" at reading pace, and Up next. Covers are typographic
   and generated, never images: a wash palette, a lead colour and a motif per
-  kind, spread across posts so neighbours never match (`coverStyles()` in
-  src/lib/blog.ts). Play affordances stay decorative except on video posts.
+  kind, spread across posts so consecutive posts never share a palette
+  (`coverStyles()` in src/lib/blog.ts). Play affordances stay decorative except
+  on video posts.
 
 ## Media hosting
 

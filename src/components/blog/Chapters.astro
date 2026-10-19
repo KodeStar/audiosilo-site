@@ -38,7 +38,7 @@ const row =
           ))}
         </ol>
       </details>
-      <nav aria-label="Chapters" class="sticky top-[calc(var(--header-h)+4.5rem)] hidden self-start lg:block">
+      <nav aria-label="Chapters" class="sticky top-[calc(var(--header-h)+var(--blog-sticky,0px)+1rem)] hidden self-start lg:block">
         <p class="t-eyebrow mb-3 px-3">
           {chapters.length} chapters &middot; {minutes} min
         </p>

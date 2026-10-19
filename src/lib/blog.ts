@@ -355,15 +355,13 @@ function hash(s: string): number {
   return h >>> 0
 }
 
-/** The wash palettes (Wash.astro, global.css .pal-*). */
-const COVER_PALETTES: Palette[] = ['oz', 'dracula', 'treasure', 'community', 'console', 'ember', 'carol']
-
 /**
- * The lead colours each palette may open a cover with: a rotation of its
- * --w1..3 (0 leads with --w1, 1 with --w2, 2 with --w3), picked against the
- * colours in global.css so the shelf spreads across green, gold, crimson,
- * teal, sand, blue, amber and orange instead of piling up on the violet that
- * several palettes share. Order is preference.
+ * The lead colours each wash palette (Wash.astro, global.css .pal-*) may
+ * open a cover with: a rotation of its --w1..3 (0 leads with --w1, 1 with
+ * --w2, 2 with --w3), picked against the colours in global.css so the shelf
+ * spreads across green, gold, crimson, teal, sand, blue, amber and orange
+ * instead of piling up on the violet that several palettes share. Order is
+ * preference.
  */
 const COVER_LEADS: Record<Palette, number[]> = {
   oz: [0, 1],
@@ -374,6 +372,9 @@ const COVER_LEADS: Record<Palette, number[]> = {
   ember: [1, 0],
   carol: [0, 1, 2],
 }
+
+/** The palettes covers use, in COVER_LEADS order (the slug hash indexes it). */
+const COVER_PALETTES = Object.keys(COVER_LEADS) as Palette[]
 
 /** Motif variants each kind's cover draws from (PostCover.astro). */
 const COVER_MOTIFS = 4
@@ -422,11 +423,15 @@ function leastUsed(n: number, count: (i: number) => number, start: number, avoid
  * before it has), the least-used lead colour on that palette, and the
  * least-used motif of its kind (never the previous post of that kind's),
  * ties broken by a hash of the slug. Taking them oldest first means a new
- * post never changes an older post's cover. Drafts and scheduled posts count
- * too, so dev and production agree.
+ * post dated after the others never changes an older post's cover.
+ * Scheduled posts count in date order and drafts after every other post, so
+ * dev and production agree and a draft (whatever its date) never shifts a
+ * published post's cover.
  */
-function assignCovers(posts: { id: string; kind: BlogKind; published: Date }[]): Map<string, CoverStyle> {
-  const ordered = [...posts].sort((a, b) => a.published.valueOf() - b.published.valueOf() || a.id.localeCompare(b.id))
+function assignCovers(posts: { id: string; kind: BlogKind; published: Date; draft: boolean }[]): Map<string, CoverStyle> {
+  const ordered = [...posts].sort(
+    (a, b) => Number(a.draft) - Number(b.draft) || a.published.valueOf() - b.published.valueOf() || a.id.localeCompare(b.id),
+  )
   const paletteUse = new Array(COVER_PALETTES.length).fill(0)
   const leadUse = COVER_PALETTES.map(() => [0, 0, 0])
   const motifUse = new Map<BlogKind, number[]>()
@@ -454,10 +459,14 @@ function assignCovers(posts: { id: string; kind: BlogKind; published: Date }[]):
 
 let coverCache: { key: string; covers: Map<string, CoverStyle> } | undefined
 
-/** Every post's cover (assignCovers), recomputed only when the posts change. */
+/**
+ * Every post's cover (assignCovers). A build works them out once (its posts
+ * can't change mid-build); `astro dev` recomputes when the posts change.
+ */
 export async function coverStyles(): Promise<Map<string, CoverStyle>> {
-  const posts = (await getCollection('blog')).map((p) => ({ id: p.id, kind: p.data.kind, published: p.data.published }))
-  const key = posts.map((p) => `${p.id}@${p.published.valueOf()}:${p.kind}`).join('|')
+  if (coverCache && !import.meta.env.DEV) return coverCache.covers
+  const posts = (await getCollection('blog')).map((p) => ({ id: p.id, kind: p.data.kind, published: p.data.published, draft: p.data.draft }))
+  const key = posts.map((p) => `${p.id}@${p.published.valueOf()}:${p.kind}:${p.draft}`).join('|')
   if (coverCache?.key !== key) coverCache = { key, covers: assignCovers(posts) }
   return coverCache.covers
 }

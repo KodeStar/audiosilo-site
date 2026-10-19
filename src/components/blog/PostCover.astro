@@ -3,8 +3,8 @@
  * A generated typographic cover for a post (the Stacks idea of a procedural
  * cover: no fake art, the post's own words set well). Its palette, lead
  * colour, light and motif come from coverStyle() (src/lib/blog.ts), which
- * spreads them across the posts so no two neighbours on the shelf match and
- * a post keeps its cover. The motif family follows the kind, four variants
+ * spreads them across the posts so consecutive posts never share a palette
+ * and a post keeps its cover. The motif family follows the kind, four variants
  * each: a release shows its version; a tutorial play and progress marks; a
  * guide sound rings, arcs, a shelf of spines or a halftone; a tip the
  * player's bookmark, a spark, the speed dial or stripes; a feature the seek
@@ -59,7 +59,9 @@ const rays = Array.from({ length: 24 }, (_, i) => {
   return { x1: r2(Math.cos(a) * 15), y1: r2(Math.sin(a) * 15), x2: r2(Math.cos(a) * (15 + len)), y2: r2(Math.sin(a) * (15 + len)) }
 })
 const eq = [0, 1, 2].map(() => 22 + Math.round(rand() * 36))
-const video = !!post.data.video
+// A video post gets the play badge unless its motif is already a play mark
+// (tutorial 0-2; tutorial 3 is a progress bar).
+const playBadge = !!post.data.video && !(kind === 'tutorial' && motif < 3)
 ---
 
 <div class={cn('post-cover @container aspect-square rounded-[6px]', `pal-${style.palette}`, className)} style={coverVars(style)} aria-hidden="true">
@@ -191,7 +193,7 @@ const video = !!post.data.video
     )
   }
   {
-    video && kind !== 'tutorial' && (
+    playBadge && (
       <span class="right-[6%] bottom-[6%] grid size-[13%] place-items-center rounded-full bg-black/35 text-white backdrop-blur">
         <Icon name="play" class="size-[45%] translate-x-[6%]" />
       </span>
