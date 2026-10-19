@@ -2,8 +2,8 @@
    The blog (src/components/blog/). Imported by BlogShell.astro only, so the
    rest of the site doesn't carry it. Tokens and type roles come from
    global.css; this file adds post prose, the static cover-colour art, the
-   generated covers (design C), the timeline (design B) and the scroll-driven
-   reading scrubber (design C).
+   generated covers and the scroll-driven reading scrubber of the "Listening
+   room" design (docs/DESIGN.md, Pages).
    ========================================================================= */
 
 /* -------------------------------------------------------------------------
@@ -15,7 +15,7 @@
   line-height: 1.75;
 }
 /* html's scroll-padding-top already clears the header; this adds only a
-   design's own sticky bar (C's mini player). The two offsets add up. */
+   post's own sticky bar (the mini player). The two offsets add up. */
 .blog-prose :is(h2, h3) {
   scroll-margin-top: var(--blog-sticky, 0px);
 }
@@ -150,6 +150,8 @@
 /* -------------------------------------------------------------------------
    Generated covers (PostCover.astro): a book cover set from the post's own
    title, in its palette. Saturated in both themes: covers are covers.
+   --c1..3 are the palette's --w1..3 in the post's lead order and
+   --glow-at / --cover-angle place its light (coverVars() in src/lib/blog.ts).
    ------------------------------------------------------------------------- */
 .post-cover {
   position: relative;
@@ -157,8 +159,12 @@
   isolation: isolate;
   color: #fff;
   background:
-    radial-gradient(75% 75% at var(--glow-at, 80% 20%), color-mix(in oklab, var(--w2) 80%, transparent) 0%, transparent 70%),
-    linear-gradient(155deg, color-mix(in oklab, var(--w1) 82%, black), color-mix(in oklab, var(--w3) 58%, black));
+    radial-gradient(75% 75% at var(--glow-at, 80% 20%), color-mix(in oklab, var(--c2, var(--w2)) 80%, transparent) 0%, transparent 70%),
+    linear-gradient(
+      var(--cover-angle, 155deg),
+      color-mix(in oklab, var(--c1, var(--w1)) 82%, black),
+      color-mix(in oklab, var(--c3, var(--w3)) 58%, black)
+    );
   box-shadow: var(--shadow-cover);
 }
 .post-cover::before {
@@ -188,25 +194,9 @@
 }
 
 /* -------------------------------------------------------------------------
-   Design B: the timeline rail.
-   ------------------------------------------------------------------------- */
-.journal-line {
-  position: relative;
-}
-.journal-line::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--line-x, 0.75rem);
-  width: 1px;
-  background: linear-gradient(to bottom, var(--border-strong), var(--border-strong) 85%, transparent);
-}
-
-/* -------------------------------------------------------------------------
-   Design C: the reading scrubber. The ink layer and the playhead follow the
+   The reading scrubber (ReadScrubber.astro). The ink layer and the playhead follow the
    page's scroll position with a scroll-driven animation (no JS); where that
-   isn't supported, CScrubber's small script sets --read instead.
+   isn't supported, ReadScrubber's small script sets --read instead.
    ------------------------------------------------------------------------- */
 .read-scrub {
   --read: 0;

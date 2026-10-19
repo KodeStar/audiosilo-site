@@ -8,12 +8,9 @@ interface Props {
   /** Rendered width, for srcset. */
   sizes: string
   widths: number[]
-  eager?: boolean
   class?: string
-  /** Decorative (a card's art beside its own title). */
-  decorative?: boolean
 }
-const { hero, sizes, widths, eager = false, class: className, decorative = false } = Astro.props
+const { hero, sizes, widths, class: className } = Astro.props
 ---
 
 <Device
@@ -22,7 +19,5 @@ const { hero, sizes, widths, eager = false, class: className, decorative = false
   address={hero.address}
   widths={widths}
   sizes={sizes}
-  eager={eager}
-  alt={decorative ? '' : undefined}
   class={className}
 />

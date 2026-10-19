@@ -1,35 +1,156 @@
 ---
-/** One post in one of the three designs, with its JSON-LD and social tags. */
+/**
+ * One post, "Listening room": a now-playing header (the generated cover
+ * beside the title), a sticky mini player whose bar seek bar is the reading
+ * progress (scroll-driven, no JS where supported), the contents as a chapter
+ * list with start times, and Up next. Plus its JSON-LD and social tags.
+ */
+import Icon from '@/components/Icon.astro'
+import Wash from '@/components/site/Wash.astro'
 import BlogShell from './BlogShell.astro'
-import APost from './a/APost.astro'
-import BPost from './b/BPost.astro'
-import CPost from './c/CPost.astro'
-import { loadPost, postJsonLd, type BlogLinks, type Post } from '@/lib/blog'
+import Chapters from './Chapters.astro'
+import ReadScrubber from './ReadScrubber.astro'
+import HeroDevice from './HeroDevice.astro'
+import PostBody from './PostBody.astro'
+import PostCover from './PostCover.astro'
+import Revisions from './Revisions.astro'
+import SupersededBanner from './SupersededBanner.astro'
+import Verified from './Verified.astro'
+import VideoBlock from './VideoBlock.astro'
+import {
+  blogLinks,
+  coverStyle,
+  formatDate,
+  isoDate,
+  kindLabel,
+  kindPlural,
+  loadPost,
+  postJsonLd,
+  readingMinutes,
+  type Post,
+} from '@/lib/blog'
 
 interface Props {
   post: Post
   all: Post[]
-  links: BlogLinks
 }
-const { post, all, links } = Astro.props
+const { post, all } = Astro.props
 const loaded = await loadPost(post, all)
+const { chapters, minutes, supersededBy, supersedes, related, hero, video } = loaded
+const { kind, title, description, published, updated, tags, supersededNote } = post.data
+const cover = await coverStyle(post.id)
 // The share image: the hero, else a tour's first frame, else the site's og.png.
-const heroUrl = post.data.hero?.src ?? (loaded.video?.type === 'tour' ? loaded.video.files.poster.dark : undefined)
-const jsonLd = postJsonLd(post, Astro.site!, loaded.video, heroUrl)
+const heroUrl = post.data.hero?.src ?? (video?.type === 'tour' ? video.files.poster.dark : undefined)
+const jsonLd = postJsonLd(post, Astro.site!, video, heroUrl)
 ---
 
 <BlogShell
-  title={`${post.data.title} - AudioSilo`}
-  description={post.data.description}
-  links={links}
-  view={`${post.id}/`}
+  title={`${title} - AudioSilo`}
+  description={description}
   ogType="article"
-  seekbar={links.design !== 'c'}
+  seekbar={false}
   image={heroUrl}
-  imageAlt={post.data.heroAlt ?? (heroUrl ? post.data.title : undefined)}
+  imageAlt={post.data.heroAlt ?? (heroUrl ? title : undefined)}
   jsonLd={jsonLd}
 >
-  {links.design === 'a' && <APost loaded={loaded} links={links} />}
-  {links.design === 'b' && <BPost loaded={loaded} links={links} />}
-  {links.design === 'c' && <CPost loaded={loaded} links={links} />}
+
+  <article style="--blog-sticky: 3.5rem">
+    <header id="top" data-chapter={chapters[0].title} class="relative isolate overflow-hidden pt-8 pb-10 sm:pt-12 sm:pb-14">
+      <Wash palette={cover.palette} />
+      <div class="shell relative z-10">
+        {supersededBy && <SupersededBanner next={supersededBy} note={supersededNote} class="mb-8 max-w-4xl" />}
+        <div class="grid items-end gap-8 sm:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] md:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-12">
+          <PostCover post={post} class="w-48 sm:w-full" />
+          <div class="min-w-0">
+            <nav aria-label="Breadcrumb" class="text-sm text-muted-foreground">
+              <a href={blogLinks.index} class="hover:text-foreground">Blog</a>
+              <span class="mx-1.5 opacity-50" aria-hidden="true">/</span>
+              <a href={blogLinks.kind(kind)} class="hover:text-foreground">{kindPlural(kind)}</a>
+            </nav>
+            <h1 class="mt-4 font-display text-[clamp(2.125rem,4.8vw,4rem)] leading-[0.98] font-bold tracking-[-0.042em] text-balance">{title}</h1>
+            <p class="mt-3 text-[0.9375rem] font-medium text-foreground/80">
+              {kindLabel(kind)} &middot; {minutes} min &middot; {chapters.length} {chapters.length === 1 ? 'chapter' : 'chapters'}
+            </p>
+            <p class="t-lede mt-4 max-w-2xl">{description}</p>
+            <p class="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
+              <span>
+                Published <time datetime={isoDate(published)}>{formatDate(published)}</time>{updated && <>, updated <time datetime={isoDate(updated)}>{formatDate(updated)}</time></>}
+              </span>
+              <Verified post={post} />
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="sticky top-(--header-h) z-30 border-y border-border bg-background/80 backdrop-blur-xl">
+      <div class="shell flex h-14 items-center gap-3 sm:gap-4">
+        <PostCover post={post} mini class="w-9 shrink-0 !rounded-[4px] !shadow-none" />
+        <p class="hidden min-w-0 shrink text-sm font-semibold sm:block sm:max-w-[16rem] sm:truncate lg:max-w-[22rem]">{title}</p>
+        <span class="font-mono text-[11px] text-muted-foreground tabular-nums" aria-hidden="true">0:00</span>
+        <ReadScrubber seed={(cover.seed % 50) + 3} class="h-7 min-w-0 flex-1" />
+        <span class="font-mono text-[11px] text-muted-foreground tabular-nums">{minutes}:00<span class="sr-only"> minutes to read</span></span>
+      </div>
+    </div>
+
+    <div class="shell grid gap-x-14 py-10 sm:py-14 lg:grid-cols-[16rem_minmax(0,1fr)]">
+      <aside><Chapters chapters={chapters} minutes={minutes} /></aside>
+      <div class="min-w-0 max-w-[70ch]">
+        {video && <VideoBlock video={video} post={post} class="mb-10" />}
+        {
+          !video && hero && (
+            <div class={`blog-art pal-${cover.palette} relative mb-10 overflow-hidden rounded-3xl ${hero.kind === 'phone' ? 'h-[min(28rem,100vw)]' : 'aspect-[16/10]'}`}>
+              {hero.kind === 'phone' ? (
+                <HeroDevice hero={hero} sizes="15rem" widths={[300, 600]} class="absolute top-[8%] left-1/2 w-[min(15rem,50%)] -translate-x-1/2" />
+              ) : (
+                <HeroDevice hero={hero} sizes="(min-width: 1024px) 44rem, 94vw" widths={[640, 1280]} class="absolute top-[10%] left-[7%] w-[100%]" />
+              )}
+            </div>
+          )
+        }
+        <PostBody loaded={loaded} />
+        {
+          tags.length > 0 && (
+            <ul class="mt-10 flex flex-wrap gap-2" aria-label="Tags">
+              {tags.map((t) => (
+                <li>
+                  <a href={blogLinks.tag(t)} class="inline-flex h-8 items-center rounded-full bg-foreground/[0.06] px-3 text-sm text-foreground/80 hover:bg-foreground/[0.1] hover:text-foreground">
+                    #{t}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+        <Revisions post={post} supersededBy={supersededBy} supersedes={supersedes} class="mt-10" />
+      </div>
+    </div>
+
+    {
+      related.length > 0 && (
+        <section aria-labelledby="up-next" class="shell pb-20 sm:pb-28">
+          <div class="rounded-[28px] bg-muted/60 p-3 shadow-[inset_0_0_0_1px_var(--border)] sm:p-4">
+            <h2 id="up-next" class="t-heading px-3 pt-3 pb-2">Up next</h2>
+            <ol>
+              {related.map((p, i) => (
+                <li class="group relative flex items-center gap-4 rounded-2xl p-3 transition-colors hover:bg-background/70">
+                  <span class="w-4 text-center font-mono text-xs text-muted-foreground tabular-nums">{i + 1}</span>
+                  <PostCover post={p} mini class="w-14 shrink-0 sm:w-16" />
+                  <span class="min-w-0 flex-1">
+                    <a href={blogLinks.post(p.id)} class="stretch-link line-clamp-2 font-semibold leading-snug">{p.data.title}</a>
+                    <span class="mt-0.5 block text-[13px] text-muted-foreground">
+                      {kindLabel(p.data.kind)} &middot; {readingMinutes(p.body)} min
+                    </span>
+                  </span>
+                  <span class="play-btn play-ink hidden size-10 sm:inline-grid" aria-hidden="true">
+                    <Icon name="play" class="size-4 translate-x-px" />
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )
+    }
+  </article>
 </BlogShell>

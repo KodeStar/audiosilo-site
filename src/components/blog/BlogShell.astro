@@ -1,59 +1,29 @@
 ---
 /**
- * Every blog page's frame: Base, the RSS alternate link, the post's JSON-LD,
- * and on design preview routes (/blog/designs/<id>/...) noindex plus a slim
- * bar to switch designs on the same view. Loads the blog's own stylesheet.
+ * Every blog page's frame: Base, the post's JSON-LD, and the blog's own
+ * stylesheet. (The RSS alternate link is in Base, on every page.)
  */
 import '@/styles/blog.css'
 import Base from '@/layouts/Base.astro'
-import { BLOG_DESIGNS, BLOG_DESIGN, BLOG_TITLE } from '@/data/blog'
-import { blogLinks, designIds, type BlogLinks } from '@/lib/blog'
 
 interface Props {
   title: string
   description: string
-  links: BlogLinks
-  /** The view's path below the blog's base ('' for the index, '<slug>/', 'kind/guide/'), for the preview switcher. */
-  view: string
   ogType?: 'website' | 'article'
-  /** The header's chapter seek bar; design C's posts draw their own. */
+  /** The header's chapter seek bar; a post draws its own (the mini player). */
   seekbar?: boolean
   image?: string
   imageAlt?: string
   jsonLd?: Record<string, unknown>[]
 }
 
-const { title, description, links, view, ogType, seekbar, image, imageAlt, jsonLd = [] } = Astro.props
+const { title, description, ogType, seekbar, image, imageAlt, jsonLd = [] } = Astro.props
 ---
 
-<Base title={title} description={description} noindex={links.preview} ogType={ogType} seekbar={seekbar} image={image} imageAlt={imageAlt}>
+<Base title={title} description={description} ogType={ogType} seekbar={seekbar} image={image} imageAlt={imageAlt}>
   <Fragment slot="head">
-    <link rel="alternate" type="application/rss+xml" title={BLOG_TITLE} href={links.rss} />
     {/* Escape "<" so a "</script>" in a title or description can't end the block. */}
     {jsonLd.map((d) => <script is:inline type="application/ld+json" set:html={JSON.stringify(d).replace(/</g, '\\u003c')} />)}
   </Fragment>
-  {
-    links.preview && (
-      <div class="border-b border-border bg-muted/60">
-        <div class="shell flex flex-wrap items-center gap-x-4 gap-y-2 py-2.5 text-sm">
-          <p class="t-eyebrow">Design preview</p>
-          <nav aria-label="Blog designs" class="flex flex-wrap gap-1">
-            {designIds.map((id) => (
-              <a
-                href={`${blogLinks(id, true).index}${view}`}
-                aria-current={id === links.design ? 'page' : undefined}
-                class="shrink-0 rounded-full px-3 py-1 whitespace-nowrap text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground aria-[current=page]:bg-primary aria-[current=page]:font-semibold aria-[current=page]:text-primary-foreground"
-              >
-                <span class="font-mono text-xs uppercase">{id}</span> {BLOG_DESIGNS[id].name}
-              </a>
-            ))}
-          </nav>
-          <p class="ml-auto hidden text-xs text-muted-foreground lg:block">
-            Not indexed. /blog uses {BLOG_DESIGN.toUpperCase()}, {BLOG_DESIGNS[BLOG_DESIGN].name}.
-          </p>
-        </div>
-      </div>
-    )
-  }
   <slot />
 </Base>

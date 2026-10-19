@@ -1,24 +1,13 @@
 /**
- * Blog queries and helpers, shared by the three design options, the routes,
+ * Blog queries and helpers, shared by the blog's components, the routes,
  * the RSS feed and the JSON-LD. Posts are the `blog` content collection
- * (src/content.config.ts); settings are in src/data/blog.ts.
- *
- * Every page builds links through `blogLinks()`, so the same components
- * render both the live routes (/blog/...) and the design previews
- * (/blog/designs/<id>/...).
+ * (src/content.config.ts); settings are in src/data/blog.ts. The design is
+ * "Listening room" (docs/DESIGN.md, Pages): posts presented the way the
+ * player presents books.
  */
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 import type { MarkdownHeading } from 'astro'
-import {
-  BLOG_DESIGN,
-  BLOG_DESIGNS,
-  BLOG_PREVIEW_BASE,
-  BLOG_KINDS,
-  READING_WPM,
-  RESERVED_SLUGS,
-  type BlogDesign,
-  type BlogKind,
-} from '@/data/blog'
+import { BLOG_KINDS, BLOG_RSS, READING_WPM, RESERVED_SLUGS, type BlogKind } from '@/data/blog'
 import { loops, stills, tourFiles, tours, type Still, type Themed, type Tour, type TourFiles } from '@/data/media'
 import type { Palette } from '@/components/site/Wash.astro'
 
@@ -30,9 +19,9 @@ export type Post = CollectionEntry<'blog'>
 
 /**
  * A post a production build leaves out: a draft, or one whose `published`
- * date is still to come (a scheduled post). Nothing rebuilds the site on a
- * timer yet (.github/workflows/ci.yml runs on push), so a scheduled post goes
- * live with the first deploy on or after its date.
+ * date is still to come (a scheduled post). The site rebuilds every morning
+ * (.github/workflows/ci.yml `schedule`) as well as on every push to master,
+ * so a scheduled post goes live with the first build on or after its date.
  */
 export function isHidden(p: Post, now = new Date()): boolean {
   return p.data.draft || p.data.published.valueOf() > now.valueOf()
@@ -98,11 +87,6 @@ export function tagsIn(posts: Post[]): Map<string, { tag: string; posts: Post[] 
   return out
 }
 
-/** The newest release post that nothing has replaced. */
-export function latestRelease(posts: Post[]): Post | undefined {
-  return posts.find((p) => p.data.kind === 'release' && isCurrent(p))
-}
-
 /** Posts that point forward to `post` (it replaces them). */
 function supersededPosts(post: Post, posts: Post[]): Post[] {
   return posts.filter((p) => p.data.supersededBy?.id === post.id)
@@ -127,46 +111,18 @@ function relatedPosts(post: Post, posts: Post[], n = 3): Post[] {
   return chosen
 }
 
-/** The posts either side of `post` in date order (for "older / newer"). */
-function neighbours(post: Post, posts: Post[]): { newer?: Post; older?: Post } {
-  const i = posts.findIndex((p) => p.id === post.id)
-  return { newer: i > 0 ? posts[i - 1] : undefined, older: i >= 0 ? posts[i + 1] : undefined }
-}
-
 /* -------------------------------------------------------------------------
    Links
    ------------------------------------------------------------------------- */
 
-export interface BlogLinks {
-  /** The design being rendered. */
-  design: BlogDesign
-  /** True on /blog/designs/<id>/... (noindex, a preview bar on top). */
-  preview: boolean
-  index: string
-  post(id: string): string
-  kind(kind: BlogKind): string
-  tag(tag: string): string
-  rss: string
+/** The blog's routes. */
+export const blogLinks = {
+  index: '/blog/',
+  post: (id: string) => `/blog/${id}/`,
+  kind: (k: BlogKind) => `/blog/kind/${k}/`,
+  tag: (t: string) => `/blog/tag/${tagSlug(t)}/`,
+  rss: BLOG_RSS,
 }
-
-/** Links for the live blog (`preview` false) or one design's preview routes. */
-export function blogLinks(design: BlogDesign, preview: boolean): BlogLinks {
-  const base = preview ? `${BLOG_PREVIEW_BASE}${design}` : '/blog'
-  return {
-    design,
-    preview,
-    index: `${base}/`,
-    post: (id) => `${base}/${id}/`,
-    kind: (k) => `${base}/kind/${k}/`,
-    tag: (t) => `${base}/tag/${tagSlug(t)}/`,
-    rss: '/blog/rss.xml',
-  }
-}
-
-/** The live routes' paths (feed and JSON-LD URLs; the path, not the design, matters). */
-export const liveBlogLinks = blogLinks(BLOG_DESIGN, false)
-
-export const designIds = Object.keys(BLOG_DESIGNS) as BlogDesign[]
 
 export function tagSlug(tag: string): string {
   return tag
@@ -180,21 +136,9 @@ export function tagSlug(tag: string): string {
    ------------------------------------------------------------------------- */
 
 const longDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
-const shortDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' })
-const monthYear = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' })
-const mediumDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
-const monthShort = new Intl.DateTimeFormat('en-GB', { month: 'short', timeZone: 'UTC' })
 
 /** "18 October 2026" */
 export const formatDate = (d: Date) => longDate.format(d)
-/** "18 Oct" */
-export const formatShortDate = (d: Date) => shortDate.format(d)
-/** "18 Oct 2026" */
-export const formatMediumDate = (d: Date) => mediumDate.format(d)
-/** "Oct" */
-export const formatMonthShort = (d: Date) => monthShort.format(d)
-/** "October 2026" */
-export const formatMonth = (d: Date) => monthYear.format(d)
 /** "2026-10-18", for <time datetime>. */
 export const isoDate = (d: Date) => d.toISOString().slice(0, 10)
 
@@ -279,8 +223,6 @@ export interface PostChapter {
   title: string
   /** Seconds into the read at READING_WPM: the chapter's "start time". */
   start: number
-  /** h3s inside the chapter (design A nests them in its contents). */
-  children: { id: string; title: string }[]
 }
 
 /**
@@ -292,15 +234,13 @@ export interface PostChapter {
  */
 export function postChapters(headings: MarkdownHeading[], body: string | undefined): PostChapter[] {
   const counts = sectionWords(body ?? '')
-  const chapters: PostChapter[] = [{ id: 'top', title: 'Introduction', start: 0, children: [] }]
+  const chapters: PostChapter[] = [{ id: 'top', title: 'Introduction', start: 0 }]
   let elapsed = counts[0] ?? 0
   let i = 1
   for (const h of headings) {
     if (h.depth === 2) {
-      chapters.push({ id: h.slug, title: h.text, start: (elapsed / READING_WPM) * 60, children: [] })
+      chapters.push({ id: h.slug, title: h.text, start: (elapsed / READING_WPM) * 60 })
       elapsed += counts[i++] ?? 0
-    } else if (h.depth === 3 && chapters.length > 1) {
-      chapters[chapters.length - 1].children.push({ id: h.slug, title: h.text })
     }
   }
   return chapters
@@ -420,17 +360,126 @@ function hash(s: string): number {
 const COVER_PALETTES: Palette[] = ['oz', 'dracula', 'treasure', 'community', 'console', 'ember', 'carol']
 
 /**
- * A post's cover colours, from a hash of its slug, within the site's wash
- * palettes (the way the player gives a book its spine colour): the same post
- * always gets the same palette, and every palette is one the site already uses.
+ * The lead colours each palette may open a cover with: a rotation of its
+ * --w1..3 (0 leads with --w1, 1 with --w2, 2 with --w3), picked against the
+ * colours in global.css so the shelf spreads across green, gold, crimson,
+ * teal, sand, blue, amber and orange instead of piling up on the violet that
+ * several palettes share. Order is preference.
  */
-export function postPalette(id: string): Palette {
-  return COVER_PALETTES[hash(id) % COVER_PALETTES.length]
+const COVER_LEADS: Record<Palette, number[]> = {
+  oz: [0, 1],
+  dracula: [1],
+  treasure: [0, 1, 2],
+  community: [1],
+  console: [1, 0],
+  ember: [1, 0],
+  carol: [0, 1, 2],
 }
 
-/** A second stable choice from the slug (cover layout variants). */
-export function postVariant(id: string, n: number): number {
-  return (hash(`${id}:v`) >>> 3) % n
+/** Motif variants each kind's cover draws from (PostCover.astro). */
+export const COVER_MOTIFS = 4
+
+/** Glow position and gradient angle pairs for a cover's light. */
+const COVER_LIGHTS = [
+  { at: '80% 18%', angle: 155 },
+  { at: '18% 22%', angle: 200 },
+  { at: '85% 75%', angle: 125 },
+  { at: '50% 0%', angle: 175 },
+] as const
+
+/**
+ * A post's generated cover: its palette (one of the site's wash palettes),
+ * which of the palette's three colours leads (COVER_LEADS, so two posts on
+ * one palette still differ in hue), the kind's motif variant, where
+ * the light falls, and a seed for drawn patterns.
+ */
+export interface CoverStyle {
+  palette: Palette
+  lead: number
+  motif: number
+  light: (typeof COVER_LIGHTS)[number]
+  seed: number
+}
+
+/**
+ * The first of `n` options with the lowest count, scanning from `start` and
+ * skipping `avoid` when another option ties with it.
+ */
+function leastUsed(n: number, count: (i: number) => number, start: number, avoid?: number): number {
+  let best = -1
+  for (let k = 0; k < n; k++) {
+    const i = (start + k) % n
+    if (i === avoid && n > 1) continue
+    if (best < 0 || count(i) < count(best)) best = i
+  }
+  return avoid !== undefined && count(avoid) < count(best) ? avoid : best
+}
+
+/**
+ * Covers for every post, so the shelf never looks samey: posts are taken
+ * oldest first and each gets the least-used palette (never the one the post
+ * before it has), the least-used lead colour on that palette, and the
+ * least-used motif of its kind (never the previous post of that kind's),
+ * ties broken by a hash of the slug. Taking them oldest first means a new
+ * post never changes an older post's cover. Drafts and scheduled posts count
+ * too, so dev and production agree.
+ */
+function assignCovers(posts: { id: string; kind: BlogKind; published: Date }[]): Map<string, CoverStyle> {
+  const ordered = [...posts].sort((a, b) => a.published.valueOf() - b.published.valueOf() || a.id.localeCompare(b.id))
+  const paletteUse = new Array(COVER_PALETTES.length).fill(0)
+  const leadUse = COVER_PALETTES.map(() => [0, 0, 0])
+  const motifUse = new Map<BlogKind, number[]>()
+  const lastMotif = new Map<BlogKind, number>()
+  const out = new Map<string, CoverStyle>()
+  let lastPalette: number | undefined
+  for (const p of ordered) {
+    const h = hash(p.id)
+    const pi = leastUsed(COVER_PALETTES.length, (i) => paletteUse[i], h % COVER_PALETTES.length, lastPalette)
+    const leads = COVER_LEADS[COVER_PALETTES[pi]]
+    const lead = leads[leastUsed(leads.length, (i) => leadUse[pi][leads[i]], 0)]
+    const uses = motifUse.get(p.kind) ?? new Array(COVER_MOTIFS).fill(0)
+    const motif = leastUsed(COVER_MOTIFS, (i) => uses[i], (h >>> 9) % COVER_MOTIFS, lastMotif.get(p.kind))
+    paletteUse[pi]++
+    leadUse[pi][lead]++
+    uses[motif]++
+    motifUse.set(p.kind, uses)
+    lastMotif.set(p.kind, motif)
+    lastPalette = pi
+    out.set(p.id, { palette: COVER_PALETTES[pi], lead, motif, light: COVER_LIGHTS[(h >>> 13) % COVER_LIGHTS.length], seed: (h % 2147483646) + 1 })
+  }
+  return out
+}
+
+let coverCache: { key: string; covers: Map<string, CoverStyle> } | undefined
+
+/** Every post's cover (assignCovers), recomputed only when the posts change. */
+export async function coverStyles(): Promise<Map<string, CoverStyle>> {
+  const posts = (await getCollection('blog')).map((p) => ({ id: p.id, kind: p.data.kind, published: p.data.published }))
+  const key = posts.map((p) => `${p.id}@${p.published.valueOf()}:${p.kind}`).join('|')
+  if (coverCache?.key !== key) coverCache = { key, covers: assignCovers(posts) }
+  return coverCache.covers
+}
+
+/** One post's cover. */
+export async function coverStyle(id: string): Promise<CoverStyle> {
+  const style = (await coverStyles()).get(id)
+  if (!style) throw new Error(`Blog post "${id}" has no cover (not in src/content/blog)`)
+  return style
+}
+
+/** The inline custom properties that rotate a cover's palette and place its light (blog.css .post-cover). */
+export function coverVars(style: CoverStyle): string {
+  const w = [1, 2, 3].map((n) => `var(--w${((n - 1 + style.lead) % 3) + 1})`)
+  return `--c1:${w[0]};--c2:${w[1]};--c3:${w[2]};--glow-at:${style.light.at};--cover-angle:${style.light.angle}deg`
+}
+
+/** A small seeded generator (Park-Miller) for a cover's drawn patterns, stable per post. */
+export function seeded(seed: number): () => number {
+  let s = seed % 2147483647 || 1
+  return () => {
+    s = (s * 16807) % 2147483647
+    return s / 2147483647
+  }
 }
 
 /* -------------------------------------------------------------------------
@@ -446,13 +495,11 @@ export interface LoadedPost {
   /** Older posts this one replaces. */
   supersedes: Post[]
   related: Post[]
-  newer?: Post
-  older?: Post
   hero?: HeroFrame
   video?: PostVideo
 }
 
-/** Everything a design's post page needs. */
+/** Everything a post page needs. */
 export async function loadPost(post: Post, posts: Post[]): Promise<LoadedPost> {
   const { Content, headings } = await render(post)
   const ref = post.data.supersededBy
@@ -465,7 +512,6 @@ export async function loadPost(post: Post, posts: Post[]): Promise<LoadedPost> {
     supersededBy: next,
     supersedes: supersededPosts(post, posts),
     related: relatedPosts(post, posts),
-    ...neighbours(post, posts),
     hero: heroFrame(post),
     video: postVideo(post),
   }
@@ -478,12 +524,11 @@ export async function loadPost(post: Post, posts: Post[]): Promise<LoadedPost> {
 /**
  * BlogPosting for every post (plus VideoObject when it has a video, `v` from
  * loadPost). `site` is Astro.site; `heroUrl` the built hero image's URL, if
- * any. The canonical URL is always the live /blog/<slug>/ route, previews
- * included.
+ * any. The canonical URL is the post's /blog/<slug>/ route.
  */
 export function postJsonLd(p: Post, site: URL, v: PostVideo | undefined, heroUrl?: string): Record<string, unknown>[] {
   const ORG = { '@type': 'Organization', name: 'AudioSilo', url: new URL('/', site).href }
-  const url = new URL(liveBlogLinks.post(p.id), site).href
+  const url = new URL(blogLinks.post(p.id), site).href
   const image = heroUrl ? new URL(heroUrl, site).href : new URL('/og.png', site).href
   const posting: Record<string, unknown> = {
     '@context': 'https://schema.org',

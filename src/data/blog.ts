@@ -4,27 +4,9 @@
  * src/lib/blog.ts. See BLOG-SPIKE.md at the workspace root.
  */
 
-/**
- * The three design options of the blog spike. /blog/ and /blog/<slug>/ render
- * BLOG_DESIGN; /blog/designs/<id>/ previews each one (noindex, not in the
- * sitemap). Once the owner picks one, the other two and the preview routes
- * (src/pages/blog/designs/) are deleted.
- */
-export const BLOG_DESIGNS = {
-  a: { name: 'Front page', summary: 'An editorial magazine: a lead story, a card grid and a latest-release strip.' },
-  b: { name: 'Changelog journal', summary: 'Release-cadence led: a timeline by month with a Start here rail.' },
-  c: { name: 'Listening room', summary: 'Posts presented the way the player presents books: covers, chapters and a scrubber.' },
-} as const
-
-export type BlogDesign = keyof typeof BLOG_DESIGNS
-
-/** The design /blog/ renders. */
-export const BLOG_DESIGN: BlogDesign = 'a'
-
-/** Where the design previews live (/blog/designs/<id>/...); astro.config.mjs keeps it out of the sitemap. */
-export const BLOG_PREVIEW_BASE = '/blog/designs/'
-
 export const BLOG_TITLE = 'The AudioSilo blog'
+/** The feed; Base.astro links it from every page's head. */
+export const BLOG_RSS = '/blog/rss.xml'
 export const BLOG_DESCRIPTION =
   'News, release notes, guides and video tutorials for AudioSilo, the self-hosted audiobook server and player. Every post says when it was last checked against the shipped software.'
 
@@ -49,4 +31,4 @@ export const READING_WPM = 220
 export const VERIFY_STALE_DAYS = 90
 
 /** Slugs a post can't take: they are blog routes of their own. */
-export const RESERVED_SLUGS = ['kind', 'tag', 'designs', 'rss.xml', 'rss', 'page'] as const
+export const RESERVED_SLUGS = ['kind', 'tag', 'rss.xml', 'rss', 'page'] as const

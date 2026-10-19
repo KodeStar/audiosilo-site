@@ -1,8 +1,8 @@
 ---
 import type { GetStaticPaths } from 'astro'
 import BlogIndex from '@/components/blog/BlogIndex.astro'
-import { BLOG_DESIGN, type BlogKind } from '@/data/blog'
-import { blogLinks, getPosts, kindsIn, type Post } from '@/lib/blog'
+import type { BlogKind } from '@/data/blog'
+import { getPosts, kindsIn, type Post } from '@/lib/blog'
 
 export const getStaticPaths = (async () => {
   const all = await getPosts()
@@ -16,4 +16,4 @@ interface Props {
 const { kind, all } = Astro.props
 ---
 
-<BlogIndex all={all} kind={kind} links={blogLinks(BLOG_DESIGN, false)} />
+<BlogIndex all={all} kind={kind} />

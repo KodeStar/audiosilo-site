@@ -1,42 +1,36 @@
 ---
-/** The kind filter: All plus each kind with posts, as pills (A) or tabs (C). */
-import { kindsIn, kindPlural, type BlogLinks, type Post } from '@/lib/blog'
+/** The kind filter: All plus each kind with posts, as library tabs. */
+import { blogLinks, kindsIn, kindPlural, type Post } from '@/lib/blog'
 import type { BlogKind } from '@/data/blog'
 import { cn } from '@/lib/utils'
 
 interface Props {
   all: Post[]
-  links: BlogLinks
   current?: BlogKind
   /** Tag pages pass true: nothing in the row is current. */
   none?: boolean
-  variant?: 'pills' | 'tabs'
   class?: string
 }
-const { all, links, current, none = false, variant = 'pills', class: className } = Astro.props
+const { all, current, none = false, class: className } = Astro.props
 const items = [
-  { label: 'All', href: links.index, count: all.length, on: !current && !none },
-  ...kindsIn(all).map((k) => ({ label: kindPlural(k.kind), href: links.kind(k.kind), count: k.count, on: current === k.kind })),
+  { label: 'All', href: blogLinks.index, count: all.length, on: !current && !none },
+  ...kindsIn(all).map((k) => ({ label: kindPlural(k.kind), href: blogLinks.kind(k.kind), count: k.count, on: current === k.kind })),
 ]
 ---
 
 {/* The padding (cancelled by the negative margin) keeps the focus ring inside the scroller, which clips. */}
 <nav aria-label="Post kinds" class={cn('blog-scroller -mx-4 -my-1.5 overflow-x-auto px-4 py-1.5 sm:-mx-1.5 sm:px-1.5', className)}>
-  <ul class={cn('flex w-max gap-1.5', variant === 'tabs' && 'gap-5 sm:gap-7')}>
+  <ul class="flex w-max gap-5 sm:gap-7">
     {
       items.map((it) => (
         <li>
           <a
             href={it.href}
             aria-current={it.on ? 'page' : undefined}
-            class={cn(
-              variant === 'pills'
-                ? 'inline-flex h-9 items-center gap-2 rounded-full px-4 text-sm font-medium text-foreground/80 shadow-[inset_0_0_0_1px_var(--border-strong)] transition-colors hover:bg-foreground/[0.05] hover:text-foreground aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground aria-[current=page]:shadow-none'
-                : 'relative inline-flex h-10 items-center gap-1.5 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-0 aria-[current=page]:after:bottom-0 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-foreground',
-            )}
+            class="relative inline-flex h-10 items-center gap-1.5 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-0 aria-[current=page]:after:bottom-0 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-foreground"
           >
             {it.label}
-            <span class={cn('font-mono text-[11px] tabular-nums', variant === 'pills' ? 'opacity-80' : 'text-muted-foreground')}>{it.count}</span>
+            <span class="font-mono text-[11px] text-muted-foreground tabular-nums">{it.count}</span>
           </a>
         </li>
       ))

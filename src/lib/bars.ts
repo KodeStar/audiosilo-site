@@ -1,7 +1,7 @@
 /**
  * The player's bar-style seek bar pattern: deterministic speech-like bar
  * heights (0.16..1) per seed (mulberry32), so builds are reproducible. A
- * pattern, not a waveform. Used by BarScrubber and design C's CScrubber.
+ * pattern, not a waveform. Used by BarScrubber and the blog's ReadScrubber.
  */
 export function barHeights(bars: number, seed: number): number[] {
   let a = seed >>> 0

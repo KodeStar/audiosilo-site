@@ -13,19 +13,16 @@
  */
 import Icon from '@/components/Icon.astro'
 import TourButton from '@/components/media/TourButton.astro'
-import { clock, postPalette, type Post, type PostVideo } from '@/lib/blog'
+import { clock, coverStyle, type Post, type PostVideo } from '@/lib/blog'
 import { cn } from '@/lib/utils'
-import { promoteVisibleImg } from '@/lib/promote-visible'
 
 interface Props {
   video: PostVideo
   post: Post
-  /** Above the fold (the post's hero): the shown theme's tour poster loads eagerly, at high priority (it is the LCP). */
-  eager?: boolean
   class?: string
 }
-const { video, post, eager = false, class: className } = Astro.props
-const palette = postPalette(post.id)
+const { video, post, class: className } = Astro.props
+const { palette } = await coverStyle(post.id)
 const total = video.duration
 ---
 
@@ -65,11 +62,9 @@ const total = video.duration
                 decoding="async"
                 width={video.poster!.width}
                 height={video.poster!.height}
-                data-tour-poster={t}
                 class={cn('absolute inset-0 size-full object-cover', t === 'light' ? 'dark:hidden' : 'hidden dark:block')}
               />
             ))}
-            {eager && <script is:inline set:html={promoteVisibleImg('data-tour-poster')} />}
           </>
         ) : (
           <div class={cn('blog-poster absolute inset-0', `pal-${palette}`)} />

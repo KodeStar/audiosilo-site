@@ -4,20 +4,19 @@
  * post stays live and canonical to itself; this banner, at the very top,
  * sends readers on. Ink on ink-inverse, so it is unmissable without pink.
  */
-import { formatDate, isoDate, type Post } from '@/lib/blog'
+import { blogLinks, formatDate, isoDate, type Post } from '@/lib/blog'
 import { cn } from '@/lib/utils'
 
 interface Props {
   next: Post
-  href: string
   note?: string
   class?: string
 }
-const { next, href, note, class: className } = Astro.props
+const { next, note, class: className } = Astro.props
 ---
 
 <aside aria-label="A newer post replaces this one" class={cn('relative overflow-hidden rounded-2xl bg-primary text-primary-foreground shadow-[0_18px_40px_-20px_rgb(0_0_0/0.5)]', className)}>
-  <a href={href} class="group flex items-start gap-4 p-4 sm:items-center sm:p-5">
+  <a href={blogLinks.post(next.id)} class="group flex items-start gap-4 p-4 sm:items-center sm:p-5">
     <span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary-foreground/[0.12]" aria-hidden="true">
       <svg class="size-5 transition-transform duration-200 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>
     </span>

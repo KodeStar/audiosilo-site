@@ -17,6 +17,7 @@ import Footer from '@/components/site/Footer.astro'
 import MiniBar from '@/components/site/MiniBar.astro'
 import { DEFAULT_PREFERENCE, THEME_COLOR, THEME_STORAGE_KEY } from '@/lib/theme'
 import { PLAYER_PLATFORMS } from '@/data/status'
+import { BLOG_RSS, BLOG_TITLE } from '@/data/blog'
 
 interface Props {
   title?: string
@@ -130,6 +131,7 @@ const ogImage = new URL(image ?? '/og.png', Astro.site).href
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#db2777" />
+    <link rel="alternate" type="application/rss+xml" title={BLOG_TITLE} href={BLOG_RSS} />
 
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="AudioSilo" />
