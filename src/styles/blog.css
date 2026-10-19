@@ -24,6 +24,10 @@
   line-height: 1.65;
   color: var(--foreground);
 }
+.blog-prose :not(pre) > code {
+  /* Long inline code (an env var with a URL) wraps instead of widening the page. */
+  overflow-wrap: anywhere;
+}
 .blog-prose pre {
   margin-block: 1.5rem;
   overflow-x: auto;
