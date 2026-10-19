@@ -9,7 +9,8 @@ export async function GET(context: APIContext) {
   return rss({
     title: BLOG_TITLE,
     description: BLOG_DESCRIPTION,
-    site: context.site!,
+    // The channel's <link> is the blog, not the site root; item links are root-relative.
+    site: new URL(liveBlogLinks.index, context.site).href,
     trailingSlash: true,
     customData: '<language>en-gb</language>',
     items: posts.map((p) => ({

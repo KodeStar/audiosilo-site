@@ -80,7 +80,7 @@ const tags = [...tagsIn(all)].sort((a, b) => b[1].posts.length - a[1].posts.leng
                 <dt class="text-sm text-muted-foreground">{product}</dt>
                 <dd class="text-right">
                   <a href={links.post(c.post.id)} class="stretch-link font-mono text-lg font-semibold tabular-nums group-hover:underline">{c.version}</a>
-                  <span class="block text-xs text-subtle-foreground">{formatDate(c.post.data.published)}</span>
+                  <span class="block text-xs text-muted-foreground">{formatDate(c.post.data.published)}</span>
                 </dd>
               </div>
             ))}
@@ -92,27 +92,8 @@ const tags = [...tagsIn(all)].sort((a, b) => b[1].posts.length - a[1].posts.leng
 </section>
 
 <div class="shell grid gap-10 pb-20 sm:pb-28 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16">
-  <div class="min-w-0">
-    <KindFilter all={all} links={links} current={kind} none={!!tag} class="mb-4 lg:hidden" />
-    {posts.length === 0 && <EmptyState rss={links.rss} />}
-    {
-      months.map((m) => (
-        <section aria-labelledby={`m-${m.key}`}>
-          <h2 id={`m-${m.key}`} class="sticky top-(--header-h) z-10 -mx-4 flex items-baseline gap-3 border-b border-border bg-background/85 px-4 py-3 backdrop-blur-md sm:mx-0 sm:px-0">
-            <span class="font-display text-xl font-bold tracking-[-0.02em]">{m.label}</span>
-            <span class="text-sm text-muted-foreground">
-              {m.posts.length} {m.posts.length === 1 ? 'post' : 'posts'}
-            </span>
-          </h2>
-          <ol class="journal-line [--line-x:4.375rem] sm:[--line-x:5.75rem]">
-            {m.posts.map((p) => <BEntry post={p} links={links} next={p.data.supersededBy ? byId.get(p.data.supersededBy.id) : undefined} />)}
-          </ol>
-        </section>
-      ))
-    }
-  </div>
-
-  <aside class="order-first lg:order-none" aria-label="Start here">
+  {/* First in the DOM, as it is first on screen below lg, so the tab order follows what is seen; lg moves it to the right column. */}
+  <aside class="lg:order-last" aria-label="Start here">
     <div class="space-y-8 lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]">
       {
         startHere.length > 0 && (
@@ -177,4 +158,24 @@ const tags = [...tagsIn(all)].sort((a, b) => b[1].posts.length - a[1].posts.leng
       }
     </div>
   </aside>
+
+  <div class="min-w-0">
+    <KindFilter all={all} links={links} current={kind} none={!!tag} class="mb-2.5 lg:hidden" />
+    {posts.length === 0 && <EmptyState rss={links.rss} />}
+    {
+      months.map((m) => (
+        <section aria-labelledby={`m-${m.key}`}>
+          <h2 id={`m-${m.key}`} class="sticky top-(--header-h) z-10 -mx-4 flex items-baseline gap-3 border-b border-border bg-background/85 px-4 py-3 backdrop-blur-md sm:mx-0 sm:px-0">
+            <span class="font-display text-xl font-bold tracking-[-0.02em]">{m.label}</span>
+            <span class="text-sm text-muted-foreground">
+              {m.posts.length} {m.posts.length === 1 ? 'post' : 'posts'}
+            </span>
+          </h2>
+          <ol class="journal-line [--line-x:4.375rem] sm:[--line-x:5.75rem]">
+            {m.posts.map((p) => <BEntry post={p} links={links} next={p.data.supersededBy ? byId.get(p.data.supersededBy.id) : undefined} />)}
+          </ol>
+        </section>
+      ))
+    }
+  </div>
 </div>

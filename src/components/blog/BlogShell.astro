@@ -29,14 +29,15 @@ const { title, description, links, view, ogType, seekbar, image, imageAlt, jsonL
 <Base title={title} description={description} noindex={links.preview} ogType={ogType} seekbar={seekbar} image={image} imageAlt={imageAlt}>
   <Fragment slot="head">
     <link rel="alternate" type="application/rss+xml" title={BLOG_TITLE} href={links.rss} />
-    {jsonLd.map((d) => <script is:inline type="application/ld+json" set:html={JSON.stringify(d)} />)}
+    {/* Escape "<" so a "</script>" in a title or description can't end the block. */}
+    {jsonLd.map((d) => <script is:inline type="application/ld+json" set:html={JSON.stringify(d).replace(/</g, '\\u003c')} />)}
   </Fragment>
   {
     links.preview && (
       <div class="border-b border-border bg-muted/60">
         <div class="shell flex flex-wrap items-center gap-x-4 gap-y-2 py-2.5 text-sm">
           <p class="t-eyebrow">Design preview</p>
-          <nav aria-label="Blog designs" class="blog-scroller -mx-1 flex gap-1 overflow-x-auto px-1">
+          <nav aria-label="Blog designs" class="blog-scroller -m-1.5 flex gap-1 overflow-x-auto p-1.5">
             {designIds.map((id) => (
               <a
                 href={`${blogLinks(id, true).index}${view}`}

@@ -41,7 +41,7 @@ const link =
                 <ol class="mb-1 ml-3">
                   {c.children.map((h) => (
                     <li>
-                      <a href={`#${h.id}`} class="block rounded-lg px-3 py-1 text-[13px] leading-snug text-subtle-foreground hover:text-foreground">{h.title}</a>
+                      <a href={`#${h.id}`} class="block rounded-lg px-3 py-1 text-[13px] leading-snug text-muted-foreground hover:text-foreground">{h.title}</a>
                     </li>
                   ))}
                 </ol>
@@ -49,7 +49,7 @@ const link =
             </li>
           ))}
         </ol>
-        <p class="mt-4 px-3 text-xs text-subtle-foreground">{minutes} min read</p>
+        <p class="mt-4 px-3 text-xs text-muted-foreground">{minutes} min read</p>
       </nav>
     </>
   )

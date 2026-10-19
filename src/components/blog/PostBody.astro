@@ -16,23 +16,30 @@ const { Content } = Astro.props.loaded
 </div>
 
 <script>
+  // The button goes beside the pre, in a wrapper (.blog-code), not inside the
+  // pre: inside the scrolling pre it would scroll with the code and cover it.
+  // Its text is its name ("Copy code", then "Copied"), announced politely.
+  const label = 'Copy<span class="sr-only"> code</span>'
   document.querySelectorAll<HTMLPreElement>('.blog-prose pre').forEach((pre) => {
-    if (pre.querySelector('.blog-copy') || !navigator.clipboard) return
+    if (pre.parentElement?.classList.contains('blog-code') || !navigator.clipboard) return
+    const wrap = document.createElement('div')
+    wrap.className = 'blog-code'
     const btn = document.createElement('button')
     btn.type = 'button'
     btn.className = 'blog-copy'
-    btn.textContent = 'Copy'
-    btn.setAttribute('aria-label', 'Copy code to clipboard')
+    btn.innerHTML = label
+    btn.setAttribute('aria-live', 'polite')
     btn.addEventListener('click', () => {
       const text = pre.querySelector('code')?.textContent ?? pre.textContent ?? ''
       navigator.clipboard
         .writeText(text)
         .then(() => {
           btn.textContent = 'Copied'
-          window.setTimeout(() => (btn.textContent = 'Copy'), 1600)
+          window.setTimeout(() => (btn.innerHTML = label), 1600)
         })
         .catch(() => {})
     })
-    pre.appendChild(btn)
+    pre.replaceWith(wrap)
+    wrap.append(pre, btn)
   })
 </script>

@@ -30,9 +30,9 @@ const row =
           {chapters.map((c, i) => (
             <li>
               <a href={`#${c.id}`} data-chapter-link={i} class={row}>
-                <span class="font-mono text-[11px] tabular-nums opacity-70">{String(i + 1).padStart(2, '0')}</span>
+                <span class="font-mono text-[11px] tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                 <span class="min-w-0 truncate">{c.title}</span>
-                <span class="font-mono text-[11px] tabular-nums opacity-70">{clock(c.start)}</span>
+                <span class="font-mono text-[11px] tabular-nums">{clock(c.start)}</span>
               </a>
             </li>
           ))}
@@ -46,7 +46,7 @@ const row =
           {chapters.map((c, i) => (
             <li>
               <a href={`#${c.id}`} data-chapter-link={i} class={row}>
-                <span class="font-mono text-[11px] tabular-nums opacity-70 group-aria-[current=true]:hidden">{String(i + 1).padStart(2, '0')}</span>
+                <span class="font-mono text-[11px] tabular-nums group-aria-[current=true]:hidden">{String(i + 1).padStart(2, '0')}</span>
                 <span class="hidden group-aria-[current=true]:inline-flex" aria-hidden="true">
                   <span class="eq">
                     <i />
@@ -55,7 +55,7 @@ const row =
                   </span>
                 </span>
                 <span class="min-w-0 truncate">{c.title}</span>
-                <span class="font-mono text-[11px] font-normal tabular-nums opacity-70">{clock(c.start)}</span>
+                <span class="font-mono text-[11px] font-normal tabular-nums">{clock(c.start)}</span>
               </a>
             </li>
           ))}

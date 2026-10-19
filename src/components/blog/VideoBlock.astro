@@ -15,13 +15,16 @@ import Icon from '@/components/Icon.astro'
 import TourButton from '@/components/media/TourButton.astro'
 import { clock, postPalette, type Post, type PostVideo } from '@/lib/blog'
 import { cn } from '@/lib/utils'
+import { promoteVisibleImg } from '@/lib/promote-visible'
 
 interface Props {
   video: PostVideo
   post: Post
+  /** Above the fold (the post's hero): the shown theme's tour poster loads eagerly, at high priority (it is the LCP). */
+  eager?: boolean
   class?: string
 }
-const { video, post, class: className } = Astro.props
+const { video, post, eager = false, class: className } = Astro.props
 const palette = postPalette(post.id)
 const total = video.duration
 ---
@@ -51,19 +54,23 @@ const total = video.duration
     ) : (
       <div class="relative overflow-hidden rounded-3xl bg-[var(--bezel)] shadow-[var(--shadow-device)]" style={`aspect-ratio: ${video.tour.aspect}`}>
         {video.poster ? (
-          (['light', 'dark'] as const).map((t) => (
-            <img
-              src={video.files.poster[t]}
-              srcset={video.poster!.srcset[t]}
-              sizes="(min-width: 1024px) 48rem, 92vw"
-              alt=""
-              loading="lazy"
-              decoding="async"
-              width={video.poster!.width}
-              height={video.poster!.height}
-              class={cn('absolute inset-0 size-full object-cover', t === 'light' ? 'dark:hidden' : 'hidden dark:block')}
-            />
-          ))
+          <>
+            {(['light', 'dark'] as const).map((t) => (
+              <img
+                src={video.files.poster[t]}
+                srcset={video.poster!.srcset[t]}
+                sizes="(min-width: 1024px) 48rem, 92vw"
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width={video.poster!.width}
+                height={video.poster!.height}
+                data-tour-poster={t}
+                class={cn('absolute inset-0 size-full object-cover', t === 'light' ? 'dark:hidden' : 'hidden dark:block')}
+              />
+            ))}
+            {eager && <script is:inline set:html={promoteVisibleImg('data-tour-poster')} />}
+          </>
         ) : (
           <div class={cn('blog-poster absolute inset-0', `pal-${palette}`)} />
         )}

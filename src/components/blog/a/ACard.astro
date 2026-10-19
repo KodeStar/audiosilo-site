@@ -22,8 +22,9 @@ const video = postVideo(post)
 const version = kind === 'release' ? versionOf(post) : undefined
 ---
 
-<article class={cn('group relative flex flex-col', supersededBy && 'opacity-80')}>
-  <div class={cn('blog-art relative aspect-[16/10] overflow-hidden rounded-2xl shadow-[inset_0_0_0_1px_var(--glass-border)] transition-transform duration-300 ease-(--ease-out) group-hover:-translate-y-1', `pal-${postPalette(post.id)}`)} aria-hidden="true">
+{/* A replaced post dims its art only: dimmed text would drop below AA contrast. */}
+<article class="group relative flex flex-col">
+  <div class={cn('blog-art relative aspect-[16/10] overflow-hidden rounded-2xl shadow-[inset_0_0_0_1px_var(--glass-border)] transition-transform duration-300 ease-(--ease-out) group-hover:-translate-y-1', `pal-${postPalette(post.id)}`, supersededBy && 'opacity-70')} aria-hidden="true">
     {
       hero ? (
         hero.kind === 'phone' ? (

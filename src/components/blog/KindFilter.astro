@@ -20,7 +20,8 @@ const items = [
 ]
 ---
 
-<nav aria-label="Post kinds" class={cn('blog-scroller -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0', className)}>
+{/* The padding (cancelled by the negative margin) keeps the focus ring inside the scroller, which clips. */}
+<nav aria-label="Post kinds" class={cn('blog-scroller -mx-4 -my-1.5 overflow-x-auto px-4 py-1.5 sm:-mx-1.5 sm:px-1.5', className)}>
   <ul class={cn('flex w-max gap-1.5', variant === 'tabs' && 'gap-5 sm:gap-7')}>
     {
       items.map((it) => (
@@ -35,7 +36,7 @@ const items = [
             )}
           >
             {it.label}
-            <span class={cn('font-mono text-[11px] tabular-nums', variant === 'pills' ? 'opacity-60' : 'text-subtle-foreground')}>{it.count}</span>
+            <span class={cn('font-mono text-[11px] tabular-nums', variant === 'pills' ? 'opacity-80' : 'text-muted-foreground')}>{it.count}</span>
           </a>
         </li>
       ))

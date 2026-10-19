@@ -14,8 +14,10 @@
   font-size: 1.0938rem;
   line-height: 1.75;
 }
+/* html's scroll-padding-top already clears the header; this adds only a
+   design's own sticky bar (C's mini player). The two offsets add up. */
 .blog-prose :is(h2, h3) {
-  scroll-margin-top: calc(var(--header-h) + var(--blog-sticky, 0px) + 1.5rem);
+  scroll-margin-top: var(--blog-sticky, 0px);
 }
 .blog-prose > p:first-child {
   font-size: 1.1875rem;
@@ -23,7 +25,6 @@
   color: var(--foreground);
 }
 .blog-prose pre {
-  position: relative;
   margin-block: 1.5rem;
   overflow-x: auto;
   border-radius: 1rem;
@@ -41,7 +42,12 @@
   box-shadow: none;
   padding: 0;
 }
-.blog-prose pre .blog-copy {
+/* PostBody wraps a pre in .blog-code when it adds a copy button, so the
+   button stays put while the code scrolls sideways under it. */
+.blog-code {
+  position: relative;
+}
+.blog-code .blog-copy {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
@@ -56,13 +62,18 @@
   opacity: 0;
   transition: opacity var(--dur-1);
 }
-.blog-prose pre:hover .blog-copy,
-.blog-prose pre .blog-copy:focus-visible {
+.blog-code:hover .blog-copy,
+.blog-code .blog-copy:focus-visible {
   opacity: 1;
 }
+/* Touch: the button is always shown, so the code starts below it (set on
+   every pre, not just wrapped ones, so nothing shifts when the script runs). */
 @media (hover: none) {
-  .blog-prose pre .blog-copy {
+  .blog-code .blog-copy {
     opacity: 1;
+  }
+  .blog-prose pre {
+    padding-top: 2.5rem;
   }
 }
 .blog-prose table {
@@ -251,6 +262,11 @@
 .stretch-link:focus-visible::after {
   outline: 2px solid var(--ring);
   outline-offset: 4px;
+}
+/* A .tile clips its overflow: draw the ring inside its rounded edge. */
+.tile .stretch-link:focus-visible::after {
+  outline-offset: -3px;
+  border-radius: 28px;
 }
 
 /* A video's poster before it is played: the post's palette, deep in both themes. */

@@ -30,7 +30,9 @@ export type Post = CollectionEntry<'blog'>
 
 /**
  * A post a production build leaves out: a draft, or one whose `published`
- * date is still to come (a scheduled post; a daily rebuild publishes it).
+ * date is still to come (a scheduled post). Nothing rebuilds the site on a
+ * timer yet (.github/workflows/ci.yml runs on push), so a scheduled post goes
+ * live with the first deploy on or after its date.
  */
 export function isHidden(p: Post, now = new Date()): boolean {
   return p.data.draft || p.data.published.valueOf() > now.valueOf()
@@ -204,12 +206,26 @@ export const kindPlural = (k: BlogKind) => BLOG_KINDS[k].plural
 
 /**
  * The version a post is about, from `appliesTo` ("Server 2.3.1, app 2.0.0"):
- * the first product and version it names.
+ * the first product it names, at the newest version listed for it, so
+ * "Server 2.3.0 and 2.3.1" is 2.3.1 (up to the next product or a `;`,
+ * ignoring asides in parentheses).
  */
 export function versionOf(p: Post): { product: string; version: string } | undefined {
-  const m = p.data.appliesTo?.match(/\b(server|app|player|meta)\b\s*v?(\d+\.\d+(?:\.\d+)?)/i)
-  if (!m) return undefined
-  return { product: m[1][0].toUpperCase() + m[1].slice(1).toLowerCase(), version: m[2] }
+  const text = p.data.appliesTo ?? ''
+  const m = text.match(/\b(server|app|player|meta)\b\s*v?(\d+\.\d+(?:\.\d+)?)/i)
+  if (!m || m.index === undefined) return undefined
+  const rest = text
+    .slice(m.index + m[0].length)
+    .replace(/\([^)]*\)/g, '')
+    .split(/;|\b(?:server|app|player|meta)\b/i)[0]
+  const parts = (v: string) => v.split('.').map(Number)
+  const newer = (a: string, b: string) => {
+    const [x, y] = [parts(a), parts(b)]
+    for (let i = 0; i < 3; i++) if ((x[i] ?? 0) !== (y[i] ?? 0)) return (x[i] ?? 0) > (y[i] ?? 0)
+    return false
+  }
+  const version = (rest.match(/\d+\.\d+(?:\.\d+)?/g) ?? []).reduce((best, v) => (newer(v, best) ? v : best), m[2])
+  return { product: m[1][0].toUpperCase() + m[1].slice(1).toLowerCase(), version }
 }
 
 /* -------------------------------------------------------------------------
@@ -350,6 +366,9 @@ function isoDuration(s: string): string {
 export function postVideo(p: Post): PostVideo | undefined {
   const v = p.data.video
   if (!v) return undefined
+  if (v.duration && !/^(?:(?:\d+:)?\d+:\d{2}|\d+)$/.test(v.duration)) {
+    throw new Error(`Blog post "${p.id}": video.duration "${v.duration}" is not "m:ss", "h:mm:ss" or seconds`)
+  }
   const chapters = v.chapters.map((c) => {
     const m = c.match(/^\s*((?:\d+:)?\d+:\d{2})\s+(.+)$/)
     if (!m) throw new Error(`Blog post "${p.id}": video chapter "${c}" is not "m:ss Title"`)

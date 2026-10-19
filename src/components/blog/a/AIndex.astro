@@ -134,9 +134,10 @@ const newest = all.length ? all.map(modified).sort((a, b) => b.valueOf() - a.val
 {
   release && (
     <section aria-labelledby="latest-release" class="shell mt-10 sm:mt-14">
+      {/* The columns are z-indexed grid items, not positioned, so the title's stretched link covers the whole tile; the right column lets clicks through to it. */}
       <div class="tile group grid gap-5 p-6 sm:p-8 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:gap-10">
         <Wash palette="console" edge="none" class="opacity-60" />
-        <div class="relative z-10">
+        <div class="z-10">
           <p class="t-eyebrow">Latest release</p>
           {releaseVersion && (
             <p class="mt-1 flex items-baseline gap-2">
@@ -145,13 +146,13 @@ const newest = all.length ? all.map(modified).sort((a, b) => b.valueOf() - a.val
             </p>
           )}
         </div>
-        <div class="relative z-10 min-w-0">
+        <div class="z-10 min-w-0">
           <h2 id="latest-release" class="t-title text-balance">
             <a href={links.post(release.id)} class="stretch-link underline decoration-transparent decoration-2 underline-offset-4 group-hover:decoration-foreground/30">{release.data.title}</a>
           </h2>
           <p class="line-clamp-2 mt-2 text-muted-foreground">{release.data.description}</p>
         </div>
-        <div class="relative z-10 flex items-center justify-between gap-4 text-sm md:flex-col md:items-end">
+        <div class="pointer-events-none z-10 flex items-center justify-between gap-4 text-sm md:flex-col md:items-end">
           <time datetime={isoDate(release.data.published)} class="text-muted-foreground">{formatDate(release.data.published)}</time>
           <span class="inline-flex items-center gap-2 font-semibold" aria-hidden="true">
             Release notes

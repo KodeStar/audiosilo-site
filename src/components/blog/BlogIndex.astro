@@ -29,7 +29,8 @@ const listing = kind
     }
   : tag
     ? {
-        posts: all.filter((p) => p.data.tags.includes(tag)),
+        // By slug, as tagsIn() groups them, so "Self-hosting" and "self hosting" share a page.
+        posts: all.filter((p) => p.data.tags.some((t) => tagSlug(t) === tagSlug(tag))),
         heading: `#${tag}`,
         lede: `Every post tagged ${tag}, newest first.`,
         title: `Posts tagged ${tag} - the AudioSilo blog`,

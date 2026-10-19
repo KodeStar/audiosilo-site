@@ -59,7 +59,7 @@ const { kind, title, description, published, updated, tags, supersededNote } = p
       <div class="shell">
         <div class="mx-auto max-w-5xl">
           {video ? (
-            <VideoBlock video={video} post={post} />
+            <VideoBlock video={video} post={post} eager />
           ) : hero && hero.kind === 'phone' ? (
             <div class={`blog-art pal-${postPalette(post.id)} relative h-[min(34rem,90vw)] overflow-hidden rounded-[28px] shadow-[inset_0_0_0_1px_var(--glass-border)]`}>
               <HeroDevice hero={hero} eager sizes="(min-width: 1024px) 17rem, 50vw" widths={[300, 600]} class="absolute top-[9%] left-1/2 w-[min(17rem,48%)] -translate-x-1/2" />

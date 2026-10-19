@@ -21,7 +21,8 @@ const { loaded, links } = Astro.props
 const { post, chapters, minutes, supersededBy, supersedes, hero, video, newer, older } = loaded
 const { kind, title, description, published, updated, verified, appliesTo, tags, supersededNote } = post.data
 const version = versionOf(post)
-const cell = 'px-4 py-3.5 first:pl-0 sm:px-5'
+// Flush left at the start of each row: cells 1 and 3 in the phone's 2x2, cell 1 in the sm+ single row.
+const cell = 'px-4 py-3.5 max-sm:odd:pl-0 sm:px-5 sm:first:pl-0'
 ---
 
 <article class="px-4 sm:px-6">
@@ -68,7 +69,7 @@ const cell = 'px-4 py-3.5 first:pl-0 sm:px-5'
     (video || hero) && (
       <div class="mx-auto mt-10 max-w-[52rem]">
         {video ? (
-          <VideoBlock video={video} post={post} />
+          <VideoBlock video={video} post={post} eager />
         ) : hero && hero.kind === 'phone' ? (
           <HeroDevice hero={hero} eager sizes="16rem" widths={[300, 600]} class="mx-auto w-[min(16rem,60%)]" />
         ) : (
