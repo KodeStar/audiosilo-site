@@ -1,7 +1,7 @@
 /**
  * Rehype plugin for blog posts (the only Markdown on the site): marks every
  * h2 with `data-chapter="<its text>"`, so a post's sections register with the
- * header seek bar and the chapter lists (src/lib/site.ts) with no client
+ * chapter list and the mini player (src/lib/site.ts) with no client
  * code. The post header carries the intro's data-chapter; see
  * postChapters() in src/lib/blog.ts, which lists the same chapters.
  */

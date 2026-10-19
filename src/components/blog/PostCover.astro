@@ -13,7 +13,8 @@
  * container, text in container units.
  */
 import Icon from '@/components/Icon.astro'
-import { coverStyle, coverVars, kindLabel, seeded, versionOf, type Post } from '@/lib/blog'
+import { barHeights, seeded } from '@/lib/bars'
+import { coverStyle, coverVars, kindLabel, versionOf, type Post } from '@/lib/blog'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -32,8 +33,8 @@ const size = short.length <= 22 ? 13.5 : short.length <= 38 ? 11 : short.length 
 const rand = seeded(style.seed)
 const r2 = (n: number) => Math.round(n * 100) / 100
 
-// feature 0: a speech-like bar pattern.
-const bars = Array.from({ length: 28 }, (_, i) => Math.max(0.18, Math.min(1, (0.55 + 0.3 * Math.sin(i * 0.7 + motif)) * (0.6 + rand() * 0.6))))
+// feature 0: the player's seek bar pattern.
+const bars = barHeights(28, style.seed)
 // guide 2: book spines standing on a shelf.
 const spines: { x: number; w: number; h: number; o: number }[] = []
 for (let x = 0; x < 92; ) {

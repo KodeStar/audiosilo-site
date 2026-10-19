@@ -10,19 +10,18 @@ interface Props {
   post: Post
   supersededBy?: Post
   supersedes?: Post[]
-  title?: string
   class?: string
 }
-const { post, supersededBy, supersedes = [], title = 'Changes to this post', class: className } = Astro.props
+const { post, supersededBy, supersedes = [], class: className } = Astro.props
 
 interface Row {
   date: Date
   note: string
-  link?: { href: string; label: string; prefix: string }
+  link?: { href: string; label: string }
 }
 const rows: Row[] = [
   ...(supersededBy
-    ? [{ date: supersededBy.data.published, note: '', link: { href: blogLinks.post(supersededBy.id), label: supersededBy.data.title, prefix: 'Replaced by' } }]
+    ? [{ date: supersededBy.data.published, note: '', link: { href: blogLinks.post(supersededBy.id), label: supersededBy.data.title } }]
     : []),
   ...[...post.data.revisions]
     .sort((a, b) => b.date.valueOf() - a.date.valueOf())
@@ -34,7 +33,7 @@ const id = `rev-${post.id}`
 
 <section aria-labelledby={id} class={className}>
   <div class="rounded-2xl bg-muted/60 p-5 shadow-[inset_0_0_0_1px_var(--border)] sm:p-6">
-    <h2 id={id} class="t-heading">{title}</h2>
+    <h2 id={id} class="t-heading">Changes to this post</h2>
     <ol class="mt-4 divide-y divide-border text-[0.9375rem]">
       {rows.map((r) => (
         <li class="grid gap-1 py-3 first:pt-0 last:pb-0 sm:grid-cols-[8.5rem_1fr] sm:gap-4">
@@ -42,7 +41,7 @@ const id = `rev-${post.id}`
           <p class="text-foreground/85">
             {r.link ? (
               <>
-                {`${r.link.prefix} `}<a href={r.link.href} class="link font-semibold">{r.link.label}</a>.
+                Replaced by <a href={r.link.href} class="link font-semibold">{r.link.label}</a>.
               </>
             ) : (
               r.note

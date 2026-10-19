@@ -17,6 +17,7 @@ import EmptyState from './EmptyState.astro'
 import { BLOG_DESCRIPTION, BLOG_KINDS, type BlogKind } from '@/data/blog'
 import {
   blogLinks,
+  clock,
   coverStyles,
   coverVars,
   formatDate,
@@ -79,9 +80,9 @@ const nowCover = now && covers.get(now.id)
       <p class="t-lede mt-4 max-w-2xl">{listing.lede}</p>
 
       {
-        now && (
+        now && nowCover && (
           <article aria-labelledby="now-playing" class="tile group mt-10 p-5 sm:mt-12 sm:p-8">
-            <Wash palette={nowCover!.palette} edge="none" class="opacity-70" />
+            <Wash palette={nowCover.palette} edge="none" class="opacity-70" />
             <div class="relative z-10 grid items-end gap-6 sm:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] sm:gap-8 md:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-12">
               <PostCover post={now} class="w-44 sm:w-full" />
               <div class="min-w-0">
@@ -92,10 +93,10 @@ const nowCover = now && covers.get(now.id)
                 <p class="mt-3 text-[0.9375rem] text-foreground/75">
                   {kindLabel(now.data.kind)} &middot; <time datetime={isoDate(now.data.published)}>{formatDate(now.data.published)}</time> &middot; {nowMinutes} min
                 </p>
-                <BarScrubber class="mt-7 h-10 sm:h-12" played={0} seed={(nowCover!.seed % 50) + 3} />
+                <BarScrubber class="mt-7 h-10 sm:h-12" played={0} seed={nowCover.barSeed} />
                 <div class="mt-2 flex justify-between font-mono text-[11px] text-foreground/60 tabular-nums" aria-hidden="true">
                   <span>0:00</span>
-                  <span>-{nowMinutes}:00</span>
+                  <span>-{clock(nowMinutes * 60)}</span>
                 </div>
                 <div class="mt-5 flex items-center gap-4">
                   <span class="play-btn play-ink size-14" aria-hidden="true">
@@ -116,7 +117,7 @@ const nowCover = now && covers.get(now.id)
       <h2 id="shelf" class="t-title pb-2">{front ? 'The shelf' : tag ? `Tagged ${tag}` : 'On the shelf'}</h2>
       <KindFilter all={all} current={kind} none={!!tag} />
     </div>
-    {all.length === 0 && <div class="mt-8"><EmptyState rss={blogLinks.rss} /></div>}
+    {all.length === 0 && <div class="mt-8"><EmptyState /></div>}
     <ul class="mt-8 grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
       {shelf.map((p) => <ShelfBook post={p} />)}
     </ul>
@@ -129,10 +130,11 @@ const nowCover = now && covers.get(now.id)
           <ol class="blog-scroller flex items-end gap-1.5 overflow-x-auto pb-1" aria-hidden="true">
             {releases.map((p) => {
               const v = versionOf(p)
+              const c = covers.get(p.id)!
               return (
                 <li class="shrink-0">
-                  <a href={blogLinks.post(p.id)} tabindex="-1" style={coverVars(covers.get(p.id)!)}
-                    class={`post-cover pal-${covers.get(p.id)!.palette} flex h-44 w-11 items-end justify-center rounded-[4px] pb-3 transition-transform hover:-translate-y-1.5 sm:h-52 sm:w-12`}>
+                  <a href={blogLinks.post(p.id)} tabindex="-1" style={coverVars(c)}
+                    class={`post-cover pal-${c.palette} flex h-44 w-11 items-end justify-center rounded-[4px] pb-3 transition-transform hover:-translate-y-1.5 sm:h-52 sm:w-12`}>
                     <span class="!static rotate-180 font-display text-sm font-bold tracking-[-0.01em] text-white tabular-nums [writing-mode:vertical-rl]">{v ? `${v.product} ${v.version}` : p.data.title}</span>
                   </a>
                 </li>

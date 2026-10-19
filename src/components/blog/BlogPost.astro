@@ -7,10 +7,10 @@
  */
 import Icon from '@/components/Icon.astro'
 import Wash from '@/components/site/Wash.astro'
+import Device from '@/components/media/Device.astro'
 import BlogShell from './BlogShell.astro'
 import Chapters from './Chapters.astro'
 import ReadScrubber from './ReadScrubber.astro'
-import HeroDevice from './HeroDevice.astro'
 import PostBody from './PostBody.astro'
 import PostCover from './PostCover.astro'
 import Revisions from './Revisions.astro'
@@ -19,6 +19,7 @@ import Verified from './Verified.astro'
 import VideoBlock from './VideoBlock.astro'
 import {
   blogLinks,
+  clock,
   coverStyle,
   formatDate,
   isoDate,
@@ -84,26 +85,26 @@ const jsonLd = postJsonLd(post, Astro.site!, video, heroUrl)
     </header>
 
     <div class="sticky top-(--header-h) z-30 border-y border-border bg-background/80 backdrop-blur-xl">
-      <div class="shell flex h-14 items-center gap-3 sm:gap-4">
+      <div class="shell flex h-(--blog-sticky) items-center gap-3 sm:gap-4">
         <PostCover post={post} mini class="w-9 shrink-0 !rounded-[4px] !shadow-none" />
         <p class="hidden min-w-0 shrink text-sm font-semibold sm:block sm:max-w-[16rem] sm:truncate lg:max-w-[22rem]">{title}</p>
         <span class="font-mono text-[11px] text-muted-foreground tabular-nums" aria-hidden="true">0:00</span>
-        <ReadScrubber seed={(cover.seed % 50) + 3} class="h-7 min-w-0 flex-1" />
-        <span class="font-mono text-[11px] text-muted-foreground tabular-nums">{minutes}:00<span class="sr-only"> minutes to read</span></span>
+        <ReadScrubber seed={cover.barSeed} class="h-7 min-w-0 flex-1" />
+        <span class="font-mono text-[11px] text-muted-foreground tabular-nums">{clock(minutes * 60)}<span class="sr-only"> minutes to read</span></span>
       </div>
     </div>
 
     <div class="shell grid gap-x-14 py-10 sm:py-14 lg:grid-cols-[16rem_minmax(0,1fr)]">
       <aside><Chapters chapters={chapters} minutes={minutes} /></aside>
       <div class="min-w-0 max-w-[70ch]">
-        {video && <VideoBlock video={video} post={post} class="mb-10" />}
+        {video && <VideoBlock video={video} palette={cover.palette} class="mb-10" />}
         {
           !video && hero && (
             <div class={`blog-art pal-${cover.palette} relative mb-10 overflow-hidden rounded-3xl ${hero.kind === 'phone' ? 'h-[min(28rem,100vw)]' : 'aspect-[16/10]'}`}>
               {hero.kind === 'phone' ? (
-                <HeroDevice hero={hero} sizes="15rem" widths={[300, 600]} class="absolute top-[8%] left-1/2 w-[min(15rem,50%)] -translate-x-1/2" />
+                <Device {...hero} sizes="15rem" widths={[300, 600]} class="absolute top-[8%] left-1/2 w-[min(15rem,50%)] -translate-x-1/2" />
               ) : (
-                <HeroDevice hero={hero} sizes="(min-width: 1024px) 44rem, 94vw" widths={[640, 1280]} class="absolute top-[10%] left-[7%] w-[100%]" />
+                <Device {...hero} sizes="(min-width: 1024px) 44rem, 94vw" widths={[640, 1280]} class="absolute top-[10%] left-[7%] w-[100%]" />
               )}
             </div>
           )

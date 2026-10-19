@@ -7,7 +7,7 @@
  */
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 import type { MarkdownHeading } from 'astro'
-import { BLOG_KINDS, BLOG_RSS, READING_WPM, RESERVED_SLUGS, type BlogKind } from '@/data/blog'
+import { BLOG_KINDS, READING_WPM, RESERVED_SLUGS, type BlogKind } from '@/data/blog'
 import { loops, stills, tourFiles, tours, type Still, type Themed, type Tour, type TourFiles } from '@/data/media'
 import type { Palette } from '@/components/site/Wash.astro'
 
@@ -121,7 +121,6 @@ export const blogLinks = {
   post: (id: string) => `/blog/${id}/`,
   kind: (k: BlogKind) => `/blog/kind/${k}/`,
   tag: (t: string) => `/blog/tag/${tagSlug(t)}/`,
-  rss: BLOG_RSS,
 }
 
 export function tagSlug(tag: string): string {
@@ -227,8 +226,8 @@ export interface PostChapter {
 
 /**
  * The post's chapters: an intro (the post header, `top`) and one per `##`
- * heading, each with the reading time before it as its start. The header
- * seek bar and the chapter lists use these: the rehype plugin in
+ * heading, each with the reading time before it as its start. The chapter
+ * list and the mini player use these: the rehype plugin in
  * src/lib/rehype-blog-chapters.ts marks each h2 with data-chapter, and the
  * post header carries data-chapter for the intro, so DOM order matches.
  */
@@ -377,7 +376,7 @@ const COVER_LEADS: Record<Palette, number[]> = {
 }
 
 /** Motif variants each kind's cover draws from (PostCover.astro). */
-export const COVER_MOTIFS = 4
+const COVER_MOTIFS = 4
 
 /** Glow position and gradient angle pairs for a cover's light. */
 const COVER_LIGHTS = [
@@ -391,7 +390,8 @@ const COVER_LIGHTS = [
  * A post's generated cover: its palette (one of the site's wash palettes),
  * which of the palette's three colours leads (COVER_LEADS, so two posts on
  * one palette still differ in hue), the kind's motif variant, where
- * the light falls, and a seed for drawn patterns.
+ * the light falls, a seed for drawn patterns and one for the post's seek
+ * bar (the index's now-playing tile and the post's mini player).
  */
 export interface CoverStyle {
   palette: Palette
@@ -399,6 +399,7 @@ export interface CoverStyle {
   motif: number
   light: (typeof COVER_LIGHTS)[number]
   seed: number
+  barSeed: number
 }
 
 /**
@@ -445,7 +446,8 @@ function assignCovers(posts: { id: string; kind: BlogKind; published: Date }[]):
     motifUse.set(p.kind, uses)
     lastMotif.set(p.kind, motif)
     lastPalette = pi
-    out.set(p.id, { palette: COVER_PALETTES[pi], lead, motif, light: COVER_LIGHTS[(h >>> 13) % COVER_LIGHTS.length], seed: (h % 2147483646) + 1 })
+    const seed = (h % 2147483646) + 1
+    out.set(p.id, { palette: COVER_PALETTES[pi], lead, motif, light: COVER_LIGHTS[(h >>> 13) % COVER_LIGHTS.length], seed, barSeed: (seed % 50) + 3 })
   }
   return out
 }
@@ -471,15 +473,6 @@ export async function coverStyle(id: string): Promise<CoverStyle> {
 export function coverVars(style: CoverStyle): string {
   const w = [1, 2, 3].map((n) => `var(--w${((n - 1 + style.lead) % 3) + 1})`)
   return `--c1:${w[0]};--c2:${w[1]};--c3:${w[2]};--glow-at:${style.light.at};--cover-angle:${style.light.angle}deg`
-}
-
-/** A small seeded generator (Park-Miller) for a cover's drawn patterns, stable per post. */
-export function seeded(seed: number): () => number {
-  let s = seed % 2147483647 || 1
-  return () => {
-    s = (s * 16807) % 2147483647
-    return s / 2147483647
-  }
 }
 
 /* -------------------------------------------------------------------------

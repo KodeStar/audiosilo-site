@@ -17,8 +17,8 @@ export default defineConfig({
   build: { inlineStylesheets: 'always' },
   integrations: [react(), sitemap(), clientSettled()],
   // Markdown is only the blog (src/content/blog). Code is unhighlighted, as in
-  // CodeBlock.astro, and h2s become
-  // chapters (the post's chapter list and mini player).
+  // CodeBlock.astro, and h2s become chapters (the post's chapter list and
+  // mini player).
   markdown: {
     syntaxHighlight: false,
     rehypePlugins: [rehypeBlogChapters],

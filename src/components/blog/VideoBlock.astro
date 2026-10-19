@@ -13,16 +13,17 @@
  */
 import Icon from '@/components/Icon.astro'
 import TourButton from '@/components/media/TourButton.astro'
-import { clock, coverStyle, type Post, type PostVideo } from '@/lib/blog'
+import { clock, type PostVideo } from '@/lib/blog'
+import type { Palette } from '@/components/site/Wash.astro'
 import { cn } from '@/lib/utils'
 
 interface Props {
   video: PostVideo
-  post: Post
+  /** The post's cover palette, for the poster. */
+  palette: Palette
   class?: string
 }
-const { video, post, class: className } = Astro.props
-const { palette } = await coverStyle(post.id)
+const { video, palette, class: className } = Astro.props
 const total = video.duration
 ---
 
