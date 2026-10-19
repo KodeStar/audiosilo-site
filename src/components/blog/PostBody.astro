@@ -4,17 +4,14 @@
  * code block once the page has loaded (the code is readable without it).
  */
 import type { LoadedPost } from '@/lib/blog'
-import { cn } from '@/lib/utils'
 
 interface Props {
   loaded: LoadedPost
-  class?: string
 }
-const { loaded, class: className } = Astro.props
-const { Content } = loaded
+const { Content } = Astro.props.loaded
 ---
 
-<div class={cn('blog-prose prose-as', className)}>
+<div class="blog-prose prose-as">
   <Content />
 </div>
 

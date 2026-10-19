@@ -8,7 +8,7 @@ import AIndex from './a/AIndex.astro'
 import BIndex from './b/BIndex.astro'
 import CIndex from './c/CIndex.astro'
 import { BLOG_DESCRIPTION, BLOG_KINDS, type BlogKind } from '@/data/blog'
-import { kindPlural, type BlogLinks, type Post } from '@/lib/blog'
+import { kindPlural, tagSlug, type BlogLinks, type Post } from '@/lib/blog'
 
 interface Props {
   all: Post[]
@@ -18,18 +18,34 @@ interface Props {
   tag?: string
 }
 const { all, links, kind, tag } = Astro.props
-const posts = kind ? all.filter((p) => p.data.kind === kind) : tag ? all.filter((p) => p.data.tags.includes(tag)) : all
-
-const heading = kind ? kindPlural(kind) : tag ? `#${tag}` : 'News and know-how.'
-const lede = kind
-  ? BLOG_KINDS[kind].blurb
+const listing = kind
+  ? {
+      posts: all.filter((p) => p.data.kind === kind),
+      heading: kindPlural(kind),
+      lede: BLOG_KINDS[kind].blurb,
+      title: `${kindPlural(kind)} - the AudioSilo blog`,
+      description: `${BLOG_KINDS[kind].blurb} From the AudioSilo blog.`,
+      view: `kind/${kind}/`,
+    }
   : tag
-    ? `Every post tagged ${tag}, newest first.`
-    : 'Release notes, guides and video tutorials for running your own audiobook server. Every post says when it was last checked against the software you can download today.'
-const title = kind ? `${kindPlural(kind)} - the AudioSilo blog` : tag ? `Posts tagged ${tag} - the AudioSilo blog` : 'Blog - AudioSilo'
-const description = kind ? `${BLOG_KINDS[kind].blurb} From the AudioSilo blog.` : tag ? `Posts about ${tag} on the AudioSilo blog.` : BLOG_DESCRIPTION
-const view = kind ? `kind/${kind}/` : tag ? links.tag(tag).replace(links.index, '') : ''
-const props = { posts, all, links, kind, tag, heading, lede }
+    ? {
+        posts: all.filter((p) => p.data.tags.includes(tag)),
+        heading: `#${tag}`,
+        lede: `Every post tagged ${tag}, newest first.`,
+        title: `Posts tagged ${tag} - the AudioSilo blog`,
+        description: `Posts about ${tag} on the AudioSilo blog.`,
+        view: `tag/${tagSlug(tag)}/`,
+      }
+    : {
+        posts: all,
+        heading: 'News and know-how.',
+        lede: 'Release notes, guides and video tutorials for running your own audiobook server. Every post says when it was last checked against the software you can download today.',
+        title: 'Blog - AudioSilo',
+        description: BLOG_DESCRIPTION,
+        view: '',
+      }
+const { title, description, view } = listing
+const props = { posts: listing.posts, all, links, kind, tag, heading: listing.heading, lede: listing.lede }
 ---
 
 <BlogShell title={title} description={description} links={links} view={view}>

@@ -4,7 +4,7 @@ import BlogShell from '@/components/blog/BlogShell.astro'
 import { BLOG_DESIGN, BLOG_DESIGNS } from '@/data/blog'
 import { blogLinks, designIds } from '@/lib/blog'
 
-const links = { ...blogLinks(BLOG_DESIGN, true) }
+const links = blogLinks(BLOG_DESIGN, true)
 ---
 
 <BlogShell title="Blog designs - AudioSilo" description="Three design options for the AudioSilo blog." links={links} view="">
@@ -18,7 +18,7 @@ const links = { ...blogLinks(BLOG_DESIGN, true) }
           <li class="tile group relative p-6">
             <p class="font-mono text-sm text-muted-foreground uppercase">{id}{id === BLOG_DESIGN && ' (live at /blog)'}</p>
             <h2 class="t-title mt-2">
-              <a href={`/blog/designs/${id}/`} class="stretch-link">{BLOG_DESIGNS[id].name}</a>
+              <a href={blogLinks(id, true).index} class="stretch-link">{BLOG_DESIGNS[id].name}</a>
             </h2>
             <p class="mt-2 text-muted-foreground">{BLOG_DESIGNS[id].summary}</p>
           </li>

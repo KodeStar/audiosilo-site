@@ -24,6 +24,9 @@ import { execFileSync } from 'node:child_process'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+// Node 24 strips the types; neither file imports anything.
+import { VERIFY_STALE_DAYS } from '../src/data/blog.ts'
+import { GITHUB_SERVER_URL } from '../src/data/links.ts'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const blogDir = join(root, 'src/content/blog')
@@ -40,15 +43,14 @@ if (flag('help') || flag('h')) {
   process.exit(0)
 }
 
-const configDays = Number(readFileSync(join(root, 'src/data/blog.ts'), 'utf8').match(/VERIFY_STALE_DAYS\s*=\s*(\d+)/)?.[1] ?? 90)
-const days = Number(opt('days') ?? configDays)
+const days = Number(opt('days') ?? VERIFY_STALE_DAYS)
 const coverKeys = (opt('covers') ?? '').split(',').map((s) => s.trim()).filter(Boolean)
 const serverRepo = resolve(root, opt('server-repo') ?? '../audiosilo-server')
 const today = new Date()
 
 const git = (cwd, ...a) => {
   try {
-    return execFileSync('git', a, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim()
+    return execFileSync('git', a, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 5000 }).trim()
   } catch {
     return ''
   }
@@ -56,7 +58,7 @@ const git = (cwd, ...a) => {
 
 /** The newest server release tag (vX.Y.Z) and when it was cut. */
 function newestServerTag() {
-  if (existsSync(join(serverRepo, '.git')) || existsSync(serverRepo)) {
+  if (existsSync(serverRepo)) {
     const tag = git(serverRepo, 'tag', '--list', 'v*', '--sort=-v:refname').split('\n').find((t) => /^v\d+\.\d+\.\d+$/.test(t))
     if (tag) {
       const date = git(serverRepo, 'log', '-1', '--format=%cI', tag)
@@ -64,12 +66,12 @@ function newestServerTag() {
     }
   }
   // No local checkout: the tag name from GitHub (no date without a clone).
-  const remote = git(root, 'ls-remote', '--tags', '--refs', 'https://github.com/KodeStar/audiosilo-server.git')
+  const remote = git(root, 'ls-remote', '--tags', '--refs', `${GITHUB_SERVER_URL}.git`)
   const tags = remote
     .split('\n')
     .map((l) => l.split('refs/tags/')[1])
     .filter((t) => /^v\d+\.\d+\.\d+$/.test(t ?? ''))
-    .sort((a, b) => b.slice(1).split('.').map(Number).reduce((acc, n, i) => acc || n - a.slice(1).split('.').map(Number)[i], 0))
+    .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }))
   return tags[0] ? { tag: tags[0], date: undefined, from: 'github' } : undefined
 }
 

@@ -21,6 +21,9 @@ export type BlogDesign = keyof typeof BLOG_DESIGNS
 /** The design /blog/ renders. */
 export const BLOG_DESIGN: BlogDesign = 'a'
 
+/** Where the design previews live (/blog/designs/<id>/...); astro.config.mjs keeps it out of the sitemap. */
+export const BLOG_PREVIEW_BASE = '/blog/designs/'
+
 export const BLOG_TITLE = 'The AudioSilo blog'
 export const BLOG_DESCRIPTION =
   'News, release notes, guides and video tutorials for AudioSilo, the self-hosted audiobook server and player. Every post says when it was last checked against the shipped software.'
@@ -41,8 +44,7 @@ export const READING_WPM = 220
 
 /**
  * Days after which a post's `verified` date counts as stale for
- * `yarn blog:audit` (scripts/blog-audit.mjs reads this file's value with a
- * regex, so keep it a plain number literal).
+ * `yarn blog:audit` (scripts/blog-audit.mjs imports it).
  */
 export const VERIFY_STALE_DAYS = 90
 

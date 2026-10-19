@@ -5,6 +5,7 @@
  * reading progress (scroll-driven, no JS where supported), the contents as a
  * chapter list with start times, and Up next.
  */
+import Icon from '@/components/Icon.astro'
 import Wash from '@/components/site/Wash.astro'
 import CChapters from './CChapters.astro'
 import CScrubber from './CScrubber.astro'
@@ -55,7 +56,7 @@ const { kind, title, description, published, updated, tags, supersededNote } = p
     </div>
   </header>
 
-  <div class="sticky top-(--header-h) z-30 border-y border-border bg-background/80 backdrop-blur-xl" data-own-scrubber>
+  <div class="sticky top-(--header-h) z-30 border-y border-border bg-background/80 backdrop-blur-xl">
     <div class="shell flex h-14 items-center gap-3 sm:gap-4">
       <PostCover post={post} mini class="w-9 shrink-0 !rounded-[4px] !shadow-none" />
       <p class="hidden min-w-0 shrink text-sm font-semibold sm:block sm:max-w-[16rem] sm:truncate lg:max-w-[22rem]">{title}</p>
@@ -109,13 +110,13 @@ const { kind, title, description, published, updated, tags, supersededNote } = p
                 <span class="w-4 text-center font-mono text-xs text-muted-foreground tabular-nums">{i + 1}</span>
                 <PostCover post={p} mini class="w-14 shrink-0 sm:w-16" />
                 <span class="min-w-0 flex-1">
-                  <a href={links.post(p.id)} class="stretch-link clamp-2 font-semibold leading-snug">{p.data.title}</a>
+                  <a href={links.post(p.id)} class="stretch-link line-clamp-2 font-semibold leading-snug">{p.data.title}</a>
                   <span class="mt-0.5 block text-[13px] text-muted-foreground">
                     {kindLabel(p.data.kind)} &middot; {readingMinutes(p.body)} min
                   </span>
                 </span>
                 <span class="play-btn play-ink hidden size-10 sm:inline-grid" aria-hidden="true">
-                  <svg class="size-4 translate-x-px" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" /></svg>
+                  <Icon name="play" class="size-4 translate-x-px" />
                 </span>
               </li>
             ))}

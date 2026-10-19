@@ -15,7 +15,7 @@ const { post, all, links } = Astro.props
 const loaded = await loadPost(post, all)
 // The share image: the hero, else a tour's first frame, else the site's og.png.
 const heroUrl = post.data.hero?.src ?? (loaded.video?.type === 'tour' ? loaded.video.files.poster.dark : undefined)
-const jsonLd = postJsonLd(post, Astro.site ?? new URL('https://audiosilo.app'), heroUrl)
+const jsonLd = postJsonLd(post, Astro.site!, loaded.video, heroUrl)
 ---
 
 <BlogShell
@@ -24,6 +24,7 @@ const jsonLd = postJsonLd(post, Astro.site ?? new URL('https://audiosilo.app'), 
   links={links}
   view={`${post.id}/`}
   ogType="article"
+  seekbar={links.design !== 'c'}
   image={heroUrl}
   imageAlt={post.data.heroAlt ?? (heroUrl ? post.data.title : undefined)}
   jsonLd={jsonLd}

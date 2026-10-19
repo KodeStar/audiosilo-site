@@ -5,13 +5,14 @@
  * bar, an ink play button), then the shelf of covers with the kinds as
  * library tabs, and the release notes as a series of spines.
  */
+import Icon from '@/components/Icon.astro'
 import Wash from '@/components/site/Wash.astro'
 import BarScrubber from '@/components/site/BarScrubber.astro'
 import CBook from './CBook.astro'
 import PostCover from '../PostCover.astro'
 import KindFilter from '../KindFilter.astro'
 import EmptyState from '../EmptyState.astro'
-import { formatDate, isoDate, kindLabel, postPalette, postVariant, readingMinutes, versionOf, type BlogLinks, type Post } from '@/lib/blog'
+import { formatDate, isCurrent, isoDate, kindLabel, postPalette, postVariant, readingMinutes, versionOf, type BlogLinks, type Post } from '@/lib/blog'
 import type { BlogKind } from '@/data/blog'
 
 interface Props {
@@ -25,7 +26,7 @@ interface Props {
 }
 const { posts, all, links, kind, tag, heading, lede } = Astro.props
 const front = !kind && !tag
-const now = front ? all.find((p) => !p.data.supersededBy) : undefined
+const now = front ? all.find(isCurrent) : undefined
 const nowMinutes = now ? readingMinutes(now.body) : 0
 const shelf = posts.filter((p) => p !== now)
 const releases = front ? all.filter((p) => p.data.kind === 'release').reverse() : []
@@ -52,16 +53,16 @@ const releases = front ? all.filter((p) => p.data.kind === 'release').reverse() 
               <p class="mt-3 text-[0.9375rem] text-foreground/75">
                 {kindLabel(now.data.kind)} &middot; <time datetime={isoDate(now.data.published)}>{formatDate(now.data.published)}</time> &middot; {nowMinutes} min
               </p>
-              <BarScrubber class="mt-7 h-10 sm:h-12" bars={72} played={0} seed={postVariant(now.id, 50) + 3} />
+              <BarScrubber class="mt-7 h-10 sm:h-12" played={0} seed={postVariant(now.id, 50) + 3} />
               <div class="mt-2 flex justify-between font-mono text-[11px] text-foreground/60 tabular-nums" aria-hidden="true">
                 <span>0:00</span>
                 <span>-{nowMinutes}:00</span>
               </div>
               <div class="mt-5 flex items-center gap-4">
                 <span class="play-btn play-ink size-14" aria-hidden="true">
-                  <svg class="size-6 translate-x-0.5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" /></svg>
+                  <Icon name="play" class="size-6 translate-x-0.5" />
                 </span>
-                <p class="clamp-2 min-w-0 text-sm text-muted-foreground">{now.data.description}</p>
+                <p class="line-clamp-2 min-w-0 text-sm text-muted-foreground">{now.data.description}</p>
               </div>
             </div>
           </div>

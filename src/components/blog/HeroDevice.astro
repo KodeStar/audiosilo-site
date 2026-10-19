@@ -7,13 +7,13 @@ interface Props {
   hero: HeroFrame
   /** Rendered width, for srcset. */
   sizes: string
-  widths?: number[]
+  widths: number[]
   eager?: boolean
   class?: string
   /** Decorative (a card's art beside its own title). */
   decorative?: boolean
 }
-const { hero, sizes, widths = [480, 960, 1440], eager = false, class: className, decorative = false } = Astro.props
+const { hero, sizes, widths, eager = false, class: className, decorative = false } = Astro.props
 ---
 
 <Device

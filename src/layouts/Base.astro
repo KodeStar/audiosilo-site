@@ -25,6 +25,8 @@ interface Props {
   hasHero?: boolean
   /** Show the phone mini bar (off on pages that are themselves about the demo's limits, never needed). */
   miniBar?: boolean
+  /** The header's chapter seek bar (false on a page that draws its own). */
+  seekbar?: boolean
   /** Keep the page out of search results, with no canonical URL (the 404 page). */
   noindex?: boolean
   /** og:type: 'article' for blog posts. */
@@ -40,6 +42,7 @@ const {
   description = `AudioSilo is a free, self-hosted audiobook server with a player for ${PLAYER_PLATFORMS}, and an open community metadata database. Try the demo in your browser, no sign-up.`,
   hasHero = false,
   miniBar = true,
+  seekbar = true,
   noindex = false,
   ogType = 'website',
   image,
@@ -156,7 +159,7 @@ const ogImage = new URL(image ?? '/og.png', Astro.site).href
     >
       Skip to content
     </a>
-    <Header />
+    <Header seekbar={seekbar} />
     <main id="main" class:list={['flex-grow', !hasHero && 'pt-(--header-h)']}>
       <slot />
     </main>

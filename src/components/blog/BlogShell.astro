@@ -7,7 +7,7 @@
 import '@/styles/blog.css'
 import Base from '@/layouts/Base.astro'
 import { BLOG_DESIGNS, BLOG_DESIGN, BLOG_TITLE } from '@/data/blog'
-import { designIds, type BlogLinks } from '@/lib/blog'
+import { blogLinks, designIds, type BlogLinks } from '@/lib/blog'
 
 interface Props {
   title: string
@@ -16,15 +16,17 @@ interface Props {
   /** The view's path below the blog's base ('' for the index, '<slug>/', 'kind/guide/'), for the preview switcher. */
   view: string
   ogType?: 'website' | 'article'
+  /** The header's chapter seek bar; design C's posts draw their own. */
+  seekbar?: boolean
   image?: string
   imageAlt?: string
   jsonLd?: Record<string, unknown>[]
 }
 
-const { title, description, links, view, ogType, image, imageAlt, jsonLd = [] } = Astro.props
+const { title, description, links, view, ogType, seekbar, image, imageAlt, jsonLd = [] } = Astro.props
 ---
 
-<Base title={title} description={description} noindex={links.preview} ogType={ogType} image={image} imageAlt={imageAlt}>
+<Base title={title} description={description} noindex={links.preview} ogType={ogType} seekbar={seekbar} image={image} imageAlt={imageAlt}>
   <Fragment slot="head">
     <link rel="alternate" type="application/rss+xml" title={BLOG_TITLE} href={links.rss} />
     {jsonLd.map((d) => <script is:inline type="application/ld+json" set:html={JSON.stringify(d)} />)}
@@ -37,7 +39,7 @@ const { title, description, links, view, ogType, image, imageAlt, jsonLd = [] } 
           <nav aria-label="Blog designs" class="blog-scroller -mx-1 flex gap-1 overflow-x-auto px-1">
             {designIds.map((id) => (
               <a
-                href={`/blog/designs/${id}/${view}`}
+                href={`${blogLinks(id, true).index}${view}`}
                 aria-current={id === links.design ? 'page' : undefined}
                 class="shrink-0 rounded-full px-3 py-1 whitespace-nowrap text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground aria-[current=page]:bg-primary aria-[current=page]:font-semibold aria-[current=page]:text-primary-foreground"
               >

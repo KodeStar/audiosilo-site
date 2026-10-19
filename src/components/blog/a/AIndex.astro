@@ -5,6 +5,7 @@
  * kind filter and a grid of story cards. Kind and tag pages keep the
  * masthead's rule and the grid.
  */
+import Icon from '@/components/Icon.astro'
 import Wash from '@/components/site/Wash.astro'
 import ACard from './ACard.astro'
 import HeroDevice from '../HeroDevice.astro'
@@ -15,6 +16,7 @@ import EmptyState from '../EmptyState.astro'
 import {
   formatDate,
   heroFrame,
+  isCurrent,
   isoDate,
   latestRelease,
   modified,
@@ -27,6 +29,7 @@ import {
 } from '@/lib/blog'
 import type { BlogKind } from '@/data/blog'
 import { cn } from '@/lib/utils'
+import { promoteVisibleImg } from '@/lib/promote-visible'
 
 interface Props {
   posts: Post[]
@@ -41,7 +44,7 @@ const { posts, all, links, kind, tag, heading, lede } = Astro.props
 const front = !kind && !tag
 
 const release = front ? latestRelease(all) : undefined
-const live = posts.filter((p) => !p.data.supersededBy && p !== release)
+const live = posts.filter((p) => isCurrent(p) && p !== release)
 const lead = front ? (live.slice(0, 3).find((p) => p.data.hero || p.data.video) ?? live[0]) : undefined
 const grid = posts.filter((p) => p !== lead && p !== release)
 const leadHero = lead ? heroFrame(lead) : undefined
@@ -78,11 +81,24 @@ const newest = all.length ? all.map(modified).sort((a, b) => b.valueOf() - a.val
               )
             ) : leadVideo?.type === 'tour' ? (
               <>
-                <img src={leadVideo.files.poster.light} alt="" width="1600" height="900" fetchpriority="high" class="absolute inset-0 size-full object-cover dark:hidden" />
-                <img src={leadVideo.files.poster.dark} alt="" width="1600" height="900" fetchpriority="high" class="absolute inset-0 hidden size-full object-cover dark:block" />
+                {(['light', 'dark'] as const).map((t) => (
+                  <img
+                    src={leadVideo.files.poster[t]}
+                    srcset={leadVideo.poster?.srcset[t]}
+                    sizes="(min-width: 1024px) 44rem, 96vw"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    width={leadVideo.poster?.width}
+                    height={leadVideo.poster?.height}
+                    data-lead-poster={t}
+                    class={cn('absolute inset-0 size-full object-cover', t === 'light' ? 'dark:hidden' : 'hidden dark:block')}
+                  />
+                ))}
+                <script is:inline set:html={promoteVisibleImg('data-lead-poster')} />
                 <span class="absolute inset-0 grid place-items-center" aria-hidden="true">
                   <span class="play-btn play-ink size-16 sm:size-20">
-                    <svg class="size-7 translate-x-0.5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" /></svg>
+                    <Icon name="play" class="size-7 translate-x-0.5" />
                   </span>
                 </span>
               </>
@@ -133,7 +149,7 @@ const newest = all.length ? all.map(modified).sort((a, b) => b.valueOf() - a.val
           <h2 id="latest-release" class="t-title text-balance">
             <a href={links.post(release.id)} class="stretch-link underline decoration-transparent decoration-2 underline-offset-4 group-hover:decoration-foreground/30">{release.data.title}</a>
           </h2>
-          <p class="clamp-2 mt-2 text-muted-foreground">{release.data.description}</p>
+          <p class="line-clamp-2 mt-2 text-muted-foreground">{release.data.description}</p>
         </div>
         <div class="relative z-10 flex items-center justify-between gap-4 text-sm md:flex-col md:items-end">
           <time datetime={isoDate(release.data.published)} class="text-muted-foreground">{formatDate(release.data.published)}</time>

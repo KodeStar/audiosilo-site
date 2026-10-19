@@ -6,6 +6,11 @@ import Icon from '@/components/Icon.astro'
 import ThemeMenu from '@/components/theme/ThemeMenu.tsx'
 import MobileNav from './MobileNav.tsx'
 
+interface Props {
+  /** The chapter seek bar under the header; false on a page with its own (blog design C). */
+  seekbar?: boolean
+}
+const { seekbar = true } = Astro.props
 const current = '/' + (Astro.url.pathname.split('/')[1] ?? '')
 ---
 
@@ -73,7 +78,7 @@ const current = '/' + (Astro.url.pathname.split('/')[1] ?? '')
       </div>
     </div>
   </div>
-  <div class="seekbar" data-seekbar aria-hidden="true"></div>
+  {seekbar && <div class="seekbar" data-seekbar aria-hidden="true" />}
 </header>
 
 <style>

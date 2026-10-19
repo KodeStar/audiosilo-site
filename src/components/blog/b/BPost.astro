@@ -11,7 +11,7 @@ import Revisions from '../Revisions.astro'
 import SupersededBanner from '../SupersededBanner.astro'
 import VersionChip from '../VersionChip.astro'
 import VideoBlock from '../VideoBlock.astro'
-import { formatDate, formatShortDate, isoDate, kindLabel, versionOf, type BlogLinks, type LoadedPost } from '@/lib/blog'
+import { formatDate, formatMediumDate, isoDate, kindLabel, versionOf, type BlogLinks, type LoadedPost } from '@/lib/blog'
 
 interface Props {
   loaded: LoadedPost
@@ -41,11 +41,11 @@ const cell = 'px-4 py-3.5 first:pl-0 sm:px-5'
     <dl class="mt-8 grid grid-cols-2 border-y border-border text-sm sm:grid-cols-[auto_auto_auto_minmax(0,1fr)] sm:divide-x sm:divide-border">
       <div class={cell}>
         <dt class="text-xs text-muted-foreground">Published</dt>
-        <dd class="mt-0.5 font-medium"><time datetime={isoDate(published)}>{formatShortDate(published)} {published.getUTCFullYear()}</time></dd>
+        <dd class="mt-0.5 font-medium"><time datetime={isoDate(published)}>{formatMediumDate(published)}</time></dd>
       </div>
       <div class={cell}>
         <dt class="text-xs text-muted-foreground">Updated</dt>
-        <dd class="mt-0.5 font-medium">{updated ? <time datetime={isoDate(updated)}>{formatShortDate(updated)} {updated.getUTCFullYear()}</time> : 'Not since'}</dd>
+        <dd class="mt-0.5 font-medium">{updated ? <time datetime={isoDate(updated)}>{formatMediumDate(updated)}</time> : 'Not since'}</dd>
       </div>
       <div class={`${cell} border-t border-border sm:border-t-0`}>
         <dt class="text-xs text-muted-foreground">Reading</dt>

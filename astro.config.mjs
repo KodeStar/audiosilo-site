@@ -6,6 +6,7 @@ import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import clientSettled from './src/integrations/client-settled.ts'
 import rehypeBlogChapters from './src/lib/rehype-blog-chapters.ts'
+import { BLOG_PREVIEW_BASE } from './src/data/blog.ts'
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,7 +19,7 @@ export default defineConfig({
   integrations: [
     react(),
     // The blog's design previews (/blog/designs/...) are noindex and stay out of the sitemap.
-    sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/blog/designs/') }),
+    sitemap({ filter: (page) => !new URL(page).pathname.startsWith(BLOG_PREVIEW_BASE) }),
     clientSettled(),
   ],
   // Markdown is only the blog (src/content/blog). Code is unhighlighted, as in

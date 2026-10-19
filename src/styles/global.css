@@ -76,6 +76,8 @@
   --wash-o: 0.55;
   --wash-mix: 46%;
   --grain-o: 0.035;
+  /* The static grain tile (.wash, the blog's cover art and covers). */
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 1 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
 
   --shadow-cover:
     0 1px 1px rgb(18 28 54 / 0.1), 0 4px 8px -2px rgb(18 28 54 / 0.14),
@@ -406,7 +408,7 @@
   inset: 0;
   z-index: 1;
   opacity: var(--grain-o);
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 1 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+  background-image: var(--grain);
   background-size: 180px 180px;
 }
 .wash::after {
@@ -608,7 +610,7 @@
 
 /* -------------------------------------------------------------------------
    Bar-style scrubber (the player's seek bar pattern, not a waveform: the
-   heights say nothing about loudness). Bars are generated in BarScrubber.astro.
+   heights say nothing about loudness). Bar heights come from src/lib/bars.ts.
    ------------------------------------------------------------------------- */
 .bars {
   display: flex;

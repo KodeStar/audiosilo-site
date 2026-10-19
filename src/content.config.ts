@@ -1,5 +1,6 @@
 import { defineCollection, reference, z } from 'astro:content'
 import { glob } from 'astro/loaders'
+import { BLOG_KINDS, type BlogKind } from './data/blog'
 
 /** Blog posts: one Markdown file per post, src/content/blog/<slug>.md. See BLOG-SPIKE.md. */
 const blog = defineCollection({
@@ -9,7 +10,7 @@ const blog = defineCollection({
       title: z.string().max(90),
       /** Meta description and card summary: one or two sentences. */
       description: z.string().max(180),
-      kind: z.enum(['feature', 'release', 'tip', 'tutorial', 'guide']),
+      kind: z.enum(Object.keys(BLOG_KINDS) as [BlogKind, ...BlogKind[]]),
       published: z.coerce.date(),
       /** Set on any substantive edit; drives dateModified. */
       updated: z.coerce.date().optional(),

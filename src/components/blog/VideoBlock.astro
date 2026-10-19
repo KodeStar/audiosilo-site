@@ -11,8 +11,8 @@
  *   and the site's VideoDialog (TourButton), the same captioned player and
  *   files (tourFiles()) the pillar pages use.
  */
+import Icon from '@/components/Icon.astro'
 import TourButton from '@/components/media/TourButton.astro'
-import { loops } from '@/data/media'
 import { clock, postPalette, type Post, type PostVideo } from '@/lib/blog'
 import { cn } from '@/lib/utils'
 
@@ -23,9 +23,7 @@ interface Props {
 }
 const { video, post, class: className } = Astro.props
 const palette = postPalette(post.id)
-const loop = video.type === 'tour' ? Object.values(loops).find((l) => l.name === video.tour.name) : undefined
 const total = video.duration
-const posterHeight = loop ? Math.round(loop.posterWidths[1] / (Number(loop.aspect.split('/')[0]) / Number(loop.aspect.split('/')[1]))) : 0
 ---
 
 <figure class={cn('not-prose', className)}>
@@ -43,7 +41,7 @@ const posterHeight = loop ? Math.round(loop.posterWidths[1] / (Number(loop.aspec
           aria-label={`Play the video: ${video.title}. It loads from YouTube.`}
         >
           <span class="play-btn size-16 bg-white text-[#0a0f1e] shadow-[0_12px_40px_-8px_rgb(0_0_0/0.6)] group-hover:scale-105 sm:size-20" aria-hidden="true">
-            <svg class="size-7 translate-x-0.5 sm:size-8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" /></svg>
+            <Icon name="play" class="size-7 translate-x-0.5 sm:size-8" />
           </span>
         </a>
         <p class="pointer-events-none absolute inset-x-0 bottom-0 p-4 text-[11px] leading-snug text-white/70 sm:p-6 sm:text-xs">
@@ -52,17 +50,17 @@ const posterHeight = loop ? Math.round(loop.posterWidths[1] / (Number(loop.aspec
       </div>
     ) : (
       <div class="relative overflow-hidden rounded-3xl bg-[var(--bezel)] shadow-[var(--shadow-device)]" style={`aspect-ratio: ${video.tour.aspect}`}>
-        {loop ? (
+        {video.poster ? (
           (['light', 'dark'] as const).map((t) => (
             <img
               src={video.files.poster[t]}
-              srcset={`/media/${loop.name}-${t}-sm.webp ${loop.posterWidths[0]}w, ${video.files.poster[t]} ${loop.posterWidths[1]}w`}
+              srcset={video.poster!.srcset[t]}
               sizes="(min-width: 1024px) 48rem, 92vw"
               alt=""
               loading="lazy"
               decoding="async"
-              width={loop.posterWidths[1]}
-              height={posterHeight}
+              width={video.poster!.width}
+              height={video.poster!.height}
               class={cn('absolute inset-0 size-full object-cover', t === 'light' ? 'dark:hidden' : 'hidden dark:block')}
             />
           ))

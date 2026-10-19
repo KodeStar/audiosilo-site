@@ -4,9 +4,10 @@
  * ring for a release, a hollow dot otherwise, dashed when replaced) and the
  * post with its version chip. The title link covers the entry.
  */
+import Icon from '@/components/Icon.astro'
 import KindChip from '../KindChip.astro'
 import VersionChip from '../VersionChip.astro'
-import { formatShortDate, isoDate, postVideo, readingMinutes, versionOf, type BlogLinks, type Post } from '@/lib/blog'
+import { formatMonthShort, formatShortDate, isoDate, readingMinutes, versionOf, type BlogLinks, type Post } from '@/lib/blog'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -16,12 +17,11 @@ interface Props {
   next?: Post
 }
 const { post, links, next } = Astro.props
-const { kind, title, description, published, verified } = post.data
+const { kind, title, description, published, verified, video } = post.data
 const release = kind === 'release'
 const version = versionOf(post)
-const video = postVideo(post)
 const day = published.getUTCDate()
-const month = formatShortDate(published).split(' ')[1]
+const month = formatMonthShort(published)
 ---
 
 <li class="group relative grid grid-cols-[3rem_1.25rem_minmax(0,1fr)] gap-x-3 py-6 sm:grid-cols-[4rem_1.5rem_minmax(0,1fr)] sm:gap-x-4">
@@ -52,7 +52,7 @@ const month = formatShortDate(published).split(' ')[1]
       {
         video && (
           <span class="inline-flex items-center gap-1">
-            <svg class="size-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" /></svg>
+            <Icon name="play" class="size-3" />
             Video{video.duration && `, ${video.duration}`}
           </span>
         )

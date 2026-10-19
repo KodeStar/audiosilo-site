@@ -5,23 +5,20 @@
  * slug's palette (postPalette), so a post keeps its cover; the motif follows
  * the kind: a release shows its version, a tutorial a play ring, a guide
  * sound rings, a tip the player's bookmark, a feature the seek bar's bars.
- * Square by default; sized by its container, text in container units.
+ * Square and decorative (the title is printed beside it); sized by its
+ * container, text in container units.
  */
-import { postPalette, postVariant, versionOf, type Post } from '@/lib/blog'
-import { kindLabel } from '@/lib/blog'
+import Icon from '@/components/Icon.astro'
+import { kindLabel, postPalette, postVariant, versionOf, type Post } from '@/lib/blog'
 import { cn } from '@/lib/utils'
 
 interface Props {
   post: Post
   class?: string
-  /** 'square' (a book) or 'wide' (16:10, a card's art). */
-  shape?: 'square' | 'wide'
-  /** Decorative when the title is printed next to it (the default). */
-  decorative?: boolean
   /** A thumbnail (under ~5rem): colour and motif only, no small print. */
   mini?: boolean
 }
-const { post, class: className, shape = 'square', decorative = true, mini = false } = Astro.props
+const { post, class: className, mini = false } = Astro.props
 const { kind, title } = post.data
 const palette = postPalette(post.id)
 const variant = postVariant(post.id, 4)
@@ -41,11 +38,9 @@ const video = !!post.data.video
 ---
 
 <div
-  class={cn('post-cover @container', `pal-${palette}`, shape === 'square' ? 'aspect-square rounded-[6px]' : 'aspect-[16/10] rounded-2xl', className)}
+  class={cn('post-cover @container aspect-square rounded-[6px]', `pal-${palette}`, className)}
   style={`--glow-at: ${glowAt}`}
-  role={decorative ? undefined : 'img'}
-  aria-label={decorative ? undefined : `${kindLabel(kind)}: ${title}`}
-  aria-hidden={decorative ? 'true' : undefined}
+  aria-hidden="true"
 >
   {!mini && <p class="top-[7%] left-[8%] text-[3.9cqw] font-semibold tracking-[0.2em] text-white/80 uppercase">{kindLabel(kind)}</p>}
 
@@ -53,7 +48,7 @@ const video = !!post.data.video
     version ? (
       <>
         {!mini && <p class="top-[22%] left-[8%] text-[5cqw] font-semibold tracking-[0.18em] text-white/75 uppercase">{version.product}</p>}
-        <p class="right-[8%] bottom-[16%] left-[7%] font-display leading-[0.8] font-extrabold tracking-[-0.06em] text-white tabular-nums" style={`font-size:${shape === 'wide' ? 26 : 34}cqw`}>
+        <p class="right-[8%] bottom-[16%] left-[7%] font-display leading-[0.8] font-extrabold tracking-[-0.06em] text-white tabular-nums" style="font-size:34cqw">
           {version.version.split('.').slice(0, 2).join('.')}
           {!mini && version.version.split('.')[2] && <span class="text-[0.38em] tracking-[-0.02em] text-white/65">.{version.version.split('.')[2]}</span>}
         </p>
@@ -87,7 +82,7 @@ const video = !!post.data.video
         )}
         {!mini && <p
           class="right-[9%] bottom-[9%] left-[8%] font-display leading-[0.98] font-bold tracking-[-0.035em] text-balance text-white"
-          style={`font-size:${shape === 'wide' ? size * 0.72 : size}cqw`}
+          style={`font-size:${size}cqw`}
         >
           {short}
         </p>}
@@ -97,7 +92,7 @@ const video = !!post.data.video
   {
     video && kind !== 'tutorial' && (
       <span class="right-[6%] bottom-[6%] grid size-[13%] place-items-center rounded-full bg-black/35 text-white backdrop-blur" aria-hidden="true">
-        <svg class="size-[45%] translate-x-[6%]" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" /></svg>
+        <Icon name="play" class="size-[45%] translate-x-[6%]" />
       </span>
     )
   }

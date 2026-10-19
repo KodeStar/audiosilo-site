@@ -7,17 +7,20 @@
  * render both the live routes (/blog/...) and the design previews
  * (/blog/designs/<id>/...).
  */
-import { getCollection, getEntry, render, type CollectionEntry } from 'astro:content'
+import { getCollection, render, type CollectionEntry } from 'astro:content'
 import type { MarkdownHeading } from 'astro'
 import {
+  BLOG_DESIGN,
   BLOG_DESIGNS,
+  BLOG_PREVIEW_BASE,
   BLOG_KINDS,
   READING_WPM,
   RESERVED_SLUGS,
   type BlogDesign,
   type BlogKind,
 } from '@/data/blog'
-import { stills, tourFiles, tours, type Still, type Tour, type TourFiles } from '@/data/media'
+import { loops, stills, tourFiles, tours, type Still, type Themed, type Tour, type TourFiles } from '@/data/media'
+import type { Palette } from '@/components/site/Wash.astro'
 
 export type Post = CollectionEntry<'blog'>
 
@@ -33,16 +36,25 @@ export function isHidden(p: Post, now = new Date()): boolean {
   return p.data.draft || p.data.published.valueOf() > now.valueOf()
 }
 
+/** A post nothing newer replaces (no live `supersededBy`). */
+export const isCurrent = (p: Post) => !p.data.supersededBy
+
 /**
  * Every published post, newest first. Drafts and scheduled posts (published
- * in the future) show in `astro dev` only, so they stay out of every page,
- * the RSS feed and the sitemap in a build. An empty or missing
- * src/content/blog is fine: the blog renders its empty state.
+ * in the future) are included only with `includeHidden`, which defaults to
+ * `astro dev`, so a build leaves them out of every page, the RSS feed and the
+ * sitemap. An empty or missing src/content/blog is fine: the blog renders its
+ * empty state.
+ *
+ * Fails the build on a bad post: a reserved slug, an unknown video.tour, or a
+ * `supersededBy` / `related` slug that is not a post at all (Astro's
+ * `reference()` does not check that the entry exists).
  */
-export async function getPosts(): Promise<Post[]> {
+export async function getPosts({ includeHidden = import.meta.env.DEV }: { includeHidden?: boolean } = {}): Promise<Post[]> {
   const now = new Date()
-  const posts = await getCollection('blog', (p) => import.meta.env.DEV || !isHidden(p, now))
-  for (const p of posts) {
+  const every = await getCollection('blog')
+  const known = new Set(every.map((p) => p.id))
+  for (const p of every) {
     if ((RESERVED_SLUGS as readonly string[]).includes(p.id)) {
       throw new Error(`Blog post "${p.id}" uses a reserved slug (${RESERVED_SLUGS.join(', ')})`)
     }
@@ -50,7 +62,11 @@ export async function getPosts(): Promise<Post[]> {
       throw new Error(`Blog post "${p.id}": video.tour "${p.data.video.tour}" is not in src/data/media.ts tours (${Object.keys(tours).join(', ')})`)
     }
     if (p.data.supersededBy?.id === p.id) throw new Error(`Blog post "${p.id}" supersedes itself`)
+    for (const ref of [p.data.supersededBy, ...p.data.related]) {
+      if (ref && !known.has(ref.id)) throw new Error(`Blog post "${p.id}" points at "${ref.id}", which is not a post in src/content/blog`)
+    }
   }
+  const posts = includeHidden ? every : every.filter((p) => !isHidden(p, now))
   // A forward link to a post that isn't out yet (scheduled or a draft) waits
   // until it is: until then the older post reads as current.
   const ids = new Set(posts.map((p) => p.id))
@@ -82,16 +98,16 @@ export function tagsIn(posts: Post[]): Map<string, { tag: string; posts: Post[] 
 
 /** The newest release post that nothing has replaced. */
 export function latestRelease(posts: Post[]): Post | undefined {
-  return posts.find((p) => p.data.kind === 'release' && !p.data.supersededBy)
+  return posts.find((p) => p.data.kind === 'release' && isCurrent(p))
 }
 
 /** Posts that point forward to `post` (it replaces them). */
-export function supersededPosts(post: Post, posts: Post[]): Post[] {
+function supersededPosts(post: Post, posts: Post[]): Post[] {
   return posts.filter((p) => p.data.supersededBy?.id === post.id)
 }
 
 /** The post's own related list, topped up from the same kind and shared tags, `n` long. */
-export function relatedPosts(post: Post, posts: Post[], n = 3): Post[] {
+function relatedPosts(post: Post, posts: Post[], n = 3): Post[] {
   const byId = new Map(posts.map((p) => [p.id, p]))
   const chosen: Post[] = []
   const add = (p: Post | undefined) => {
@@ -101,7 +117,7 @@ export function relatedPosts(post: Post, posts: Post[], n = 3): Post[] {
   const score = (p: Post) =>
     p.data.tags.filter((t) => post.data.tags.includes(t)).length * 2 + (p.data.kind === post.data.kind ? 1 : 0)
   posts
-    .filter((p) => p.id !== post.id && !p.data.supersededBy)
+    .filter((p) => p.id !== post.id && isCurrent(p))
     .map((p) => ({ p, s: score(p) }))
     .filter((x) => x.s > 0)
     .sort((a, b) => b.s - a.s)
@@ -110,7 +126,7 @@ export function relatedPosts(post: Post, posts: Post[], n = 3): Post[] {
 }
 
 /** The posts either side of `post` in date order (for "older / newer"). */
-export function neighbours(post: Post, posts: Post[]): { newer?: Post; older?: Post } {
+function neighbours(post: Post, posts: Post[]): { newer?: Post; older?: Post } {
   const i = posts.findIndex((p) => p.id === post.id)
   return { newer: i > 0 ? posts[i - 1] : undefined, older: i >= 0 ? posts[i + 1] : undefined }
 }
@@ -133,7 +149,7 @@ export interface BlogLinks {
 
 /** Links for the live blog (`preview` false) or one design's preview routes. */
 export function blogLinks(design: BlogDesign, preview: boolean): BlogLinks {
-  const base = preview ? `/blog/designs/${design}` : '/blog'
+  const base = preview ? `${BLOG_PREVIEW_BASE}${design}` : '/blog'
   return {
     design,
     preview,
@@ -144,6 +160,9 @@ export function blogLinks(design: BlogDesign, preview: boolean): BlogLinks {
     rss: '/blog/rss.xml',
   }
 }
+
+/** The live routes' paths (feed and JSON-LD URLs; the path, not the design, matters). */
+export const liveBlogLinks = blogLinks(BLOG_DESIGN, false)
 
 export const designIds = Object.keys(BLOG_DESIGNS) as BlogDesign[]
 
@@ -161,11 +180,17 @@ export function tagSlug(tag: string): string {
 const longDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
 const shortDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' })
 const monthYear = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' })
+const mediumDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
+const monthShort = new Intl.DateTimeFormat('en-GB', { month: 'short', timeZone: 'UTC' })
 
 /** "18 October 2026" */
 export const formatDate = (d: Date) => longDate.format(d)
 /** "18 Oct" */
 export const formatShortDate = (d: Date) => shortDate.format(d)
+/** "18 Oct 2026" */
+export const formatMediumDate = (d: Date) => mediumDate.format(d)
+/** "Oct" */
+export const formatMonthShort = (d: Date) => monthShort.format(d)
 /** "October 2026" */
 export const formatMonth = (d: Date) => monthYear.format(d)
 /** "2026-10-18", for <time datetime>. */
@@ -197,7 +222,10 @@ const words = (s: string) => (s.match(/[\p{L}\p{N}][\p{L}\p{N}'’.-]*/gu) ?? []
  * Words per part of the Markdown body: the intro before the first `##`, then
  * one entry per `##` section. Fenced code counts half (it is skimmed).
  */
+const sectionCache = new Map<string, number[]>()
 function sectionWords(body: string): number[] {
+  const cached = sectionCache.get(body)
+  if (cached) return cached
   const parts = [0]
   let fence: string | null = null
   for (const line of body.split('\n')) {
@@ -213,6 +241,7 @@ function sectionWords(body: string): number[] {
     }
     parts[parts.length - 1] += fence ? words(line) / 2 : words(line)
   }
+  sectionCache.set(body, parts)
   return parts
 }
 
@@ -245,9 +274,9 @@ export interface PostChapter {
  * src/lib/rehype-blog-chapters.ts marks each h2 with data-chapter, and the
  * post header carries data-chapter for the intro, so DOM order matches.
  */
-export function postChapters(headings: MarkdownHeading[], body: string | undefined, introTitle = 'Introduction'): PostChapter[] {
+export function postChapters(headings: MarkdownHeading[], body: string | undefined): PostChapter[] {
   const counts = sectionWords(body ?? '')
-  const chapters: PostChapter[] = [{ id: 'top', title: introTitle, start: 0, children: [] }]
+  const chapters: PostChapter[] = [{ id: 'top', title: 'Introduction', start: 0, children: [] }]
   let elapsed = counts[0] ?? 0
   let i = 1
   for (const h of headings) {
@@ -287,23 +316,29 @@ export function heroFrame(p: Post): HeroFrame | undefined {
   return { kind, address, still }
 }
 
-export interface VideoChapter {
+interface VideoChapter {
   start: number
-  label: string
   title: string
 }
 
+/** A tour's first-frame poster (its loop's files in src/data/media.ts `loops`): size and per-theme srcset. */
+export interface TourPoster {
+  width: number
+  height: number
+  srcset: Themed<string>
+}
+
 export type PostVideo =
-  | { type: 'youtube'; id: string; title: string; duration?: string; chapters: VideoChapter[]; embedUrl: string; watchUrl: string; thumbnailUrl: string }
-  | { type: 'tour'; key: keyof typeof tours; tour: Tour; files: TourFiles; title: string; duration?: string; chapters: VideoChapter[] }
+  | { type: 'youtube'; title: string; duration?: string; chapters: VideoChapter[]; embedUrl: string; watchUrl: string; thumbnailUrl: string }
+  | { type: 'tour'; key: keyof typeof tours; tour: Tour; files: TourFiles; poster?: TourPoster; title: string; duration?: string; chapters: VideoChapter[] }
 
 /** Parses "1:05:30", "4:32" or "45" into seconds. */
-export function parseClock(s: string): number {
+function parseClock(s: string): number {
   return s.split(':').reduce((acc, n) => acc * 60 + Number(n), 0)
 }
 
 /** "4:32" -> "PT4M32S" (schema.org duration). */
-export function isoDuration(s: string): string {
+function isoDuration(s: string): string {
   const t = parseClock(s)
   const h = Math.floor(t / 3600)
   const m = Math.floor((t % 3600) / 60)
@@ -318,14 +353,13 @@ export function postVideo(p: Post): PostVideo | undefined {
   const chapters = v.chapters.map((c) => {
     const m = c.match(/^\s*((?:\d+:)?\d+:\d{2})\s+(.+)$/)
     if (!m) throw new Error(`Blog post "${p.id}": video chapter "${c}" is not "m:ss Title"`)
-    return { start: parseClock(m[1]), label: m[1], title: m[2] }
+    return { start: parseClock(m[1]), title: m[2] }
   })
   if (v.youtube) {
     const id = v.youtube
     if (!/^[\w-]{11}$/.test(id)) throw new Error(`Blog post "${p.id}": video.youtube "${id}" is not a YouTube video id`)
     return {
       type: 'youtube',
-      id,
       title: p.data.title,
       duration: v.duration,
       chapters,
@@ -337,7 +371,18 @@ export function postVideo(p: Post): PostVideo | undefined {
   if (v.tour) {
     const key = v.tour as keyof typeof tours
     const tour: Tour = tours[key]
-    return { type: 'tour', key, tour, files: tourFiles(tour), title: tour.title, duration: v.duration, chapters }
+    const files = tourFiles(tour)
+    const loop = Object.values(loops).find((l) => l.name === tour.name)
+    const [aw, ah] = loop ? loop.aspect.split('/').map(Number) : []
+    const poster = loop && {
+      width: loop.posterWidths[1],
+      height: Math.round((loop.posterWidths[1] * ah) / aw),
+      srcset: {
+        light: `/media/${loop.name}-light-sm.webp ${loop.posterWidths[0]}w, ${files.poster.light} ${loop.posterWidths[1]}w`,
+        dark: `/media/${loop.name}-dark-sm.webp ${loop.posterWidths[0]}w, ${files.poster.dark} ${loop.posterWidths[1]}w`,
+      },
+    }
+    return { type: 'tour', key, tour, files, poster, title: tour.title, duration: v.duration, chapters }
   }
   return undefined
 }
@@ -353,8 +398,6 @@ function hash(s: string): number {
 }
 
 /** The wash palettes (Wash.astro, global.css .pal-*). */
-export type Palette = 'oz' | 'dracula' | 'treasure' | 'community' | 'console' | 'ember' | 'carol'
-
 const COVER_PALETTES: Palette[] = ['oz', 'dracula', 'treasure', 'community', 'console', 'ember', 'carol']
 
 /**
@@ -394,7 +437,6 @@ export interface LoadedPost {
 export async function loadPost(post: Post, posts: Post[]): Promise<LoadedPost> {
   const { Content, headings } = await render(post)
   const ref = post.data.supersededBy
-  if (ref && !(await getEntry(ref))) throw new Error(`Blog post "${post.id}": supersededBy "${ref.id}" does not exist`)
   const next = ref ? posts.find((p) => p.id === ref.id) : undefined
   return {
     post,
@@ -414,15 +456,15 @@ export async function loadPost(post: Post, posts: Post[]): Promise<LoadedPost> {
    Structured data
    ------------------------------------------------------------------------- */
 
-const ORG = { '@type': 'Organization', name: 'AudioSilo', url: 'https://audiosilo.app/' }
-
 /**
- * BlogPosting for every post (plus VideoObject when it has a video). `site`
- * is Astro.site; `heroUrl` the built hero image's URL, if any. The canonical
- * URL is always the live /blog/<slug>/ route, previews included.
+ * BlogPosting for every post (plus VideoObject when it has a video, `v` from
+ * loadPost). `site` is Astro.site; `heroUrl` the built hero image's URL, if
+ * any. The canonical URL is always the live /blog/<slug>/ route, previews
+ * included.
  */
-export function postJsonLd(p: Post, site: URL, heroUrl?: string): Record<string, unknown>[] {
-  const url = new URL(`/blog/${p.id}/`, site).href
+export function postJsonLd(p: Post, site: URL, v: PostVideo | undefined, heroUrl?: string): Record<string, unknown>[] {
+  const ORG = { '@type': 'Organization', name: 'AudioSilo', url: new URL('/', site).href }
+  const url = new URL(liveBlogLinks.post(p.id), site).href
   const image = heroUrl ? new URL(heroUrl, site).href : new URL('/og.png', site).href
   const posting: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -441,7 +483,6 @@ export function postJsonLd(p: Post, site: URL, heroUrl?: string): Record<string,
     ...(p.data.tags.length ? { keywords: p.data.tags.join(', ') } : {}),
   }
   const out = [posting]
-  const v = postVideo(p)
   if (v) {
     const video: Record<string, unknown> = {
       '@context': 'https://schema.org',
