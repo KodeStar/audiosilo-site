@@ -1,0 +1,66 @@
+---
+/**
+ * A post's contents as the player lists a book's chapters: number (the
+ * live equaliser on the one being read), title and start time, the time a
+ * reader reaches it at READING_WPM. A disclosure on phones, a sticky list on
+ * desktop; data-chapter-link lets src/lib/site.ts mark the current chapter.
+ */
+import { clock, type PostChapter } from '@/lib/blog'
+
+interface Props {
+  chapters: PostChapter[]
+  minutes: number
+}
+const { chapters, minutes } = Astro.props
+const row =
+  'group grid grid-cols-[1.25rem_minmax(0,1fr)_auto] items-center gap-3 rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-foreground/[0.05] hover:text-foreground aria-[current=true]:bg-foreground/[0.06] aria-[current=true]:font-semibold aria-[current=true]:text-foreground'
+---
+
+{
+  chapters.length > 1 && (
+    <>
+      <details class="group/d mb-8 rounded-2xl bg-muted/60 shadow-[inset_0_0_0_1px_var(--border)] lg:hidden">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold [&::-webkit-details-marker]:hidden">
+          <span>
+            {chapters.length} chapters <span class="font-normal text-muted-foreground">&middot; {minutes} min</span>
+          </span>
+          <svg class="size-4 text-muted-foreground transition-transform group-open/d:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+        </summary>
+        <ol class="px-1 pb-2">
+          {chapters.map((c, i) => (
+            <li>
+              <a href={`#${c.id}`} data-chapter-link={i} class={row}>
+                <span class="font-mono text-[11px] tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span class="min-w-0 truncate">{c.title}</span>
+                <span class="font-mono text-[11px] tabular-nums">{clock(c.start)}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </details>
+      <nav aria-label="Chapters" class="sticky top-[calc(var(--header-h)+var(--blog-sticky,0px)+1rem)] hidden self-start lg:block">
+        <p class="t-eyebrow mb-3 px-3">
+          {chapters.length} chapters &middot; {minutes} min
+        </p>
+        <ol class="space-y-0.5">
+          {chapters.map((c, i) => (
+            <li>
+              <a href={`#${c.id}`} data-chapter-link={i} class={row}>
+                <span class="font-mono text-[11px] tabular-nums group-aria-[current=true]:hidden">{String(i + 1).padStart(2, '0')}</span>
+                <span class="hidden group-aria-[current=true]:inline-flex" aria-hidden="true">
+                  <span class="eq">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                </span>
+                <span class="min-w-0 truncate">{c.title}</span>
+                <span class="font-mono text-[11px] font-normal tabular-nums">{clock(c.start)}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </>
+  )
+}

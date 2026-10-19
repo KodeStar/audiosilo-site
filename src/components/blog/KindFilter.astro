@@ -1,0 +1,39 @@
+---
+/** The kind filter: All plus each kind with posts, as library tabs. */
+import { blogLinks, kindsIn, kindPlural, type Post } from '@/lib/blog'
+import type { BlogKind } from '@/data/blog'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  all: Post[]
+  current?: BlogKind
+  /** Tag pages pass true: nothing in the row is current. */
+  none?: boolean
+  class?: string
+}
+const { all, current, none = false, class: className } = Astro.props
+const items = [
+  { label: 'All', href: blogLinks.index, count: all.length, on: !current && !none },
+  ...kindsIn(all).map((k) => ({ label: kindPlural(k.kind), href: blogLinks.kind(k.kind), count: k.count, on: current === k.kind })),
+]
+---
+
+{/* The padding (cancelled by the negative margin) keeps the focus ring inside the scroller, which clips. */}
+<nav aria-label="Post kinds" class={cn('blog-scroller -mx-4 -my-1.5 overflow-x-auto px-4 py-1.5 sm:-mx-1.5 sm:px-1.5', className)}>
+  <ul class="flex w-max gap-5 sm:gap-7">
+    {
+      items.map((it) => (
+        <li>
+          <a
+            href={it.href}
+            aria-current={it.on ? 'page' : undefined}
+            class="relative inline-flex h-10 items-center gap-1.5 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-0 aria-[current=page]:after:bottom-0 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-foreground"
+          >
+            {it.label}
+            <span class="font-mono text-[11px] text-muted-foreground tabular-nums">{it.count}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

@@ -54,9 +54,19 @@ yarn preview      # serve the built site locally
 ```
 
 **Before a change is done, run `yarn build && yarn run check`.** CI
-(`.github/workflows/ci.yml`) builds with Node 20 and publishes `dist/` to
+(`.github/workflows/ci.yml`) builds with Node 24 and publishes `dist/` to
 GitHub Pages on push to **`master`** (not `main`) - pushing to master deploys
-the live site, so keep work on branches until it's reviewed.
+the live site, so keep work on branches until it's reviewed. It also rebuilds
+and deploys master **every morning** (`schedule`, 05:17 UTC) so scheduled blog
+posts go live on their date, and can be run by hand (`workflow_dispatch`;
+only master deploys). GitHub pauses scheduled workflows after 60 days with
+no repo activity: re-enable it in the Actions tab if that happens.
+
+```sh
+yarn blog:audit   # blog freshness: stale posts, posts checked before the newest
+                  # server tag; --covers server:transcode,app: --since <ref|date>
+                  # --days N --stale-only --json
+```
 
 ## Layout
 
@@ -68,12 +78,20 @@ src/
   assets/stills/        screenshots (webp), via astro:assets
   assets/fonts/         the basic font subsets
   components/           .astro components + React islands (.tsx); media/Device.astro
-                        is every device frame
+                        is every device frame; blog/ is the blog (BlogIndex, BlogPost,
+                        PostCover's generated covers, the chapter list and scrubber)
+  content/blog/         blog posts, one Markdown file per post (<slug>.md = /blog/<slug>/)
+  content.config.ts     the blog collection's schema (freshness fields, video, covers)
   data/                 links.ts, status.ts (availability), demo.ts (demo library),
-                        media.ts (every image/video, TOUR_BASE), install.ts, nav.ts
+                        media.ts (every image/video, TOUR_BASE), install.ts, nav.ts,
+                        blog.ts (kinds, reading pace, stale days, RSS path)
   layouts/              Base.astro (+ DocsLayout)
-  pages/                index, player, server, metadata, pricing, download, docs/*, privacy, 404
+  lib/blog.ts           blog queries, reading time, chapters, cover assignment, JSON-LD
+  pages/                index, player, server, metadata, pricing, download, docs/*, privacy,
+                        404, blog/ (index, [slug], kind/, tag/, rss.xml)
   styles/global.css     Tailwind v4 entry, @theme design tokens, custom CSS
+  styles/blog.css       post prose, covers and the reading scrubber (blog pages only)
+scripts/blog-audit.mjs  `yarn blog:audit`
 docs/DESIGN.md          the design brief - the visual direction all UI work follows
 docs/PERFORMANCE.md     the performance budget and how it is kept
 ```
@@ -108,6 +126,19 @@ docs/PERFORMANCE.md     the performance budget and how it is kept
   must be excellent on a phone. Budget: Lighthouse mobile >= 90 and LCP
   < 2.5 s on `/`, `/player`, `/server` ([docs/PERFORMANCE.md](docs/PERFORMANCE.md)).
 - **House style: hyphens, never em dashes** (matches the workspace-wide rule).
+- **The blog** (`/blog`, in the header nav and the footer): posts are the
+  `blog` content collection, plain Markdown in `src/content/blog/<slug>.md`;
+  the URL has no date, so a post is updated in place and never renamed.
+  **Posts must be true**, like every other page: only released software, each
+  claim checked, `verified` set to the check date (shown on the post with
+  `appliesTo`); a substantive edit bumps `updated` and adds a `revisions` line;
+  a replaced post gets `supersededBy` (the forward-link banner) and stays live.
+  `draft: true` or a future `published` keeps a post out of the build (both
+  show in `yarn dev`); the daily rebuild publishes a scheduled one on its date.
+  Covers are generated (PostCover.astro, `coverStyles()`), so a post needs no
+  image. Writing, updating and auditing posts goes through the workspace's
+  **`/blog` skill** (`../.claude/skills/blog/SKILL.md`); `yarn blog:audit`
+  lists the posts a release or a change touches (`covers` keys).
 - `VersionBadge.tsx` fetches the latest server release tag at runtime; bump
   `SERVER_VERSION` in `src/data/status.ts` (its fallback) when a server
   release is cut.

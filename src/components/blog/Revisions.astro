@@ -1,0 +1,60 @@
+---
+/**
+ * The post's visible change log: its `revisions`, newest first, ending with
+ * when it was published; plus the forward link (supersededBy) and the posts
+ * it replaces, as a quiet ledger.
+ */
+import { blogLinks, formatDate, isoDate, type Post } from '@/lib/blog'
+
+interface Props {
+  post: Post
+  supersededBy?: Post
+  supersedes?: Post[]
+  class?: string
+}
+const { post, supersededBy, supersedes = [], class: className } = Astro.props
+
+interface Row {
+  date: Date
+  note: string
+  link?: { href: string; label: string }
+}
+const rows: Row[] = [
+  ...(supersededBy
+    ? [{ date: supersededBy.data.published, note: '', link: { href: blogLinks.post(supersededBy.id), label: supersededBy.data.title } }]
+    : []),
+  ...[...post.data.revisions]
+    .sort((a, b) => b.date.valueOf() - a.date.valueOf())
+    .map((r) => ({ date: r.date, note: r.note })),
+  { date: post.data.published, note: 'First published.' },
+]
+const id = `rev-${post.id}`
+---
+
+<section aria-labelledby={id} class={className}>
+  <div class="rounded-2xl bg-muted/60 p-5 shadow-[inset_0_0_0_1px_var(--border)] sm:p-6">
+    <h2 id={id} class="t-heading">Changes to this post</h2>
+    <ol class="mt-4 divide-y divide-border text-[0.9375rem]">
+      {rows.map((r) => (
+        <li class="grid gap-1 py-3 first:pt-0 last:pb-0 sm:grid-cols-[8.5rem_1fr] sm:gap-4">
+          <time datetime={isoDate(r.date)} class="font-mono text-xs leading-6 text-muted-foreground tabular-nums">{formatDate(r.date)}</time>
+          <p class="text-foreground/85">
+            {r.link ? (
+              <>
+                Replaced by <a href={r.link.href} class="link font-semibold">{r.link.label}</a>.
+              </>
+            ) : (
+              r.note
+            )}
+          </p>
+        </li>
+      ))}
+    </ol>
+    {supersedes.length > 0 && (
+      <p class="mt-4 border-t border-border pt-4 text-sm text-muted-foreground">
+        This post replaces{' '}
+        {supersedes.map((s, i) => <>{i > 0 && ', '}<a href={blogLinks.post(s.id)} class="link">{s.data.title}</a></>)}.
+      </p>
+    )}
+  </div>
+</section>

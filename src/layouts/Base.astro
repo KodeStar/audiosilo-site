@@ -17,6 +17,7 @@ import Footer from '@/components/site/Footer.astro'
 import MiniBar from '@/components/site/MiniBar.astro'
 import { DEFAULT_PREFERENCE, THEME_COLOR, THEME_STORAGE_KEY } from '@/lib/theme'
 import { PLAYER_PLATFORMS } from '@/data/status'
+import { BLOG_RSS, BLOG_TITLE } from '@/data/blog'
 
 interface Props {
   title?: string
@@ -25,8 +26,16 @@ interface Props {
   hasHero?: boolean
   /** Show the phone mini bar (off on pages that are themselves about the demo's limits, never needed). */
   miniBar?: boolean
+  /** The header's chapter seek bar (false on a page that draws its own). */
+  seekbar?: boolean
   /** Keep the page out of search results, with no canonical URL (the 404 page). */
   noindex?: boolean
+  /** og:type: 'article' for blog posts. */
+  ogType?: 'website' | 'article'
+  /** og:image / twitter:image path or URL (a blog post's hero); default /og.png. */
+  image?: string
+  /** og:image:alt for `image`. */
+  imageAlt?: string
 }
 
 const {
@@ -34,7 +43,11 @@ const {
   description = `AudioSilo is a free, self-hosted audiobook server with a player for ${PLAYER_PLATFORMS}, and an open community metadata database. Try the demo in your browser, no sign-up.`,
   hasHero = false,
   miniBar = true,
+  seekbar = true,
   noindex = false,
+  ogType = 'website',
+  image,
+  imageAlt = 'AudioSilo - your audiobooks, your server, every screen',
 } = Astro.props
 
 const LATIN =
@@ -62,7 +75,7 @@ const fontFaces = [
 const lateFont = `addEventListener('load',function(){setTimeout(function(){if(!window.FontFace)return;var f=new FontFace('JetBrains Mono Variable',"url(${jetbrainsUrl}) format('woff2-variations')",{weight:'100 800',display:'swap',unicodeRange:'${LATIN}'});document.fonts.add(f);f.load().catch(function(){})},2000)})`
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href
-const ogImage = new URL('/og.png', Astro.site).href
+const ogImage = new URL(image ?? '/og.png', Astro.site).href
 ---
 
 <!doctype html>
@@ -118,20 +131,28 @@ const ogImage = new URL('/og.png', Astro.site).href
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#db2777" />
+    <link rel="alternate" type="application/rss+xml" title={BLOG_TITLE} href={BLOG_RSS} />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="AudioSilo" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="AudioSilo - your audiobooks, your server, every screen" />
+    {
+      !image && (
+        <>
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+        </>
+      )
+    }
+    <meta property="og:image:alt" content={imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <slot name="head" />
   </head>
   <body class="flex min-h-screen flex-col">
     <a
@@ -140,7 +161,7 @@ const ogImage = new URL('/og.png', Astro.site).href
     >
       Skip to content
     </a>
-    <Header />
+    <Header seekbar={seekbar} />
     <main id="main" class:list={['flex-grow', !hasHero && 'pt-(--header-h)']}>
       <slot />
     </main>

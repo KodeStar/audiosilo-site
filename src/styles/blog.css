@@ -1,0 +1,286 @@
+/* =========================================================================
+   The blog (src/components/blog/). Imported by BlogShell.astro only, so the
+   rest of the site doesn't carry it. Tokens and type roles come from
+   global.css; this file adds post prose, the static cover-colour art, the
+   generated covers and the scroll-driven reading scrubber of the "Listening
+   room" design (docs/DESIGN.md, Pages).
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   Post prose: .prose-as (global.css) plus what Markdown brings: code blocks,
+   tables, images, rules, h3 anchors under the sticky header.
+   ------------------------------------------------------------------------- */
+.blog-prose {
+  font-size: 1.0938rem;
+  line-height: 1.75;
+}
+/* html's scroll-padding-top already clears the header; this adds only a
+   post's own sticky bar (the mini player). The two offsets add up. */
+.blog-prose :is(h2, h3) {
+  scroll-margin-top: var(--blog-sticky, 0px);
+}
+.blog-prose > p:first-child {
+  font-size: 1.1875rem;
+  line-height: 1.65;
+  color: var(--foreground);
+}
+.blog-prose :not(pre) > code {
+  /* Long inline code (an env var with a URL) wraps instead of widening the page. */
+  overflow-wrap: anywhere;
+}
+.blog-prose pre {
+  margin-block: 1.5rem;
+  overflow-x: auto;
+  border-radius: 1rem;
+  padding: 1rem 1.125rem;
+  background: color-mix(in oklab, var(--muted) 80%, transparent);
+  box-shadow: inset 0 0 0 1px var(--border);
+  font-family: var(--font-code);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--foreground);
+}
+.blog-prose pre code {
+  font: inherit;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+}
+/* PostBody wraps a pre in .blog-code when it adds a copy button, so the
+   button stays put while the code scrolls sideways under it. */
+.blog-code {
+  position: relative;
+}
+.blog-code .blog-copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.2rem 0.65rem;
+  font-family: var(--font-text);
+  font-size: 0.75rem;
+  font-weight: 550;
+  color: var(--muted-foreground);
+  background: var(--background);
+  box-shadow: inset 0 0 0 1px var(--border);
+  opacity: 0;
+  transition: opacity var(--dur-1);
+}
+.blog-code:hover .blog-copy,
+.blog-code .blog-copy:focus-visible {
+  opacity: 1;
+}
+/* Touch: the button is always shown, so the code starts below it (set on
+   every pre, not just wrapped ones, so nothing shifts when the script runs). */
+@media (hover: none) {
+  .blog-code .blog-copy {
+    opacity: 1;
+  }
+  .blog-prose pre {
+    padding-top: 2.5rem;
+  }
+}
+.blog-prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.blog-prose :is(th, td) {
+  padding: 0.6rem 1rem 0.6rem 0;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.blog-prose th {
+  font-weight: 650;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  color: var(--muted-foreground);
+  border-bottom-color: var(--border-strong);
+}
+.blog-prose img {
+  border-radius: 1rem;
+  box-shadow: 0 0 0 1px var(--border);
+  height: auto;
+}
+.blog-prose hr {
+  border: 0;
+  height: 1px;
+  background: var(--border);
+  margin-block: 2.5rem;
+}
+.blog-prose h2 + * {
+  margin-top: 0.75rem;
+}
+
+/* -------------------------------------------------------------------------
+   Cover-colour art: a static version of the wash (no animation, so a grid of
+   cards costs nothing), from the .pal-* variables (--w1..3, global.css).
+   ------------------------------------------------------------------------- */
+.blog-art {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 90% at 12% 8%, color-mix(in oklab, var(--w1) var(--wash-mix), white) 0%, transparent 70%),
+    radial-gradient(60% 80% at 92% 30%, color-mix(in oklab, var(--w2) var(--wash-mix), white) 0%, transparent 70%),
+    radial-gradient(70% 80% at 40% 110%, color-mix(in oklab, var(--w3) var(--wash-mix), white) 0%, transparent 70%),
+    var(--muted);
+}
+.dark .blog-art {
+  background:
+    radial-gradient(70% 90% at 12% 8%, color-mix(in oklab, var(--w1) 70%, transparent) 0%, transparent 70%),
+    radial-gradient(60% 80% at 92% 30%, color-mix(in oklab, var(--w2) 55%, transparent) 0%, transparent 70%),
+    radial-gradient(70% 80% at 40% 110%, color-mix(in oklab, var(--w3) 60%, transparent) 0%, transparent 70%),
+    var(--card);
+}
+.blog-art::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: var(--grain-o);
+  background-image: var(--grain);
+  background-size: 180px 180px;
+}
+
+/* -------------------------------------------------------------------------
+   Generated covers (PostCover.astro): a book cover set from the post's own
+   title, in its palette. Saturated in both themes: covers are covers.
+   --c1..3 are the palette's --w1..3 in the post's lead order and
+   --glow-at / --cover-angle place its light (coverVars() in src/lib/blog.ts).
+   ------------------------------------------------------------------------- */
+.post-cover {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff;
+  background:
+    radial-gradient(75% 75% at var(--glow-at, 80% 20%), color-mix(in oklab, var(--c2, var(--w2)) 80%, transparent) 0%, transparent 70%),
+    linear-gradient(
+      var(--cover-angle, 155deg),
+      color-mix(in oklab, var(--c1, var(--w1)) 82%, black),
+      color-mix(in oklab, var(--c3, var(--w3)) 58%, black)
+    );
+  box-shadow: var(--shadow-cover);
+}
+.post-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  background-image: var(--grain);
+  background-size: 180px 180px;
+}
+/* The spine's shadow and a soft gloss, as on DemoCover. */
+.post-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgb(0 0 0 / 0.28), transparent 5%),
+    linear-gradient(135deg, rgb(255 255 255 / 0.13), transparent 42%);
+}
+.post-cover > * {
+  position: absolute;
+  z-index: 2;
+}
+
+/* -------------------------------------------------------------------------
+   The reading scrubber (ReadScrubber.astro). The ink layer and the playhead follow the
+   page's scroll position with a scroll-driven animation (no JS); where that
+   isn't supported, ReadScrubber's small script sets --read instead.
+   ------------------------------------------------------------------------- */
+.read-scrub {
+  --read: 0;
+}
+.read-scrub .read-ink {
+  clip-path: inset(0 calc((1 - var(--read)) * 100%) 0 0);
+}
+.read-scrub .read-head {
+  transform: translateX(calc(var(--read) * 100%));
+}
+@supports (animation-timeline: scroll()) {
+  .read-scrub .read-ink {
+    animation: read-clip linear both;
+    animation-timeline: scroll(root block);
+  }
+  .read-scrub .read-head {
+    animation: read-move linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes read-clip {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes read-move {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Horizontal shelves scroll without a visible bar. */
+.blog-scroller {
+  scrollbar-width: none;
+}
+.blog-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+/* A card whose title link covers the whole card (one link, one tab stop). */
+.stretch-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+}
+.stretch-link:focus-visible {
+  outline: none;
+}
+.stretch-link:focus-visible::after {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+}
+/* A .tile clips its overflow: draw the ring inside its rounded edge. */
+.tile .stretch-link:focus-visible::after {
+  outline-offset: -3px;
+  border-radius: 28px;
+}
+
+/* A video's poster before it is played: the post's palette, deep in both themes. */
+.blog-poster {
+  color: #fff;
+  background:
+    radial-gradient(60% 85% at 82% 12%, color-mix(in oklab, var(--w2) 72%, transparent) 0%, transparent 62%),
+    radial-gradient(70% 90% at 8% 100%, color-mix(in oklab, var(--w3) 55%, transparent) 0%, transparent 65%),
+    linear-gradient(155deg, color-mix(in oklab, var(--w1) 62%, #05070f), #070b17);
+}
+
+/* The scrubber shrinks with the mini player: bars may go thinner than the seek bar's. */
+.read-scrub .bars {
+  gap: 1px;
+}
+.read-scrub .bars > i {
+  min-width: 0;
+}
+@media (width >= 640px) {
+  .read-scrub .bars {
+    gap: 2px;
+  }
+}

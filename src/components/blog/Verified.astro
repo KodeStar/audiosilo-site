@@ -1,0 +1,22 @@
+---
+/**
+ * The freshness line: when every claim in the post was last checked, and
+ * against which versions (`verified`, `appliesTo`).
+ */
+import { formatDate, isoDate, type Post } from '@/lib/blog'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  post: Post
+  class?: string
+}
+const { post, class: className } = Astro.props
+const { verified, appliesTo } = post.data
+---
+
+<span class={cn('inline-flex items-center gap-1.5', className)}>
+  <svg class="size-4 shrink-0 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6L12 3Z" /><path d="m8.8 12.2 2.2 2.2 4.4-4.6" /></svg>
+  <span>
+    Checked{appliesTo && <> against {appliesTo}</>} on <time datetime={isoDate(verified)}>{formatDate(verified)}</time>
+  </span>
+</span>

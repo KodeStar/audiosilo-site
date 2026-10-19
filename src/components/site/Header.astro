@@ -6,6 +6,11 @@ import Icon from '@/components/Icon.astro'
 import ThemeMenu from '@/components/theme/ThemeMenu.tsx'
 import MobileNav from './MobileNav.tsx'
 
+interface Props {
+  /** The chapter seek bar under the header; false on a page with its own (a blog post's mini player). */
+  seekbar?: boolean
+}
+const { seekbar = true } = Astro.props
 const current = '/' + (Astro.url.pathname.split('/')[1] ?? '')
 ---
 
@@ -21,13 +26,13 @@ const current = '/' + (Astro.url.pathname.split('/')[1] ?? '')
       <span class="font-display text-[1.3rem] font-bold tracking-[-0.035em] text-foreground">AudioSilo</span>
     </a>
 
-    <nav aria-label="Primary" class="ml-4 hidden items-center gap-1 md:flex lg:ml-8">
+    <nav aria-label="Primary" class="ml-2 hidden items-center gap-1 md:flex lg:ml-8">
       {
         primaryNav.map((item) => (
           <a
             href={item.href}
             aria-current={current === item.href ? 'page' : undefined}
-            class="relative rounded-full px-3.5 py-2 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3.5 aria-[current=page]:after:-bottom-0.5 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-foreground"
+            class="relative rounded-full px-2 py-2 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-2 lg:px-3.5 lg:aria-[current=page]:after:inset-x-3.5 aria-[current=page]:after:-bottom-0.5 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-foreground"
           >
             {item.label}
           </a>
@@ -37,7 +42,7 @@ const current = '/' + (Astro.url.pathname.split('/')[1] ?? '')
         href={DOCS_URL}
         target="_blank"
         rel="noopener"
-        class="inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:text-foreground"
+        class="inline-flex items-center gap-1 rounded-full px-2 py-2 lg:px-3.5 text-[0.9375rem] font-medium text-muted-foreground transition-colors hover:text-foreground"
       >
         Docs
         <svg class="size-3 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
@@ -50,7 +55,7 @@ const current = '/' + (Astro.url.pathname.split('/')[1] ?? '')
         href={GITHUB_SERVER_URL}
         target="_blank"
         rel="noopener"
-        class="hidden size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground sm:inline-flex"
+        class="hidden size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground sm:inline-flex md:hidden lg:inline-flex"
         aria-label="AudioSilo server on GitHub"
       >
         <Icon name="github" class="size-[18px]" />
@@ -61,19 +66,20 @@ const current = '/' + (Astro.url.pathname.split('/')[1] ?? '')
         target="_blank"
         rel="noopener"
         data-demo-pill
-        class="demo-pill ml-1 hidden h-9 items-center gap-2 rounded-full pr-4 pl-1.5 text-sm font-semibold md:inline-flex"
+        class="demo-pill ml-1 hidden h-9 items-center gap-2 rounded-full pr-4 pl-1.5 text-sm font-semibold whitespace-nowrap md:inline-flex"
       >
         <span class="demo-pill-dot grid size-6 place-items-center rounded-full" aria-hidden="true">
           <Icon name="play" class="size-2.5 translate-x-px" />
         </span>
-        Try the demo
+        <!-- Short on tablets, where the six nav links leave no room for the full label. -->
+        <span class="lg:hidden">Demo</span><span class="hidden lg:inline">Try the demo</span>
       </a>
       <div class="md:hidden">
         <MobileNav client:settled current={current} />
       </div>
     </div>
   </div>
-  <div class="seekbar" data-seekbar aria-hidden="true"></div>
+  {seekbar && <div class="seekbar" data-seekbar aria-hidden="true" />}
 </header>
 
 <style>

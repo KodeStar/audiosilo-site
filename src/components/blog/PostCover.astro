@@ -1,0 +1,202 @@
+---
+/**
+ * A generated typographic cover for a post (the Stacks idea of a procedural
+ * cover: no fake art, the post's own words set well). Its palette, lead
+ * colour, light and motif come from coverStyle() (src/lib/blog.ts), which
+ * spreads them across the posts so consecutive posts never share a palette
+ * and a post keeps its cover. The motif family follows the kind, four variants
+ * each: a release shows its version; a tutorial play and progress marks; a
+ * guide sound rings, arcs, a shelf of spines or a halftone; a tip the
+ * player's bookmark, a spark, the speed dial or stripes; a feature the seek
+ * bar's bars, a sunburst, stacked screens or an equaliser.
+ * Square and decorative (the title is printed beside it); sized by its
+ * container, text in container units.
+ */
+import Icon from '@/components/Icon.astro'
+import { barHeights, seeded } from '@/lib/bars'
+import { coverStyle, coverVars, kindLabel, versionOf, type Post } from '@/lib/blog'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  post: Post
+  class?: string
+  /** A thumbnail (under ~5rem): colour and motif only, no small print. */
+  mini?: boolean
+}
+const { post, class: className, mini = false } = Astro.props
+const { kind, title } = post.data
+const style = await coverStyle(post.id)
+const { motif } = style
+const version = kind === 'release' ? versionOf(post) : undefined
+const short = title.includes(':') ? title.split(':')[0] : title
+const size = short.length <= 22 ? 13.5 : short.length <= 38 ? 11 : short.length <= 56 ? 9.2 : 7.8
+const rand = seeded(style.seed)
+const r2 = (n: number) => Math.round(n * 100) / 100
+
+// feature 0: the player's seek bar pattern.
+const bars = barHeights(28, style.seed)
+// guide 2: book spines standing on a shelf.
+const spines: { x: number; w: number; h: number; o: number }[] = []
+for (let x = 0; x < 92; ) {
+  const w = 6 + Math.round(rand() * 6)
+  spines.push({ x, w, h: 26 + Math.round(rand() * 28), o: r2(0.3 + rand() * 0.55) })
+  x += w + 2
+}
+// guide 3: a halftone fading away from the top-right corner.
+const dots = Array.from({ length: 36 }, (_, i) => {
+  const x = 8 + (i % 6) * 17
+  const y = 8 + Math.floor(i / 6) * 17
+  const d = Math.hypot(100 - x, y) / 141
+  return { x, y, r: r2(Math.max(0, 6.4 * (1 - d * 1.35))) }
+}).filter((d) => d.r > 0.6)
+// tip 2: the speed dial's needle; tutorial 2 and 3: how far along.
+const needle = ((135 + 60 + rand() * 150) * Math.PI) / 180
+const progress = 0.45 + rand() * 0.35
+// feature 1: a sunburst; feature 3: an equaliser.
+const rays = Array.from({ length: 24 }, (_, i) => {
+  const a = (i / 24) * Math.PI * 2
+  const len = 9 + rand() * 22
+  return { x1: r2(Math.cos(a) * 15), y1: r2(Math.sin(a) * 15), x2: r2(Math.cos(a) * (15 + len)), y2: r2(Math.sin(a) * (15 + len)) }
+})
+const eq = [0, 1, 2].map(() => 22 + Math.round(rand() * 36))
+// A video post gets the play badge unless its motif is already a play mark
+// (tutorial 0-2; tutorial 3 is a progress bar).
+const playBadge = !!post.data.video && !(kind === 'tutorial' && motif < 3)
+---
+
+<div class={cn('post-cover @container aspect-square rounded-[6px]', `pal-${style.palette}`, className)} style={coverVars(style)} aria-hidden="true">
+  {!mini && <p class="top-[7%] left-[8%] text-[3.9cqw] font-semibold tracking-[0.2em] text-white/80 uppercase">{kindLabel(kind)}</p>}
+
+  {
+    version ? (
+      <>
+        {!mini && <p class="top-[22%] left-[8%] text-[5cqw] font-semibold tracking-[0.18em] text-white/75 uppercase">{version.product}</p>}
+        <p class="right-[8%] bottom-[16%] left-[7%] font-display leading-[0.8] font-extrabold tracking-[-0.06em] text-white tabular-nums" style="font-size:34cqw">
+          {version.version.split('.').slice(0, 2).join('.')}
+          {!mini && version.version.split('.')[2] && <span class="text-[0.38em] tracking-[-0.02em] text-white/65">.{version.version.split('.')[2]}</span>}
+        </p>
+        {!mini && <p class="bottom-[7%] left-[8%] text-[3.9cqw] text-white/70">Release notes</p>}
+      </>
+    ) : (
+      <>
+        {kind === 'guide' && motif === 0 && (
+          <svg class="top-[-18%] right-[-18%] w-[72%] text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+            {[14, 24, 34, 44].map((r, i) => <circle cx="50" cy="50" r={r} stroke-width="1.2" opacity={0.42 - i * 0.08} />)}
+            <circle cx="50" cy="50" r="5" fill="currentColor" stroke="none" opacity="0.5" />
+          </svg>
+        )}
+        {kind === 'guide' && motif === 1 && (
+          <svg class="top-0 right-0 w-[64%] text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+            {[24, 42, 60, 78].map((r, i) => <path d={`M${100 - r} 0A${r} ${r} 0 0 0 100 ${r}`} stroke-width="6" opacity={0.5 - i * 0.1} />)}
+            <circle cx="100" cy="0" r="10" fill="currentColor" stroke="none" opacity="0.6" />
+          </svg>
+        )}
+        {kind === 'guide' && motif === 2 && (
+          <svg class="top-[17%] right-[8%] w-[48%] text-white" viewBox="0 0 100 62" fill="currentColor">
+            {spines.map((s) => <rect x={s.x} y={58 - s.h} width={s.w} height={s.h} rx="1.2" opacity={s.o} />)}
+            <rect x="-4" y="58" width="104" height="2.4" rx="1.2" opacity="0.7" />
+          </svg>
+        )}
+        {kind === 'guide' && motif === 3 && (
+          <svg class="top-[4%] right-[4%] w-[54%] text-white" viewBox="0 0 108 108" fill="currentColor">
+            {dots.map((d) => <circle cx={d.x} cy={d.y} r={d.r} opacity="0.55" />)}
+          </svg>
+        )}
+
+        {kind === 'tutorial' && motif === 0 && (
+          <svg class="top-[17%] left-[8%] w-[22%] text-white" viewBox="0 0 48 48">
+            <circle cx="24" cy="24" r="22.5" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.65" />
+            <path d="M19.5 15.8v16.4a1 1 0 0 0 1.5.86l13.2-8.2a1 1 0 0 0 0-1.72L21 14.94a1 1 0 0 0-1.5.86Z" fill="currentColor" opacity="0.9" />
+          </svg>
+        )}
+        {kind === 'tutorial' && motif === 1 && (
+          <svg class="top-[-6%] right-[-16%] w-[66%] text-white" viewBox="0 0 100 100">
+            <path d="M24 10 90 50 24 90Z" fill="currentColor" stroke="currentColor" stroke-width="12" stroke-linejoin="round" opacity="0.26" />
+          </svg>
+        )}
+        {kind === 'tutorial' && motif === 2 && (
+          <svg class="top-[9%] right-[9%] w-[32%] text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+            <circle cx="50" cy="50" r="42" stroke-width="7" opacity="0.24" />
+            <circle cx="50" cy="50" r="42" stroke-width="7" stroke-linecap="round" stroke-dasharray={`${r2(263.9 * progress)} 264`} transform="rotate(-90 50 50)" opacity="0.92" />
+            <path d="M42 34v32l26-16Z" fill="currentColor" stroke="none" opacity="0.85" />
+          </svg>
+        )}
+        {kind === 'tutorial' && motif === 3 && (
+          <svg class="top-[23%] left-[8%] w-[84%] text-white" viewBox="0 0 100 12" fill="currentColor">
+            <rect x="0" y="5.2" width="100" height="1.6" rx="0.8" opacity="0.32" />
+            <rect x="0" y="5" width={r2(progress * 100)} height="2" rx="1" opacity="0.92" />
+            {[0, 18, 37, 55, 71, 88].map((x) => <rect x={x} y="1.5" width="1" height="9" rx="0.5" opacity="0.5" />)}
+            <circle cx={r2(progress * 100)} cy="6" r="3.6" />
+          </svg>
+        )}
+
+        {kind === 'tip' && motif === 0 && (
+          <svg class="top-0 right-[12%] w-[16%] text-white" viewBox="0 0 24 34">
+            <path d="M0 0h24v32l-12-7-12 7Z" fill="currentColor" opacity="0.82" />
+          </svg>
+        )}
+        {kind === 'tip' && motif === 1 && (
+          <svg class="top-[9%] right-[8%] w-[38%] text-white" viewBox="-50 -50 100 100" fill="currentColor">
+            <path d="M0-46C5-9 9-5 46 0 9 5 5 9 0 46-5 9-9 5-46 0-9-5-5-9 0-46Z" opacity="0.85" />
+            <path d="M0-46C5-9 9-5 46 0 9 5 5 9 0 46-5 9-9 5-46 0-9-5-5-9 0-46Z" transform="translate(-34 30) scale(0.32)" opacity="0.6" />
+          </svg>
+        )}
+        {kind === 'tip' && motif === 2 && (
+          <svg class="top-[9%] right-[9%] w-[34%] text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round">
+            <circle cx="50" cy="50" r="45" stroke-width="2.5" opacity="0.45" />
+            {Array.from({ length: 11 }, (_, i) => {
+              const a = ((135 + i * 27) * Math.PI) / 180
+              return <line x1={r2(50 + Math.cos(a) * 31)} y1={r2(50 + Math.sin(a) * 31)} x2={r2(50 + Math.cos(a) * 38)} y2={r2(50 + Math.sin(a) * 38)} stroke-width="3" opacity="0.6" />
+            })}
+            <line x1="50" y1="50" x2={r2(50 + Math.cos(needle) * 30)} y2={r2(50 + Math.sin(needle) * 30)} stroke-width="5" opacity="0.95" />
+            <circle cx="50" cy="50" r="6" fill="currentColor" stroke="none" />
+          </svg>
+        )}
+        {kind === 'tip' && motif === 3 && (
+          <svg class="top-0 right-0 w-[62%] text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+            {[0, 1, 2].map((k) => <line x1={18 + k * 24} y1="-6" x2="106" y2={82 - k * 24} stroke-width="10" opacity={0.46 - k * 0.13} />)}
+          </svg>
+        )}
+
+        {kind === 'feature' && motif === 0 && (
+          <div class="bars inset-x-[8%] top-[24%] h-[16%] opacity-70">
+            {bars.map((h, i) => (
+              <i style={`--h:${h.toFixed(3)};background:rgb(255 255 255 / ${i < 11 ? 0.92 : 0.32})`} />
+            ))}
+          </div>
+        )}
+        {kind === 'feature' && motif === 1 && (
+          <svg class="top-[-12%] right-[-12%] w-[66%] text-white" viewBox="-50 -50 100 100" fill="none" stroke="currentColor" stroke-linecap="round">
+            {rays.map((r) => <line x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} stroke-width="2.6" opacity="0.55" />)}
+            <circle r="8" fill="currentColor" stroke="none" opacity="0.65" />
+          </svg>
+        )}
+        {kind === 'feature' && motif === 2 && (
+          <svg class="top-[12%] right-[9%] w-[42%] text-white" viewBox="0 0 100 80" fill="currentColor">
+            <rect x="30" y="0" width="70" height="46" rx="7" opacity="0.22" />
+            <rect x="15" y="14" width="70" height="46" rx="7" opacity="0.42" />
+            <rect x="0" y="28" width="70" height="46" rx="7" opacity="0.85" />
+          </svg>
+        )}
+        {kind === 'feature' && motif === 3 && (
+          <svg class="top-[11%] right-[9%] w-[26%] text-white" viewBox="0 0 60 60" fill="currentColor">
+            {eq.map((h, i) => <rect x={i * 23} y={60 - h} width="14" height={h} rx="4" opacity={0.9 - i * 0.22} />)}
+          </svg>
+        )}
+
+        {!mini && (
+          <p class="right-[9%] bottom-[9%] left-[8%] font-display leading-[0.98] font-bold tracking-[-0.035em] text-balance text-white" style={`font-size:${size}cqw`}>
+            {short}
+          </p>
+        )}
+      </>
+    )
+  }
+  {
+    playBadge && (
+      <span class="right-[6%] bottom-[6%] grid size-[13%] place-items-center rounded-full bg-black/35 text-white backdrop-blur">
+        <Icon name="play" class="size-[45%] translate-x-[6%]" />
+      </span>
+    )
+  }
+</div>

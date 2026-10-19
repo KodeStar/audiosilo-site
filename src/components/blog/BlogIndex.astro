@@ -1,0 +1,163 @@
+---
+/**
+ * A blog listing (the index, a kind or a tag), "Listening room": posts
+ * presented the way the player presents books. On the index the newest post
+ * is Now playing (its generated cover, the bar seek bar, an ink play button);
+ * every listing has the shelf of covers with the kinds as library tabs; the
+ * index ends with the release notes as a series of spines.
+ */
+import Icon from '@/components/Icon.astro'
+import Wash from '@/components/site/Wash.astro'
+import BarScrubber from '@/components/site/BarScrubber.astro'
+import BlogShell from './BlogShell.astro'
+import ShelfBook from './ShelfBook.astro'
+import PostCover from './PostCover.astro'
+import KindFilter from './KindFilter.astro'
+import EmptyState from './EmptyState.astro'
+import { BLOG_DESCRIPTION, BLOG_KINDS, type BlogKind } from '@/data/blog'
+import {
+  blogLinks,
+  clock,
+  coverStyles,
+  coverVars,
+  formatDate,
+  isCurrent,
+  isoDate,
+  kindLabel,
+  kindPlural,
+  readingMinutes,
+  tagSlug,
+  versionOf,
+  type Post,
+} from '@/lib/blog'
+
+interface Props {
+  all: Post[]
+  kind?: BlogKind
+  /** The tag as written in posts (its slug is in the URL). */
+  tag?: string
+}
+const { all, kind, tag } = Astro.props
+const listing = kind
+  ? {
+      posts: all.filter((p) => p.data.kind === kind),
+      heading: kindPlural(kind),
+      lede: BLOG_KINDS[kind].blurb,
+      title: `${kindPlural(kind)} - the AudioSilo blog`,
+      description: `${BLOG_KINDS[kind].blurb} From the AudioSilo blog.`,
+    }
+  : tag
+    ? {
+        // By slug, as tagsIn() groups them, so "Self-hosting" and "self hosting" share a page.
+        posts: all.filter((p) => p.data.tags.some((t) => tagSlug(t) === tagSlug(tag))),
+        heading: `#${tag}`,
+        lede: `Every post tagged ${tag}, newest first.`,
+        title: `Posts tagged ${tag} - the AudioSilo blog`,
+        description: `Posts about ${tag} on the AudioSilo blog.`,
+      }
+    : {
+        posts: all,
+        heading: 'News and know-how.',
+        lede: 'Release notes, guides and video tutorials for running your own audiobook server. Every post says when it was last checked against the software you can download today.',
+        title: 'Blog - AudioSilo',
+        description: BLOG_DESCRIPTION,
+      }
+const front = !kind && !tag
+const now = front ? all.find(isCurrent) : undefined
+const nowMinutes = now ? readingMinutes(now.body) : 0
+const shelf = listing.posts.filter((p) => p !== now)
+const releases = front ? all.filter((p) => p.data.kind === 'release').reverse() : []
+const covers = await coverStyles()
+const nowCover = now && covers.get(now.id)
+---
+
+<BlogShell title={listing.title} description={listing.description}>
+  <section class="relative isolate overflow-hidden pt-10 pb-10 sm:pt-16 sm:pb-14">
+    <Wash palette={nowCover?.palette ?? 'dracula'} />
+    <div class="shell relative z-10">
+      <p class="t-eyebrow">{front ? 'The AudioSilo blog' : <a href={blogLinks.index} class="hover:text-foreground">The AudioSilo blog</a>}</p>
+      <h1 class="t-display mt-3">{front ? 'Something to read tonight.' : listing.heading}</h1>
+      <p class="t-lede mt-4 max-w-2xl">{listing.lede}</p>
+
+      {
+        now && nowCover && (
+          <article aria-labelledby="now-playing" class="tile group mt-10 p-5 sm:mt-12 sm:p-8">
+            <Wash palette={nowCover.palette} edge="none" class="opacity-70" />
+            <div class="relative z-10 grid items-end gap-6 sm:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] sm:gap-8 md:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-12">
+              <PostCover post={now} class="w-44 sm:w-full" />
+              <div class="min-w-0">
+                <p class="t-eyebrow text-foreground/70">Now playing &middot; the latest {kindLabel(now.data.kind).toLowerCase()}</p>
+                <h2 id="now-playing" class="mt-2 font-display text-[clamp(1.875rem,3.8vw,3.25rem)] leading-[0.98] font-bold tracking-[-0.04em] text-balance">
+                  <a href={blogLinks.post(now.id)} class="stretch-link">{now.data.title}</a>
+                </h2>
+                <p class="mt-3 text-[0.9375rem] text-foreground/75">
+                  {kindLabel(now.data.kind)} &middot; <time datetime={isoDate(now.data.published)}>{formatDate(now.data.published)}</time> &middot; {nowMinutes} min
+                </p>
+                <BarScrubber class="mt-7 h-10 sm:h-12" played={0} seed={nowCover.barSeed} />
+                <div class="mt-2 flex justify-between font-mono text-[11px] text-foreground/60 tabular-nums" aria-hidden="true">
+                  <span>0:00</span>
+                  <span>-{clock(nowMinutes * 60)}</span>
+                </div>
+                <div class="mt-5 flex items-center gap-4">
+                  <span class="play-btn play-ink size-14" aria-hidden="true">
+                    <Icon name="play" class="size-6 translate-x-0.5" />
+                  </span>
+                  <p class="line-clamp-2 min-w-0 text-sm text-muted-foreground">{now.data.description}</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        )
+      }
+    </div>
+  </section>
+
+  <section aria-labelledby="shelf" class="shell pb-16 sm:pb-24">
+    <div class="flex flex-col gap-2 border-b border-border sm:flex-row sm:items-end sm:justify-between">
+      <h2 id="shelf" class="t-title pb-2">{front ? 'The shelf' : tag ? `Tagged ${tag}` : 'On the shelf'}</h2>
+      <KindFilter all={all} current={kind} none={!!tag} />
+    </div>
+    {all.length === 0 && <div class="mt-8"><EmptyState /></div>}
+    <ul class="mt-8 grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      {shelf.map((p) => <ShelfBook post={p} />)}
+    </ul>
+  </section>
+
+  {
+    releases.length > 1 && (
+      <section aria-labelledby="series" class="shell pb-20 sm:pb-28">
+        <div class="grid gap-6 rounded-[28px] bg-muted/60 p-5 shadow-[inset_0_0_0_1px_var(--border)] sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-10 sm:p-8">
+          <ol class="blog-scroller flex items-end gap-1.5 overflow-x-auto pb-1" aria-hidden="true">
+            {releases.map((p) => {
+              const v = versionOf(p)
+              const c = covers.get(p.id)!
+              return (
+                <li class="shrink-0">
+                  <a href={blogLinks.post(p.id)} tabindex="-1" style={coverVars(c)}
+                    class={`post-cover pal-${c.palette} flex h-44 w-11 items-end justify-center rounded-[4px] pb-3 transition-transform hover:-translate-y-1.5 sm:h-52 sm:w-12`}>
+                    <span class="!static rotate-180 font-display text-sm font-bold tracking-[-0.01em] text-white tabular-nums [writing-mode:vertical-rl]">{v ? `${v.product} ${v.version}` : p.data.title}</span>
+                  </a>
+                </li>
+              )
+            })}
+          </ol>
+          <div class="min-w-0">
+            <p class="t-eyebrow">A series &middot; {releases.length} books</p>
+            <h2 id="series" class="t-title mt-2">Release notes, in order</h2>
+            <ol class="mt-5 divide-y divide-border border-y border-border">
+              {releases.map((p, i) => (
+                <li>
+                  <a href={blogLinks.post(p.id)} class="group grid grid-cols-[1.5rem_minmax(0,1fr)_auto] items-baseline gap-3 py-3 text-[0.9375rem]">
+                    <span class="font-mono text-xs text-muted-foreground tabular-nums">{i + 1}</span>
+                    <span class="truncate font-medium group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-4">{p.data.title}</span>
+                    <time datetime={isoDate(p.data.published)} class="text-xs text-muted-foreground">{formatDate(p.data.published)}</time>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+    )
+  }
+</BlogShell>

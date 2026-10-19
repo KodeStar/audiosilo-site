@@ -9,18 +9,19 @@ import {
 } from '@/data/links'
 import Logo from '@/components/Logo.astro'
 import { APPS_BETA, BETA_LABEL, BETA_NOTE, BETA_URL } from '@/data/status'
-import { primaryNav } from '@/data/nav'
+import { blogNav, pillarNav } from '@/data/nav'
 
 const columns = [
   {
     title: 'AudioSilo',
-    links: [...primaryNav, { label: 'Download', href: '/download' }],
+    links: [...pillarNav, { label: 'Download', href: '/download' }],
   },
   {
     title: 'Try and learn',
     links: [
       { label: 'Live demo', href: DEMO_URL, external: true },
       { label: 'Documentation', href: DOCS_URL, external: true },
+      blogNav,
       { label: 'Server releases', href: GITHUB_SERVER_RELEASES_URL, external: true },
       { label: 'meta.audiosilo.app', href: META_URL, external: true },
     ],

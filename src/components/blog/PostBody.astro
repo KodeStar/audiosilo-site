@@ -1,0 +1,45 @@
+---
+/**
+ * A post's Markdown, set as long-form prose, with a copy button added to each
+ * code block once the page has loaded (the code is readable without it).
+ */
+import type { LoadedPost } from '@/lib/blog'
+
+interface Props {
+  loaded: LoadedPost
+}
+const { Content } = Astro.props.loaded
+---
+
+<div class="blog-prose prose-as">
+  <Content />
+</div>
+
+<script>
+  // The button goes beside the pre, in a wrapper (.blog-code), not inside the
+  // pre: inside the scrolling pre it would scroll with the code and cover it.
+  // Its text is its name ("Copy code", then "Copied"), announced politely.
+  const label = 'Copy<span class="sr-only"> code</span>'
+  document.querySelectorAll<HTMLPreElement>('.blog-prose pre').forEach((pre) => {
+    if (pre.parentElement?.classList.contains('blog-code') || !navigator.clipboard) return
+    const wrap = document.createElement('div')
+    wrap.className = 'blog-code'
+    const btn = document.createElement('button')
+    btn.type = 'button'
+    btn.className = 'blog-copy'
+    btn.innerHTML = label
+    btn.setAttribute('aria-live', 'polite')
+    btn.addEventListener('click', () => {
+      const text = pre.querySelector('code')?.textContent ?? pre.textContent ?? ''
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          btn.textContent = 'Copied'
+          window.setTimeout(() => (btn.innerHTML = label), 1600)
+        })
+        .catch(() => {})
+    })
+    pre.replaceWith(wrap)
+    wrap.append(pre, btn)
+  })
+</script>

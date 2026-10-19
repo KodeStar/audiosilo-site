@@ -1,0 +1,8 @@
+---
+import BlogIndex from '@/components/blog/BlogIndex.astro'
+import { getPosts } from '@/lib/blog'
+
+const all = await getPosts()
+---
+
+<BlogIndex all={all} />

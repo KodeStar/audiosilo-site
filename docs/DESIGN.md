@@ -122,6 +122,17 @@ loop's recorded aspect, with its first-frame `/media/<name>-<theme>.webp` poster
 - `/pricing`: "Free. All of it.", four promises, one Sponsor card, other ways
   to help, FAQ.
 - `/download`, `/docs/*`, `/privacy`, `404` restyled on the same tokens.
+- `/blog`, "Listening room": posts presented the way the player presents
+  books. The index opens on the newest post as Now playing (its cover, the bar
+  seek bar, an ink play button), then a shelf of generated covers with the
+  kinds as library tabs and the release notes as a series of spines. A post has
+  a now-playing header (cover beside the title), a sticky mini player whose seek
+  bar is the reading progress (CSS scroll-driven), the contents as a chapter
+  list with "start times" at reading pace, and Up next. Covers are typographic
+  and generated, never images: a wash palette, a lead colour and a motif per
+  kind, spread across posts so consecutive posts never share a palette
+  (`coverStyles()` in src/lib/blog.ts). Play affordances stay decorative except
+  on video posts.
 
 ## Media hosting
 

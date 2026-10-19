@@ -1,0 +1,29 @@
+---
+/**
+ * Every blog page's frame: Base, the post's JSON-LD, and the blog's own
+ * stylesheet. (The RSS alternate link is in Base, on every page.)
+ */
+import '@/styles/blog.css'
+import Base from '@/layouts/Base.astro'
+
+interface Props {
+  title: string
+  description: string
+  ogType?: 'website' | 'article'
+  /** The header's chapter seek bar; a post draws its own (the mini player). */
+  seekbar?: boolean
+  image?: string
+  imageAlt?: string
+  jsonLd?: Record<string, unknown>[]
+}
+
+const { title, description, ogType, seekbar, image, imageAlt, jsonLd = [] } = Astro.props
+---
+
+<Base title={title} description={description} ogType={ogType} seekbar={seekbar} image={image} imageAlt={imageAlt}>
+  <Fragment slot="head">
+    {/* Escape "<" so a "</script>" in a title or description can't end the block. */}
+    {jsonLd.map((d) => <script is:inline type="application/ld+json" set:html={JSON.stringify(d).replace(/</g, '\\u003c')} />)}
+  </Fragment>
+  <slot />
+</Base>
