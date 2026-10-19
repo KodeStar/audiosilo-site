@@ -46,7 +46,7 @@ Get it: [App Store](https://apps.apple.com/us/app/audiosilo/id6783431375), [Goog
 
 - **The whole-book timeline**, with every chapter, bookmark and note on it, under a chapter seek bar that gives fine control even in a long book.
 - **Undo a jump**: after any skip of more than a minute, a "Back to" chip takes you back.
-- **Sleep timer 2.0**: stop at the end of this or a later chapter, fade out gently, and if you nod off, it marks where and offers to jump back. In the apps, a shake keeps the book going.
+- **Sleep timer 2.0**: stop after a set time, fading out gently, or at the end of this or a later chapter, and if you nod off, it marks where and offers to jump back. In the apps, a shake keeps the book going.
 - **Companion**: Who's who and Story so far from the community database, revealed only up to where you are, plus a "Previously on" when you come back after a break. These appear for books someone has written recaps and characters for.
 - **End of book**: the next book in the series, your stats for this one and a rating.
 - **Bookmarks and notes**: labels on bookmarks, notes pinned to a moment, and the book's technical details on its page.

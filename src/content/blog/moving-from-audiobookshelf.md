@@ -44,7 +44,7 @@ Both are self-hosted, open-source servers that run in Docker, keep each person's
 
 **Stay with Audiobookshelf** if you rely on podcasts, ebooks, uploading through the web, or having metadata written into your files. AudioSilo does none of those.
 
-**AudioSilo suits you** if you want the server to treat your folders as read-only, want phone apps from the stores, or like a player built around the whole book: time left at your speed, an undo for accidental jumps, a sleep timer that fades out and marks where you dozed off, and a Year in listening.
+**AudioSilo suits you** if you want the server to treat your folders as read-only, want phone apps from the stores, or like a player built around the whole book: time left at your speed, an undo for accidental jumps, a sleep timer that can fade out and marks where you dozed off, and a Year in listening.
 
 You don't have to choose straight away. The rest of this guide runs both at once.
 

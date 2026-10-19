@@ -124,7 +124,7 @@ AudioSilo is a self-hosted audiobook server with a web player and apps for iPhon
 
    Then `docker compose up -d` and `docker compose logs` for the admin password, which is printed once. The [Docker quick start](https://docs.audiosilo.app/users/getting-started/quickstart-docker) walks through it, and [Self-hosted audiobook server](/blog/self-hosted-audiobook-server/) explains the choices.
 
-2. **Add the library.** In the admin console at `/admin`, click **Add your first library** and point it at `/library`. The books are browsable at once; durations, chapters and covers fill in as the scan runs.
+2. **Add the library.** In the admin console at `/admin`, click **Add your first library** and point it at `/library`. The first scan starts straight away, and books and their covers appear as it finds them.
 
 3. **Match the books.** Open **Health > Not matched** and run **Match automatically**. It looks every book up in the free community database at [meta.audiosilo.app](https://meta.audiosilo.app), sorts the results into confident matches and ones to review, and changes nothing until you apply them. Matched books get descriptions, series order and, for books the community has written them for, spoiler-safe recaps and character lists. See [Fix covers and series](/blog/fix-covers-and-series/).
 
