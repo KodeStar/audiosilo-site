@@ -14,13 +14,15 @@ import { primaryNav } from '@/data/nav'
 const columns = [
   {
     title: 'AudioSilo',
-    links: [...primaryNav, { label: 'Download', href: '/download' }],
+    // The blog sits under Try and learn instead.
+    links: [...primaryNav.filter((l) => l.href !== '/blog'), { label: 'Download', href: '/download' }],
   },
   {
     title: 'Try and learn',
     links: [
       { label: 'Live demo', href: DEMO_URL, external: true },
       { label: 'Documentation', href: DOCS_URL, external: true },
+      { label: 'Blog', href: '/blog' },
       { label: 'Server releases', href: GITHUB_SERVER_RELEASES_URL, external: true },
       { label: 'meta.audiosilo.app', href: META_URL, external: true },
     ],
