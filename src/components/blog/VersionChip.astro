@@ -1,0 +1,23 @@
+---
+/** "Server 2.3.1": the version a release post is about, as a mono chip. */
+import { cn } from '@/lib/utils'
+
+interface Props {
+  product: string
+  version: string
+  size?: 'sm' | 'lg'
+  class?: string
+}
+const { product, version, size = 'sm', class: className } = Astro.props
+---
+
+<span
+  class={cn(
+    'inline-flex items-center gap-1.5 rounded-full font-mono font-medium tabular-nums shadow-[inset_0_0_0_1px_var(--border-strong)]',
+    size === 'sm' ? 'h-6 px-2.5 text-[11px]' : 'h-8 px-3.5 text-[13px]',
+    className,
+  )}
+>
+  <span class="text-muted-foreground">{product}</span>
+  <span class="font-semibold text-foreground">{version}</span>
+</span>

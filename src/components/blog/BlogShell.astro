@@ -1,0 +1,56 @@
+---
+/**
+ * Every blog page's frame: Base, the RSS alternate link, the post's JSON-LD,
+ * and on design preview routes (/blog/designs/<id>/...) noindex plus a slim
+ * bar to switch designs on the same view. Loads the blog's own stylesheet.
+ */
+import '@/styles/blog.css'
+import Base from '@/layouts/Base.astro'
+import { BLOG_DESIGNS, BLOG_DESIGN, BLOG_TITLE } from '@/data/blog'
+import { designIds, type BlogLinks } from '@/lib/blog'
+
+interface Props {
+  title: string
+  description: string
+  links: BlogLinks
+  /** The view's path below the blog's base ('' for the index, '<slug>/', 'kind/guide/'), for the preview switcher. */
+  view: string
+  ogType?: 'website' | 'article'
+  image?: string
+  imageAlt?: string
+  jsonLd?: Record<string, unknown>[]
+}
+
+const { title, description, links, view, ogType, image, imageAlt, jsonLd = [] } = Astro.props
+---
+
+<Base title={title} description={description} noindex={links.preview} ogType={ogType} image={image} imageAlt={imageAlt}>
+  <Fragment slot="head">
+    <link rel="alternate" type="application/rss+xml" title={BLOG_TITLE} href={links.rss} />
+    {jsonLd.map((d) => <script is:inline type="application/ld+json" set:html={JSON.stringify(d)} />)}
+  </Fragment>
+  {
+    links.preview && (
+      <div class="border-b border-border bg-muted/60">
+        <div class="shell flex flex-wrap items-center gap-x-4 gap-y-2 py-2.5 text-sm">
+          <p class="t-eyebrow">Design preview</p>
+          <nav aria-label="Blog designs" class="blog-scroller -mx-1 flex gap-1 overflow-x-auto px-1">
+            {designIds.map((id) => (
+              <a
+                href={`/blog/designs/${id}/${view}`}
+                aria-current={id === links.design ? 'page' : undefined}
+                class="shrink-0 rounded-full px-3 py-1 whitespace-nowrap text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground aria-[current=page]:bg-primary aria-[current=page]:font-semibold aria-[current=page]:text-primary-foreground"
+              >
+                <span class="font-mono text-xs uppercase">{id}</span> {BLOG_DESIGNS[id].name}
+              </a>
+            ))}
+          </nav>
+          <p class="ml-auto hidden text-xs text-muted-foreground lg:block">
+            Not indexed. /blog uses {BLOG_DESIGN.toUpperCase()}, {BLOG_DESIGNS[BLOG_DESIGN].name}.
+          </p>
+        </div>
+      </div>
+    )
+  }
+  <slot />
+</Base>

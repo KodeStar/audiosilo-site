@@ -1,0 +1,28 @@
+---
+/** A post's hero still in the right Device frame (heroFrame() picks phone, tablet or window). */
+import Device from '@/components/media/Device.astro'
+import type { HeroFrame } from '@/lib/blog'
+
+interface Props {
+  hero: HeroFrame
+  /** Rendered width, for srcset. */
+  sizes: string
+  widths?: number[]
+  eager?: boolean
+  class?: string
+  /** Decorative (a card's art beside its own title). */
+  decorative?: boolean
+}
+const { hero, sizes, widths = [480, 960, 1440], eager = false, class: className, decorative = false } = Astro.props
+---
+
+<Device
+  kind={hero.kind}
+  still={hero.still}
+  address={hero.address}
+  widths={widths}
+  sizes={sizes}
+  eager={eager}
+  alt={decorative ? '' : undefined}
+  class={className}
+/>

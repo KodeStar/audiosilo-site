@@ -1,0 +1,104 @@
+---
+/**
+ * A generated typographic cover for a post (the Stacks idea of a procedural
+ * cover: no fake art, the post's own words set well). Colours come from the
+ * slug's palette (postPalette), so a post keeps its cover; the motif follows
+ * the kind: a release shows its version, a tutorial a play ring, a guide
+ * sound rings, a tip the player's bookmark, a feature the seek bar's bars.
+ * Square by default; sized by its container, text in container units.
+ */
+import { postPalette, postVariant, versionOf, type Post } from '@/lib/blog'
+import { kindLabel } from '@/lib/blog'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  post: Post
+  class?: string
+  /** 'square' (a book) or 'wide' (16:10, a card's art). */
+  shape?: 'square' | 'wide'
+  /** Decorative when the title is printed next to it (the default). */
+  decorative?: boolean
+  /** A thumbnail (under ~5rem): colour and motif only, no small print. */
+  mini?: boolean
+}
+const { post, class: className, shape = 'square', decorative = true, mini = false } = Astro.props
+const { kind, title } = post.data
+const palette = postPalette(post.id)
+const variant = postVariant(post.id, 4)
+const version = kind === 'release' ? versionOf(post) : undefined
+const short = title.includes(':') ? title.split(':')[0] : title
+const size = short.length <= 22 ? 13.5 : short.length <= 38 ? 11 : short.length <= 56 ? 9.2 : 7.8
+const glowAt = ['80% 18%', '18% 22%', '85% 75%', '50% 0%'][variant]
+
+// A speech-like bar pattern for features (stable per slug).
+let seed = postVariant(post.id, 997) + 1
+const rand = () => {
+  seed = (seed * 16807) % 2147483647
+  return seed / 2147483647
+}
+const bars = Array.from({ length: 28 }, (_, i) => Math.max(0.18, Math.min(1, (0.55 + 0.3 * Math.sin(i * 0.7 + variant)) * (0.6 + rand() * 0.6))))
+const video = !!post.data.video
+---
+
+<div
+  class={cn('post-cover @container', `pal-${palette}`, shape === 'square' ? 'aspect-square rounded-[6px]' : 'aspect-[16/10] rounded-2xl', className)}
+  style={`--glow-at: ${glowAt}`}
+  role={decorative ? undefined : 'img'}
+  aria-label={decorative ? undefined : `${kindLabel(kind)}: ${title}`}
+  aria-hidden={decorative ? 'true' : undefined}
+>
+  {!mini && <p class="top-[7%] left-[8%] text-[3.9cqw] font-semibold tracking-[0.2em] text-white/80 uppercase">{kindLabel(kind)}</p>}
+
+  {
+    version ? (
+      <>
+        {!mini && <p class="top-[22%] left-[8%] text-[5cqw] font-semibold tracking-[0.18em] text-white/75 uppercase">{version.product}</p>}
+        <p class="right-[8%] bottom-[16%] left-[7%] font-display leading-[0.8] font-extrabold tracking-[-0.06em] text-white tabular-nums" style={`font-size:${shape === 'wide' ? 26 : 34}cqw`}>
+          {version.version.split('.').slice(0, 2).join('.')}
+          {!mini && version.version.split('.')[2] && <span class="text-[0.38em] tracking-[-0.02em] text-white/65">.{version.version.split('.')[2]}</span>}
+        </p>
+        {!mini && <p class="bottom-[7%] left-[8%] text-[3.9cqw] text-white/70">Release notes</p>}
+      </>
+    ) : (
+      <>
+        {kind === 'guide' && (
+          <svg class="top-[-18%] right-[-18%] w-[72%] text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor" aria-hidden="true">
+            {[14, 24, 34, 44].map((r, i) => <circle cx="50" cy="50" r={r} stroke-width="1.2" opacity={0.42 - i * 0.08} />)}
+            <circle cx="50" cy="50" r="5" fill="currentColor" stroke="none" opacity="0.5" />
+          </svg>
+        )}
+        {kind === 'tutorial' && (
+          <svg class="top-[17%] left-[8%] w-[22%] text-white" viewBox="0 0 48 48" aria-hidden="true">
+            <circle cx="24" cy="24" r="22.5" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.65" />
+            <path d="M19.5 15.8v16.4a1 1 0 0 0 1.5.86l13.2-8.2a1 1 0 0 0 0-1.72L21 14.94a1 1 0 0 0-1.5.86Z" fill="currentColor" opacity="0.9" />
+          </svg>
+        )}
+        {kind === 'tip' && (
+          <svg class="top-0 right-[12%] w-[16%] text-white" viewBox="0 0 24 34" aria-hidden="true">
+            <path d="M0 0h24v32l-12-7-12 7Z" fill="currentColor" opacity="0.82" />
+          </svg>
+        )}
+        {kind === 'feature' && (
+          <div class="bars inset-x-[8%] top-[24%] h-[16%] opacity-70" aria-hidden="true">
+            {bars.map((h, i) => (
+              <i style={`--h:${h.toFixed(3)};background:rgb(255 255 255 / ${i < 11 ? 0.92 : 0.32})`} />
+            ))}
+          </div>
+        )}
+        {!mini && <p
+          class="right-[9%] bottom-[9%] left-[8%] font-display leading-[0.98] font-bold tracking-[-0.035em] text-balance text-white"
+          style={`font-size:${shape === 'wide' ? size * 0.72 : size}cqw`}
+        >
+          {short}
+        </p>}
+      </>
+    )
+  }
+  {
+    video && kind !== 'tutorial' && (
+      <span class="right-[6%] bottom-[6%] grid size-[13%] place-items-center rounded-full bg-black/35 text-white backdrop-blur" aria-hidden="true">
+        <svg class="size-[45%] translate-x-[6%]" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" /></svg>
+      </span>
+    )
+  }
+</div>

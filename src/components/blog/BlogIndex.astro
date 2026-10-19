@@ -1,0 +1,39 @@
+---
+/**
+ * A blog listing (the index, a kind or a tag) in one of the three designs,
+ * inside the blog's frame. Every listing route renders this.
+ */
+import BlogShell from './BlogShell.astro'
+import AIndex from './a/AIndex.astro'
+import BIndex from './b/BIndex.astro'
+import CIndex from './c/CIndex.astro'
+import { BLOG_DESCRIPTION, BLOG_KINDS, type BlogKind } from '@/data/blog'
+import { kindPlural, type BlogLinks, type Post } from '@/lib/blog'
+
+interface Props {
+  all: Post[]
+  links: BlogLinks
+  kind?: BlogKind
+  /** The tag as written in posts (its slug is in the URL). */
+  tag?: string
+}
+const { all, links, kind, tag } = Astro.props
+const posts = kind ? all.filter((p) => p.data.kind === kind) : tag ? all.filter((p) => p.data.tags.includes(tag)) : all
+
+const heading = kind ? kindPlural(kind) : tag ? `#${tag}` : 'News and know-how.'
+const lede = kind
+  ? BLOG_KINDS[kind].blurb
+  : tag
+    ? `Every post tagged ${tag}, newest first.`
+    : 'Release notes, guides and video tutorials for running your own audiobook server. Every post says when it was last checked against the software you can download today.'
+const title = kind ? `${kindPlural(kind)} - the AudioSilo blog` : tag ? `Posts tagged ${tag} - the AudioSilo blog` : 'Blog - AudioSilo'
+const description = kind ? `${BLOG_KINDS[kind].blurb} From the AudioSilo blog.` : tag ? `Posts about ${tag} on the AudioSilo blog.` : BLOG_DESCRIPTION
+const view = kind ? `kind/${kind}/` : tag ? links.tag(tag).replace(links.index, '') : ''
+const props = { posts, all, links, kind, tag, heading, lede }
+---
+
+<BlogShell title={title} description={description} links={links} view={view}>
+  {links.design === 'a' && <AIndex {...props} />}
+  {links.design === 'b' && <BIndex {...props} />}
+  {links.design === 'c' && <CIndex {...props} />}
+</BlogShell>

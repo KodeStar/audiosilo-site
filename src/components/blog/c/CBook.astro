@@ -1,0 +1,32 @@
+---
+/**
+ * A post on design C's shelf, the way the player's library shows a book:
+ * the cover, the title, the kind on the "narrator" line and the reading
+ * time as its duration. The title link covers the tile.
+ */
+import PostCover from '../PostCover.astro'
+import { kindLabel, readingMinutes, type BlogLinks, type Post } from '@/lib/blog'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  post: Post
+  links: BlogLinks
+  class?: string
+}
+const { post, links, class: className } = Astro.props
+const { title, kind, video, supersededBy } = post.data
+---
+
+<li class={cn('group relative', className)}>
+  <div class="relative transition-transform duration-300 ease-(--ease-out) group-hover:-translate-y-1">
+    <PostCover post={post} class={cn(supersededBy && 'saturate-[0.35]')} />
+    {supersededBy && <span class="absolute top-2 left-2 z-[5] rounded-full bg-black/55 px-2 py-0.5 text-[11px] font-semibold text-white backdrop-blur">Replaced</span>}
+  </div>
+  <h3 class="clamp-2 mt-3 text-[0.9375rem] leading-snug font-semibold">
+    <a href={links.post(post.id)} class="stretch-link group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-4">{title}</a>
+  </h3>
+  <p class="mt-1 flex items-center justify-between gap-2 text-[13px] text-muted-foreground">
+    <span>{kindLabel(kind)}</span>
+    <span class="font-mono text-xs tabular-nums">{video?.duration ? `${video.duration} video` : `${readingMinutes(post.body)} min`}</span>
+  </p>
+</li>

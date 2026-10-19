@@ -1,0 +1,131 @@
+---
+/**
+ * A post's video.
+ *
+ * - YouTube: a click-to-load facade. Until the reader presses play nothing
+ *   is requested from YouTube (the poster is drawn here, not YouTube's
+ *   thumbnail); then a youtube-nocookie.com iframe replaces it, autoplaying.
+ *   Without JS the button is a plain link to the video on YouTube. Chapter
+ *   links start the embed at that point.
+ * - A tour (src/data/media.ts `tours`): its recorded first frame as the poster
+ *   and the site's VideoDialog (TourButton), the same captioned player and
+ *   files (tourFiles()) the pillar pages use.
+ */
+import TourButton from '@/components/media/TourButton.astro'
+import { loops } from '@/data/media'
+import { clock, postPalette, type Post, type PostVideo } from '@/lib/blog'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  video: PostVideo
+  post: Post
+  class?: string
+}
+const { video, post, class: className } = Astro.props
+const palette = postPalette(post.id)
+const loop = video.type === 'tour' ? Object.values(loops).find((l) => l.name === video.tour.name) : undefined
+const total = video.duration
+const posterHeight = loop ? Math.round(loop.posterWidths[1] / (Number(loop.aspect.split('/')[0]) / Number(loop.aspect.split('/')[1]))) : 0
+---
+
+<figure class={cn('not-prose', className)}>
+  {
+    video.type === 'youtube' ? (
+      <div class={cn('blog-poster relative aspect-video overflow-hidden rounded-3xl shadow-[var(--shadow-device)]', `pal-${palette}`)} data-yt={video.embedUrl} data-yt-title={video.title}>
+        <div class="absolute inset-x-0 top-0 flex items-start justify-between gap-4 p-4 sm:p-6">
+          <p class="max-w-[28ch] font-display text-[clamp(1.125rem,2.6vw,1.75rem)] leading-[1.05] font-bold tracking-[-0.03em]">{video.title}</p>
+          {total && <span class="shrink-0 rounded-full bg-black/35 px-2.5 py-1 font-mono text-xs tabular-nums backdrop-blur">{total}</span>}
+        </div>
+        <a
+          href={video.watchUrl}
+          data-yt-play="0"
+          class="group absolute inset-0 grid place-items-center rounded-3xl"
+          aria-label={`Play the video: ${video.title}. It loads from YouTube.`}
+        >
+          <span class="play-btn size-16 bg-white text-[#0a0f1e] shadow-[0_12px_40px_-8px_rgb(0_0_0/0.6)] group-hover:scale-105 sm:size-20" aria-hidden="true">
+            <svg class="size-7 translate-x-0.5 sm:size-8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.04-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" /></svg>
+          </span>
+        </a>
+        <p class="pointer-events-none absolute inset-x-0 bottom-0 p-4 text-[11px] leading-snug text-white/70 sm:p-6 sm:text-xs">
+          Plays from YouTube (youtube-nocookie.com). Nothing loads from YouTube until you press play.
+        </p>
+      </div>
+    ) : (
+      <div class="relative overflow-hidden rounded-3xl bg-[var(--bezel)] shadow-[var(--shadow-device)]" style={`aspect-ratio: ${video.tour.aspect}`}>
+        {loop ? (
+          (['light', 'dark'] as const).map((t) => (
+            <img
+              src={video.files.poster[t]}
+              srcset={`/media/${loop.name}-${t}-sm.webp ${loop.posterWidths[0]}w, ${video.files.poster[t]} ${loop.posterWidths[1]}w`}
+              sizes="(min-width: 1024px) 48rem, 92vw"
+              alt=""
+              loading="lazy"
+              decoding="async"
+              width={loop.posterWidths[1]}
+              height={posterHeight}
+              class={cn('absolute inset-0 size-full object-cover', t === 'light' ? 'dark:hidden' : 'hidden dark:block')}
+            />
+          ))
+        ) : (
+          <div class={cn('blog-poster absolute inset-0', `pal-${palette}`)} />
+        )}
+        <div class="absolute inset-0 grid place-items-center">
+          <TourButton tour={video.key} />
+        </div>
+      </div>
+    )
+  }
+  {
+    video.chapters.length > 0 && (
+      <figcaption class="mt-6">
+        <p class="t-eyebrow">In this video</p>
+        <ol class="mt-2 grid gap-x-6 sm:grid-cols-2">
+          {video.chapters.map((c) => (
+            <li class="border-b border-border/70">
+              {video.type === 'youtube' ? (
+                <a href={`${video.watchUrl}&t=${c.start}s`} data-yt-play={c.start} class="group flex items-baseline gap-3 py-2 text-[0.9375rem] hover:text-foreground">
+                  <span class="w-11 shrink-0 font-mono text-xs text-muted-foreground tabular-nums">{clock(c.start)}</span>
+                  <span class="text-foreground/85 underline decoration-transparent underline-offset-4 group-hover:decoration-foreground/40">{c.title}</span>
+                </a>
+              ) : (
+                <span class="flex items-baseline gap-3 py-2 text-[0.9375rem]">
+                  <span class="w-11 shrink-0 font-mono text-xs text-muted-foreground tabular-nums">{clock(c.start)}</span>
+                  <span class="text-foreground/85">{c.title}</span>
+                </span>
+              )}
+            </li>
+          ))}
+        </ol>
+      </figcaption>
+    )
+  }
+</figure>
+
+<script>
+  // Swap the facade for the youtube-nocookie embed on the first press (of
+  // play or a chapter), autoplaying from that point. Before this nothing
+  // has been requested from YouTube.
+  document.querySelectorAll<HTMLElement>('[data-yt]').forEach((box) => {
+    const figure = box.closest('figure')
+    if (!figure) return
+    figure.addEventListener('click', (e) => {
+      const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-yt-play]')
+      if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return
+      e.preventDefault()
+      const start = Number(a.dataset.ytPlay) || 0
+      const src = `${box.dataset.yt}?autoplay=1&rel=0&modestbranding=1${start ? `&start=${start}` : ''}`
+      let frame = box.querySelector('iframe')
+      if (!frame) {
+        frame = document.createElement('iframe')
+        frame.title = box.dataset.ytTitle ?? 'Video'
+        frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+        frame.allowFullscreen = true
+        frame.referrerPolicy = 'strict-origin-when-cross-origin'
+        frame.className = 'absolute inset-0 size-full border-0'
+        box.replaceChildren(frame)
+      }
+      frame.src = src
+      frame.focus()
+    })
+  })
+</script>

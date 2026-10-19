@@ -1,0 +1,14 @@
+---
+/** The blog with no posts yet (an empty src/content/blog builds fine). */
+interface Props {
+  rss: string
+}
+const { rss } = Astro.props
+---
+
+<div class="rounded-3xl bg-muted/60 px-6 py-16 text-center shadow-[inset_0_0_0_1px_var(--border)]">
+  <p class="t-heading">Nothing here yet.</p>
+  <p class="mx-auto mt-2 max-w-md text-muted-foreground">
+    The first posts are on their way. Follow the <a href={rss} class="link">RSS feed</a> to hear when they land.
+  </p>
+</div>

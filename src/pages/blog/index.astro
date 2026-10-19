@@ -1,0 +1,9 @@
+---
+import BlogIndex from '@/components/blog/BlogIndex.astro'
+import { BLOG_DESIGN } from '@/data/blog'
+import { blogLinks, getPosts } from '@/lib/blog'
+
+const all = await getPosts()
+---
+
+<BlogIndex all={all} links={blogLinks(BLOG_DESIGN, false)} />

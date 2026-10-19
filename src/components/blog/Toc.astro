@@ -1,0 +1,56 @@
+---
+/**
+ * A post's contents (design A): a sticky rail on desktop and a disclosure
+ * on phones. Links carry data-chapter-link, so src/lib/site.ts marks the
+ * chapter being read (aria-current) as it does on the pillar pages.
+ */
+import type { PostChapter } from '@/lib/blog'
+
+interface Props {
+  chapters: PostChapter[]
+  minutes: number
+}
+const { chapters, minutes } = Astro.props
+const link =
+  'block rounded-lg px-3 py-1.5 text-sm leading-snug text-muted-foreground transition-colors hover:bg-foreground/[0.05] hover:text-foreground aria-[current=true]:bg-foreground/[0.06] aria-[current=true]:font-semibold aria-[current=true]:text-foreground'
+---
+
+{
+  chapters.length > 2 && (
+    <>
+      <details class="group mb-8 rounded-2xl bg-muted/60 shadow-[inset_0_0_0_1px_var(--border)] lg:hidden">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold [&::-webkit-details-marker]:hidden">
+          On this page
+          <svg class="size-4 text-muted-foreground transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+        </summary>
+        <ol class="px-1 pb-3">
+          {chapters.map((c, i) => (
+            <li>
+              <a href={`#${c.id}`} data-chapter-link={i} class={link}>{c.title}</a>
+            </li>
+          ))}
+        </ol>
+      </details>
+      <nav aria-label="On this page" class="sticky top-[calc(var(--header-h)+2rem)] hidden self-start lg:block">
+        <p class="t-eyebrow mb-3 px-3">On this page</p>
+        <ol class="space-y-0.5 border-l border-border pl-1">
+          {chapters.map((c, i) => (
+            <li>
+              <a href={`#${c.id}`} data-chapter-link={i} class={link}>{c.title}</a>
+              {c.children.length > 0 && (
+                <ol class="mb-1 ml-3">
+                  {c.children.map((h) => (
+                    <li>
+                      <a href={`#${h.id}`} class="block rounded-lg px-3 py-1 text-[13px] leading-snug text-subtle-foreground hover:text-foreground">{h.title}</a>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </li>
+          ))}
+        </ol>
+        <p class="mt-4 px-3 text-xs text-subtle-foreground">{minutes} min read</p>
+      </nav>
+    </>
+  )
+}

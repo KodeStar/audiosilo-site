@@ -1,0 +1,29 @@
+---
+/** The design chooser for the blog spike (noindex). Delete with the previews once a design is chosen. */
+import BlogShell from '@/components/blog/BlogShell.astro'
+import { BLOG_DESIGN, BLOG_DESIGNS } from '@/data/blog'
+import { blogLinks, designIds } from '@/lib/blog'
+
+const links = { ...blogLinks(BLOG_DESIGN, true) }
+---
+
+<BlogShell title="Blog designs - AudioSilo" description="Three design options for the AudioSilo blog." links={links} view="">
+  <section class="shell py-14 sm:py-20">
+    <p class="t-eyebrow">Blog spike</p>
+    <h1 class="t-display mt-3">Three designs, one blog.</h1>
+    <p class="t-lede mt-4 max-w-2xl">The same posts in each option. Pick one in src/data/blog.ts (BLOG_DESIGN); the others and these previews are then deleted.</p>
+    <ol class="mt-10 grid gap-6 md:grid-cols-3">
+      {
+        designIds.map((id) => (
+          <li class="tile group relative p-6">
+            <p class="font-mono text-sm text-muted-foreground uppercase">{id}{id === BLOG_DESIGN && ' (live at /blog)'}</p>
+            <h2 class="t-title mt-2">
+              <a href={`/blog/designs/${id}/`} class="stretch-link">{BLOG_DESIGNS[id].name}</a>
+            </h2>
+            <p class="mt-2 text-muted-foreground">{BLOG_DESIGNS[id].summary}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</BlogShell>

@@ -1,0 +1,34 @@
+---
+/** One post in one of the three designs, with its JSON-LD and social tags. */
+import BlogShell from './BlogShell.astro'
+import APost from './a/APost.astro'
+import BPost from './b/BPost.astro'
+import CPost from './c/CPost.astro'
+import { loadPost, postJsonLd, type BlogLinks, type Post } from '@/lib/blog'
+
+interface Props {
+  post: Post
+  all: Post[]
+  links: BlogLinks
+}
+const { post, all, links } = Astro.props
+const loaded = await loadPost(post, all)
+// The share image: the hero, else a tour's first frame, else the site's og.png.
+const heroUrl = post.data.hero?.src ?? (loaded.video?.type === 'tour' ? loaded.video.files.poster.dark : undefined)
+const jsonLd = postJsonLd(post, Astro.site ?? new URL('https://audiosilo.app'), heroUrl)
+---
+
+<BlogShell
+  title={`${post.data.title} - AudioSilo`}
+  description={post.data.description}
+  links={links}
+  view={`${post.id}/`}
+  ogType="article"
+  image={heroUrl}
+  imageAlt={post.data.heroAlt ?? (heroUrl ? post.data.title : undefined)}
+  jsonLd={jsonLd}
+>
+  {links.design === 'a' && <APost loaded={loaded} links={links} />}
+  {links.design === 'b' && <BPost loaded={loaded} links={links} />}
+  {links.design === 'c' && <CPost loaded={loaded} links={links} />}
+</BlogShell>

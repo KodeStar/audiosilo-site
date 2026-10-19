@@ -5,6 +5,7 @@ import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import clientSettled from './src/integrations/client-settled.ts'
+import rehypeBlogChapters from './src/lib/rehype-blog-chapters.ts'
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,7 +15,18 @@ export default defineConfig({
   // Inline the (one, ~22 KB gzipped) stylesheet: no render-blocking request
   // in front of the first paint. See docs/PERFORMANCE.md.
   build: { inlineStylesheets: 'always' },
-  integrations: [react(), sitemap(), clientSettled()],
+  integrations: [
+    react(),
+    // The blog's design previews (/blog/designs/...) are noindex and stay out of the sitemap.
+    sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/blog/designs/') }),
+    clientSettled(),
+  ],
+  // Markdown is only the blog (src/content/blog). Code is unhighlighted, as in
+  // CodeBlock.astro, and h2s become header seek bar chapters.
+  markdown: {
+    syntaxHighlight: false,
+    rehypePlugins: [rehypeBlogChapters],
+  },
   vite: {
     plugins: [tailwindcss()],
     resolve: {

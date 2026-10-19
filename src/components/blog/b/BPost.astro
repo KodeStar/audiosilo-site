@@ -1,0 +1,114 @@
+---
+/**
+ * Design B, "Changelog journal", a post: a narrow journal column. The
+ * version chip and the verified date lead the header, set out as a ledger;
+ * the change log is a mini timeline; older and newer posts close it.
+ */
+import HeroDevice from '../HeroDevice.astro'
+import KindChip from '../KindChip.astro'
+import PostBody from '../PostBody.astro'
+import Revisions from '../Revisions.astro'
+import SupersededBanner from '../SupersededBanner.astro'
+import VersionChip from '../VersionChip.astro'
+import VideoBlock from '../VideoBlock.astro'
+import { formatDate, formatShortDate, isoDate, kindLabel, versionOf, type BlogLinks, type LoadedPost } from '@/lib/blog'
+
+interface Props {
+  loaded: LoadedPost
+  links: BlogLinks
+}
+const { loaded, links } = Astro.props
+const { post, chapters, minutes, supersededBy, supersedes, hero, video, newer, older } = loaded
+const { kind, title, description, published, updated, verified, appliesTo, tags, supersededNote } = post.data
+const version = versionOf(post)
+const cell = 'px-4 py-3.5 first:pl-0 sm:px-5'
+---
+
+<article class="px-4 sm:px-6">
+  <header id="top" data-chapter={chapters[0].title} class="mx-auto max-w-[44rem] pt-8 sm:pt-14">
+    <a href={links.index} class="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
+      <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5" /><path d="m11 18-6-6 6-6" /></svg>
+      Changelog and journal
+    </a>
+    {supersededBy && <SupersededBanner next={supersededBy} href={links.post(supersededBy.id)} note={supersededNote} class="mt-6" />}
+    <div class="mt-8 flex flex-wrap items-center gap-2">
+      {version && <VersionChip product={version.product} version={version.version} size="lg" />}
+      <KindChip kind={kind} href={links.kind(kind)} class="h-8" />
+    </div>
+    <h1 class="mt-5 font-display text-[clamp(2.125rem,4.6vw,3.375rem)] leading-[1.02] font-bold tracking-[-0.04em] text-balance">{title}</h1>
+    <p class="t-lede mt-5">{description}</p>
+
+    <dl class="mt-8 grid grid-cols-2 border-y border-border text-sm sm:grid-cols-[auto_auto_auto_minmax(0,1fr)] sm:divide-x sm:divide-border">
+      <div class={cell}>
+        <dt class="text-xs text-muted-foreground">Published</dt>
+        <dd class="mt-0.5 font-medium"><time datetime={isoDate(published)}>{formatShortDate(published)} {published.getUTCFullYear()}</time></dd>
+      </div>
+      <div class={cell}>
+        <dt class="text-xs text-muted-foreground">Updated</dt>
+        <dd class="mt-0.5 font-medium">{updated ? <time datetime={isoDate(updated)}>{formatShortDate(updated)} {updated.getUTCFullYear()}</time> : 'Not since'}</dd>
+      </div>
+      <div class={`${cell} border-t border-border sm:border-t-0`}>
+        <dt class="text-xs text-muted-foreground">Reading</dt>
+        <dd class="mt-0.5 font-medium">{minutes} min</dd>
+      </div>
+      <div class={`${cell} border-t border-border sm:border-t-0`}>
+        <dt class="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <svg class="size-3.5 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+          Verified
+        </dt>
+        <dd class="mt-0.5 font-medium">
+          <time datetime={isoDate(verified)}>{formatDate(verified)}</time>
+          {appliesTo && <span class="block text-xs font-normal text-muted-foreground">against {appliesTo}</span>}
+        </dd>
+      </div>
+    </dl>
+  </header>
+
+  {
+    (video || hero) && (
+      <div class="mx-auto mt-10 max-w-[52rem]">
+        {video ? (
+          <VideoBlock video={video} post={post} />
+        ) : hero && hero.kind === 'phone' ? (
+          <HeroDevice hero={hero} eager sizes="16rem" widths={[300, 600]} class="mx-auto w-[min(16rem,60%)]" />
+        ) : (
+          hero && <HeroDevice hero={hero} eager sizes="(min-width: 900px) 52rem, 94vw" widths={[640, 1280]} class="w-full" />
+        )}
+      </div>
+    )
+  }
+
+  <div class="mx-auto max-w-[44rem] py-12 sm:py-16">
+    <PostBody loaded={loaded} />
+    {
+      tags.length > 0 && (
+        <p class="mt-10 text-sm text-muted-foreground">
+          Filed under {tags.map((t, i) => <>{i > 0 && ', '}<a href={links.tag(t)} class="link">{t}</a></>)}.
+        </p>
+      )
+    }
+    <Revisions post={post} links={links} supersededBy={supersededBy} supersedes={supersedes} variant="timeline" title="History" class="mt-12 border-t border-border pt-8" />
+  </div>
+
+  {
+    (newer || older) && (
+      <nav aria-label="More from the journal" class="mx-auto grid max-w-[44rem] gap-3 border-t border-border pt-8 pb-20 sm:grid-cols-2 sm:pb-28">
+        {[
+          { p: older, label: 'Older' },
+          { p: newer, label: 'Newer' },
+        ].map(({ p, label }) =>
+          p ? (
+            <a href={links.post(p.id)} class:list={['group rounded-2xl p-4 shadow-[inset_0_0_0_1px_var(--border)] transition-colors hover:bg-muted/60', label === 'Newer' && 'sm:text-right']}>
+              <span class="text-xs text-muted-foreground">
+                {label} &middot; {kindLabel(p.data.kind)}
+              </span>
+              <span class="mt-1 block font-semibold text-balance group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-4">{p.data.title}</span>
+            </a>
+          ) : (
+            <span class="hidden sm:block" />
+          ),
+        )}
+      </nav>
+    )
+  }
+</article>

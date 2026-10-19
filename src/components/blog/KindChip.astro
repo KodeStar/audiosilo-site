@@ -1,0 +1,23 @@
+---
+/** A post's kind as a small pill; a link to the kind's page when `href` is set. */
+import { kindLabel } from '@/lib/blog'
+import type { BlogKind } from '@/data/blog'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  kind: BlogKind
+  href?: string
+  class?: string
+}
+const { kind, href, class: className } = Astro.props
+const Tag = href ? 'a' : 'span'
+---
+
+<Tag
+  href={href}
+  class={cn(
+    'relative z-[5] inline-flex h-6 items-center rounded-full bg-foreground/[0.07] px-2.5 text-[11px] font-semibold tracking-[0.08em] text-foreground/80 uppercase',
+    href && 'transition-colors hover:bg-foreground/[0.12] hover:text-foreground',
+    className,
+  )}>{kindLabel(kind)}</Tag
+>

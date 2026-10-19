@@ -1,0 +1,41 @@
+---
+/**
+ * A post's Markdown, set as long-form prose, with a copy button added to each
+ * code block once the page has loaded (the code is readable without it).
+ */
+import type { LoadedPost } from '@/lib/blog'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  loaded: LoadedPost
+  class?: string
+}
+const { loaded, class: className } = Astro.props
+const { Content } = loaded
+---
+
+<div class={cn('blog-prose prose-as', className)}>
+  <Content />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLPreElement>('.blog-prose pre').forEach((pre) => {
+    if (pre.querySelector('.blog-copy') || !navigator.clipboard) return
+    const btn = document.createElement('button')
+    btn.type = 'button'
+    btn.className = 'blog-copy'
+    btn.textContent = 'Copy'
+    btn.setAttribute('aria-label', 'Copy code to clipboard')
+    btn.addEventListener('click', () => {
+      const text = pre.querySelector('code')?.textContent ?? pre.textContent ?? ''
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          btn.textContent = 'Copied'
+          window.setTimeout(() => (btn.textContent = 'Copy'), 1600)
+        })
+        .catch(() => {})
+    })
+    pre.appendChild(btn)
+  })
+</script>
