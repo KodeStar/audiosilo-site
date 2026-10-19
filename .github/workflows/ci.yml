@@ -3,9 +3,21 @@ name: cd
 on:
   push:
     branches: [master]
+  # Every morning (UTC), so a blog post scheduled for today (a future
+  # `published` date, see src/lib/blog.ts isHidden) goes live without a push.
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+
+# One deploy at a time; a newer run waits rather than cancelling one mid-publish.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
 
 jobs:
   cd:
+    # Scheduled runs use the default branch; a manual run from another branch must not deploy it.
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
     steps:
