@@ -1,0 +1,47 @@
+services:
+  audiosilo:
+    image: lscr.io/linuxserver/audiosilo:v2.3.1-ls6
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      TZ: ${TZ:-Etc/UTC}
+      AUDIOSILO_BIND: 0.0.0.0:8080
+      AUDIOSILO_TLS_MODE: "off"
+      AUDIOSILO_PUBLIC_URL: https://${BOOKS_HOST:?Set BOOKS_HOST in .env}
+      AUDIOSILO_TRUSTED_PROXIES: ${PROXY_IP:-172.30.90.2}/32
+    volumes:
+      - ./audiosilo:/config
+      - ${AUDIOBOOKS_DIR:?Set AUDIOBOOKS_DIR in .env}:/audiobooks:ro
+    networks:
+      proxy:
+        ipv4_address: ${AUDIOSILO_IP:-172.30.90.3}
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2.11.7
+    environment:
+      BOOKS_HOST: ${BOOKS_HOST:?Set BOOKS_HOST in .env}
+      ACME_EMAIL: ${ACME_EMAIL:?Set ACME_EMAIL in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      proxy:
+        ipv4_address: ${PROXY_IP:-172.30.90.2}
+    depends_on:
+      - audiosilo
+    restart: unless-stopped
+
+networks:
+  proxy:
+    ipam:
+      config:
+        - subnet: ${PROXY_SUBNET:-172.30.90.0/24}
+
+volumes:
+  caddy_data:
+  caddy_config:

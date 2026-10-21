@@ -1,0 +1,41 @@
+---
+/** Keep setup captures beside their steps while the post stays plain Markdown. */
+import Device from '@/components/media/Device.astro'
+import type { Post } from '@/lib/blog'
+
+interface Props {
+  screenshots: Post['data']['screenshots']
+}
+const { screenshots } = Astro.props
+const html = await Astro.slots.render('default')
+const pieces = html.split(/<!--\s*screenshot:([a-z0-9-]+)\s*-->/g)
+const byId = new Map(screenshots.map((shot) => [shot.id, shot]))
+const markers = pieces.filter((_, index) => index % 2 === 1)
+if (new Set(markers).size !== markers.length) throw new Error('Duplicate blog screenshot marker')
+for (const marker of markers) {
+  if (!byId.has(marker)) throw new Error(`Blog screenshot marker "${marker}" has no image`)
+}
+for (const shot of screenshots) {
+  if (!markers.includes(shot.id)) throw new Error(`Blog screenshot "${shot.id}" has no marker`)
+}
+---
+
+{pieces.map((piece, index) => {
+  if (index % 2 === 0) return <Fragment set:html={piece} />
+  const shot = byId.get(piece)!
+  return (
+    <figure class="blog-step-capture">
+      <Device
+        kind="window"
+        still={{ src: { light: shot.image, dark: shot.image }, alt: shot.alt }}
+        address={shot.address ?? 'AudioSilo setup'}
+        widths={[640, 1280, 1600]}
+        sizes="(min-width: 1024px) 44rem, 94vw"
+      />
+      <figcaption>
+        {shot.caption}{' '}
+        <a href={shot.image.src} target="_blank" rel="noopener">Full-size screenshot<span class="sr-only"> (opens in a new tab)</span></a>
+      </figcaption>
+    </figure>
+  )
+})}

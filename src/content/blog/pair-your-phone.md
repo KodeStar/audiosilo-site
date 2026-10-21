@@ -3,7 +3,8 @@ title: "How to pair your phone with your AudioSilo server using a QR code"
 description: Sign the iPhone, iPad or Android app in to a self-hosted audiobook server by scanning a QR code. Invites, adding more devices, and what to do when it can't connect.
 kind: tutorial
 published: 2026-10-15
-verified: 2026-10-19
+updated: 2026-10-21
+verified: 2026-10-21
 appliesTo: App 2.0.0, server 2.3.1
 tags: [apps, pairing, getting-started, invites]
 covers:
@@ -22,9 +23,12 @@ related:
   - player-tips
 hero: ../../assets/stills/server-invite-dark.webp
 heroAlt: An invite ready in the AudioSilo admin console, with a QR code to scan with a phone camera, the invite link and a one-time code
+revisions:
+  - date: 2026-10-21
+    note: Corrected the invite QR and app pairing QR steps, and clarified that an admin can pair their existing account.
 ---
 
-Signing a phone in to your own audiobook server should take seconds, not a server address, a username and a password typed on a tiny keyboard. In AudioSilo it's a QR code: the admin makes an invite, the listener scans it with the app, and they're in. This guide covers that, adding more devices later, and the one setup step the phone apps need.
+To sign the AudioSilo app in with a QR code, open the server's connect page in a browser first, then scan its **pairing QR** from inside the app. If an admin sends you an invite, open that invite link in the browser to reach the pairing page. The invite card's QR opens a web page; it is a different code from the one the app's scanner accepts. This guide covers each step, adding more devices later, and the trusted address the phone apps need.
 
 ## Before you start: the apps need a trusted address
 
@@ -49,16 +53,15 @@ Click **Create invite**. You get a **QR code**, the **invite link** and the **co
 
 The code is shown only this once: the server keeps just a fingerprint of it. Need it again later? Rotate the invite for a fresh one.
 
-## Step 3: Scan it with the app
+## Step 3: Open the invite, then pair the app
 
-On the phone, open AudioSilo. On its connect screen, tap **Scan a QR code** and point the camera at the invite's QR. The app signs in and opens on your library.
+Open the **invite link in a browser**, or scan the invite card's QR with the phone's **normal camera**. That opens the server's connect page and signs the invite in. The page then shows the **pairing QR**, **Open in app** and **Open web player**.
 
-Other ways in, if the phone and the screen aren't in the same room:
+If the pairing page is on another screen, open AudioSilo on the phone, tap **Scan a QR code** on its connect screen and scan the **connect page's pairing QR**. The app signs in and opens your library. If you opened the invite on the same phone, choose **Open in app** instead.
 
-- **Send the invite link.** Opening it shows the server's connect page, which signs the invite in and offers **Open in app** and **Open web player**.
-- **Type it.** Enter the server address in the app, tap **Continue**, choose **Invite code** and type the code.
+You can also type the server address in the app, tap **Continue**, choose **Invite code** and enter the invite code directly.
 
-As the admin, you can also pair your own phone with the auth code the server printed on its first start: enter it on the server's connect page.
+As the admin, you can pair your existing account too: enter the auth code the server printed on first start on the server's connect page, then use that page's pairing QR or **Open in app**. You do not need a separate listener account.
 
 ## Step 4: Add your other devices
 
@@ -76,7 +79,7 @@ When your server has both a home address and a public one, the app learns both w
 
 - **"Couldn't reach ..."**: check the address for typos and that the server is running. A home address like `192.168.1.20:8080` only works on your home network.
 - **The app can't connect to a server that works in the browser**: the server is still on its self-signed certificate. See the first section.
-- **"That QR code isn't an AudioSilo pairing code."**: you scanned something else, such as a QR for a web page. Scan the invite's or the connect page's QR.
+- **"That QR code isn't an AudioSilo pairing code."**: you may have scanned the admin invite card's QR, which opens a web page. Open the invite link in a browser first, then scan the connect page's **pairing QR** with the app. Alternatively, enter the server address and invite code in the app.
 - **An expired or used-up invite**: ask the admin for a new one, or rotate it on the Invites page.
 - **Too many tries**: the server slows down repeated failed sign-ins on purpose. Wait a few minutes.
 

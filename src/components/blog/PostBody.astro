@@ -4,15 +4,16 @@
  * code block once the page has loaded (the code is readable without it).
  */
 import type { LoadedPost } from '@/lib/blog'
+import IllustratedBody from './IllustratedBody.astro'
 
 interface Props {
   loaded: LoadedPost
 }
-const { Content } = Astro.props.loaded
+const { Content, post } = Astro.props.loaded
 ---
 
 <div class="blog-prose prose-as">
-  <Content />
+  <IllustratedBody screenshots={post.data.screenshots}><Content /></IllustratedBody>
 </div>
 
 <script>
