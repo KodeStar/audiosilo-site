@@ -10,10 +10,14 @@ interface Props {
   loaded: LoadedPost
 }
 const { Content, post } = Astro.props.loaded
+// Check rendered HTML so a comment shown inside a code block is not a marker.
+// Missing screenshot metadata must still reach IllustratedBody's validation.
+const illustrated = post.data.screenshots.length > 0 ||
+  /<!--\s*screenshot:[a-z0-9-]+\s*-->/.test(post.rendered?.html ?? '')
 ---
 
 <div class="blog-prose prose-as">
-  {post.data.screenshots.length ? (
+  {illustrated ? (
     <IllustratedBody screenshots={post.data.screenshots}><Content /></IllustratedBody>
   ) : (
     <Content />

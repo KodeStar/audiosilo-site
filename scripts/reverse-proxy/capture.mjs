@@ -68,26 +68,32 @@ try {
   // A real ttyd session running the same Docker Compose project, with no logs
   // (the first-run logs contain a password). Files contain only example values.
   terminal = spawn('ttyd', [
-    '-i', '127.0.0.1', '-p', '28791', '-O', '-W', '-o', '-w', folder,
+    '-i', '127.0.0.1', '-p', '0', '-d', '7', '-O', '-W', '-o', '-w', folder,
     '-t', 'fontSize=18', '-t', 'rendererType=dom', '-t', 'screenReaderMode=true',
     '-t', 'theme={"background":"#101827","foreground":"#f1f5f9"}',
     '/bin/zsh', '-f',
   ], {
     env: { ...process.env, COMPOSE_FILE: 'compose.yaml:test.override.yaml',
       COMPOSE_PROJECT_NAME: `asproxy-${tool}`, PROMPT: 'audiosilo-setup % ' },
-    stdio: 'ignore',
+    stdio: ['ignore', 'ignore', 'pipe'],
+  })
+  // Wait for this child to bind its own random port. A fixed-port retry could
+  // otherwise connect to somebody else's terminal if ttyd failed to start.
+  const terminalPort = await new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => reject(new Error('ttyd did not start')), 10000)
+    const fail = error => { clearTimeout(timeout); reject(error) }
+    terminal.once('error', fail)
+    terminal.once('exit', (code, signal) => fail(new Error(`ttyd exited: ${code ?? signal}`)))
+    let log = ''
+    terminal.stderr.on('data', chunk => {
+      log = (log + chunk.toString()).slice(-4000)
+      const listening = /Listening on port: (\d+)/.exec(log)
+      if (listening) { clearTimeout(timeout); resolve(Number(listening[1])) }
+    })
   })
   const term = await context.newPage()
   await term.setViewportSize({ width: 1440, height: 620 })
-  let terminalReady = false
-  for (let attempt = 0; attempt < 30; attempt++) {
-    try {
-      await term.goto('http://127.0.0.1:28791', { waitUntil: 'networkidle', timeout: 3000 })
-      terminalReady = true
-      break
-    } catch { await new Promise(r => setTimeout(r, 200)) }
-  }
-  assert(terminalReady, 'ttyd did not start')
+  await term.goto(`http://127.0.0.1:${terminalPort}`, { waitUntil: 'networkidle', timeout: 10000 })
   await term.locator('.xterm-screen').waitFor()
   await term.waitForTimeout(500)
   await term.evaluate(() => { window.term.fit(); window.term.resize(125, 25) })

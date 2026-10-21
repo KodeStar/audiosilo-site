@@ -10,6 +10,7 @@ const { screenshots } = Astro.props
 const html = await Astro.slots.render('default')
 const pieces = html.split(/<!--\s*screenshot:([a-z0-9-]+)\s*-->/g)
 const byId = new Map(screenshots.map((shot) => [shot.id, shot]))
+if (byId.size !== screenshots.length) throw new Error('Duplicate blog screenshot id')
 const markers = pieces.filter((_, index) => index % 2 === 1)
 const markerIds = new Set(markers)
 if (markerIds.size !== markers.length) throw new Error('Duplicate blog screenshot marker')

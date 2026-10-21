@@ -20,9 +20,14 @@ npx playwright install chromium
 python3 verify.py caddy swag traefik --capture
 ```
 
+Run the runner's focused lifecycle regressions without Docker with
+`python3 -m unittest discover -s scripts/reverse-proxy -p 'test_*.py'` from the
+site root. The same checks also run with `python3 -O`.
+
 Without `--capture`, only the API/media/container checks run and screenshots are
-left alone. Pass one proxy to iterate on it. `--keep` leaves that disposable stack
-running for inspection; stop it using its matching files:
+left alone. Pass one proxy to iterate on it. `--keep` leaves only the final
+requested stack running for inspection; earlier stacks are stopped before the
+next proxy starts. Stop the retained stack using its matching files:
 
 ```sh
 docker compose -p asproxy-caddy \
@@ -33,8 +38,9 @@ The tool writes a generated 20-second AAC test audiobook, private local CA keys,
 and disposable credentials under ignored `.cache/`. It does not read the owner's
 library, change DNS, install certificates into a trust store, or touch existing
 services. Local listeners are **127.0.0.1:28080**, **127.0.0.1:28443**, and (during
-capture only) **127.0.0.1:28791** for ttyd. These ports must be available. The lab
-also needs the recipes' default `172.30.90.0/24` subnet to be unused.
+capture only) a randomly assigned **127.0.0.1** port for ttyd. Ports 28080 and
+28443 must be available. The lab also needs the recipes' default
+`172.30.90.0/24` subnet to be unused.
 
 ## What runs
 
@@ -58,7 +64,10 @@ also needs the recipes' default `172.30.90.0/24` subnet to be unused.
 
 Success writes `<proxy>-results.json` here with the source-file hashes, container
 image IDs and each passed check. Keep those files with the corresponding guide
-change. A failing run exits nonzero; failures never count as verification.
+change. A requested rerun removes that proxy's old report before setup and writes
+a replacement only after all checks and required teardown succeed. A failing run
+exits nonzero and leaves no success report for the failed or unattempted requested
+proxies. Reports for proxies not requested are left alone.
 
 ## Local TLS changes and limits
 

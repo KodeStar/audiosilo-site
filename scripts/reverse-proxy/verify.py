@@ -27,6 +27,7 @@ DOMAIN = 'books.example.com'
 HTTPS_PORT = 28443
 HTTP_PORT = 28080
 ORIGIN = f'https://{DOMAIN}:{HTTPS_PORT}'
+PROXIES = ('caddy', 'swag', 'traefik')
 
 
 def run(*args, cwd=None, check=True):
@@ -77,7 +78,10 @@ def prepare(tool, certs):
     folder = CACHE / tool
     if folder.exists():
         # Only the named, disposable project and its own scratch files.
-        compose(folder, 'down', '-v', '--remove-orphans')
+        # A failed preparation may not have reached the override-file write;
+        # no containers can have been started from that incomplete directory.
+        if (folder / 'test.override.yaml').exists():
+            compose(folder, 'down', '-v', '--remove-orphans')
         shutil.rmtree(folder)
     shutil.copytree(RECIPES / tool, folder)
     source_hashes = {str(p.relative_to(RECIPES / tool)): hashlib.sha256(p.read_bytes()).hexdigest()
@@ -92,8 +96,10 @@ def prepare(tool, certs):
     env = env.replace('you@example.com', 'setup@example.com')
     (folder / '.env').write_text(env)
     original = json.loads(compose(folder, 'config', '--format', 'json', local=False))
-    assert not original['services']['audiosilo'].get('ports'), 'AudioSilo exposes a host port'
-    assert original['services']['audiosilo']['environment']['AUDIOSILO_TLS_MODE'] == 'off'
+    if original['services']['audiosilo'].get('ports'):
+        raise AssertionError('AudioSilo exposes a host port')
+    if original['services']['audiosilo']['environment']['AUDIOSILO_TLS_MODE'] != 'off':
+        raise AssertionError('AudioSilo TLS mode must be off')
     overrides = {
         'services': {
             'audiosilo': {'environment': {'AUDIOSILO_PUBLIC_URL': ORIGIN,
@@ -165,7 +171,8 @@ class Client:
 
     def api(self, path, method='GET', data=None, token=None, headers=None):
         status, _, body = self.request('/api/v1' + path, method, data, token, headers)
-        assert 200 <= status < 300, f'{method} {path}: HTTP {status}'
+        if not 200 <= status < 300:
+            raise AssertionError(f'{method} {path}: HTTP {status}')
         return json.loads(body)
 
 
@@ -175,7 +182,9 @@ def verify(tool, certs, capture):
     checks = []
 
     def check(label, condition=True):
-        assert condition, label
+        # Verification must also fail when PYTHONOPTIMIZE/-O disables asserts.
+        if not condition:
+            raise AssertionError(label)
         checks.append(label)
         print(f'  PASS {label}', flush=True)
 
@@ -243,8 +252,10 @@ def verify(tool, certs, capture):
     path = 'AudioSilo/Proxy setup sample/Sample.m4b'
     stream = f'/api/v1/libraries/{library["id"]}/stream?' + urlencode({'path': path})
     status, hdr, body = client.request(stream, token=token, headers={'Range': 'bytes=0-1023'})
-    check('Audio seeking returns 206 and the requested bytes', status == 206 and len(body) == 1024 and
-          hdr.get('Content-Range', '').startswith('bytes 0-1023/'))
+    sample = folder / 'books' / path
+    check('Audio seeking returns 206 and the requested bytes', status == 206 and
+          body == sample.read_bytes()[:1024] and
+          hdr.get('Content-Range') == f'bytes 0-1023/{sample.stat().st_size}')
     me = client.api('/me', token=token)
     user_id = me.get('user', me)['id']
     invite = client.api(f'/admin/users/{user_id}/authcode', 'POST', {'max_uses': 5, 'ttl_days': 1}, token)
@@ -291,25 +302,39 @@ def verify(tool, certs, capture):
               'limits': ['Local test CA, not public Let\'s Encrypt issuance.',
                          f'HTTP/HTTPS host ports remapped to {HTTP_PORT}/{HTTPS_PORT}.',
                          'Native phone camera/app and real internet/router/DNS were not exercised.']}
-    (HERE / f'{tool}-results.json').write_text(json.dumps(result, indent=2) + '\n')
+    return result
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('proxies', nargs='*', default=['caddy', 'swag', 'traefik'],
-                        choices=['caddy', 'swag', 'traefik'])
+    def proxy_name(value):
+        if value not in PROXIES:
+            raise argparse.ArgumentTypeError(f'choose from {", ".join(PROXIES)}')
+        return value
+
+    parser.add_argument('proxies', nargs='*', default=list(PROXIES), type=proxy_name,
+                        metavar='PROXY', help='caddy, swag or traefik (default: all three)')
     parser.add_argument('--capture', action='store_true')
     parser.add_argument('--keep', action='store_true', help='leave the final disposable stack running')
     args = parser.parse_args()
-    CACHE.mkdir(parents=True, exist_ok=True)
+    proxies = list(dict.fromkeys(args.proxies))
+    CACHE.mkdir(mode=0o700, parents=True, exist_ok=True)
+    CACHE.chmod(0o700)
+    # A requested rerun supersedes its old report, including when setup or
+    # teardown fails. Reports for proxies not requested are left alone.
+    for tool in proxies:
+        (HERE / f'{tool}-results.json').unlink(missing_ok=True)
     certs = certificates()
-    for tool in args.proxies:
+    for index, tool in enumerate(proxies):
         folder = CACHE / tool
         try:
-            verify(tool, certs, args.capture)
+            result = verify(tool, certs, args.capture)
         finally:
-            if (folder / 'test.override.yaml').exists() and not args.keep:
+            keep = args.keep and index == len(proxies) - 1
+            if (folder / 'test.override.yaml').exists() and not keep:
                 compose(folder, 'down', '-v', '--remove-orphans')
+        # Publish success only after verification and any required teardown.
+        (HERE / f'{tool}-results.json').write_text(json.dumps(result, indent=2) + '\n')
 
 
 if __name__ == '__main__':
