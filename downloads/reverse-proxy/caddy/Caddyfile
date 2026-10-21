@@ -1,0 +1,7 @@
+{
+    email {$ACME_EMAIL}
+}
+
+{$BOOKS_HOST} {
+    reverse_proxy audiosilo:8080
+}
