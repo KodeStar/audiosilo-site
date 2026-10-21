@@ -58,6 +58,12 @@ async function open(route) {
   await page.goto(`${origin}/admin${route}`, { waitUntil: 'networkidle' })
   await page.locator('h1').first().waitFor()
 }
+// Playwright evaluates this function in the terminal page for both waits and assertions.
+function terminalContains(text) {
+  const buffer = window.term.buffer.active
+  return Array.from({ length: buffer.length }, (_, i) => buffer.getLine(i)?.translateToString() ?? '')
+    .join('\n').includes(text)
+}
 try {
   // A real ttyd session running the same Docker Compose project, with no logs
   // (the first-run logs contain a password). Files contain only example values.
@@ -85,27 +91,17 @@ try {
   await term.locator('.xterm-screen').waitFor()
   await term.waitForTimeout(500)
   await term.evaluate(() => { window.term.fit(); window.term.resize(125, 25) })
-  const terminalText = () => term.evaluate(() => {
-    const buffer = window.term.buffer.active
-    return Array.from({ length: buffer.length }, (_, i) => buffer.getLine(i)?.translateToString() ?? '').join('\n')
-  })
   await term.keyboard.type('clear; cat .env; docker compose config --services', { delay: 10 })
   await term.keyboard.press('Enter')
-  await term.waitForFunction(() => {
-    const b = window.term.buffer.active
-    return Array.from({ length: b.length }, (_, i) => b.getLine(i)?.translateToString() ?? '').join('\n').includes('AUDIOSILO_IP=')
-  })
+  await term.waitForFunction(terminalContains, 'AUDIOSILO_IP=')
   await term.waitForTimeout(700)
-  assert((await terminalText()).includes('BOOKS_HOST=books.example.com'))
+  assert(await term.evaluate(terminalContains, 'BOOKS_HOST=books.example.com'))
   await shot('files', term)
   await term.setViewportSize({ width: 1440, height: 400 })
   await term.evaluate(() => window.term.fit())
   await term.keyboard.type('clear; docker compose ps', { delay: 10 })
   await term.keyboard.press('Enter')
-  await term.waitForFunction(() => {
-    const b = window.term.buffer.active
-    return Array.from({ length: b.length }, (_, i) => b.getLine(i)?.translateToString() ?? '').join('\n').includes('asproxy-')
-  })
+  await term.waitForFunction(terminalContains, 'asproxy-')
   await term.waitForTimeout(700)
   await shot('running', term)
   await term.close()

@@ -11,12 +11,13 @@ const html = await Astro.slots.render('default')
 const pieces = html.split(/<!--\s*screenshot:([a-z0-9-]+)\s*-->/g)
 const byId = new Map(screenshots.map((shot) => [shot.id, shot]))
 const markers = pieces.filter((_, index) => index % 2 === 1)
-if (new Set(markers).size !== markers.length) throw new Error('Duplicate blog screenshot marker')
-for (const marker of markers) {
+const markerIds = new Set(markers)
+if (markerIds.size !== markers.length) throw new Error('Duplicate blog screenshot marker')
+for (const marker of markerIds) {
   if (!byId.has(marker)) throw new Error(`Blog screenshot marker "${marker}" has no image`)
 }
 for (const shot of screenshots) {
-  if (!markers.includes(shot.id)) throw new Error(`Blog screenshot "${shot.id}" has no marker`)
+  if (!markerIds.has(shot.id)) throw new Error(`Blog screenshot "${shot.id}" has no marker`)
 }
 ---
 

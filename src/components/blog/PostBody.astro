@@ -13,7 +13,11 @@ const { Content, post } = Astro.props.loaded
 ---
 
 <div class="blog-prose prose-as">
-  <IllustratedBody screenshots={post.data.screenshots}><Content /></IllustratedBody>
+  {post.data.screenshots.length ? (
+    <IllustratedBody screenshots={post.data.screenshots}><Content /></IllustratedBody>
+  ) : (
+    <Content />
+  )}
 </div>
 
 <script>

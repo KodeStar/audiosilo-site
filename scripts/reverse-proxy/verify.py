@@ -88,10 +88,7 @@ def prepare(tool, certs):
         '-i', 'sine=frequency=440:duration=20', '-c:a', 'aac', '-b:a', '64k',
         '-metadata', 'title=Proxy setup sample', '-metadata', 'artist=AudioSilo',
         '-metadata', 'album=Proxy setup sample', str(library / 'Sample.m4b'))
-    env_example = folder / '.env.example'
-    if not env_example.exists():
-        env_example = folder / 'env.example'
-    env = env_example.read_text().replace('/srv/audiobooks', str(folder / 'books'))
+    env = (folder / 'env.example').read_text().replace('/srv/audiobooks', str(folder / 'books'))
     env = env.replace('you@example.com', 'setup@example.com')
     (folder / '.env').write_text(env)
     original = json.loads(compose(folder, 'config', '--format', 'json', local=False))
@@ -102,11 +99,9 @@ def prepare(tool, certs):
             'audiosilo': {'environment': {'AUDIOSILO_PUBLIC_URL': ORIGIN,
                                          'AUDIOSILO_METADATA_ENABLED': 'false',
                                          'AUDIOSILO_UPDATE_CHECK': 'false'}},
-            tool: {'ports': [f'127.0.0.1:{HTTP_PORT}:80', f'127.0.0.1:{HTTPS_PORT}:443']}
+            tool: {}
         }
     }
-    # JSON is YAML-compatible, except Compose's !override for the port sequence.
-    ports = overrides['services'][tool].pop('ports')
     if tool == 'caddy':
         text = (folder / 'Caddyfile').read_text()
         text = text.replace('    reverse_proxy',
@@ -138,6 +133,7 @@ def prepare(tool, certs):
         for key, value in service.items():
             out += f'    {key}: {json.dumps(value)}\n'
         if name == tool:
+            ports = [f'127.0.0.1:{HTTP_PORT}:80', f'127.0.0.1:{HTTPS_PORT}:443']
             out += '    ports: !override ' + json.dumps(ports) + '\n'
     (folder / 'test.override.yaml').write_text(out)
     return folder, source_hashes
@@ -296,7 +292,6 @@ def verify(tool, certs, capture):
                          f'HTTP/HTTPS host ports remapped to {HTTP_PORT}/{HTTPS_PORT}.',
                          'Native phone camera/app and real internet/router/DNS were not exercised.']}
     (HERE / f'{tool}-results.json').write_text(json.dumps(result, indent=2) + '\n')
-    return folder
 
 
 def main():
