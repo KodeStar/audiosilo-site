@@ -1,0 +1,58 @@
+{
+  "proxy": "swag",
+  "verified": "2026-10-21",
+  "checks": [
+    "HTTPS certificate verified against the local CA",
+    "/ serves over HTTPS without a redirect loop",
+    "/ has no HTTPS :80 redirect",
+    "/connect serves over HTTPS without a redirect loop",
+    "/connect has no HTTPS :80 redirect",
+    "/admin/ serves over HTTPS without a redirect loop",
+    "/admin/ has no HTTPS :80 redirect",
+    "/web/ serves over HTTPS without a redirect loop",
+    "/web/ has no HTTPS :80 redirect",
+    "/api/v1/server serves over HTTPS without a redirect loop",
+    "/api/v1/server has no HTTPS :80 redirect",
+    "/healthz serves over HTTPS without a redirect loop",
+    "/healthz has no HTTPS :80 redirect",
+    "HTTP redirects to HTTPS",
+    "First-run admin can sign in through the proxy",
+    "TLS mode is off",
+    "Public URL uses the external HTTPS address",
+    "Only the proxy /32 is trusted",
+    "AUDIOSILO_TLS_MODE overrides config.yaml and locks the UI",
+    "AUDIOSILO_PUBLIC_URL overrides config.yaml and locks the UI",
+    "AUDIOSILO_TRUSTED_PROXIES overrides config.yaml and locks the UI",
+    "AudioSilo has no host port binding",
+    "Browser setup steps and screenshots captured",
+    "Real browser audio playback and seeking work",
+    "Mounted read-only audiobook library is browsable",
+    "Audio seeking returns 206 and the requested bytes",
+    "Invite link points to the external HTTPS address",
+    "Pairing QR URL points to the external HTTPS address",
+    "Pairing code exchanges for a working device session",
+    "Forged client IP is not accepted",
+    "Settings, library and sessions survive an AudioSilo restart"
+  ],
+  "source_sha256": {
+    "audiosilo.conf": "d7910ac2e230b445137839a87819c14766fa4dbb0ca0974c7cad5a9e12af43aa",
+    "README.md": "71945213193ec720df2637db669292cc3a81252893c8429043f3993e78512ede",
+    "compose.yaml": "4d4c90eab2ab33119bea5b5d86342f2e4cd599d9b9cbea660f75494923cef087",
+    "env.example": "3c868ee8e9c0ba31ff31a47723ca2e43920e54eba2fb0976c2c01ee6365df030"
+  },
+  "images": {
+    "audiosilo": {
+      "reference": "lscr.io/linuxserver/audiosilo:v2.3.1-ls6",
+      "id": "sha256:966b10864ce4a72793f7d27b9d0f61bd9fe178bd7b371df386aff37365930d05"
+    },
+    "swag": {
+      "reference": "lscr.io/linuxserver/swag:5.8.0-ls492",
+      "id": "sha256:94cd8c08568f0aec0a63bb548cd6629d159c1a6e2b8f84b03f3796e0859e926b"
+    }
+  },
+  "limits": [
+    "Local test CA, not public Let's Encrypt issuance.",
+    "HTTP/HTTPS host ports remapped to 28080/28443.",
+    "Native phone camera/app and real internet/router/DNS were not exercised."
+  ]
+}

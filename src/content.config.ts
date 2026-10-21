@@ -27,6 +27,14 @@ const blog = defineCollection({
       related: z.array(reference('blog')).default([]),
       hero: image().optional(),
       heroAlt: z.string().optional(),
+      /** Inline step captures, inserted at <!-- screenshot:id --> markers. */
+      screenshots: z.array(z.object({
+        id: z.string().regex(/^[a-z0-9-]+$/),
+        image: image(),
+        alt: z.string(),
+        caption: z.string(),
+        address: z.string().optional(),
+      })).default([]),
       video: z
         .object({
           youtube: z.string().optional(),

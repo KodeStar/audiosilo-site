@@ -1,0 +1,14 @@
+http:
+  routers:
+    audiosilo:
+      rule: 'Host(`{{ env "BOOKS_HOST" }}`)'
+      entryPoints:
+        - websecure
+      service: audiosilo
+      tls:
+        certResolver: letsencrypt
+  services:
+    audiosilo:
+      loadBalancer:
+        servers:
+          - url: http://audiosilo:8080

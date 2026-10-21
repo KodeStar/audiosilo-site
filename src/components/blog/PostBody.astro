@@ -4,15 +4,24 @@
  * code block once the page has loaded (the code is readable without it).
  */
 import type { LoadedPost } from '@/lib/blog'
+import IllustratedBody from './IllustratedBody.astro'
 
 interface Props {
   loaded: LoadedPost
 }
-const { Content } = Astro.props.loaded
+const { Content, post } = Astro.props.loaded
+// Check rendered HTML so a comment shown inside a code block is not a marker.
+// Missing screenshot metadata must still reach IllustratedBody's validation.
+const illustrated = post.data.screenshots.length > 0 ||
+  /<!--\s*screenshot:[a-z0-9-]+\s*-->/.test(post.rendered?.html ?? '')
 ---
 
 <div class="blog-prose prose-as">
-  <Content />
+  {illustrated ? (
+    <IllustratedBody screenshots={post.data.screenshots}><Content /></IllustratedBody>
+  ) : (
+    <Content />
+  )}
 </div>
 
 <script>
