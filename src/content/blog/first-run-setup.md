@@ -3,8 +3,10 @@ title: "Set up your server: a guided first run in the admin console"
 description: A new AudioSilo server now walks you through eight skippable steps on your first console sign-in, from the books folder and how books are named to pairing your phone.
 kind: feature
 published: 2026-10-21
-verified: 2026-10-21
-appliesTo: The next server release after 2.3.1 (merged, not yet released)
+verified: 2026-10-22
+# Held for the server release that completes Bridge Phase 2 (2c-2, 2c-3 and 2d), not the next
+# patch: owner, 2026-10-22. The release pass sets appliesTo to that version and flips draft.
+appliesTo: The server release after 2.3.1 that also brings podcasts and community contributions (merged, not yet released)
 tags: [admin, getting-started, setup, self-hosting]
 covers:
   - server:setup
