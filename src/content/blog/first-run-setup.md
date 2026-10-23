@@ -3,10 +3,9 @@ title: "Set up your server: a guided first run in the admin console"
 description: A new AudioSilo server now walks you through eight skippable steps on your first console sign-in, from the books folder and how books are named to pairing your phone.
 kind: feature
 published: 2026-10-21
-verified: 2026-10-22
-# Held for the server release that completes Bridge Phase 2 (2c-2, 2c-3 and 2d), not the next
-# patch: owner, 2026-10-22. The release pass sets appliesTo to that version and flips draft.
-appliesTo: The server release after 2.3.1 that also brings podcasts and community contributions (merged, not yet released)
+verified: 2026-10-23
+# Held for server v2.4.0, the release that completes Bridge Phase 2: /release-cut flips draft.
+appliesTo: Server 2.4.0
 tags: [admin, getting-started, setup, self-hosting]
 covers:
   - server:setup
@@ -36,7 +35,7 @@ The first time you sign in to the admin console on a new AudioSilo server, it no
 
 It's a page of its own, with the steps listed down the side. Each step has **Skip**, and every step after the first has **Back**. The list marks each step done or skipped, and any step is a click away. **Finish later** takes you to the console; the flow opens again in your next browser session until you finish it, and picks up at the first step you haven't answered.
 
-A setting fixed by an `AUDIOSILO_*` environment variable shows a lock and **Set by your config**, and settings that only apply after a restart say so.
+A setting fixed by an `AUDIOSILO_*` environment variable is shown locked, since it can only be changed where you set it, and settings that only apply after a restart say so.
 
 ## The eight steps
 
@@ -47,7 +46,7 @@ A setting fixed by an `AUDIOSILO_*` environment variable shows a lock and **Set 
 5. **Coming from Audiobookshelf?** A link to the import that brings everyone's listening progress across. Audiobookshelf's `metadata.json` files in your book folders are read as they are.
 6. **Backups and updates.** The database backup schedule (every day at 03:00 by default, the newest 7 kept) and whether the server checks GitHub once a day for a new version.
 7. **Connect a phone.** A pairing QR code that signs your phone in as you, plus **Open the web player**. It also says whether ffmpeg is ready, and reminds you that everyone can add their household members from **Me > Household** in the player.
-8. **Add a Bridge.** Optional. The lines to add to your compose file and the pairing code for a **Bridge**, the companion container that writes to your library folders and runs the heavy jobs, so the server itself stays read-only. Once one is paired, the step shows its setup checklist.
+8. **Add a Bridge.** Optional. The lines to add to your compose file and the pairing code for a **Bridge** (version 0.3.0 or later), the companion container that writes to your library folders and runs the heavy jobs, so the server itself stays read-only. Once one is paired, the step shows its setup checklist.
 
 ## Finish setting up, later
 
