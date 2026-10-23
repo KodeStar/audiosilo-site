@@ -26,19 +26,28 @@ curl -X POST https://your-server/api/v1/admin/libraries \\
   <h2>1. Grab your admin credentials</h2>
   <p>
     On its very first start the server creates an admin account and prints the password plus an auth
-    code <strong>exactly once</strong> - save them. (With <code>--setup</code>, a browser wizard sets the
-    password for you instead.)
+    code <strong>exactly once</strong> - save them. (Start it with <code>--setup</code> and you choose the
+    password in the browser instead.)
   </p>
   <CodeBlock code={creds} filename="Server log" />
   <p>
     With Docker, run <code>docker compose logs</code> to see them. Sign in to the admin console at
     <code>/admin</code> with the username <code>admin</code> and that password.
   </p>
+  <p>
+    On a new server, that first sign-in opens <strong>Set up your server</strong>: eight short steps
+    covering the books folder, how your books are named, community metadata, the addresses people use
+    to reach the server, coming from Audiobookshelf, backups and updates, connecting a phone, and an
+    optional Bridge. Every step can be skipped, and <strong>Finish later</strong> takes you straight to
+    the console. Everything you choose is an ordinary setting you can change afterwards.
+  </p>
 
   <h2>2. Add a library</h2>
   <p>
     Point a library at a folder of audiobooks - the one you mounted at <code>/library</code> in Docker,
-    for example. You can do this in the admin console, or via the API:
+    for example. <strong>Set up your server</strong> does this in its first three steps: it checks the
+    folder, then adds the library and starts its first scan. You can also add one later under
+    <strong>Library &gt; Libraries</strong> in the admin console, or via the API:
   </p>
   <CodeBlock code={addLibrary} />
   <p>
