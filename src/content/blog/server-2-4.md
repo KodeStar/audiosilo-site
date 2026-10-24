@@ -5,7 +5,7 @@ kind: release
 published: 2026-10-24
 updated: 2026-10-24
 verified: 2026-10-24
-appliesTo: Server 2.4.0 with its bundled web player, app 2.4.0, Bridge 0.3.0
+appliesTo: Server 2.4.0 and 2.4.1 with their bundled web player, app 2.4.0, Bridge 0.3.0 and 0.3.1
 tags: [release, server, podcasts, bridge, setup, metadata]
 covers:
   - server:podcasts
@@ -48,6 +48,8 @@ related:
   - move-podcasts-with-opml
 revisions:
   - date: 2026-10-24
+    note: "v2.4.1: fixes for sign-in, servers that aren't answering, downloads and the car, plus Bridge v0.3.1."
+  - date: 2026-10-24
     note: "Links the posts on Bridge recaps and contributions, tidying a big library, OPML and file order."
   - date: 2026-10-24
     note: "Corrects where genres come from (files and metadata.json, not community matches) and that Shift-click selects a range in the grid too."
@@ -64,6 +66,21 @@ AudioSilo Server **2.4.0** came out on 24 October. The big one is **podcasts**: 
 Update with `docker compose pull && docker compose up -d`, or from [GitHub Releases](https://github.com/KodeStar/audiosilo-server/releases). Back up your data folder first: eight database migrations (0047 to 0054) run on first start, and the next scan reads each book's genres from its files and `metadata.json` once, without re-reading the audio.
 
 Podcasts, generating, chapter detection and contributions need **Bridge 0.3.0 or later**. Its image is now public, so no login is needed: `ghcr.io/kodestar/audiosilo-bridge`. See [Running a Bridge](https://docs.audiosilo.app/users/getting-started/running-a-bridge).
+
+## 2.4.1: fixes
+
+Server **2.4.1** and **Bridge 0.3.1** came out on 24 October with fixes and nothing new to set up. Update the server the same way (`docker compose pull && docker compose up -d`); there are no database migrations this time. Update the Bridge image (`ghcr.io/kodestar/audiosilo-bridge`) to 0.3.1 too. If an admin console tab was open during the upgrade, reload it.
+
+- **Sign in again.** When a server ends your session (an admin signed you out, or your password changed), the player shows one **Sign in again** message with a **Reconnect** button, instead of load errors with a Retry that couldn't work.
+- **A server that isn't answering** is only marked down when it really isn't: one slow or dropped request no longer does it. When it answers again, the Library reloads by itself. With more than one server, the top bar, Home and **Library > Folders** name the one that's down.
+- **Downloads and the car.** When a book's download finishes while you're streaming it, playback moves to the downloaded copy at the same place, in the order you're listening in. A bookmark added in CarPlay or Android Auto that couldn't be saved offline keeps its place when it's sent again.
+- **Up next** keeps an episode your server is still fetching until it starts playing, and still has it if the fetch fails.
+- **Links to a book** that name one of its audio files or a disc folder open the book with your saved place, and a link that doesn't say which server opens on your default one.
+- **Admin console.** A library declared in `config.yaml` can't be deleted from the console any more: before, the delete removed everyone's progress, bookmarks and notes in it, and the library came back at the next restart. A Shift-click range in Match review now takes in a book you matched by hand once the list has read it again.
+- **Web players on another site.** With **Allowed web origins** set, a web player served from another site now gets your server's covers and audio; before, the browser blocked its covers.
+- **Bridge 0.3.1.** `reset-password` signs out every Bridge page session in the same step, and installing ffmpeg, ffprobe or whisper-cli on Linux gets past a "text file busy" error instead of failing.
+
+The player fixes are in the web player bundled with 2.4.1, and in app 2.4.1 for iPhone and Android when that update reaches your device. Older apps keep working as before. The full notes: [v2.4.1](https://github.com/KodeStar/audiosilo-server/releases/tag/v2.4.1).
 
 ## Podcasts beside your books
 
