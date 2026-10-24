@@ -3,8 +3,9 @@ title: "M4B vs MP3 for audiobooks: chapters, size and what plays where"
 description: M4B keeps a whole audiobook in one file with its chapters and cover; MP3 plays on anything. How they differ, when to convert, and how a server handles both.
 kind: guide
 published: 2026-10-11
-verified: 2026-10-19
-appliesTo: Server 2.3.1, app 2.0.0
+updated: 2026-10-24
+verified: 2026-10-24
+appliesTo: Server 2.4.0, app 2.0.0
 tags: [formats, m4b, mp3, chapters]
 covers:
   - bridge:audible
@@ -20,6 +21,9 @@ related:
   - player-tips
 hero: ../../assets/stills/player-ipad-player-dark.webp
 heroAlt: The AudioSilo full player on an iPad, with the chapter seek bar, the whole-book timeline and bookmark pins under it
+revisions:
+  - date: 2026-10-24
+    note: "Server 2.4.0: files play in natural order, so parts no longer need leading zeros, and .mka is indexed for the web player."
 ---
 
 **M4B** is the format made for audiobooks: one file holds the whole book, its chapter marks and its cover, and players treat it as a book rather than a song. **MP3** is the format everything can play, but an audiobook in MP3 usually comes as a folder of files, one per chapter or per disc track. For a library you listen to through an audiobook app or server, M4B is the tidier choice; MP3 is the safer one for an old car stereo or a cheap MP3 player.
@@ -51,7 +55,7 @@ MP3 is the oldest and most widely supported audio format. Audiobooks in MP3 (CD 
 
 ## Does it matter to an audiobook server?
 
-Much less than you might think. AudioSilo indexes `.m4b`, `.m4a`, `.mp4`, `.mp3`, `.flac`, `.ogg` and `.opus`, and presents a single M4B and a folder of MP3s the same way: **one book with one continuous timeline and a chapter list**. Seeking, progress, bookmarks and the sleep timer work across the file boundaries of a multi-file book.
+Much less than you might think. AudioSilo indexes `.m4b`, `.m4a`, `.mp4`, `.mp3`, `.flac`, `.ogg` and `.opus` (and, from server 2.4, `.mka`, which plays in the web player only, converted with ffmpeg), and presents a single M4B and a folder of MP3s the same way: **one book with one continuous timeline and a chapter list**. Seeking, progress, bookmarks and the sleep timer work across the file boundaries of a multi-file book.
 
 A few things help either format:
 
@@ -59,7 +63,7 @@ A few things help either format:
 - **Community chapters** (server 2.1 and later): once a book is matched to the community database, a book with no chapters of its own, or only one per file, can take the real chapter list of its recording, fitted onto your audio.
 - **Codecs a browser can't play** are converted on the fly for the web player when the server has ffmpeg, which the Docker image includes. The phone apps play the files directly, where the phone can decode them.
 
-So there is no need to convert a working MP3 library just for AudioSilo. Keep each book's files in their own folder, numbered so they sort (`01`, `02`, ... `10`), and it plays as one book. [How to organise audiobook folders](/blog/organize-audiobook-folders/) has the layout.
+So there is no need to convert a working MP3 library just for AudioSilo. Keep each book's files in their own folder, numbered in order, and it plays as one book. From server 2.4 the files play in natural order, so `1`, `2` ... `10` works as well as `01`, `02` ... `10`; padding still helps other players that sort letter by letter. [How to organise audiobook folders](/blog/organize-audiobook-folders/) has the layout.
 
 ## When converting MP3 to M4B is worth it
 
@@ -81,7 +85,7 @@ Converting MP3 to M4B means re-encoding to AAC, which loses a little quality eac
   ffmpeg -f concat -safe 0 -i parts.txt -map 0:a -c:a aac -b:a 64k book.m4b
   ```
 
-  This gives one M4B with no chapter marks. Use one of the tools above if you want a chapter per original file.
+  The shell lists the names letter by letter, so `10` comes before `2`: pad the numbers first (`01`, `02`) or check `parts.txt` is in order. This gives one M4B with no chapter marks. Use one of the tools above if you want a chapter per original file.
 
 ## What about FLAC, Opus and Audible's AAX?
 
