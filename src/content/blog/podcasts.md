@@ -2,9 +2,8 @@
 title: "Podcasts in AudioSilo: your shows beside your books"
 description: Podcasts on your own server. A Bridge downloads the episodes, the server stays read-only, and the player finds shows, imports your list and plays any episode on demand.
 kind: feature
-published: 2026-10-23
-verified: 2026-10-23
-# Draft until server v2.4.0 ships: /release-cut flips draft.
+published: 2026-10-24
+verified: 2026-10-24
 appliesTo: Server 2.4.0 with Bridge 0.3.0, app 2.4.0
 tags: [podcasts, bridge, player, admin]
 covers:
@@ -26,7 +25,7 @@ related:
   - admin-console-tour
   - player-tips
   - self-hosted-audiobook-server
-draft: true
+  - server-2-4
 ---
 
 AudioSilo now plays podcasts. A podcast library sits on your server next to your audiobooks, and the player shows its shows in the Library, gives each show a page of its own, puts new episodes from the shows you follow on Home, and plays an episode even when your server hasn't downloaded it yet. You can add shows yourself too: search a podcast directory, paste a feed's address, or bring your list from another podcast app, and take it with you again when you like. Your server still never writes to your folders: a **Bridge**, AudioSilo's optional companion container, reads the feeds and downloads the episodes, and the server reads what it saves.
@@ -35,11 +34,11 @@ AudioSilo now plays podcasts. A podcast library sits on your server next to your
 
 - **A paired Bridge, version 0.3.0 or later.** The Bridge does the writing: it reads each show's feed, saves the show's details and artwork, downloads episodes and removes older ones it no longer needs to keep. See [Running a Bridge](https://docs.audiosilo.app/users/getting-started/running-a-bridge).
 - **The Podcasts module**, turned on in the admin console under **Server > Settings > Modules**. It starts off, and pairing a Bridge doesn't turn it on.
-- **The AudioSilo app 2.4.0 or later, or the web player.** Older app builds don't show podcasts at all, not even to an admin, so update from the App Store or Google Play. The web player comes with your server and is updated with it.
+- **The AudioSilo app 2.4.0 or later, or the web player.** Older app builds don't show podcasts at all, not even to an admin. The web player comes with your server and is updated with it, so it has podcasts as soon as your server is on 2.4.0, even before app 2.4.0 reaches your phone.
 
 ## For the admin: a podcast library
 
-Podcasts live in a library of their own. In the console, **Library > Libraries > Add library**, choose **Podcasts** as the **Kind**, and give it a name and a folder. Mount that same folder read-write in the Bridge; the server keeps its read-only mount. The library shows as **Ready** under **Server > Settings > Bridge** once the Bridge can write to it, even while it's still empty. Then turn the module on.
+Podcasts live in a library of their own. In the console, **Library > Libraries > Add library**, choose **Podcasts** as the **Kind**, and give it a name and a folder. Leave **Give everyone access** ticked (the default) and every listener on the server can follow shows in it. Mount that same folder read-write in the Bridge; the server keeps its read-only mount. The library shows as **Ready** under **Server > Settings > Bridge** once the Bridge can write to it, even while it's still empty. Then turn the module on.
 
 The Bridge makes one folder per show, with the feed's details and artwork. Each show has a retention policy that everyone following it shares:
 

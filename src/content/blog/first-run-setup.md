@@ -2,9 +2,8 @@
 title: "Set up your server: a guided first run in the admin console"
 description: A new AudioSilo server now walks you through eight skippable steps on your first console sign-in, from the books folder and how books are named to pairing your phone.
 kind: feature
-published: 2026-10-21
-verified: 2026-10-23
-# Held for server v2.4.0, the release that completes Bridge Phase 2: /release-cut flips draft.
+published: 2026-10-24
+verified: 2026-10-24
 appliesTo: Server 2.4.0
 tags: [admin, getting-started, setup, self-hosting]
 covers:
@@ -26,7 +25,7 @@ related:
   - admin-console-tour
   - moving-from-audiobookshelf
   - pair-your-phone
-draft: true
+  - server-2-4
 ---
 
 The first time you sign in to the admin console on a new AudioSilo server, it now opens **Set up your server**: eight short steps that take you from an empty server to a named, matched library and a phone that's signed in. Every step can be skipped, and everything you choose is an ordinary setting you can change later in **Settings** or **Libraries**. A server that was already in use before this release (it has a library, or more than one account) never sees the flow.
