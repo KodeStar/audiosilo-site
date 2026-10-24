@@ -5,7 +5,7 @@ kind: guide
 published: 2026-10-10
 updated: 2026-10-24
 verified: 2026-10-24
-appliesTo: Server 2.3.1 and 2.4.0 (lscr.io/linuxserver/audiosilo)
+appliesTo: Server 2.3.1 (lscr.io/linuxserver/audiosilo), and 2.4.0 once the image is rebuilt for it
 tags: [unraid, docker, self-hosting, getting-started]
 covers:
   - server:install
@@ -21,7 +21,7 @@ hero: ../../assets/stills/server-people-dark.webp
 heroAlt: The People page in the AudioSilo admin console, every household account with what they are listening to and how many devices they use
 revisions:
   - date: 2026-10-24
-    note: "Server 2.4.0: the first console sign-in opens Set up your server, which adds the library. The LinuxServer.io image follows each release."
+    note: "Server 2.4.0: the first console sign-in opens Set up your server, which adds the library. The LinuxServer.io image is rebuilt after each AudioSilo release."
 ---
 
 Unraid makes a good home for an audiobook library: the books sit on an array share, and the server runs as a container next to them. AudioSilo is in **Community Applications** (the Apps tab) as the [LinuxServer.io](https://www.linuxserver.io) image, `lscr.io/linuxserver/audiosilo`: the AudioSilo server, its web player and ffmpeg, rebuilt automatically after each AudioSilo release. Installing it takes a template and a couple of paths.
@@ -72,7 +72,7 @@ From server 2.4.0, the first time you sign in to the console, it opens **Set up 
 
 ## 4. Reaching it from outside your network
 
-The self-signed certificate is fine in a browser at home. To listen away from home, and for the iPhone and Android apps, the server needs an address with a certificate the devices trust. On Unraid that usually means a reverse proxy you may already run, such as **SWAG** or **Nginx Proxy Manager**. In the admin console under **Server > Settings**:
+The self-signed certificate is fine in a browser at home, and the phone apps connect at home over plain HTTP instead (from app 2.1 on iPhone and iPad, app 2.4.0 on Android) (see [How to pair your phone](/blog/pair-your-phone/)). To listen away from home, and for older apps at all, the server needs an address with a certificate the devices trust. On Unraid that usually means a reverse proxy you may already run, such as **SWAG** or **Nginx Proxy Manager**. In the admin console under **Server > Settings**:
 
 - Either point the proxy at `https://<unraid-ip>:8080` as it is, or set **HTTPS mode** to **Off**, restart the container and point the proxy at `http://<unraid-ip>:8080`. With HTTPS off, the Docker tab's WebUI link still opens `https://`: edit the container, switch to **Advanced View** and set its **WebUI** field to `http://[IP]:[PORT:8080]`.
 - Set **Public address** to the address people use, for example `https://books.example.com`, so invite links and QR codes point there.

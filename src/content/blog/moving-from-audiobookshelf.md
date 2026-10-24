@@ -99,7 +99,7 @@ Progress only moves forward: an import never rewinds a book or unfinishes a fini
 
 **Comes over:** listening sessions with their real dates (so stats, the listening calendar, streaks and the Year in listening carry on), progress, start and finish dates, and bookmarks.
 
-**Doesn't:** podcasts, collections, playlists, ebooks, and accounts or passwords. Each server keeps its own. To bring your shows across to a server 2.4 podcast library, export them from Audiobookshelf as OPML and use **Import a list** in the player's **Add shows**.
+**Doesn't:** podcasts, collections, playlists, ebooks, and accounts or passwords. Each server keeps its own. To bring your shows across to a server 2.4 podcast library, export them with **Export OPML** in the menu of an Audiobookshelf podcast library and use **Import a list** in the player's **Add shows**.
 
 The full walkthrough is [Importing from Audiobookshelf](https://docs.audiosilo.app/users/admin/import) in the docs.
 

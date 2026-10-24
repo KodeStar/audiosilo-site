@@ -33,7 +33,7 @@ To listen to a self-hosted audiobook server away from home, it needs **an addres
 
 AudioSilo serves HTTPS from the start, with a **self-signed** certificate it makes itself. A browser shows a warning the first time and lets you accept it, which is fine at home. Two things can't accept that warning:
 
-- **The iPhone and Android apps.** They need a certificate they trust. (From app 2.1 they can use plain HTTP on your home network with the default self-signed setup, but away from home every app needs a trusted certificate.)
+- **The iPhone and Android apps.** They need a certificate they trust. (From app 2.1 on iPhone and iPad, and app 2.4.0 on Android, they can use plain HTTP on your home network with the default self-signed setup, but away from home every app needs a trusted certificate.)
 - **Installing the web player** to a phone's home screen, which needs a connection the browser fully trusts.
 
 So for listening on the go, give the server an HTTPS address with a trusted certificate. The proxy guides below use that same HTTPS hostname for mobile and web access.

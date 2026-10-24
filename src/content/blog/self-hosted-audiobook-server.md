@@ -132,7 +132,7 @@ It finds ffmpeg on your system or downloads it on first use. `./audiosilo --setu
 ## Start listening
 
 - **In a browser**: open `/web` on your server. It works on phones too, and can be added to the home screen.
-- **On iPhone, iPad and Android**: install AudioSilo from the [App Store](https://apps.apple.com/us/app/audiosilo/id6783431375) or [Google Play](https://play.google.com/store/apps/details?id=app.audiosilo) and pair it with a QR code. The apps can't accept a self-signed certificate the way a browser can, so they need the server at an address with a trusted certificate; [How to pair your phone](/blog/pair-your-phone/) and [Listen away from home](/blog/listen-away-from-home/) cover this.
+- **On iPhone, iPad and Android**: install AudioSilo from the [App Store](https://apps.apple.com/us/app/audiosilo/id6783431375) or [Google Play](https://play.google.com/store/apps/details?id=app.audiosilo) and pair it with a QR code. The apps can't accept a self-signed certificate the way a browser can: from app 2.1 on iPhone and iPad (app 2.4.0 on Android) they connect over plain HTTP on your home network instead, and away from home (or with an older app) they need the server at an address with a trusted certificate; [How to pair your phone](/blog/pair-your-phone/) and [Listen away from home](/blog/listen-away-from-home/) cover this.
 - **Everyone else in the house**: in the admin console, **Invite someone** creates their account and shows a QR code and link. No password needed.
 
 ## Keeping it updated

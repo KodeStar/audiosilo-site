@@ -34,7 +34,7 @@ To sign the AudioSilo app in with a QR code, open the server's connect page in a
 
 ## Before you start: the apps need a trusted address
 
-A fresh AudioSilo server uses a **self-signed certificate**. A browser lets you click past its warning; the iPhone and Android apps can't. From app 2.1, the apps get round that at home: while the phone is on the same Wi-Fi as the server, they connect over plain `http://`, which a self-signed server (2.3 or later) offers to devices on your home network. App 2.0.0, and every app away from home, needs an address with a certificate it trusts: Let's Encrypt through the server's own **autocert** mode, or a reverse proxy you already run. [Listen away from home](/blog/listen-away-from-home/) sets this up, and it's what you want for listening outside the house anyway.
+A fresh AudioSilo server uses a **self-signed certificate**. A browser lets you click past its warning; the iPhone and Android apps can't. From app 2.1 on iPhone and iPad (app 2.4.0 on Android), the apps get round that at home: while the phone is on the same Wi-Fi as the server, they connect over plain `http://`, which a self-signed server (2.3 or later) offers to devices on your home network. App 2.0.0, and every app away from home, needs an address with a certificate it trusts: Let's Encrypt through the server's own **autocert** mode, or a reverse proxy you already run. [Listen away from home](/blog/listen-away-from-home/) sets this up, and it's what you want for listening outside the house anyway.
 
 Not there yet? The **web player** works in the meantime. Open `https://your-server:8080/web` in the phone's browser, accept the certificate warning and sign in; everything in this guide works there too, except scanning a QR code from inside the app.
 
