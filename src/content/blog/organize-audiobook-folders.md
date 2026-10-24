@@ -20,11 +20,14 @@ related:
   - fix-covers-and-series
   - moving-from-audiobookshelf
   - back-up-your-audible-library
+  - audiobook-files-out-of-order
 hero: ../../assets/stills/server-series-dark.webp
 heroAlt: Series in the AudioSilo admin console, a complete shelf of seven spines and a series with books 2 to 4 missing
 revisions:
   - date: 2026-10-24
     note: "Server 2.4.0 plays a book's files in natural order (2 before 10), so leading zeros are no longer needed; metadata.json now also gives genres, tags and more."
+  - date: 2026-10-24
+    note: "Links the new guide to fixing audiobook files that play out of order."
 ---
 
 The short answer: give **every book its own folder**, put it inside a folder for its **series** (if it has one), and put that inside a folder for its **author**. Start the book folder with its number in the series. That one layout works in AudioSilo, in Audiobookshelf and in most other audiobook players:
@@ -53,7 +56,7 @@ The rule audiobook servers share is that **a folder that directly holds audio fi
 Two things follow from that:
 
 - **Never put two books' files in the same folder.** They would be read as one long book.
-- **Number multi-file parts in order.** AudioSilo 2.4.0 and later sorts numbers as numbers, whatever the punctuation around them, so `Part 2.mp3` plays before `Part 10.mp3` and padded numbers (`01`, `02` ... `10`) work just as well. Some other players sort strictly letter by letter and put part 10 after part 1, so leading zeros are still the safe choice for a library more than one player reads.
+- **Number multi-file parts in order.** AudioSilo 2.4.0 and later sorts numbers as numbers, whatever the punctuation around them, so `Part 2.mp3` plays before `Part 10.mp3` and padded numbers (`01`, `02` ... `10`) work just as well. Some other players sort strictly letter by letter and put part 10 after part 1, so leading zeros are still the safe choice for a library more than one player reads. [Why audiobook files play out of order](/blog/audiobook-files-out-of-order/) shows how to rename a whole folder at once.
 
 A loose audio file sitting directly in the top folder of the library is the exception: it is read as a book of its own. So a flat folder of M4B files works too, with no folders at all, although you then lose the author and series that folder names give you.
 

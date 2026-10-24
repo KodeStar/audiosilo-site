@@ -2,9 +2,8 @@
 title: How to move your podcast subscriptions to another app with OPML
 description: Most podcast apps export the shows you follow as an OPML file and import one. What the file carries and leaves out, the apps that can't export, and how AudioSilo uses it.
 kind: guide
-published: 2026-10-23
-verified: 2026-10-23
-# Draft until server v2.4.0 and Bridge v0.3.0 ship (podcasts): /release-cut flips draft.
+published: 2026-10-24
+verified: 2026-10-24
 appliesTo: Server 2.4.0 with Bridge 0.3.0, app 2.4.0
 tags: [podcasts, opml, player, getting-started]
 covers:
@@ -14,10 +13,11 @@ covers:
   - app:find-shows
   - docs:/users/listening/podcasts
 related:
+  - podcasts
+  - server-2-4
   - self-hosted-audiobook-server
   - player-tips
   - moving-from-audiobookshelf
-draft: true
 ---
 
 To move your podcasts from one app to another, **export your subscriptions as an OPML file** in the old app and **import that file** in the new one. OPML is a plain list of the RSS feed addresses of the shows you follow, and nearly every independent podcast app reads and writes it, so the switch takes a minute and you don't have to search for each show again. The two big exceptions are Apple Podcasts and Spotify, which don't export one (more below).
@@ -62,10 +62,10 @@ Look for **Import OPML** in the same part of the new app's settings, or open the
 
 ## Doing it with AudioSilo
 
-From **server 2.4.0**, with a paired Bridge and the Podcasts module on, AudioSilo keeps your podcasts on your own server next to your audiobooks, and OPML works both ways in the player (app 2.4.0 or the web player):
+From **server 2.4.0**, with a paired Bridge and the Podcasts module on, AudioSilo keeps your podcasts on your own server next to your audiobooks, and OPML works both ways in the player. That means app 2.4.0 or the web player bundled with your server: until app 2.4.0 reaches your device, use the web player, since older apps don't show podcasts at all.
 
-- **Import a list**, on the **Add shows** page of a podcast library, takes an OPML file from another app (up to 1 MB) and follows every show in it. Your server adds new shows five at a time, and the player sends the next batch by itself while the page is open. Each show in the list says how it went (**Following**, **Already following**, **Being added**), so importing the same file again is safe. A feed that failed to add in the last hour isn't asked for again, so a few dead feeds don't hold up the rest, and you can try one again on its own.
+- **Import a list**, on the **Add shows** page of a podcast library, takes an OPML file from another app (up to 1 MB) and follows every show in it. Your server adds new shows five at a time, and the player sends the next batch by itself while the page is open. Each show in the list says how it went (**Following**, **Already following**, **Being added**), so importing the same file again is safe. A feed that failed to add in the last hour isn't asked for again, so a few dead feeds don't hold up the rest, and **Try again** on that show's row asks for it on its own.
 - **Export my shows**, in the Shows **...** menu, saves the shows you follow as an OPML file any podcast app can import. Private feeds are never written into an export, for anyone.
-- Coming from Apple Podcasts, use **Search** on the same page instead: it searches a podcast directory (Apple Podcasts, unless your admin chose another) through your server, so you can follow your shows again one by one.
+- Coming from Apple Podcasts, use **Search** on the same page instead: it searches Apple Podcasts through your server (or Podcast Index, if your admin has set it up), so you can follow your shows again one by one.
 
-The docs' [Podcasts page](https://docs.audiosilo.app/users/listening/podcasts) has the screens, including [Adding shows](https://docs.audiosilo.app/users/listening/podcasts#adding-shows). For what a self-hosted server is and why you might run one, see [Self-hosted audiobook server](/blog/self-hosted-audiobook-server/).
+[Podcasts in AudioSilo](/blog/podcasts/) covers the rest: following shows, keeping episodes and playing any episode on demand. The docs' [Podcasts page](https://docs.audiosilo.app/users/listening/podcasts) has the screens, including [Adding shows](https://docs.audiosilo.app/users/listening/podcasts#adding-shows). For what a self-hosted server is and why you might run one, see [Self-hosted audiobook server](/blog/self-hosted-audiobook-server/).

@@ -3,6 +3,7 @@ title: "Podcasts in AudioSilo: your shows beside your books"
 description: Podcasts on your own server. A Bridge downloads the episodes, the server stays read-only, and the player finds shows, imports your list and plays any episode on demand.
 kind: feature
 published: 2026-10-24
+updated: 2026-10-24
 verified: 2026-10-24
 appliesTo: Server 2.4.0 with Bridge 0.3.0, app 2.4.0
 tags: [podcasts, bridge, player, admin]
@@ -26,6 +27,10 @@ related:
   - player-tips
   - self-hosted-audiobook-server
   - server-2-4
+  - move-podcasts-with-opml
+revisions:
+  - date: 2026-10-24
+    note: "Links the new guide to moving podcast subscriptions with OPML."
 ---
 
 AudioSilo now plays podcasts. A podcast library sits on your server next to your audiobooks, and the player shows its shows in the Library, gives each show a page of its own, puts new episodes from the shows you follow on Home, and plays an episode even when your server hasn't downloaded it yet. You can add shows yourself too: search a podcast directory, paste a feed's address, or bring your list from another podcast app, and take it with you again when you like. Your server still never writes to your folders: a **Bridge**, AudioSilo's optional companion container, reads the feeds and downloads the episodes, and the server reads what it saves.
@@ -66,7 +71,7 @@ A show's page has its cover, description and episodes. A show that's told in ord
 
 - **Search** a podcast directory by a show's name. Each result has the show's artwork, maker and number of episodes, a link to view it on the directory, and **Follow**. The search and the artwork go through your server, so the directory sees your server's address, not yours, and only the words you searched for (and, for Apple, your device's country).
 - **Feed address** follows a show by its RSS address. Turn on **Private feed** for a paid or members-only feed, so only you see it and it's never exported.
-- **Import a list** takes an **OPML** file exported from another podcast app (up to 1 MB) and follows every show in it. Your server adds at most five new shows for you at a time, so a long list goes in batches of five, and the player sends the next batch by itself while the page is open. Each show in the list says how it went: **Following**, **Already following**, **Being added**, **In the list twice**, and so on. Importing the same file again is safe: shows already done say so and the rest go ahead. A feed that failed to add in the last hour isn't asked for again by an import, so a few dead feeds in a list don't hold up the shows after them; it's marked as not added, and you can try that show again on its own.
+- **Import a list** takes an **OPML** file exported from another podcast app (up to 1 MB) and follows every show in it. Your server adds at most five new shows for you at a time, so a long list goes in batches of five, and the player sends the next batch by itself while the page is open. Each show in the list says how it went: **Following**, **Already following**, **Being added**, **In the list twice**, and so on. Importing the same file again is safe: shows already done say so and the rest go ahead. A feed that failed to add in the last hour isn't asked for again by an import, so a few dead feeds in a list don't hold up the shows after them; it's marked as not added, and you can try that show again on its own. [How to move your podcast subscriptions with OPML](/blog/move-podcasts-with-opml/) covers exporting the list from the app you use now.
 
 A show the library already has is followed straight away. A new one has to be fetched by the Bridge first, so it shows under **Shows being added** until it's ready, or says why it **Couldn't add** (the feed didn't answer, the address isn't a podcast feed, and so on). Back in Shows, a line such as **Adding 2 shows** is there while any are on their way.
 

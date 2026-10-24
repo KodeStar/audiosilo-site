@@ -2,9 +2,8 @@
 title: Why audiobook files play out of order, and how to fix the file names
 description: Part 10 plays after part 1 because computers sort names letter by letter. How to number audiobook files so every player gets them right, and how to rename a folder in one go.
 kind: guide
-published: 2026-10-23
-verified: 2026-10-23
-# Draft until server v2.4.0 ships (natural file order, server#160): /release-cut flips draft.
+published: 2026-10-24
+verified: 2026-10-24
 appliesTo: Server 2.4.0
 tags: [library, folders, files, getting-started]
 covers:
@@ -16,7 +15,7 @@ related:
   - organize-audiobook-folders
   - m4b-vs-mp3-audiobooks
   - fix-covers-and-series
-draft: true
+  - server-2-4
 ---
 
 An audiobook split into many files plays out of order because most software sorts file names **character by character**, the way a dictionary sorts words. It compares `1` with `1`, then `-` with `0`, and decides that `10 - Part.mp3` comes before `2 - Part.mp3`, because `1` comes before `2`. The fix is to **number the files with leading zeros**, so every name has the same number of digits: `01`, `02` ... `10` for up to 99 parts, `001` ... `100` beyond that. Then letter-by-letter order and number order agree, in every player and file manager.
@@ -70,6 +69,6 @@ From **server 2.4.0**, AudioSilo plays a book's files in **natural order**: it r
 
 AudioSilo goes by the file names, not the track-number tags, so the name is what to fix when a book is still out of order. Natural order can't help with the cases above that have no digits to go on: unnumbered prologues and epilogues, and numbers spelt as words.
 
-If a book on your server played out of order before 2.4.0, it is put right at the next library scan. Anyone partway through that book may find their place in it has moved, since the files are now in a different order. Chapters a Bridge found in the narration move with their files, so they don't need finding again.
+If a book on your server played out of order before 2.4.0, it is put right at the next library scan. Anyone partway through that book may find their place in it has moved, since the files are now in a different order. Chapters a Bridge found in the narration move with their files, so they don't need finding again. A copy downloaded to a phone takes the new order the next time the book is started online in app 2.4.0. Until then, and in older apps until 2.4.0 reaches your device, it plays in its download order. The [Server 2.4 release post](/blog/server-2-4/) has the rest of what changed.
 
 Leading zeros are still worth adding: other players, file managers and backup tools don't all sort naturally, and padded names work everywhere. For the rest of the layout (one folder per book, inside its series and author), see [How to organise audiobook folders](/blog/organize-audiobook-folders/), and the docs' [Organizing your library](https://docs.audiosilo.app/users/getting-started/organizing-your-library) for the full reference, including joining disc folders into one book.

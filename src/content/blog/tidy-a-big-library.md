@@ -2,9 +2,8 @@
 title: "Tidying a big library: genres, tags, bulk edits and duplicates"
 description: Server 2.4.0 gives books genres and tags you can filter by, makes selecting hundreds of books in the console quick, and finds copies of a book across libraries.
 kind: feature
-published: 2026-10-23
-verified: 2026-10-23
-# Draft until server v2.4.0 ships: /release-cut flips draft.
+published: 2026-10-24
+verified: 2026-10-24
 appliesTo: Server 2.4.0, app 2.4.0
 tags: [admin, library, metadata, player]
 covers:
@@ -21,20 +20,20 @@ related:
   - fix-covers-and-series
   - admin-console-tour
   - organize-audiobook-folders
-draft: true
+  - server-2-4
 ---
 
 A library of a few dozen books looks after itself. A library of a few thousand needs tools: a way to group books beyond author and series, a way to change many at once, and a way to spot the same book in two places. Server 2.4.0 adds all three to the admin console, and the player picks up the first.
 
 ## Genres and tags
 
-Every book now has **Genres** and **Tags**, shown as chips on its page in the console. Genres come from the audio files' *genre* tag (a genre that only says "Audiobook" or "Spoken Word" is left out) and from an Audiobookshelf `metadata.json`. Tags are yours: they come from a `metadata.json` or your own edits, so use them however suits your household, such as "Owned", "Read with the kids" or "Book club".
+Every book now has **Genres** and **Tags**, shown as chips on its page in the console. Genres come from the audio files' *genre* tag (a genre that only says something like "Audiobook" or "Spoken Word" is left out) and from an Audiobookshelf `metadata.json`. Tags are yours: they come from a `metadata.json` or your own edits, so use them however suits your household, such as "Owned", "Read with the kids" or "Book club".
 
-To edit them, click the chips on a book's page, type a label and press Enter or a comma (pasting "Fantasy, Epic" adds both). Capitals don't split a label: "Sci-Fi" and "sci-fi" are one tag. Books indexed before your server could read genres get them on the next scan, without a full re-index.
+To edit them, click the chips on a book's page, type a label and press Enter or a comma (pasting "Fantasy, Epic" adds both). Capitals don't split a label: "Sci-Fi" and "sci-fi" are one tag. Books indexed before your server could read genres get them on the next scan, without a full re-index. The console's **Books** filters gain **Genre** and **Tag** groups too.
 
 The same release adds a book's **Subtitle**, **Publisher**, **Language** and **Abridged** to its details, each marked with where the value came from like the other fields.
 
-In the player (app 2.4.0 or the web player), a book's page shows its genres and tags as chips, and tapping one opens the Library filtered to it. The Library's Books gain **Genre** and **Tag** filters, each listing how many books it would show, and search finds books by genre and tag too.
+In the player, a book's page shows its genres and tags as chips, and tapping one opens the Library filtered to it. The Library's Books gain **Genre** and **Tag** filters, each listing how many books it would show, and search finds books by genre and tag too. That's in the **web player bundled with your server** (`/web`) and in **app 2.4.0**: until app 2.4.0 reaches your device, use the web player to browse by genre and tag. The [Server 2.4 release post](/blog/server-2-4/) has the rest of what's new.
 
 ## Changing many books at once
 

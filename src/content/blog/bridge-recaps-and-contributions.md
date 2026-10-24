@@ -2,9 +2,8 @@
 title: "Characters and recaps from your own Bridge, and sharing them back"
 description: A paired Bridge writes characters, chapter recaps and a spoiler-free description for books the community hasn't covered, and can send them, and your corrections, back to it.
 kind: feature
-published: 2026-10-23
-verified: 2026-10-23
-# Draft until server v2.4.0 and Bridge v0.3.0 ship: /release-cut flips draft.
+published: 2026-10-24
+verified: 2026-10-24
 appliesTo: Server 2.4.0 with Bridge 0.3.0, app 2.4.0
 tags: [bridge, metadata, recaps, community, admin]
 covers:
@@ -25,11 +24,14 @@ covers:
 related:
   - fix-covers-and-series
   - admin-console-tour
-  - self-hosted-audiobook-server
-draft: true
+  - server-2-4
+  - podcasts
+  - first-run-setup
 ---
 
 AudioSilo's community database at [meta.audiosilo.app](https://meta.audiosilo.app) gives many books a cast list and chapter-by-chapter recaps, with spoiler protection that only shows what you've reached. Plenty of books aren't covered yet. With server 2.4.0 and a paired **Bridge**, AudioSilo's optional companion container, your server can write them itself: the Bridge transcribes the book (or reads its ebook), has an AI agent pick out the people and the events, checks the result for mistakes and spoilers, and saves it with the book. Some hours later the book's **Characters** and **Recaps** tabs appear in the player. If you like, the Bridge then offers them to the community, so every other server gets them too.
+
+**Where it shows:** the Generate button, the **Generated on this server** mark and the generated description are in the **web player bundled with your server** (`/web`) and in **app 2.4.0**. Until app 2.4.0 reaches your device, use the web player: older apps show the Characters and Recaps tabs only for books matched to the community, without the mark, and don't show a generated description. Chapters a Bridge finds reach older apps too.
 
 ## What it needs
 
@@ -42,11 +44,11 @@ The book doesn't need a community match, an ASIN or an ISBN to be generated.
 
 ## Generating a book
 
-On a book's page in the console, the **Community metadata** card has **Generate characters and recaps**. A series card on **Library > Series** has **Generate for the series**, which queues every book without recaps in reading order, since each book's recaps build on the ones before it. In the player, an admin sees the same button on a book's page.
+On a book's page in the console, the **Community metadata** card has **Generate characters and recaps**. A series card on **Library > Series** has **Generate for the series**, which queues every book without recaps in reading order, since each book's recaps build on the ones before it. In the player (the web player, or app 2.4.0), an admin sees the same button on a book's page.
 
 The confirmation says what the run will take before anything is spent: whether it reads **the audio** or **the ebook beside it** (a single `.epub` in the book's folder is much quicker than transcribing), how long transcription should take on your hardware, and an **Agent cost** estimate learned from the books your Bridge has already done. Transcription runs on the Bridge itself, or on a faster computer as an ASR worker, and costs nothing but time. The agent is the only cost, and the Bridge caps it: **$100 a month** across all books and **$75 a book** by default, both adjustable. A job that reaches a cap pauses rather than failing.
 
-While it runs, the book's page shows the current step ("Transcribing", "Writing characters and recaps", "Checking for mistakes"), how far it has got and about how long is left, in the console and in the player. You can close the page: the Bridge carries on, and the console's notifications can tell you when it's done.
+While it runs, the book's page shows the current step ("Transcribing", "Writing characters and recaps", "Checking for mistakes", which the player words as "Checking for mistakes and spoilers"), how far it has got and about how long is left, in the console and in the player. You can close the page: the Bridge carries on, and the console's notifications can tell you when it's done.
 
 ## What you get
 
