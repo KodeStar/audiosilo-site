@@ -3,8 +3,9 @@ title: Fix wrong covers, titles and series in your audiobook library
 description: Swapped tags, missing covers, a series spelled three ways. How to match books to the community database one at a time or all at once, without touching your files.
 kind: tip
 published: 2026-10-14
-verified: 2026-10-19
-appliesTo: Server 2.3.1
+updated: 2026-10-24
+verified: 2026-10-24
+appliesTo: Server 2.4.0
 tags: [metadata, matching, covers, series, admin]
 covers:
   - server:metadata
@@ -23,13 +24,16 @@ related:
   - server-2-3
 hero: ../../assets/stills/server-compare-dark.webp
 heroAlt: Compare with community metadata, field by field, what is on your server marked File tag or Path next to the community value, with the fields to take ticked
+revisions:
+  - date: 2026-10-24
+    note: "Server 2.4.0: match review lists best matches first and opens Match by hand over it, hand matches are kept, and duplicates can span libraries."
 ---
 
 Audiobook tags are famously messy: a title tag holding the author's name, no cover, "Book 3" of a series you've never heard of, or the same series spelled three ways. In AudioSilo you fix these from the admin console, with help from the free community database at [meta.audiosilo.app](https://meta.audiosilo.app), and **none of it touches your files**: every fix is stored as an override in the server's database, survives rescans, and can be reverted.
 
 ## Start with Health
 
-**Health** in the admin console turns each scan into a to-do list: books without a cover, books not matched to the community database, unreadable files, folders that look like they need attention, and possible duplicates. Each list comes with its fix, and anything you decide to leave can be ignored.
+**Health** in the admin console turns each scan into a to-do list: books without a cover, books not matched to the community database, unreadable files, folders that look like they need attention, and possible duplicates (from 2.4, across libraries too, with **Include other libraries**). Each list comes with its fix, and anything you decide to leave can be ignored.
 
 ## Match one book
 
@@ -51,13 +55,15 @@ Taken values are marked **Community** on the book's page and can be reverted one
 - **To review**: lower scores or close calls. Tick the ones that are right.
 - **Not found** and **Not checked**: the rest.
 
+From server 2.4, each list puts the best matches first, a match held back because its length differs says so, and **Match by hand** opens that book's match dialog over the review without losing your place.
+
 Then choose **what to write**:
 
 - **ASIN and ISBN only** marks books as matched and changes nothing else.
 - **Fill in what's missing** (the default) fills empty fields and takes a cover only for books with none.
 - **Use community values** also replaces fields that differ.
 
-Your own edits are never replaced, whichever you choose. Nothing changes until you click **Apply**.
+Your own edits are never replaced, whichever you choose, and from 2.4 neither is a book matched by hand or matched since the run. Nothing changes until you click **Apply**.
 
 If you set your **Audible marketplace** (Server > Settings > Community metadata), matches take the ASIN from your store when a recording is sold in several.
 

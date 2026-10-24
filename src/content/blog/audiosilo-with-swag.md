@@ -3,7 +3,8 @@ title: "Set up AudioSilo with SWAG: Docker Compose and HTTPS"
 description: "A step-by-step SWAG reverse proxy guide for AudioSilo, with downloadable Compose files, screenshots, HTTPS settings, phone pairing and troubleshooting."
 kind: tutorial
 published: 2026-10-21
-verified: 2026-10-21
+updated: 2026-10-24
+verified: 2026-10-24
 appliesTo: "Server 2.3.1 (LinuxServer v2.3.1-ls6); SWAG 5.8.0-ls492; app 2.0.0"
 tags: [reverse-proxy, https, remote-access, docker, swag]
 covers:
@@ -59,6 +60,9 @@ screenshots:
     alt: "SWAG: The AudioSilo web player reached through the reverse proxy"
     caption: "Check that the library opens, audio plays and seeking works through the same HTTPS address."
     address: "books.example.com:28443/web"
+revisions:
+  - date: 2026-10-24
+    note: "Noted the Set up your server flow a new 2.4.0 server opens on first sign-in, and that app 2.4.0 scans the invite card's QR directly."
 ---
 
 To put AudioSilo behind **SWAG**, let SWAG serve HTTPS and forward to **`http://audiosilo:8080`**, with **AudioSilo's HTTPS mode set to Off**. Set its public address to your HTTPS hostname and trust the proxy's address for client IP handling. This guide gives you the files and takes you from a fresh Docker Compose stack to listening on your phone.
@@ -171,6 +175,8 @@ docker compose logs audiosilo
 
 On a new configuration directory it prints a generated **admin password** and **auth code** once. Save them privately. Open **`https://books.example.com/admin`**, sign in as `admin` with that password, and keep the auth code for the phone step. Use your real hostname here. If this is an existing configuration, use the credentials you already have; restarting does not print a fresh password.
 
+The pinned download runs 2.3.1, which opens the console directly. On a new server running **2.4.0 or later**, signing in opens **Set up your server** first: its steps cover the books folder (`/audiobooks` here), the addresses and pairing a phone, and **Finish later** takes you to the console to follow this guide instead.
+
 <!-- screenshot:login -->
 
 ## Step 5: Check the three AudioSilo settings
@@ -201,7 +207,7 @@ Open **`https://books.example.com/`** in a browser and enter the **auth code** f
 
 <!-- screenshot:pairing -->
 
-For someone else, use **People > Invite someone** in the admin console. Open the resulting **invite link in a browser** first, or scan its QR with the phone's normal camera. That page then provides the pairing QR for the AudioSilo app. **The QR on the admin invite card opens a web page; the app's scanner expects the pairing QR on the connect page.** You can also enter the server address in the app and sign in with the invite code.
+For someone else, use **People > Invite someone** in the admin console. Open the resulting **invite link in a browser** first, or scan its QR with the phone's normal camera. That page then provides the pairing QR for the AudioSilo app. **Scanned with the phone's camera, the QR on the admin invite card opens a web page. App 2.4.0's scanner also signs in with it directly; earlier apps need the pairing QR on the connect page.** You can also enter the server address in the app and sign in with the invite code.
 
 Open **`https://books.example.com/web`** to check the web player too. Start a book, seek forward, pause and resume. Covers and audio should load through the HTTPS hostname.
 
@@ -217,7 +223,7 @@ Leave **Home address** empty for this proxy-only stack unless you have a separat
 - **A changed setting is ignored:** environment variables take precedence over the config file. Check `docker compose config` for the resolved values, then recreate the service. The admin console's lock badge identifies the variable in control.
 - **A port is already allocated:** keep the service that owns 80/443 and use the existing-proxy section below, or choose a different host for this fresh stack.
 - **A subnet overlap error:** select an unused `PROXY_SUBNET` and update `PROXY_IP` and `AUDIOSILO_IP` with it in `.env`.
-- **The app rejects a QR:** open the invite link in a browser and scan the **connect page's pairing QR**, or enter the server address and invite code in the app.
+- **An older app rejects the invite QR:** open the invite link in a browser and scan the **connect page's pairing QR**, or enter the server address and invite code in the app.
 - **SWAG never reaches a ready state:** inspect `docker compose logs swag` for the actual Certbot error. HTTP validation needs public port 80, correct DNS and no stale AAAA record.
 - **The default SWAG page appears:** the custom file is not mounted as `site-confs/default.conf`, or you are reaching a different SWAG instance. Check `docker compose config` and the published ports.
 - **502 or host not found:** the upstream is `http://audiosilo:8080` and both services must share the `proxy` network. The supplied resolver include lets nginx find the current container address after AudioSilo is recreated.

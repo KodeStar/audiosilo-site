@@ -31,7 +31,7 @@ docker logs audiosilo   # the admin password and auth code, shown once`
 export const binaryRun = `# Download the archive for your OS from GitHub Releases, then:
 ./audiosilo --data ./data
 
-# Or set the admin password in a browser wizard instead:
+# Or choose the admin password in your browser instead:
 ./audiosilo --setup --data ./data`
 
 /** The real first-run banner (first-run.md). Values are placeholders. */
