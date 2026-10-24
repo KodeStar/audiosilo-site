@@ -44,9 +44,13 @@ related:
   - server-2-3
   - bridge-recaps-and-contributions
   - tidy-a-big-library
+  - audiobook-files-out-of-order
+  - move-podcasts-with-opml
 revisions:
   - date: 2026-10-24
     note: "Links the posts on Bridge recaps and contributions, tidying a big library, OPML and file order."
+  - date: 2026-10-24
+    note: "Corrects where genres come from (files and metadata.json, not community matches) and that Shift-click selects a range in the grid too."
 hero: ../../assets/stills/server-health-dark.webp
 heroAlt: Health in the AudioSilo admin console, the Not matched list with the Match automatically card above the books still to match
 ---
@@ -92,11 +96,11 @@ The first time you sign in to the admin console on a new server, it opens **Set 
 
 ## Library and console
 
-- **Genres and tags.** Books gain genres, tags, a subtitle, publisher, language and abridged, read from the files' genre tag, Audiobookshelf's `metadata.json` and community matches, and editable on the book's page, one book at a time or in bulk. The player shows the subtitle and genre and tag chips, and **Library > Books** in the console filters by genre and tag. More in [Tidying a big library](/blog/tidy-a-big-library/).
+- **Genres and tags.** Books gain genres, tags, a subtitle, publisher, language and abridged, all editable on the book's page, one book at a time or in bulk. Genres are read from the files' genre tag and Audiobookshelf's `metadata.json`, tags from `metadata.json`, and the subtitle, publisher, language and abridged from `metadata.json` or a community match. The player shows the subtitle and genre and tag chips, and **Library > Books** in the console filters by genre and tag. More in [Tidying a big library](/blog/tidy-a-big-library/).
 - **Files play in natural order.** "2- Part" now comes before "10- Part", whatever the punctuation, in folder books and in each disc of a joined book, so parts no longer need leading zeros. Chapters a Bridge found move with their files. [How to organise audiobook folders](/blog/organize-audiobook-folders/) is updated, and [Why audiobook files play out of order](/blog/audiobook-files-out-of-order/) covers the rest.
 - **`.mka` (Matroska audio)** is indexed and plays in the web player, converted by the server as it plays (this needs ffmpeg). The iOS and Android apps list these books but can't play them yet.
 - **Duplicates across libraries**: **Health > Likely duplicates** has **Include other libraries**, and each copy says which library it's in.
-- **Selecting many books**: a **Select** button on Books, Shift-click for a range in the table, **Select all** in the grid, and **Select all N matching** past the loaded page (up to 1,000 books).
+- **Selecting many books**: a **Select** button on Books, Shift-click for a range in the grid or the table, **Select all** for every book shown, and **Select all N matching** past the loaded page (up to 1,000 books).
 - **Match review** lists the best matches first, **Match by hand** opens over the review without losing your place, and a book matched since the run is left alone when you apply it.
 - **Listen in player** on a book's console page opens it in the web player, already signed in.
 - The library export adds published dates, every series a book is in, an optional description, and one row per copy if you ask.
