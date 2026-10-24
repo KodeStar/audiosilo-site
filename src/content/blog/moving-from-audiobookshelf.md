@@ -3,8 +3,9 @@ title: "Moving from Audiobookshelf to AudioSilo: what carries over, what doesn't
 description: An honest comparison of Audiobookshelf and AudioSilo, and the steps to switch without losing anyone's progress, finished books, bookmarks or listening stats.
 kind: guide
 published: 2026-10-14
-verified: 2026-10-19
-appliesTo: Server 2.3.1, app 2.0.0; Audiobookshelf 2.37.1
+updated: 2026-10-24
+verified: 2026-10-24
+appliesTo: Server 2.4.0, app 2.0.0 and later; Audiobookshelf 2.37.1
 tags: [audiobookshelf, migration, comparison]
 covers:
   - server:import
@@ -22,6 +23,9 @@ related:
   - server-2-3
 hero: ../../assets/stills/server-activity-dark.webp
 heroAlt: Activity in the AudioSilo admin console over 90 days, listening hours per day by person and when the household listens
+revisions:
+  - date: 2026-10-24
+    note: "Server 2.4.0: AudioSilo now has podcasts with a Bridge, and metadata.json also gives the subtitle, publisher, language, abridged, genres and tags."
 ---
 
 You can move from Audiobookshelf to AudioSilo without starting over. AudioSilo reads the same folders, picks up the `metadata.json` files Audiobookshelf leaves beside your books, and imports each person's **listening history**: sessions, progress, finished dates and bookmarks. Podcasts, ebooks, collections and playlists don't come over. Both can run side by side while you decide, because AudioSilo only reads your files and only reads from Audiobookshelf.
@@ -35,14 +39,14 @@ Both are self-hosted, open-source servers that run in Docker, keep each person's
 | | Audiobookshelf | AudioSilo |
 |---|---|---|
 | Licence | GPL-3.0 | Server AGPLv3 |
-| What it serves | Audiobooks, podcasts, basic ebooks (EPUB, PDF, CBR, CBZ) | Audiobooks only |
+| What it serves | Audiobooks, podcasts, basic ebooks (EPUB, PDF, CBR, CBZ) | Audiobooks, and podcasts with the optional Bridge container (server 2.4) |
 | Your files | Can upload books, embed metadata and covers into files, and merge files into an M4B | Never writes to your library; edits live in its database |
-| Phone apps | Android app in beta on Google Play; iOS app in beta on TestFlight (its beta is currently full) | iPhone, iPad and Android apps (2.0.0) in the App Store and Google Play |
+| Phone apps | Android app in beta on Google Play; iOS app in beta on TestFlight (its beta is currently full) | iPhone, iPad and Android apps in the App Store and Google Play |
 | Web player | Yes, installable | Yes, installable, with offline downloads |
 | Casting | Chromecast from the web app and the Android app | Chromecast from the web player (server 2.3, Chromium browsers over HTTPS) |
 | Metadata | Fetches from several sources | Community database at [meta.audiosilo.app](https://meta.audiosilo.app), with spoiler-safe recaps and characters for the books that have them |
 
-**Stay with Audiobookshelf** if you rely on podcasts, ebooks, uploading through the web, or having metadata written into your files. AudioSilo does none of those.
+**Stay with Audiobookshelf** if you rely on ebooks, uploading through the web, or having metadata written into your files. AudioSilo does none of those. Podcasts work from server 2.4, but need AudioSilo's optional Bridge container to download them: see [Podcasts in AudioSilo](/blog/podcasts/).
 
 **AudioSilo suits you** if you want the server to treat your folders as read-only, want phone apps from the stores, or like a player built around the whole book: time left at your speed, an undo for accidental jumps, a sleep timer that can fade out and marks where you dozed off, and a Year in listening.
 
@@ -68,7 +72,7 @@ Both servers expect one folder per book under `Author/Series/` or `Author/`, so 
 
 If Audiobookshelf's **Store metadata with item** setting was on, each book folder has a `metadata.json` holding your matches and corrections. Since server 2.3.1, AudioSilo reads it:
 
-- The title, authors, narrators, series and number, published year, description, **ASIN** and **ISBN** go over what the audio tags say, as they do in Audiobookshelf. An empty value in the file doesn't clear the tag's.
+- The title, authors, narrators, series and number, published year, description, **ASIN** and **ISBN** go over what the audio tags say, as they do in Audiobookshelf. From server 2.4 so do the subtitle, publisher, language, abridged, genres and tags. An empty value in the file doesn't clear the tag's.
 - A book with an ASIN or ISBN there counts as **matched** straight away, so community details and series rails work without matching it by hand.
 - Your own edits in AudioSilo still win, and the book page marks values from the file as **Audiobookshelf**.
 - Edit a book in Audiobookshelf and the next scan picks it up. AudioSilo never writes to the file.
@@ -95,7 +99,7 @@ Progress only moves forward: an import never rewinds a book or unfinishes a fini
 
 **Comes over:** listening sessions with their real dates (so stats, the listening calendar, streaks and the Year in listening carry on), progress, start and finish dates, and bookmarks.
 
-**Doesn't:** podcasts, collections, playlists, ebooks, and accounts or passwords. Each server keeps its own.
+**Doesn't:** podcasts, collections, playlists, ebooks, and accounts or passwords. Each server keeps its own. To bring your shows across to a server 2.4 podcast library, export them from Audiobookshelf as OPML and use **Import a list** in the player's **Add shows**.
 
 The full walkthrough is [Importing from Audiobookshelf](https://docs.audiosilo.app/users/admin/import) in the docs.
 

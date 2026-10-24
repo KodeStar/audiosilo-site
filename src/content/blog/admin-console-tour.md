@@ -3,7 +3,8 @@ title: "A tour of the AudioSilo admin console"
 description: Four and a half minutes on a real household server - fixing a badly tagged book, the library and series shelves, Health, people and invites, activity and settings.
 kind: tutorial
 published: 2026-10-09
-verified: 2026-10-19
+updated: 2026-10-24
+verified: 2026-10-24
 appliesTo: Server 2.0 and later (recorded on 2.0)
 tags: [admin, video, tour, metadata]
 covers:
@@ -36,6 +37,9 @@ video:
     - "2:56 People, devices and invites"
     - "3:28 Activity and Year in listening"
     - "3:54 Settings, import, backups and logs"
+revisions:
+  - date: 2026-10-24
+    note: "Added what server 2.3 and 2.4 changed since the recording, and corrected how an invite QR is scanned."
 ---
 
 The admin console is where you run an AudioSilo server: add libraries, fix books, invite people and see how the household listens. It's built into the server at `/admin`, installs like an app from the browser, and comes in light and dark. The video above walks through it on a real household server in about four and a half minutes, with captions. Here's what it shows, with links to go deeper.
@@ -72,7 +76,7 @@ Health turns scan results into a to-do list. **Match automatically** looks up ev
 
 ## People (2:56)
 
-Everyone on the server, what they're in the middle of, and who's listening now. Each person has their own Year in listening and a list of every device they've signed in on. Adding someone is an **invite**: a link or a QR code they scan with the app, no password needed. See [How to pair your phone](/blog/pair-your-phone/).
+Everyone on the server, what they're in the middle of, and who's listening now. Each person has their own Year in listening and a list of every device they've signed in on. Adding someone is an **invite**: a link, or a QR code they scan with their phone's camera (app 2.4.0 can also scan it from its own scanner), no password needed. See [How to pair your phone](/blog/pair-your-phone/).
 
 ## Activity (3:28)
 
@@ -84,7 +88,7 @@ Settings live in the console. The apps know the **home address** and the public 
 
 ## Since the recording
 
-The tour was recorded on server 2.0. Server 2.1 and 2.2, released the same day as this post, add **community chapters**, books in more than one series, **Clear community matches** and a support card you can dismiss for good: see [Server 2.1 and 2.2](/blog/server-2-2/).
+The tour was recorded on server 2.0. Server 2.1 and 2.2, released the same day as this post, add **community chapters**, books in more than one series, **Clear community matches** and a support card you can dismiss for good: see [Server 2.1 and 2.2](/blog/server-2-2/). Server 2.3 adds household members on the People page ([Server 2.3](/blog/server-2-3/)), and server 2.4 opens **Set up your server** the first time you sign in to a new server, and adds genre and tag filters, duplicates across libraries in Health, selecting many books at once and podcast libraries: see [Server 2.4](/blog/server-2-4/).
 
 ## Try it yourself
 

@@ -3,8 +3,9 @@ title: "Self-hosted audiobook server: what it is and how to run one with Docker"
 description: A self-hosted audiobook server streams the audiobooks you own to every device and keeps your place in sync. What you need, the options, and a Docker setup in a few steps.
 kind: guide
 published: 2026-10-13
-verified: 2026-10-19
-appliesTo: Server 2.3.1, app 2.0.0
+updated: 2026-10-24
+verified: 2026-10-24
+appliesTo: Server 2.4.0, app 2.0.0
 tags: [self-hosting, docker, getting-started]
 covers:
   - bridge:audible
@@ -23,6 +24,9 @@ related:
   - audiobooks-on-unraid
 hero: ../../assets/stills/server-overview-dark.webp
 heroAlt: The AudioSilo admin console overview, with three people listening now, their book and chapter, totals and recent listening
+revisions:
+  - date: 2026-10-24
+    note: "Server 2.4.0: the Set up your server flow adds the library, MKA is indexed, and AudioSilo now has podcasts with a Bridge."
 ---
 
 A **self-hosted audiobook server** is a program you run on your own computer, NAS or home server that turns a folder of audiobook files into your own private audiobook service. It streams the books to a web browser and to phone apps, keeps your place in each book in sync across devices, and gives everyone in the house their own account. Your files stay where they are, and nobody else holds your library.
@@ -43,16 +47,16 @@ And because the files remain the source of truth, you can stop using any server 
 ## What you need
 
 - **A machine that stays on.** A NAS, a mini PC, an old laptop or a Raspberry Pi with a 64-bit OS all work. AudioSilo is a single Go program with a built-in database, so it doesn't need much.
-- **Your audiobooks as files**, in a folder that machine can read. M4B, M4A, MP4, MP3, FLAC, OGG and Opus are all indexed. A tidy layout helps; see [How to organise audiobook folders](/blog/organize-audiobook-folders/).
+- **Your audiobooks as files**, in a folder that machine can read. M4B, M4A, MP4, MP3, FLAC, OGG and Opus are all indexed, and MKA too, for the web player only (converted with ffmpeg as it plays). A tidy layout helps; see [How to organise audiobook folders](/blog/organize-audiobook-folders/).
 - **Docker**, ideally, though a plain binary works too (below).
 
 ## The main options
 
-**Audiobookshelf** is the best-known open-source audiobook server. It also handles podcasts and ebooks, can upload books and write metadata into files, and its mobile apps are in beta. If you're weighing the two, [Moving from Audiobookshelf](/blog/moving-from-audiobookshelf/) compares them honestly.
+**Audiobookshelf** is the best-known open-source audiobook server. It also handles ebooks, can upload books and write metadata into files, and its mobile apps are in beta. If you're weighing the two, [Moving from Audiobookshelf](/blog/moving-from-audiobookshelf/) compares them honestly.
 
 **General media servers** such as Plex and Jellyfin can play audio files, but they are built around music and video, so audiobook features like per-book progress and chapter handling depend on workarounds or third-party apps.
 
-**AudioSilo**, which this site is about, is audiobook-only. The server is open source (AGPLv3), never writes to your files, and comes with a web player built in and free apps for iPhone, iPad and Android in the App Store and Google Play. The rest of this guide sets it up.
+**AudioSilo**, which this site is about, is built for audiobooks, with podcasts beside them when you add its optional companion container, the Bridge. The server is open source (AGPLv3), never writes to your files, and comes with a web player built in and free apps for iPhone, iPad and Android in the App Store and Google Play. The rest of this guide sets it up.
 
 ## Install AudioSilo with Docker
 
@@ -113,7 +117,7 @@ Browse to `https://your-server:8080`. The server uses a self-signed certificate 
 
 ### 4. Add your library
 
-In the admin console, click **Add your first library** and point it at `/library`, the path inside the container. The books are browsable straight away; the scan fills in durations, chapters and covers in the background.
+The first time you sign in to the admin console, it opens **Set up your server**: eight short, skippable steps. The first asks for your books folder: type `/library`, the path inside the container, and press **Check folder**. The library is added at the end of step 3, and the books are browsable straight away; the scan fills in durations, chapters and covers in the background. More in [Set up your server](/blog/first-run-setup/).
 
 ## Without Docker: the single binary
 
@@ -123,7 +127,7 @@ In the admin console, click **Add your first library** and point it at `/library
 ./audiosilo --data ./data
 ```
 
-It finds ffmpeg on your system or downloads it on first use. `./audiosilo --setup --data ./data` gives you a browser setup wizard instead of the printed password. See [Install the binary](https://docs.audiosilo.app/users/getting-started/install-binary).
+It finds ffmpeg on your system or downloads it on first use. `./audiosilo --setup --data ./data` lets you choose the admin password in your browser instead of reading a printed one, then the console's setup flow takes over. See [Install the binary](https://docs.audiosilo.app/users/getting-started/install-binary).
 
 ## Start listening
 

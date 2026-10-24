@@ -3,7 +3,7 @@ title: "AudioSilo player tips: 14 features worth knowing"
 description: Undo an accidental jump, let the sleep timer fade out and mark where you dozed off, keep the next books downloaded, set your skip lengths, export your bookmarks and more.
 kind: tip
 published: 2026-10-16
-verified: 2026-10-19
+verified: 2026-10-24
 appliesTo: App 2.0.0 (iPhone, iPad, Android); web player in server 2.0 and later
 tags: [player, tips, sleep-timer, offline]
 covers:

@@ -3,8 +3,9 @@ title: "Audiobooks on Unraid: an audiobook server from Community Applications"
 description: Install AudioSilo on Unraid from the Apps tab (the LinuxServer.io image), map your audiobooks share read-only, find the first-run password, and set up HTTPS and updates.
 kind: guide
 published: 2026-10-10
-verified: 2026-10-19
-appliesTo: Server 2.3.1 (lscr.io/linuxserver/audiosilo)
+updated: 2026-10-24
+verified: 2026-10-24
+appliesTo: Server 2.3.1 and 2.4.0 (lscr.io/linuxserver/audiosilo)
 tags: [unraid, docker, self-hosting, getting-started]
 covers:
   - server:install
@@ -18,6 +19,9 @@ related:
   - pair-your-phone
 hero: ../../assets/stills/server-people-dark.webp
 heroAlt: The People page in the AudioSilo admin console, every household account with what they are listening to and how many devices they use
+revisions:
+  - date: 2026-10-24
+    note: "Server 2.4.0: the first console sign-in opens Set up your server, which adds the library. The LinuxServer.io image follows each release."
 ---
 
 Unraid makes a good home for an audiobook library: the books sit on an array share, and the server runs as a container next to them. AudioSilo is in **Community Applications** (the Apps tab) as the [LinuxServer.io](https://www.linuxserver.io) image, `lscr.io/linuxserver/audiosilo`: the AudioSilo server, its web player and ffmpeg, rebuilt automatically after each AudioSilo release. Installing it takes a template and a couple of paths.
@@ -64,7 +68,7 @@ Click the AudioSilo icon and choose **WebUI**. The server uses its own self-sign
 - `/web` is the web player.
 - `/` is the connect page, where people pair their devices.
 
-In the console, click **Add your first library** and enter **`/audiobooks`**, the path inside the container (not the `/mnt/user/...` path). Books show up at once; durations, chapters and covers fill in as the scan runs.
+From server 2.4.0, the first time you sign in to the console, it opens **Set up your server**. Its first step asks for your books folder: type **`/audiobooks`**, the path inside the container (not the `/mnt/user/...` path), and press **Check folder**. The other steps are optional and can be skipped; the library is added and scanned at the end of step 3. Books show up at once; durations, chapters and covers fill in as the scan runs. Skipped the folder, or on an image older than 2.4.0? Click **Add your first library** on the Overview and enter `/audiobooks` there.
 
 ## 4. Reaching it from outside your network
 

@@ -3,9 +3,9 @@ title: "Listen to your audiobooks away from home: remote access and HTTPS"
 description: Reach a self-hosted audiobook server from your phone anywhere. The three ways to serve HTTPS, a Caddy or nginx reverse proxy, port forwarding, and home and away addresses.
 kind: guide
 published: 2026-10-19
-updated: 2026-10-21
-verified: 2026-10-21
-appliesTo: Server 2.3.1, app 2.0.0
+updated: 2026-10-24
+verified: 2026-10-24
+appliesTo: Server 2.3.1 and 2.4.0, app 2.0.0 and later
 tags: [remote-access, https, reverse-proxy, self-hosting]
 covers:
   - server:tls
@@ -21,6 +21,8 @@ related:
 hero: ../../assets/stills/player-mobile-home-dark.webp
 heroAlt: Home in the AudioSilo app on a phone, with the book you are on, time left at your speed and the day you will finish
 revisions:
+  - date: 2026-10-24
+    note: "Apps from 2.1 can use plain HTTP at home on a self-signed server; away from home still needs a trusted certificate."
   - date: 2026-10-21
     note: Added illustrated Caddy, SWAG and Traefik setup guides, clarified environment overrides and home addresses behind a proxy.
 ---
@@ -31,10 +33,10 @@ To listen to a self-hosted audiobook server away from home, it needs **an addres
 
 AudioSilo serves HTTPS from the start, with a **self-signed** certificate it makes itself. A browser shows a warning the first time and lets you accept it, which is fine at home. Two things can't accept that warning:
 
-- **The iPhone and Android apps.** They need a certificate they trust.
+- **The iPhone and Android apps.** They need a certificate they trust. (From app 2.1 they can use plain HTTP on your home network with the default self-signed setup, but away from home every app needs a trusted certificate.)
 - **Installing the web player** to a phone's home screen, which needs a connection the browser fully trusts.
 
-So for listening on the go with the store apps (2.0.0), give the server an HTTPS address with a trusted certificate. The proxy guides below use that same HTTPS hostname for mobile and web access.
+So for listening on the go, give the server an HTTPS address with a trusted certificate. The proxy guides below use that same HTTPS hostname for mobile and web access.
 
 ## Option 1: Let the server get a certificate (autocert)
 
@@ -117,7 +119,7 @@ If you'd rather open no ports at all, a VPN such as WireGuard or Tailscale puts 
 
 Start by using the same HTTPS hostname on home Wi-Fi and mobile data. If mobile data works but home Wi-Fi does not, check your router's NAT loopback support or use local DNS to point that same hostname at the proxy's LAN address. The certificate still matches the hostname.
 
-An optional **Home address** (`lan_url`, `AUDIOSILO_LAN_URL`, or **Server > Settings > General**) supplies a separate home endpoint. The iPhone and Android apps learn home and public addresses when connecting and check that a home endpoint is the same server before using it. For the store apps (2.0.0), that endpoint also needs HTTPS with a certificate they trust.
+An optional **Home address** (`lan_url`, `AUDIOSILO_LAN_URL`, or **Server > Settings > General**) supplies a separate home endpoint. The iPhone and Android apps learn home and public addresses when connecting and check that a home endpoint is the same server before using it. With app 2.0.0, that endpoint also needs HTTPS with a certificate the app trusts.
 
 The dedicated Docker proxy guides do not publish port 8080, so `http://192.168.1.20:8080` would not work for those stacks. Leave Home address empty unless you have configured a separate reachable endpoint. The web player stays on the address you opened it at.
 
