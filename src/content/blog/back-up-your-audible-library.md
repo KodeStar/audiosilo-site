@@ -3,8 +3,9 @@ title: How to back up your Audible library to M4B and listen on your own server
 description: Download the Audible books you bought as plain M4B files with Libation, OpenAudible or audible-cli, keep them in a folder that scans cleanly, and play them anywhere.
 kind: guide
 published: 2026-10-17
-verified: 2026-10-19
-appliesTo: Server 2.3.1, app 2.0.0; Libation 14.2.2, OpenAudible 5.0.3, audible-cli 0.6.0
+updated: 2026-10-24
+verified: 2026-10-24
+appliesTo: Server 2.4.0, app 2.0.0; Libation 14.2.2, OpenAudible 5.0.3, audible-cli 0.6.0
 tags: [audible, backup, m4b, self-hosting]
 covers:
   - bridge:audible
@@ -20,6 +21,9 @@ related:
   - self-hosted-audiobook-server
 hero: ../../assets/stills/player-ipad-series-dark.webp
 heroAlt: The Stormlight Archive on an iPad, the books you own as spines in reading order, the ones you are missing as dashed ghost spines
+revisions:
+  - date: 2026-10-24
+    note: "Server 2.4.0: a new server's first console sign-in opens Set up your server, which adds the library."
 ---
 
 To back up your Audible library, you use a tool that signs in to **your own Audible account**, downloads the books you bought and saves them as ordinary **M4B** (or MP3) files. The three tools people use today are **Libation** (free), **OpenAudible** (paid, free to try) and **audible-cli** (free, command line). Once the files are on your own disk, any audiobook player can play them, and a self-hosted server lets you stream them to your phone with your place kept in sync.
@@ -45,7 +49,7 @@ Audible's downloads come in two DRM-protected formats:
 
 Inside both is ordinary AAC audio with chapters, which is exactly what an M4B file is. Converting is therefore quick and lossless when the tool simply unlocks the audio and puts it in an M4B container, without re-encoding it.
 
-Playing AAX or AAXC needs your account's keys, so a self-hosted server can't stream them as they are. AudioSilo deliberately doesn't index them: it only lists files it can actually play, so a stray `.aax` stays out of the way until you convert it.
+Playing AAX or AAXC needs your account's keys, so a self-hosted server can't stream them as they are. AudioSilo deliberately doesn't index them, so a stray `.aax` stays out of the way until you convert it.
 
 ## A note on the law
 
@@ -124,7 +128,7 @@ AudioSilo is a self-hosted audiobook server with a web player and apps for iPhon
 
    Then `docker compose up -d` and `docker compose logs` for the admin password, which is printed once. The [Docker quick start](https://docs.audiosilo.app/users/getting-started/quickstart-docker) walks through it, and [Self-hosted audiobook server](/blog/self-hosted-audiobook-server/) explains the choices.
 
-2. **Add the library.** In the admin console at `/admin`, click **Add your first library** and point it at `/library`. The first scan starts straight away, and books and their covers appear as it finds them.
+2. **Add the library.** The first time you sign in to the admin console at `/admin`, it opens **Set up your server**. Its first step asks for your books folder: type `/library` and press **Check folder**. The library is added and its first scan starts at the end of step 3, and books and their covers appear as it finds them. (Skipped it? **Add your first library** on the Overview does the same.)
 
 3. **Match the books.** Open **Health > Not matched** and run **Match automatically**. It looks every book up in the free community database at [meta.audiosilo.app](https://meta.audiosilo.app), sorts the results into confident matches and ones to review, and changes nothing until you apply them. Matched books get descriptions, series order and, for books the community has written them for, spoiler-safe recaps and character lists. See [Fix covers and series](/blog/fix-covers-and-series/).
 

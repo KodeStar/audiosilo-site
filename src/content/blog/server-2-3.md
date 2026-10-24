@@ -27,6 +27,9 @@ related:
   - moving-from-audiobookshelf
   - fix-covers-and-series
   - listen-away-from-home
+  - server-2-4
+supersededBy: server-2-4
+supersededNote: Server 2.4 is out, with podcasts, a Bridge that writes characters, recaps, descriptions and chapters, a guided first run for new servers, genres and tags, and files in natural order. Everything below still applies.
 hero: ../../assets/stills/server-people-dark.webp
 heroAlt: The People page in the AudioSilo admin console, every household account with what they are listening to and how many devices they use
 ---

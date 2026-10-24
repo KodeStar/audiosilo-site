@@ -21,7 +21,7 @@ const compose = `services:
 const up = `docker compose up -d
 docker compose logs        # first run prints the admin password + auth code ONCE`
 
-const binary = `# Run with a guided browser setup wizard (recommended for home users):
+const binary = `# Choose the admin password in your browser instead of reading it from the log:
 ./audiosilo --setup --data ./data
 
 # Or run headless - it auto-creates an admin and prints the password + auth code once:

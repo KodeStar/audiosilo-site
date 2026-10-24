@@ -3,7 +3,7 @@ title: "AudioSilo 2.0: the redesigned player, now in the App Store and on Google
 description: A new player rebuilt around the whole book, on the web, iPhone, iPad and Android. What's in 2.0, from the whole-book timeline and Sleep timer 2.0 to your Year in listening.
 kind: release
 published: 2026-10-12
-verified: 2026-10-19
+verified: 2026-10-24
 appliesTo: App 2.0.0 (iOS, Android), server 2.0.0 and later
 tags: [release, app, player, redesign]
 covers:
