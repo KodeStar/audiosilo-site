@@ -1,6 +1,6 @@
 ---
 title: "AudioSilo Server 2.5: read the ebook, a faster server, and .mka everywhere"
-description: Read a book's EPUB beside its audio in the web player and the apps, quicker scans, lists and start-up, .mka books in the apps, and a database copy before every upgrade.
+description: Read a book's EPUB beside its audio in the web player and the apps, quicker scans, lists and web player start-up, .mka books in the apps, and a database copy before every upgrade.
 kind: release
 published: 2026-10-28
 verified: 2026-10-28

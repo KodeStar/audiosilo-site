@@ -28,7 +28,7 @@ Plenty of audiobook libraries keep the ebook next to the audio. From server 2.5.
 ## What it needs
 
 - **Server 2.5.0 or later.** It comes with the reader in the web player (`/web`), so the web player can read as soon as your server is upgraded.
-- **The AudioSilo app 2.5.0 or later** to read on your phone or tablet. If your app doesn't show **Read the ebook** on a book that has one, update it from the App Store or Google Play.
+- **The AudioSilo app 2.5.0 or later** to read on your phone or tablet. If your app doesn't show **Read the ebook** on a book that has one, update it to 2.5.0 from the App Store or Google Play as it reaches them.
 - **One DRM-free EPUB in the book's folder.** That's the whole setup, covered below.
 
 ## Setting it up: put the EPUB beside the audio
@@ -75,7 +75,7 @@ A book downloaded before your app or web player could read keeps playing offline
 
 ## Safe with any EPUB
 
-An EPUB is a little website, and it can carry scripts. AudioSilo's reader runs none of them: scripts in the book are removed before it's shown, and the reader is kept apart from the rest of the player and from your account, so an ebook can't send anything anywhere.
+An EPUB is a little website, and it can carry scripts. AudioSilo's reader runs none of them: scripts in the book are blocked before they can run, and the reader has no network access of its own, so an ebook can't send anything anywhere. In the apps it never sees your sign-in token.
 
 ## What it doesn't do yet
 
