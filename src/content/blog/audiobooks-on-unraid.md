@@ -3,8 +3,8 @@ title: "Audiobooks on Unraid: an audiobook server from Community Applications"
 description: Install AudioSilo on Unraid from the Apps tab (the LinuxServer.io image), map your audiobooks share read-only, find the first-run password, and set up HTTPS and updates.
 kind: guide
 published: 2026-10-10
-updated: 2026-10-24
-verified: 2026-10-24
+updated: 2026-10-28
+verified: 2026-10-28
 appliesTo: Server 2.3.1 (lscr.io/linuxserver/audiosilo), and 2.4.0 once the image is rebuilt for it
 tags: [unraid, docker, self-hosting, getting-started]
 covers:
@@ -13,6 +13,7 @@ covers:
   - docs:/users/getting-started/install-unraid
   - docs:/users/getting-started/remote-access
 related:
+  - back-up-before-upgrading
   - self-hosted-audiobook-server
   - listen-away-from-home
   - organize-audiobook-folders
@@ -20,6 +21,8 @@ related:
 hero: ../../assets/stills/server-people-dark.webp
 heroAlt: The People page in the AudioSilo admin console, every household account with what they are listening to and how many devices they use
 revisions:
+  - date: 2026-10-28
+    note: "Server 2.5.0 copies its database before an update that changes it; links the backup-before-upgrading guide."
   - date: 2026-10-24
     note: "Server 2.4.0: the first console sign-in opens Set up your server, which adds the library. The LinuxServer.io image is rebuilt after each AudioSilo release."
 ---
@@ -86,7 +89,7 @@ Settings can also be given as `AUDIOSILO_*` variables on the template (**Add ano
 
 When a new image is out, the Docker tab shows **update ready**; apply it there or let the CA Auto Update plugin do it. The LinuxServer.io image follows AudioSilo's releases and also picks up base image and ffmpeg security updates. Your appdata and books aren't touched by an update.
 
-Back up the appdata folder with the rest of your Unraid appdata. The server also snapshots its own database every night by default, into the same folder.
+Back up the appdata folder with the rest of your Unraid appdata. The server also snapshots its own database every night by default, into the same folder, and from server 2.5.0 it copies the database before an update that changes it, listed as **Before an upgrade** in the console's Backups. [How to back up a self-hosted app before you upgrade it](/blog/back-up-before-upgrading/) covers rolling back.
 
 ## Already running the AudioSilo image?
 

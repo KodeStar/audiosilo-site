@@ -3,6 +3,7 @@ title: "Read the ebook: your EPUBs in the AudioSilo player"
 description: A book whose folder holds its DRM-free EPUB gets a Read the ebook button in the web player and the iOS and Android apps, with your place kept on every device and offline reading.
 kind: feature
 published: 2026-10-28
+updated: 2026-10-28
 verified: 2026-10-28
 appliesTo: Server 2.5.0, app 2.5.0
 tags: [reader, ebooks, player, offline]
@@ -21,6 +22,9 @@ related:
   - organize-audiobook-folders
   - player-tips
   - bridge-recaps-and-contributions
+revisions:
+  - date: 2026-10-28
+    note: "Where to get app 2.5.0 while it is in store review: the Android APK."
 ---
 
 Plenty of audiobook libraries keep the ebook next to the audio. From server 2.5.0, AudioSilo opens it. When a book's folder holds its EPUB, the book's page gets a **Read the ebook** button, in the web player and in the iOS and Android apps alike. The reader shows the text a page at a time, remembers where you got to on every device you read on, and a book you download takes its ebook with it, so you can read with no connection too.
@@ -28,7 +32,7 @@ Plenty of audiobook libraries keep the ebook next to the audio. From server 2.5.
 ## What it needs
 
 - **Server 2.5.0 or later.** It comes with the reader in the web player (`/web`), so the web player can read as soon as your server is upgraded.
-- **The AudioSilo app 2.5.0 or later** to read on your phone or tablet. If your app doesn't show **Read the ebook** on a book that has one, update it to 2.5.0 from the App Store or Google Play as it reaches them.
+- **The AudioSilo app 2.5.0 or later** to read on your phone or tablet. If your app doesn't show **Read the ebook** on a book that has one, update it to 2.5.0. App 2.5.0 came out on 28 October and is in review at the App Store and Google Play, so it reaches the stores once that clears; on Android you can install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.5.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)).
 - **One DRM-free EPUB in the book's folder.** That's the whole setup, covered below.
 
 ## Setting it up: put the EPUB beside the audio
