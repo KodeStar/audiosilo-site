@@ -218,10 +218,11 @@ class ABS(App):
             time.sleep(0.25)
         else:
             raise RuntimeError("ABS scan timeout")
+        done_at = time.time()  # the clock stops here, before the log is read over SSH
         lines = hostctl.logs(self.container, since=self._log_since)
         start = re.findall(r"\[(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d+)\] INFO: \[LibraryScanner\] Starting(?: \(forced\))? library scan", lines)
         end = re.findall(r"\[(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d+)\] INFO: \[LibraryScanner\] Library scan \"[^\"]+\" completed in ([^ ]+) \| (.*)", lines)
-        res = {"forced": "Starting (forced)" in lines}
+        res = {"forced": "Starting (forced)" in lines, "done_at": done_at}
         if start and end:
             ts = lambda s: time.mktime(time.strptime(s[:19], "%Y-%m-%d %H:%M:%S")) + float("0." + s[20:])
             res["app_reported_s"] = round(ts(end[-1][0]) - ts(start[-1]), 3)
@@ -441,6 +442,7 @@ class AS(App):
             time.sleep(0.25)
         else:
             raise RuntimeError("AudioSilo scan timeout")
+        done_at = time.time()
         r = max(runs, key=lambda x: x["id"])
         self._last_run = r
 
@@ -448,7 +450,7 @@ class AS(App):
             base, frac = (s.rstrip("Z").split(".") + ["0"])[:2]
             return time.mktime(time.strptime(base, "%Y-%m-%dT%H:%M:%S")) + float("0." + frac)
 
-        return {"app_reported_s": round(ts(r["finished_at"]) - ts(r["started_at"]), 3), "run": r}
+        return {"app_reported_s": round(ts(r["finished_at"]) - ts(r["started_at"]), 3), "run": r, "done_at": done_at}
 
     def scan_log_excerpt(self):
         return [l for l in hostctl.logs(self.container, tail=400).splitlines()

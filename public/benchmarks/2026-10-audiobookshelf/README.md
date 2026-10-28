@@ -33,7 +33,18 @@ and AudioSilo from its `:edge` image of 28 October 2026 (commit `e465ccb`, repor
   now read from `BENCH_ABS_PASSWORD`.
 - **Screenshots** of each measured page are not included (size). `webui.json` still
   records every request each page made.
-- The JSON files are minified; the data is unchanged.
+- The JSON files are minified; the data is unchanged. `summarize.py` also reads the
+  withheld `*_spec*.json` files for its lists of exact requests, so running it on these
+  published results writes a `summary.md` without those lists: keep the published one.
+- **Two timing fixes to the harness after this run** (see "Wall time" below). In the
+  results published here, the wall time of every Audiobookshelf scan also includes one
+  SSH round trip the harness made to read its log before stopping the clock (its
+  overhead over the app-reported time is about 0.7 s on a cold rescan, AudioSilo's about
+  0.15 s), and every warm no-change rescan, for both apps, includes two SSH round trips
+  reading CPU time (about 1 s more). The harness here stops the clock as soon as it
+  sees completion. The app-reported times in each scan JSON are not affected: by those,
+  the warm no-change rescans took 3.53 / 0.43 s (1,000 mixed, Audiobookshelf /
+  AudioSilo), 2.19 / 0.25 s (1,000 mostly M4B) and 18.74 / 2.24 s (5,000).
 - `BENCH_HOST` defaults to the address of our server on our home network; set it to
   yours. The harness assumes an Unraid-style host (`/mnt/cache/appdata/bench` for app
   data; `BENCH_DATA` changes it).
@@ -155,7 +166,7 @@ stopped at the end.
 
 Wall time is measured on the Mac from just before the trigger request to the poll that
 first sees completion (poll interval 0.25 s, so up to about 0.3 s of overshoot on either
-app). The app-reported time is the app's own clock, without HTTP and polling.
+app); anything read over SSH afterwards (logs, CPU time) is outside it. The app-reported time is the app's own clock, without HTTP and polling.
 
 ### The requests (what each web client sends)
 
@@ -230,7 +241,8 @@ Things one app does that the other does not, or that could not be measured ident
   result on disk under `/metadata/cache`; AudioSilo makes a JPEG thumbnail of the
   requested size on first request and keeps it in a 48 MB in-memory cache (gone on
   restart). `cover_first_request` is the uncached case, `cover_grid` the cached one.
-  **The LibriVox `cover.jpg` files are only 180x180 px**, smaller than either app's
+  **The `cover.jpg` files are only 180x180 px** (`corpus/fetch.py` downloads
+  archive.org's thumbnail of each LibriVox cover), smaller than either app's
   thumbnail size, so this library barely exercises image resizing; real audiobook art
   (500-2400 px) would cost both apps more on first request. Treat the cover rows as a
   lower bound, or use a library with full-size art for a cover-focused claim.

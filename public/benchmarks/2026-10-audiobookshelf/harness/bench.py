@@ -46,7 +46,7 @@ def scan_measure(app, trigger, label):
     t0 = time.time()
     token = trigger()
     done = app.wait_scan(token, timeout=6 * 3600)
-    t1 = time.time()
+    t1 = done["done_at"]  # when completion was seen, before any SSH reads
     cpu1 = hostctl.cpu_usec(app.container)
     mem = sampler.stop()
     res = {
@@ -115,7 +115,7 @@ def rescans(app, n, out):
                 tok = app.trigger_rescan()
                 done = app.wait_scan(tok, timeout=6 * 3600)
                 cpu1 = hostctl.cpu_usec(app.container)
-                r = {"label": f"rescan-warm-{i}", "wall_s": round(time.time() - t0, 3),
+                r = {"label": f"rescan-warm-{i}", "wall_s": round(done["done_at"] - t0, 3),
                      "app_reported_s": done.get("app_reported_s"), "completion_signal": app.completion_signal,
                      "cpu_s": round((cpu1["usage_usec"] - cpu0["usage_usec"]) / 1e6, 3), "detail": done}
                 log(f"  {app.name} {r['label']}: wall {r['wall_s']} s, cpu {r['cpu_s']} s")

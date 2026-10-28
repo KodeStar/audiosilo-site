@@ -229,9 +229,9 @@ def measure(base, req, warmup, n):
 
 
 def _conc_worker(a):
-    base, req, start_at, until, interval, idx = a
+    base, req, start_at, until, interval, idx, clients = a
     # stagger paced clients across the interval so they don't fire in lockstep
-    nxt = start_at + (interval * idx / 20.0 if interval else 0)
+    nxt = start_at + (interval * idx / clients if interval else 0)
     time.sleep(max(0.0, nxt - time.time()))  # all workers start together
     conn = Conn(base)
     local, codes = [], {}
@@ -261,7 +261,7 @@ def concurrency(base, req, clients, seconds, interval=0.0):
     ctx = mp.get_context("spawn")
     with ctx.Pool(clients) as pool:
         start_at = time.time() + 3.0  # time for the workers to spawn
-        parts = pool.map(_conc_worker, [(base, req, start_at, start_at + seconds, interval, i) for i in range(clients)])
+        parts = pool.map(_conc_worker, [(base, req, start_at, start_at + seconds, interval, i, clients) for i in range(clients)])
         wall = float(seconds)
     lat = [t for p in parts for t in p[0]]
     codes = {}

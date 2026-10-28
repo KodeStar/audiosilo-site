@@ -63,8 +63,9 @@ def stop_container(name):
 def wipe_data(app):
     """Delete the app's bench data dir (only under DATA)."""
     assert app in ("abs", "as")
-    d = f"{DATA}/{app}"
-    assert d.startswith("/mnt/cache/appdata/bench/"), d
+    base = DATA.rstrip("/")
+    assert base.startswith("/") and base.count("/") >= 2, f"refusing to wipe under BENCH_DATA={DATA!r}"
+    d = f"{base}/{app}"
     sh(f"rm -rf {shlex.quote(d)} && mkdir -p {shlex.quote(d)}")
 
 
