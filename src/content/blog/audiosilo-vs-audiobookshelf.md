@@ -4,7 +4,7 @@ description: Is AudioSilo a good Audiobookshelf alternative? What each one does 
 kind: guide
 published: 2026-10-28
 verified: 2026-10-28
-appliesTo: Server 2.5.0, app 2.5.0; Audiobookshelf 2.37.2
+appliesTo: Server 2.5.0; apps 2.4.1 (App Store), 2.0.0 (Google Play) and 2.5.0 (Android APK); Audiobookshelf 2.37.2
 tags: [audiobookshelf, comparison, performance, benchmarks]
 covers:
   - server:scanner
@@ -21,11 +21,11 @@ covers:
   - docs:/users/listening/reading-the-ebook
 related:
   - moving-from-audiobookshelf
+  - server-2-5
   - self-hosted-audiobook-server
   - audiobooks-on-unraid
 hero: ../../assets/stills/player-desktop-upnext-dark.webp
 heroAlt: "The AudioSilo web player in a desktop browser: the library grid with the Up next drawer open, four books queued and the series to continue"
-draft: true
 ---
 
 Yes, AudioSilo is a good Audiobookshelf alternative if what you want is audiobooks: a server that never writes to your folders, released phone apps in the App Store and Google Play, and a player built around listening to whole books. Audiobookshelf is the better fit if you also want an ebook library in many formats, uploads and tag editing from the browser, podcasts without an extra container, single sign-on, or a choice of third-party apps. On the same low-power home server (an Intel i3-N305, a 15 W mini PC chip) and the same 1,000 to 5,000 LibriVox audiobooks, AudioSilo 2.5.0 finished its first scan 25 to 40% sooner, rescanned an unchanged library about 3 to 7 times faster, idled at 14 MiB of memory to Audiobookshelf's roughly 50, answered nearly every request we timed sooner, and under full load from our Mac answered about 6 times as many requests a second (about twice as many when the load ran on the server itself). Audiobookshelf used less CPU time to scan, was quicker to send a cover it had already resized (on the 1,000-book libraries timed from our Mac, and on all three timed on the server itself), and was slightly quicker at one admin request at 5,000 books.
@@ -38,20 +38,20 @@ Audiobookshelf is a great project. It's mature, it has years of releases behind 
 |---|---|---|
 | Licence | GPL-3.0 | AGPLv3 (server and player) |
 | Built with | Node.js and SQLite | Go and SQLite |
-| What it serves | Audiobooks, podcasts and ebooks (EPUB, PDF, CBR, CBZ, AZW3, MOBI) | Audiobooks, an audiobook's EPUB, and podcasts with the optional Bridge container |
+| What it serves | Audiobooks, podcasts and ebooks (EPUB, PDF, CBR, CBZ, AZW3, MOBI) | Audiobooks, an audiobook's EPUB (in the web player; in the apps from app 2.5.0), and podcasts with the optional Bridge container |
 | Your files | Can upload books, write tags and covers into files, merge files into an M4B and edit chapters | Never writes to your library: edits live in its database |
-| Phone apps | Android app in beta on Google Play; iOS app in beta on TestFlight (its beta is full) | iPhone, iPad and Android apps in the App Store and Google Play |
-| In the car | Android Auto | CarPlay and Android Auto |
+| Phone apps | Android app in beta on Google Play; iOS app in beta on TestFlight (its beta is full) | iPhone, iPad and Android apps in the App Store (2.4.1) and Google Play (2.0.0); Android app 2.5.0 as an APK on GitHub |
+| In the car | Android Auto | CarPlay in the App Store app; Android Auto in the Android APK, not yet in Google Play's 2.0.0 |
 | Third-party apps | Many (Absorb, ShelfPlayer, Lissen, Prologue and more) | None: AudioSilo's own apps only |
 | Web player | Yes, installable | Yes, installable, with offline downloads |
-| Casting | Chromecast from the web app and the Android app | Chromecast from the apps, and from the web player in Chromium browsers over HTTPS |
+| Casting | Chromecast from the web app and the Android app | Chromecast from the iPhone app, the Android APK (not yet Google Play's 2.0.0) and the web player in Chromium browsers over HTTPS |
 | Sign-in | Accounts, OpenID Connect single sign-on, API keys | Accounts, invites by QR code, API keys |
 | Metadata | Audible, Google Books, iTunes, Open Library and more, plus custom providers | Its community database at [meta.audiosilo.app](https://meta.audiosilo.app), with spoiler-safe recaps and characters |
 | Docker image (measured, amd64) | 125 MiB to download, 343 MiB unpacked | 65 MiB to download, 171 MiB unpacked |
 
 ## What Audiobookshelf does that AudioSilo doesn't
 
-- **Ebooks as a library of their own.** Audiobookshelf reads EPUB, PDF, comics (CBR and CBZ), AZW3 and MOBI, holds ebook-only books, and can email a book to a Kindle or another e-reader. AudioSilo 2.5.0 reads one EPUB that sits beside an audiobook, in the web player and the apps, and keeps your place across devices; a folder with only an ebook in it isn't a book to AudioSilo, and PDFs and comics aren't read at all. Getting ebooks onto e-readers (an OPDS catalogue and Send to Kindle) is on our roadmap.
+- **Ebooks as a library of their own.** Audiobookshelf reads EPUB, PDF, comics (CBR and CBZ), AZW3 and MOBI, holds ebook-only books, and can email a book to a Kindle or another e-reader. AudioSilo 2.5.0 reads one EPUB that sits beside an audiobook and keeps your place across devices: in the web player, and in the apps from app 2.5.0 (the Android APK today, the App Store and Google Play once their review clears); a folder with only an ebook in it isn't a book to AudioSilo, and PDFs and comics aren't read at all. Getting ebooks onto e-readers (an OPDS catalogue and Send to Kindle) is on our roadmap.
 - **Changing your files from the browser.** Audiobookshelf can upload books, write metadata and covers into the audio files, merge a book's files into one M4B and edit chapter times. AudioSilo never writes to your library, by design. Uploads, an inbox folder and renaming and retagging files are on our roadmap for the Bridge, the optional companion container that is allowed to write. A chapter-time editor is on our roadmap too. Merging into M4B isn't: a book made of many files already plays as one timeline in AudioSilo.
 - **Podcasts with nothing extra to run.** Audiobookshelf downloads podcasts itself, its app downloads episodes for offline listening, and it can notify you about new episodes and failing feeds. AudioSilo's podcasts need its Bridge container to fetch the feeds, and episodes stream from your server; downloading episodes in the apps and podcast notifications are both on our roadmap.
 - **Single sign-on.** Audiobookshelf signs in with OpenID Connect (Authentik, Authelia, Keycloak and the like). That's on our roadmap.
@@ -63,7 +63,7 @@ Audiobookshelf is a great project. It's mature, it has years of releases behind 
 
 ## What AudioSilo does that Audiobookshelf doesn't
 
-- **Phone apps in both stores.** The AudioSilo apps for iPhone, iPad and Android are released apps in the App Store and Google Play, not betas, with CarPlay on the iPhone and Android Auto on Android. Audiobookshelf's own iOS app is a TestFlight beta that is currently full, and has no CarPlay (some third-party Audiobookshelf apps do).
+- **Phone apps in both stores.** The AudioSilo apps for iPhone, iPad and Android are released apps in the App Store and Google Play, not betas. The iPhone app has CarPlay. Android Auto and casting came to Android in app 2.1, which Google Play doesn't carry yet (it still has 2.0.0), so on Android they need [the APK from GitHub](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play) for now; Android Auto lists an app installed that way after [one developer setting](https://docs.audiosilo.app/users/listening/in-the-car#android-auto). App 2.5.0 is in review in both stores. Audiobookshelf's own iOS app is a TestFlight beta that is currently full, and has no CarPlay (some third-party Audiobookshelf apps do).
 - **Read-only by design.** AudioSilo treats your folders as the source of truth and never writes to them, so you can mount the library read-only. Your edits, matches and custom covers live in its database, and progress and bookmarks follow a book when you move or rename its folder.
 - **Spoiler-safe recaps and characters.** For books in the community database, the player shows who's who and the story so far, only up to where you are in the book. With the optional Bridge, your server can write them for a book the community hasn't covered yet.
 - **A household on one server.** Household members (add a child or a partner without an invite), profiles and kids mode on a shared device with an optional PIN, and an opt-in "listening in the house" row.
@@ -208,6 +208,6 @@ The harness and every result file are on this site: [benchmarks/2026-10-audioboo
 
 **Choose Audiobookshelf** if you want one server for audiobooks, podcasts and an ebook library in many formats, if you want to upload books and edit their tags and chapters from the browser, if you need single sign-on today, or if you'd like to pick from the many third-party apps.
 
-**Choose AudioSilo** if you want your folders left exactly as they are, released phone apps with CarPlay and Android Auto, a player and console built around a household listening to whole books, spoiler-safe recaps, or a server that stays small and quick on low-power hardware like ours.
+**Choose AudioSilo** if you want your folders left exactly as they are, released phone apps with CarPlay (and Android Auto in the Android APK until Google Play catches up), a player and console built around a household listening to whole books, spoiler-safe recaps, or a server that stays small and quick on low-power hardware like ours.
 
 You don't have to decide in one go. Both can run side by side on the same folders, because AudioSilo only reads them: [Moving from Audiobookshelf to AudioSilo](/blog/moving-from-audiobookshelf/) walks through it, from reading Audiobookshelf's `metadata.json` to [importing everyone's listening history](https://docs.audiosilo.app/users/admin/import). If you'd rather stay with Audiobookshelf, its metadata can still come from [AudioSilo's community database](https://meta.audiosilo.app/audiobookshelf).
