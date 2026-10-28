@@ -57,7 +57,7 @@ def main(root):
     w(f"Host: {h['cpu_model']}, {h['cpus']} CPUs, {h['memtotal']} RAM, kernel {h['kernel']}, Docker {h['docker']}. "
       f"Load average at start {meta['load_at_start']['load1']}/{meta['load_at_start']['load5']}/{meta['load_at_start']['load15']}, "
       f"at end {meta.get('load_at_end', {}).get('load1')}. Other containers running on the host (idle, untouched): "
-      f"{len(meta.get('other_running_containers', []))}.\n")
+      f"{meta.get('other_running_containers_count', len(meta.get('other_running_containers', [])))}.\n")
     if meta.get("library_changing"):
         w("**WARNING: the library changed during the pre-run check, so the two apps did not scan the same set of books. "
           "Compare the 'Books found' row before reading anything else.**\n")

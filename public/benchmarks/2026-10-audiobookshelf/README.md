@@ -31,6 +31,9 @@ and AudioSilo from its `:edge` image of 28 October 2026 (commit `e465ccb`, repor
   Each tier's `summary.md` lists the exact requests, tokens elided. In `harness/apps.py`
   the fixed Audiobookshelf root password the harness set on its throwaway container is
   now read from `BENCH_ABS_PASSWORD`.
+- **The host's other containers.** `bench.py` records the names of the other containers
+  running on the host in `meta.json` (`other_running_containers`); the published files
+  keep only how many there were (`other_running_containers_count`).
 - **Screenshots** of each measured page are not included (size). `webui.json` still
   records every request each page made.
 - The JSON files are minified; the data is unchanged. `summarize.py` also reads the
@@ -286,16 +289,15 @@ Things one app does that the other does not, or that could not be measured ident
 - **The library lives on the Unraid array** (`/mnt/user` FUSE over an XFS data disk), so
   cold scans are disk bound for both. A spun-down disk adds seconds to the first access:
   the cache drop does not spin disks down, but a long idle gap before a run can.
-- **The host is not otherwise empty**: the owner's other containers (Immich, Nextcloud,
-  another AudioSilo, ...) are running but idle; load averages are recorded around every
-  phase so a disturbed run can be spotted.
+- **The host is not otherwise empty**: 18 other containers were running but idle; load
+  averages are recorded around every phase so a disturbed run can be spotted.
 
 ## Results layout
 
 ```
 results/<tier>/
   run.log, summary.md
-  meta.json                 host, other containers, library facts (before/after each app),
+  meta.json                 host, other containers (published: their count only), library facts (before/after each app),
                             images (digest, version, sizes), picked books, timings
   <app>/scan_initial_N.json  wall + app-reported time, CPU, sampled memory, idle and
                             settled memory, data dir breakdown, scan log excerpt

@@ -52,8 +52,6 @@ Both are self-hosted, open-source servers that run in Docker, keep each person's
 | Casting | Chromecast from the web app and the Android app | Chromecast from the iPhone and iPad app, and from the web player (server 2.3, Chromium browsers over HTTPS) |
 | Metadata | Fetches from several sources | Community database at [meta.audiosilo.app](https://meta.audiosilo.app), with spoiler-safe recaps and characters for the books that have them |
 
-<!-- TODO(release v2.5.0): the EPUB reader ships in server and app 2.5.0. Update the "What it serves" row, this paragraph's ebooks and the "Doesn't" list's ebooks; once Google Play has app 2.4.1 or later, add Android Auto and Android casting. Link the audiosilo-vs-audiobookshelf post from the intro when it is published. -->
-
 **Stay with Audiobookshelf** if you rely on ebooks, uploading through the web, or having metadata written into your files. AudioSilo does none of those. Podcasts work from server 2.4, but need AudioSilo's optional Bridge container to download them: see [Podcasts in AudioSilo](/blog/podcasts/).
 
 **AudioSilo suits you** if you want the server to treat your folders as read-only, want phone apps from the stores, or like a player built around the whole book: time left at your speed, an undo for accidental jumps, a sleep timer that can fade out and marks where you dozed off, and a Year in listening.

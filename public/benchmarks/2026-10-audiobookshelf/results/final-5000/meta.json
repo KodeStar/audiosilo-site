@@ -31,26 +31,7 @@
   "cpu_model": "Intel(R) Core(TM) i3-N305",
   "docker": "24.0.9"
  },
- "other_running_containers": [
-  "audiosilo-edge-bridge-1",
-  "audiosilo-edge-audiosilo-1",
-  "audiosilo-edge-agent-1",
-  "audiosilo-bridge-1",
-  "audiosilo-audiosilo-1",
-  "audiosilo-agent-1",
-  "cloudflared-tunnel",
-  "immich_server",
-  "immich_machine_learning",
-  "immich_db_dumper",
-  "immich_redis",
-  "immich_postgres",
-  "backrest",
-  "heimdall",
-  "audiobookshelf",
-  "caddyv2-caddy-1",
-  "nextcloud",
-  "mariadb"
- ],
+ "other_running_containers_count": 18,
  "load_at_start": {
   "load1": 0.58,
   "load5": 1.56,

@@ -49,8 +49,6 @@ Audiobookshelf is a great project. It's mature, it has years of releases behind 
 | Metadata | Audible, Google Books, iTunes, Open Library and more, plus custom providers | Its community database at [meta.audiosilo.app](https://meta.audiosilo.app), with spoiler-safe recaps and characters |
 | Docker image (measured, amd64) | 125 MiB to download, 343 MiB unpacked | 65 MiB to download, 171 MiB unpacked |
 
-<!-- TODO(release v2.5.0): publish (set published and verified) only once both stores carry app 2.5.0 (the reader in the apps, Android Auto and casting on Android). Checked 2026-10-28: the App Store had 2.4.1 (CarPlay and casting, no reader) and Google Play still had 2.0.0 (no Android Auto, no casting, no reader); app 2.5.0 was out only as the APK on its GitHub release. If Play is still behind, say Android Auto and casting need the GitHub APK. -->
-
 ## What Audiobookshelf does that AudioSilo doesn't
 
 - **Ebooks as a library of their own.** Audiobookshelf reads EPUB, PDF, comics (CBR and CBZ), AZW3 and MOBI, holds ebook-only books, and can email a book to a Kindle or another e-reader. AudioSilo 2.5.0 reads one EPUB that sits beside an audiobook, in the web player and the apps, and keeps your place across devices; a folder with only an ebook in it isn't a book to AudioSilo, and PDFs and comics aren't read at all. Getting ebooks onto e-readers (an OPDS catalogue and Send to Kindle) is on our roadmap.
@@ -84,7 +82,7 @@ We ran both servers on the same machine, against the same read-only libraries, w
 - **Client:** a Mac on the same home network, for the API and web timings. The API timings were also repeated on the server itself, over loopback, to take the network out.
 - **Software:** Audiobookshelf 2.37.2 (`ghcr.io/advplyr/audiobookshelf`, the current release) and AudioSilo from its `:edge` image of 28 October 2026, commit `e465ccb`, the commit tagged as AudioSilo 2.5.0 later that day (the `:edge` build reports its version as `dev-e465ccb`). Both images were pinned by digest for the whole run; the digests are in each tier's `meta.json`.
 - **Settings:** each app's defaults, as a new user would get them. The only change was serving AudioSilo over plain HTTP like Audiobookshelf (`AUDIOSILO_TLS_MODE=off`). Both containers mounted the library read-only.
-- **Quiet host:** the harness ran one app at a time (Audiobookshelf first, then AudioSilo, never both at once), wiped the app's data folder before every first scan, dropped the Linux page cache before every cold measurement, checked that the library wasn't changing, and recorded the load average around every phase. Our other containers on that server were running but idle; their names are in `meta.json`.
+- **Quiet host:** the harness ran one app at a time (Audiobookshelf first, then AudioSilo, never both at once), wiped the app's data folder before every first scan, dropped the Linux page cache before every cold measurement, checked that the library wasn't changing, and recorded the load average around every phase. Our other containers on that server (18 of them) were running but idle.
 
 ### The libraries
 
