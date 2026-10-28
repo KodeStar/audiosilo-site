@@ -3,6 +3,7 @@ title: "AudioSilo Server 2.5: read the ebook, a faster server, and .mka everywhe
 description: Read a book's EPUB beside its audio in the web player and the apps, quicker scans, lists and web player start-up, .mka books in the apps, and a database copy before every upgrade.
 kind: release
 published: 2026-10-28
+updated: 2026-10-28
 verified: 2026-10-28
 appliesTo: Server 2.5.0 with its bundled web player, app 2.5.0, Bridge 0.4.0
 tags: [release, server, reader, ebooks, performance, bridge]
@@ -35,15 +36,22 @@ covers:
   - docs:/users/admin/server
 related:
   - ebook-reader
+  - mka-books-play-everywhere
+  - asr-worker-one-command
+  - back-up-before-upgrading
+  - mka-audiobooks
   - server-2-4
   - organize-audiobook-folders
   - m4b-vs-mp3-audiobooks
   - bridge-recaps-and-contributions
+revisions:
+  - date: 2026-10-28
+    note: "Where to get app 2.5.0 while it is in store review (the Android APK), and links to the posts on .mka books, the ASR worker install and backing up before an upgrade."
 ---
 
 AudioSilo Server **2.5.0** came out on 28 October. The headline is the **ebook reader**: when a book's folder also holds its EPUB, you can read it as well as listen, in the web player and in the iPhone, iPad and Android apps, with your place kept on every device and offline reading for downloaded books. Around it, the server is quicker almost everywhere, `.mka` books play in the apps too, a book folder opens before it's scanned, and the server copies its database before an upgrade changes it. **Bridge 0.4.0** came out alongside, with a one-line install for an ASR worker.
 
-**Where it runs:** the reader and the other new listening features are in the **web player bundled with the server** (`/web`) and in **app 2.5.0** for iPhone, iPad and Android, as it reaches the App Store and Google Play. Older apps keep working with 2.5 as before, without **Read the ebook**.
+**Where it runs:** the reader and the other new listening features are in the **web player bundled with the server** (`/web`) and in **app 2.5.0** for iPhone, iPad and Android. App 2.5.0 came out on 28 October and is in review at the App Store and Google Play; on Android you can install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.5.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Older apps keep working with 2.5 as before, without **Read the ebook**.
 
 ## How to update
 
@@ -71,9 +79,9 @@ The whole tour is in [Read the ebook: your EPUBs in the AudioSilo player](/blog/
 
 ## `.mka` books play everywhere
 
-In 2.4, a Matroska (`.mka`) book played only in the web player. Now an **MP3 inside an `.mka`** plays in the iOS and Android apps too. With ffmpeg available (as for transcoding), the server repackages the MP3 inside into a plain MP3 file, without converting it, and serves that at the same address. Chapters come along, seeking works, and the result is kept in a cache in the data folder (up to 8 GB), so each file is done once. Your `.mka` files are never changed, and downloads of these books work too, offline included.
+In 2.4, a Matroska (`.mka`) book played only in the web player. Now an **MP3 inside an `.mka`** plays in the iOS and Android apps too, including the apps you already have. With ffmpeg available (as for transcoding), the server repackages the MP3 inside into a plain MP3 file, without converting it, and serves that at the same address. Chapters come along, seeking works, and the result is kept in a cache in the data folder (up to 8 GB), so each file is done once. Your `.mka` files are never changed, and downloads of these books work too, offline included.
 
-An `.mka` holding another codec (AAC, say) still plays in the web player only, as in 2.4. On iPhone these books are best with app 2.5.0: the 2.4.1 app can stop with a false "End of book" about ten seconds into the first play of one (a second play works). Thanks to @wtanksleyjr for the request.
+An `.mka` holding another codec (AAC, say) still plays in the web player only, as in 2.4. On iPhone these books are best with app 2.5.0: the 2.4.1 app can stop with a false "End of book" about ten seconds into the first play of one (a second play works). Thanks to @wtanksleyjr for the request. More in [MKA audiobooks now play in the iPhone and Android apps](/blog/mka-books-play-everywhere/), and for books with other audio inside, [how to convert an MKA audiobook](/blog/mka-audiobooks/).
 
 ## New book folders open before a scan
 
@@ -81,13 +89,13 @@ In the player's **Folders**, a book folder your server hasn't scanned yet now sh
 
 ## One command to install an ASR worker
 
-An ASR worker hands your Bridge's speech recognition to a faster computer (a Mac with Apple silicon, or a PC with an NVIDIA GPU). With **Bridge 0.4.0**, the Bridge's **Workers** tab gives you one line to paste into that computer's terminal, for macOS or Linux: it downloads the worker for that computer from your Bridge and installs it as a service. Running the same line again updates it and keeps its settings. See [Running a worker](https://docs.audiosilo.app/users/getting-started/running-a-worker).
+An ASR worker hands your Bridge's speech recognition to a faster computer (a Mac with Apple silicon, or a PC with an NVIDIA GPU). With **Bridge 0.4.0**, the Bridge's **Workers** tab gives you one line to paste into that computer's terminal, for macOS or Linux: it downloads the worker for that computer from your Bridge and installs it as a service. Running the same line again updates it and keeps its settings. The walkthrough is in [Faster transcription for your Bridge: an ASR worker in one command](/blog/asr-worker-one-command/), and the docs have [Running a worker](https://docs.audiosilo.app/users/getting-started/running-a-worker).
 
 Bridge 0.4.0 also makes copy buttons work over plain http on a LAN address, and pairing now says what actually went wrong: a server it couldn't reach (with the address to use instead), a server that answered with an error, or a pairing that wasn't saved and needs a new code.
 
 ## A copy of your database before every upgrade
 
-When a new version has database changes to make, the server now copies your database into the backups folder first, and writes one line in the log naming the changes and the copy. The newest 3 of these copies are kept, and **Server > Settings > Backups** lists them as **Before an upgrade**. A fresh install, or a start with nothing to change, makes no copy.
+When a new version has database changes to make, the server now copies your database into the backups folder first, and writes one line in the log naming the changes and the copy. The newest 3 of these copies are kept, and **Server > Settings > Backups** lists them as **Before an upgrade**. A fresh install, or a start with nothing to change, makes no copy. [How to back up a self-hosted app before you upgrade it](/blog/back-up-before-upgrading/) covers the copy, rolling back, and what to back up yourself.
 
 ## Polish
 

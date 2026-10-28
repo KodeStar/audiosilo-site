@@ -3,8 +3,8 @@ title: "A tour of the AudioSilo admin console"
 description: Four and a half minutes on a real household server - fixing a badly tagged book, the library and series shelves, Health, people and invites, activity and settings.
 kind: tutorial
 published: 2026-10-09
-updated: 2026-10-24
-verified: 2026-10-24
+updated: 2026-10-28
+verified: 2026-10-28
 appliesTo: Server 2.0 and later (recorded on 2.0)
 tags: [admin, video, tour, metadata]
 covers:
@@ -18,6 +18,7 @@ covers:
   - server:addresses
   - docs:/users/admin/console-tour
 related:
+  - server-2-5
   - server-2-2
   - fix-covers-and-series
   - self-hosted-audiobook-server
@@ -38,6 +39,8 @@ video:
     - "3:28 Activity and Year in listening"
     - "3:54 Settings, import, backups and logs"
 revisions:
+  - date: 2026-10-28
+    note: "Added what server 2.5 changed since the recording."
   - date: 2026-10-24
     note: "Added what server 2.3 and 2.4 changed since the recording, and corrected how an invite QR is scanned."
 ---
@@ -88,7 +91,7 @@ Settings live in the console. The apps know the **home address** and the public 
 
 ## Since the recording
 
-The tour was recorded on server 2.0. Server 2.1 and 2.2, released the same day as this post, add **community chapters**, books in more than one series, **Clear community matches** and a support card you can dismiss for good: see [Server 2.1 and 2.2](/blog/server-2-2/). Server 2.3 adds household members on the People page ([Server 2.3](/blog/server-2-3/)), and server 2.4 opens **Set up your server** the first time you sign in to a new server, and adds genre and tag filters, duplicates across libraries in Health, selecting many books at once and podcast libraries: see [Server 2.4](/blog/server-2-4/).
+The tour was recorded on server 2.0. Server 2.1 and 2.2, released the same day as this post, add **community chapters**, books in more than one series, **Clear community matches** and a support card you can dismiss for good: see [Server 2.1 and 2.2](/blog/server-2-2/). Server 2.3 adds household members on the People page ([Server 2.3](/blog/server-2-3/)), and server 2.4 opens **Set up your server** the first time you sign in to a new server, and adds genre and tag filters, duplicates across libraries in Health, selecting many books at once and podcast libraries: see [Server 2.4](/blog/server-2-4/). Server 2.5 lists a book folder that hasn't been scanned yet in **Folders** as **Not in the library yet**, with **Rescan** beside it, adds **Before an upgrade** copies of the database to **Backups**, and opens the console's sections sooner on a large library: see [Server 2.5](/blog/server-2-5/).
 
 ## Try it yourself
 

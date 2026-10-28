@@ -3,8 +3,8 @@ title: "Podcasts in AudioSilo: your shows beside your books"
 description: Podcasts on your own server. A Bridge downloads the episodes, the server stays read-only, and the player finds shows, imports your list and plays any episode on demand.
 kind: feature
 published: 2026-10-24
-updated: 2026-10-24
-verified: 2026-10-24
+updated: 2026-10-28
+verified: 2026-10-28
 appliesTo: Server 2.4.0 with Bridge 0.3.0, app 2.4.0
 tags: [podcasts, bridge, player, admin]
 covers:
@@ -23,12 +23,15 @@ covers:
   - docs:/users/admin/podcasts
   - docs:/users/getting-started/running-a-bridge
 related:
+  - server-2-5
   - admin-console-tour
   - player-tips
   - self-hosted-audiobook-server
   - server-2-4
   - move-podcasts-with-opml
 revisions:
+  - date: 2026-10-28
+    note: "Server 2.5.0: Check for new episodes waits for the server's check, then shows what's new."
   - date: 2026-10-24
     note: "Links the new guide to moving podcast subscriptions with OPML."
 ---
@@ -77,7 +80,7 @@ A show the library already has is followed straight away. A new one has to be fe
 
 **Export my shows**, in the Shows **...** menu, saves the shows you follow on this server as an OPML file any podcast app can import. Private feeds are never exported, for anyone, admins included.
 
-**Check for new episodes**, on the page of a show you follow, asks your server to look at its feed now instead of waiting for its next check. A show can be checked once a minute.
+**Check for new episodes**, on the page of a show you follow, asks your server to look at its feed now instead of waiting for its next check. A show can be checked once a minute. From server 2.5.0, the button says **Asked the server to check** until the server has checked the show, then the page shows anything new.
 
 ## New episodes on Home
 

@@ -3,8 +3,8 @@ title: "Set up AudioSilo with Traefik: Docker Compose and HTTPS"
 description: "A step-by-step Traefik reverse proxy guide for AudioSilo, with downloadable Compose files, screenshots, HTTPS settings, phone pairing and troubleshooting."
 kind: tutorial
 published: 2026-10-21
-updated: 2026-10-24
-verified: 2026-10-24
+updated: 2026-10-28
+verified: 2026-10-28
 appliesTo: "Server 2.3.1 (LinuxServer v2.3.1-ls6); Traefik 3.7.16; app 2.0.0"
 tags: [reverse-proxy, https, remote-access, docker, traefik]
 covers:
@@ -16,6 +16,7 @@ covers:
   - docs:/users/getting-started/remote-access
   - docs:/users/listening/connecting
 related:
+  - back-up-before-upgrading
   - listen-away-from-home
   - pair-your-phone
   - self-hosted-audiobook-server
@@ -61,6 +62,8 @@ screenshots:
     caption: "Check that the library opens, audio plays and seeking works through the same HTTPS address."
     address: "books.example.com:28443/web"
 revisions:
+  - date: 2026-10-28
+    note: "Server 2.5.0 copies its database before an upgrade that changes it; links the backup-before-upgrading guide."
   - date: 2026-10-24
     note: "Noted the Set up your server flow a new 2.4.0 server opens on first sign-in, and that app 2.4.0 scans the invite card's QR directly."
 ---
@@ -252,7 +255,7 @@ Connect AudioSilo to Traefik's Docker network and ensure `audiosilo` resolves th
 
 The download pins the exact image builds listed below so the setup is reproducible. `docker compose pull` fetches those tags; it does not choose a newer version automatically.
 
-Before upgrading, make a restorable backup of AudioSilo's configuration/database and the proxy's certificate state. Use AudioSilo's backup feature or stop the container before copying its database files. Edit the `image:` tags in `compose.yaml` to the published versions you want, then run:
+Before upgrading, make a restorable backup of AudioSilo's configuration/database and the proxy's certificate state. Use AudioSilo's backup feature or stop the container before copying its database files. From server 2.5.0, the server also copies its database itself before an upgrade that changes it (**Before an upgrade** in Settings > Backups); [How to back up a self-hosted app before you upgrade it](/blog/back-up-before-upgrading/) covers rolling back. Edit the `image:` tags in `compose.yaml` to the published versions you want, then run:
 
 ```sh
 docker compose pull
