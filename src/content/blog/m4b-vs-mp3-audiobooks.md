@@ -3,9 +3,9 @@ title: "M4B vs MP3 for audiobooks: chapters, size and what plays where"
 description: M4B keeps a whole audiobook in one file with its chapters and cover; MP3 plays on anything. How they differ, when to convert, and how a server handles both.
 kind: guide
 published: 2026-10-11
-updated: 2026-10-24
-verified: 2026-10-24
-appliesTo: Server 2.4.0, app 2.0.0
+updated: 2026-10-28
+verified: 2026-10-28
+appliesTo: Server 2.5.0, app 2.0.0 and later
 tags: [formats, m4b, mp3, chapters]
 covers:
   - bridge:audible
@@ -22,6 +22,8 @@ related:
 hero: ../../assets/stills/player-ipad-player-dark.webp
 heroAlt: The AudioSilo full player on an iPad, with the chapter seek bar, the whole-book timeline and bookmark pins under it
 revisions:
+  - date: 2026-10-28
+    note: "Server 2.5.0: an MP3 inside an .mka now plays in the apps too, repackaged by the server without converting."
   - date: 2026-10-24
     note: "Server 2.4.0: files play in natural order, so parts no longer need leading zeros, and .mka is indexed for the web player."
 ---
@@ -55,7 +57,7 @@ MP3 is the oldest and most widely supported audio format. Audiobooks in MP3 (CD 
 
 ## Does it matter to an audiobook server?
 
-Much less than you might think. AudioSilo indexes `.m4b`, `.m4a`, `.mp4`, `.mp3`, `.flac`, `.ogg` and `.opus` (and, from server 2.4, `.mka`, which plays in the web player only, converted with ffmpeg), and presents a single M4B and a folder of MP3s the same way: **one book with one continuous timeline and a chapter list**. Seeking, progress, bookmarks and the sleep timer work across the file boundaries of a multi-file book.
+Much less than you might think. AudioSilo indexes `.m4b`, `.m4a`, `.mp4`, `.mp3`, `.flac`, `.ogg` and `.opus` (and `.mka`, which needs ffmpeg: from server 2.5 an MP3 inside one plays everywhere, repackaged by the server without converting, while another codec inside plays in the web player only), and presents a single M4B and a folder of MP3s the same way: **one book with one continuous timeline and a chapter list**. Seeking, progress, bookmarks and the sleep timer work across the file boundaries of a multi-file book.
 
 A few things help either format:
 

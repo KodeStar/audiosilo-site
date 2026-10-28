@@ -3,9 +3,9 @@ title: How to organise audiobook folders so every player gets them right
 description: One folder per book, inside its series, inside its author. The layout, naming rules, tags, covers and the awkward cases (disc folders, short stories) that trip scanners up.
 kind: guide
 published: 2026-10-18
-updated: 2026-10-24
-verified: 2026-10-24
-appliesTo: Server 2.4.0
+updated: 2026-10-28
+verified: 2026-10-28
+appliesTo: Server 2.5.0
 tags: [library, folders, metadata, getting-started]
 covers:
   - bridge:audible
@@ -16,6 +16,7 @@ covers:
   - docs:/users/admin/libraries
   - docs:/users/admin/books
 related:
+  - ebook-reader
   - m4b-vs-mp3-audiobooks
   - fix-covers-and-series
   - moving-from-audiobookshelf
@@ -24,6 +25,8 @@ related:
 hero: ../../assets/stills/server-series-dark.webp
 heroAlt: Series in the AudioSilo admin console, a complete shelf of seven spines and a series with books 2 to 4 missing
 revisions:
+  - date: 2026-10-28
+    note: "Server 2.5.0: a decimal position like 02.5 works in a folder name, an .m4b's narrator tag beats composer, and an EPUB beside the audio opens in the reader."
   - date: 2026-10-24
     note: "Server 2.4.0 plays a book's files in natural order (2 before 10), so leading zeros are no longer needed; metadata.json now also gives genres, tags and more."
   - date: 2026-10-24
@@ -68,7 +71,7 @@ When a book's tags don't say otherwise, AudioSilo reads the layout like this:
 - `Author/Title/` is a standalone by *Author*, with no series.
 - A leading number followed by a separator (`03 - Title`, `Book 3 - Title`, `Vol 3 - Title`) is the book's place in the series. A number that is part of the title, like `20,000 Leagues Under the Sea` or `1984`, is left alone.
 
-Use whole numbers in folder names. For an in-between novella (book 2.5, say) or an omnibus that covers books 1 to 3, set the series number in the admin console instead, where ranges like `1-3` are supported.
+From server 2.5.0 an in-between novella can carry a decimal in its folder name: `02.5 - Gods of Risk` is book 2.5. For an omnibus that covers books 1 to 3, set the series number in the admin console instead, where ranges like `1-3` are supported.
 
 ## One M4B or a folder of MP3s?
 
@@ -86,7 +89,7 @@ Folder names give every book a sensible baseline, but most audiobook files also 
 |---|---|
 | Title | The *album* tag (or *title*, when that holds the fuller "Series: Book" name) |
 | Author | *album artist* or *artist* |
-| Narrator | *composer* or a *narrator* tag |
+| Narrator | a *narrator* tag, or *composer* (from 2.5.0 an `.m4b`'s narrator tag wins over composer) |
 | Series | a series tag, where the file has one |
 
 Junk tags such as "Track 01" are ignored in favour of the folder name. If your folders are well named and your tags are a mess, switch the library to take book details from **folder names first** (Edit library in the admin console) rather than retagging hundreds of files.
@@ -106,6 +109,10 @@ A rip that keeps `CD1`, `CD2` subfolders inside the book's folder is read as one
 ### Coming from Audiobookshelf
 
 If Audiobookshelf left a `metadata.json` in each book's folder (its **Store metadata with item** setting), AudioSilo 2.3.1 and later reads it: the title, authors, narrators, series and number, published year, description, ASIN and ISBN in the file go over the tags, as they do in Audiobookshelf. From 2.4.0 it also reads the subtitle, publisher, language, abridged, genres and tags. Books with an ASIN or ISBN in that file count as matched straight away. AudioSilo never writes to the file. More in [Moving from Audiobookshelf](/blog/moving-from-audiobookshelf/).
+
+### The ebook beside the audio
+
+From server 2.5.0, a DRM-free `.epub` in a book's folder (exactly one), or beside a single-file book with the same name, gives the book a **Read the ebook** button in the player. More in [Read the ebook](/blog/ebook-reader/).
 
 ### Audible files
 

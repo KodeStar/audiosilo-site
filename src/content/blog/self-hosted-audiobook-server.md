@@ -3,9 +3,9 @@ title: "Self-hosted audiobook server: what it is and how to run one with Docker"
 description: A self-hosted audiobook server streams the audiobooks you own to every device and keeps your place in sync. What you need, the options, and a Docker setup in a few steps.
 kind: guide
 published: 2026-10-13
-updated: 2026-10-24
-verified: 2026-10-24
-appliesTo: Server 2.4.0, app 2.0.0
+updated: 2026-10-28
+verified: 2026-10-28
+appliesTo: Server 2.5.0, app 2.0.0 and later
 tags: [self-hosting, docker, getting-started]
 covers:
   - bridge:audible
@@ -25,6 +25,8 @@ related:
 hero: ../../assets/stills/server-overview-dark.webp
 heroAlt: The AudioSilo admin console overview, with three people listening now, their book and chapter, totals and recent listening
 revisions:
+  - date: 2026-10-28
+    note: "Server 2.5.0: MP3-in-MKA plays in the apps too, and an EPUB beside a book opens in the reader."
   - date: 2026-10-24
     note: "Server 2.4.0: the Set up your server flow adds the library, MKA is indexed, and AudioSilo now has podcasts with a Bridge."
 ---
@@ -47,7 +49,7 @@ And because the files remain the source of truth, you can stop using any server 
 ## What you need
 
 - **A machine that stays on.** A NAS, a mini PC, an old laptop or a Raspberry Pi with a 64-bit OS all work. AudioSilo is a single Go program with a built-in database, so it doesn't need much.
-- **Your audiobooks as files**, in a folder that machine can read. M4B, M4A, MP4, MP3, FLAC, OGG and Opus are all indexed, and MKA too, for the web player only (converted with ffmpeg as it plays). A tidy layout helps; see [How to organise audiobook folders](/blog/organize-audiobook-folders/).
+- **Your audiobooks as files**, in a folder that machine can read. M4B, M4A, MP4, MP3, FLAC, OGG and Opus are all indexed, and MKA too (with ffmpeg, an MP3 inside one plays everywhere; another codec inside plays in the web player only). From server 2.5, a DRM-free EPUB beside a book's audio opens in the player's reader: see [Read the ebook](/blog/ebook-reader/). A tidy layout helps; see [How to organise audiobook folders](/blog/organize-audiobook-folders/).
 - **Docker**, ideally, though a plain binary works too (below).
 
 ## The main options
