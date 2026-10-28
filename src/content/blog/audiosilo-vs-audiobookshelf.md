@@ -1,6 +1,4 @@
 ---
-# TODO(release v2.5.0): /blog release sets published and verified once both stores carry
-# app 2.5.0 (see the TODO comment under "At a glance").
 title: "AudioSilo vs Audiobookshelf: features and benchmarks compared"
 description: Is AudioSilo a good Audiobookshelf alternative? What each one does that the other doesn't, and benchmarks on the same server and library that you can rerun.
 kind: guide
@@ -30,7 +28,7 @@ heroAlt: "The AudioSilo web player in a desktop browser: the library grid with t
 draft: true
 ---
 
-Yes, AudioSilo is a good Audiobookshelf alternative if what you want is audiobooks: a server that never writes to your folders, released phone apps in the App Store and Google Play, and a player built around listening to whole books. Audiobookshelf is the better fit if you also want an ebook library in many formats, uploads and tag editing from the browser, podcasts without an extra container, single sign-on, or a choice of third-party apps. On the same 8-core server and the same 1,000 to 5,000 LibriVox audiobooks, AudioSilo 2.5.0 finished its first scan 25 to 40% sooner, rescanned an unchanged library about 3 to 7 times faster, idled at 14 MiB of memory to Audiobookshelf's roughly 50, and answered nearly every request we timed sooner. Audiobookshelf used less CPU time to scan, served covers it had already resized faster (on the 1,000-book libraries from our Mac, and on all three from the server itself), and edged one admin request at 5,000 books.
+Yes, AudioSilo is a good Audiobookshelf alternative if what you want is audiobooks: a server that never writes to your folders, released phone apps in the App Store and Google Play, and a player built around listening to whole books. Audiobookshelf is the better fit if you also want an ebook library in many formats, uploads and tag editing from the browser, podcasts without an extra container, single sign-on, or a choice of third-party apps. On the same 8-core server and the same 1,000 to 5,000 LibriVox audiobooks, AudioSilo 2.5.0 finished its first scan 25 to 40% sooner, rescanned an unchanged library about 3 to 7 times faster, idled at 14 MiB of memory to Audiobookshelf's roughly 50, and answered nearly every request we timed sooner. Audiobookshelf used less CPU time to scan, was quicker to send a cover it had already resized (on the 1,000-book libraries timed from our Mac, and on all three timed on the server itself), and was slightly quicker at one admin request at 5,000 books.
 
 Audiobookshelf is a great project. It's mature, it has years of releases behind it, most self-hosting guides recommend it first, and a whole family of third-party apps is built on it. We make AudioSilo, so read this with that in mind: we've tried to be fair, every number below comes from a harness [you can download and run yourself](/benchmarks/2026-10-audiobookshelf/), and we show the results where Audiobookshelf comes out ahead as well as where AudioSilo does.
 
@@ -51,7 +49,7 @@ Audiobookshelf is a great project. It's mature, it has years of releases behind 
 | Metadata | Audible, Google Books, iTunes, Open Library and more, plus custom providers | Its community database at [meta.audiosilo.app](https://meta.audiosilo.app), with spoiler-safe recaps and characters |
 | Docker image (measured, amd64) | 125 MiB to download, 343 MiB unpacked | 65 MiB to download, 171 MiB unpacked |
 
-<!-- TODO(release v2.5.0): publish only once both stores carry app 2.5.0 (the reader in the apps, Android Auto and casting on Android). Checked 2026-10-28: the App Store had 2.4.1 (CarPlay and casting, no reader) and Google Play still had 2.0.0 (no Android Auto, no casting, no reader); app 2.5.0 was out only as the APK on its GitHub release. If Play is still behind, say Android Auto and casting need the GitHub APK. -->
+<!-- TODO(release v2.5.0): publish (set published and verified) only once both stores carry app 2.5.0 (the reader in the apps, Android Auto and casting on Android). Checked 2026-10-28: the App Store had 2.4.1 (CarPlay and casting, no reader) and Google Play still had 2.0.0 (no Android Auto, no casting, no reader); app 2.5.0 was out only as the APK on its GitHub release. If Play is still behind, say Android Auto and casting need the GitHub APK. -->
 
 ## What Audiobookshelf does that AudioSilo doesn't
 
@@ -62,7 +60,7 @@ Audiobookshelf is a great project. It's mature, it has years of releases behind 
 - **Metadata from many sources.** Audiobookshelf matches against Audible, Google Books, iTunes, Open Library and others, and takes custom metadata providers. AudioSilo matches against its own community database only; custom providers are on our roadmap. (AudioSilo's database is one of Audiobookshelf's [community providers](https://meta.audiosilo.app/audiobookshelf), so you can use it there today.)
 - **Sharing outward.** Audiobookshelf can open an RSS feed for a book, series or podcast, and make a public share link for a book that expires. AudioSilo has neither; a time-limited guest link for one book is on our roadmap.
 - **Playlists.** Audiobookshelf has per-person playlists that mix books and podcast episodes. AudioSilo has collections and an Up next queue, but no playlists.
-- **Noticing new files on its own.** Audiobookshelf watches the library folder. AudioSilo rescans when it starts, on a schedule you set, when you ask, and opens a new book folder someone browses to before it has been scanned.
+- **Noticing new files on its own.** Audiobookshelf watches the library folder. AudioSilo doesn't: it rescans when it starts, on a schedule you set and whenever you ask, and a new book folder someone opens in Folders before the next scan plays anyway.
 - **Third-party apps and languages.** Many apps talk to an Audiobookshelf server, so if you don't like the official one you can pick another. AudioSilo works only with its own apps. Audiobookshelf's web app is also translated into over 40 languages; AudioSilo's player into a handful, and not every screen yet.
 
 ## What AudioSilo does that Audiobookshelf doesn't
@@ -90,7 +88,7 @@ We ran both servers on the same machine, against the same read-only libraries, w
 
 ### The libraries
 
-Three libraries of LibriVox recordings, which are public domain, so anyone can build the same corpus. Each tier is a frozen set of hard links that never changed during the runs.
+Three libraries of LibriVox recordings, which are public domain, so anyone can build the same ones. None of them changed during the runs.
 
 | Library | Books | Audio files | Size |
 |---|---|---|---|
@@ -98,13 +96,13 @@ Three libraries of LibriVox recordings, which are public domain, so anyone can b
 | 1,000 books, mostly M4B | 1,000 (750 as M4B, 250 as MP3) | 4,588 MP3 and 1,046 M4B | 153 GiB |
 | 5,000 books | 4,949 | 67,497 MP3 and 2,290 M4B | 799 GiB |
 
-The books come from one list: the first 5,000 English LibriVox titles by catalogue number, one recording per title, every third one as M4B where LibriVox offers it. The mixed tier is the first 1,000 books of that list that downloaded; the mostly-M4B tier takes 750 M4B books and 250 MP3 books from the start of it, closer to a library of M4Bs ripped from Audible; the 5,000 tier is the whole list, less 51 books whose download from archive.org failed. Folders are laid out `Author/Title/`, each with LibriVox's `cover.jpg`. The list and every tier's exact folders are published with the harness.
+The books come from one list: the first 5,000 English LibriVox titles by catalogue number, one recording per title, every third one as M4B where LibriVox offers it. The mixed library is the first 1,000 books of that list that downloaded; the mostly-M4B library takes 750 M4B books and 250 MP3 books from the start of it, to look more like a library of M4Bs ripped from Audible; the 5,000-book library is the whole list, less 51 books whose download from archive.org failed. Folders are laid out `Author/Title/`, each with LibriVox's `cover.jpg`. The list and every library's exact folders are published with the harness.
 
 ### How each measure is taken
 
 | Measure | How |
 |---|---|
-| Initial scan | Fresh data folder, first-run setup, add the library, drop the page cache, time from the request until the app's own "scan finished" signal. Three times per app (once on the 5,000 tier); median. |
+| Initial scan | Fresh data folder, first-run setup, add the library, drop the page cache, time from the request until the app's own "scan finished" signal. Three times per app (once on the 5,000-book library); median. |
 | Scan CPU time | User plus system CPU seconds the container used during that scan. |
 | No-change rescan | Rescan with nothing changed, three times with a cold page cache and three times warm; median. |
 | Memory | The container's anonymous memory (the app's own heap, without the page cache that reading audio files charges to it), sampled every half second. Idle is two minutes after setup with an empty library. |
@@ -130,7 +128,7 @@ Each cell reads **Audiobookshelf / AudioSilo**, and the better of the two is in 
 | No-change rescan, warm cache | 5.4 s / **1.6 s** | 4.0 s / **1.4 s** | 20.5 s / **3.5 s** |
 | Books in the library afterwards | 999 / 1,000 | 998 / 1,000 | 4,947 / 4,949 |
 
-AudioSilo finished its first scan 25 to 40% sooner, but used 9 to 37% more CPU time doing it: it reads up to eight files at once, which finishes sooner but costs more CPU time in all. Audiobookshelf is the more frugal scanner. On the 1,000-book libraries the difference was about a minute; on the 5,000-book library AudioSilo's first scan took 16 minutes and Audiobookshelf's 22. A rescan with nothing changed took AudioSilo 0.5 to 1.6 seconds on the 1,000-book libraries, against 3.6 to 5.4 seconds for Audiobookshelf.
+AudioSilo finished its first scan 25 to 40% sooner but used 9 to 37% more CPU time, because it reads up to eight files at once (more on that below). Audiobookshelf is the more frugal scanner. On the 1,000-book libraries the difference was about a minute; on the 5,000-book library AudioSilo's first scan took 16 minutes and Audiobookshelf's 22. A rescan with nothing changed took AudioSilo 0.5 to 1.6 seconds on the 1,000-book libraries, against 3.6 to 5.4 seconds for Audiobookshelf.
 
 ### Memory, disk and start-up
 
@@ -163,7 +161,7 @@ Medians of 100 requests from the Mac over the home network, in milliseconds.
 | Steady 40 requests a second, p95 | 2.75 / **1.83** | 3.49 / **3.01** | 8.87 / **2.00** |
 | Saturating load, answers per second | 1,841 / **12,544** | 1,716 / **12,086** | 2,024 / **12,130** |
 
-Everything here is fast for both: a person can't tell 1 ms from 2 ms. What shows is how the gaps grow with the library: at 5,000 books Audiobookshelf's book page took about twice as long as at 1,000 and its play start 50 to 75% longer, while AudioSilo's stayed flat. Audiobookshelf served a cover it had already resized sooner on both 1,000-book libraries, and on all three in the runs from the server itself. AudioSilo's web player doesn't page through the library as Audiobookshelf's does: it loads it all, in pages of 200, which took 6.5 to 7.6 ms for 1,000 books and 29 ms for 4,949.
+Everything here is fast for both: a person can't tell 1 ms from 2 ms. What does show is how the gap grows with the size of the library: at 5,000 books Audiobookshelf's book page took about twice as long as at 1,000 and its play start 50 to 75% longer, while AudioSilo's stayed flat. Audiobookshelf was quicker to send a cover it had already resized on both 1,000-book libraries, and on all three when timed on the server itself. AudioSilo's web player doesn't page through the library as Audiobookshelf's does: it loads it all, in pages of 200, which took 6.5 to 7.6 ms for 1,000 books and 29 ms for 4,949.
 
 ### Web player
 
@@ -193,14 +191,14 @@ This one compares different things. Audiobookshelf has no health page, so the ne
 
 ## What the numbers don't show
 
-- **AudioSilo scans several files at once.** It probes up to eight audio files at a time (one per CPU core, up to 8), which is why its scans finish sooner but use more CPU time in total. On a NAS with two cores it will use two; on a slow disk or a busy network share you can set `scan.concurrency` lower ([Rescanning](https://docs.audiosilo.app/users/admin/libraries#rescanning) in the docs).
-- **AudioSilo keeps list and search answers ready until something changes.** Book lists, the recent shelf and search answers are cached until the next write to its database, and a progress save is a write. The benchmark repeats the same request, so it mostly measures the cached answer; in a household where people are listening, the cache is dropped often and many requests take the uncached path. The first request after each write is the uncached one, and for a library page that path is no faster than before the cache was added: about 2 to 2.5 ms against 1.7 to 1.9 ms in our own in-process test of the server code (a generated 5,000-book library, on a Mac, not on the benchmark server). The console's Health summary is cached the same way. The saturating-load test repeats one library page, so AudioSilo's numbers there are cached answers too.
+- **AudioSilo scans several files at once.** It reads one audio file per CPU core at a time, up to eight. On a NAS with two cores it will use two; on a slow disk or a busy network share you can set `scan.concurrency` lower ([Rescanning](https://docs.audiosilo.app/users/admin/libraries#rescanning) in the docs).
+- **AudioSilo keeps list and search answers ready until something changes.** Book lists, the recent shelf and search answers are saved until the next change to its database, and saving someone's progress counts as a change. The benchmark repeats the same request, the saturating-load test included, so it mostly measures these saved answers. In a household where people are listening they are thrown away often, and many requests are worked out from scratch. Worked out from scratch, a library page is no faster than before we added this: about 2 to 2.5 ms, against 1.7 to 1.9 ms before, in our own test of the server code (a generated 5,000-book library on a Mac, not the benchmark server). The console's Health summary is saved the same way.
 - **Where the load comes from changes the saturating result.** From the Mac, AudioSilo answered six to seven times as many requests a second. Run from the server itself, where the load generator competes with the app for the same 8 cores, it was about twice as many: 1,592 / 2,971 on the 1,000-book mixed library, 1,448 / 2,961 on mostly M4B and 1,593 / 2,871 at 5,000.
 - **The covers flatter both apps.** LibriVox's `cover.jpg` files are only 180x180 pixels, smaller than either app's thumbnails, so there's almost no resizing to do. Real audiobook art (500 to 2,400 pixels) costs both apps more on a first request. Treat the cover numbers as a lower bound.
-- **AudioSilo rescans every library when it starts.** The cold-start time is until it answers, which it does while that rescan runs in the background.
-- **The two apps don't do identical work.** Audiobookshelf loads its library 36 books at a time as you scroll; AudioSilo's web player loads the whole library in pages of 200 and sorts it in the browser. Audiobookshelf's home is one request; AudioSilo's is several in parallel. Searching for an author's name gives Audiobookshelf an author entry and AudioSilo that author's books. Starting playback creates a session in Audiobookshelf and reads the saved place in AudioSilo. Each row in the harness results records what the answer contained.
+- **AudioSilo rescans every library when it starts.** The cold-start time stops at its first answer, which comes while that rescan is still running in the background.
+- **The two apps don't do identical work.** Audiobookshelf loads its library 36 books at a time as you scroll; AudioSilo's web player loads all of it and sorts it in the browser. Audiobookshelf's home is one request; AudioSilo's is several in parallel. Searching for an author's name gives Audiobookshelf an author entry and AudioSilo that author's books. Starting playback creates a session in Audiobookshelf and reads the saved place in AudioSilo. Each row in the harness results records what the answer contained.
 - **A few LibriVox files are damaged at the source.** Audiobookshelf leaves those books out of the library; AudioSilo lists them, with a note in Health that their files couldn't be read. Neither can play them, so the book counts differ by one or two.
-- **AudioSilo's web player paints from your last visit.** It shows Home and the library as you last saw them, then refreshes them, so its warm numbers include that saved first paint. The cold runs start from an empty browser and have none.
+- **AudioSilo's web player starts from your last visit.** It shows Home and the library as you last saw them, then refreshes them, which helps its warm numbers. The cold runs start from an empty browser, so they get no such help.
 - **Web timings depend on the client.** JavaScript runs on the Mac, so a slower laptop or a phone takes longer in both.
 - **One machine.** This is one 8-core server with the library on a hard disk. A two-core NAS, an ARM board or a library on a network share will give different numbers, and could change who wins a close row.
 

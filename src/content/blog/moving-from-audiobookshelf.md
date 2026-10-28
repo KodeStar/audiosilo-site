@@ -15,6 +15,7 @@ covers:
   - server:household
   - app:stores
   - app:car
+  - server:ebooks
   - docs:/users/admin/import
   - docs:/users/getting-started/organizing-your-library
 related:
