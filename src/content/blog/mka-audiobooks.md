@@ -2,8 +2,8 @@
 title: "What is an MKA audiobook, and how do you play or convert one?"
 description: An .mka file is Matroska, a container around audio in another format. How to see what's inside, which players open it, and how to turn it into MP3 or M4B without losing quality.
 kind: guide
-published: 2026-10-27
-verified: 2026-10-27
+published: 2026-10-28
+verified: 2026-10-28
 appliesTo: Server 2.5.0, app 2.5.0
 tags: [formats, mka, ffmpeg, m4b, mp3]
 covers:
@@ -16,7 +16,8 @@ related:
   - mka-books-play-everywhere
   - m4b-vs-mp3-audiobooks
   - audiobook-files-out-of-order
-draft: true
+  - server-2-5
+draft: false
 ---
 
 An `.mka` file is **Matroska audio**: an open container format, the audio-only sibling of `.mkv` video. The container is a wrapper. The sound inside it is in some other format, most often **MP3** for audiobooks, sometimes AAC, Opus or FLAC, and the wrapper can carry chapter marks and cover art alongside it. Desktop players such as [VLC](https://www.videolan.org/vlc/) and [mpv](https://mpv.io/) open `.mka` files without fuss, and so do many Android players. iPhones, iPads and Safari don't open Matroska at all, and other browsers don't reliably either. The fix is usually quick and lossless: copy the audio out of the wrapper into a format every player knows, **MP3 for MP3 inside, M4B for AAC inside**, without re-encoding it.
@@ -82,7 +83,7 @@ If you're choosing between the two results for a book in many parts, [M4B vs MP3
 
 AudioSilo indexes `.mka` books, and its server uses ffmpeg (included in the Docker image) to make them play:
 
-- **MP3 inside** plays everywhere from **server 2.5.0**: in the web player and the iOS and Android apps, downloads included. The server does the copy above for you, once per file, keeps it in its data folder and serves it in place of the `.mka`. Your files are never changed. [MKA audiobooks now play in the iPhone and Android apps](/blog/mka-books-play-everywhere/) has the details.
+- **MP3 inside** plays everywhere from **server 2.5.0**: in the web player and the iOS and Android apps, downloads included, with the apps you already have (on an iPhone, app 2.5.0 plays them best and is needed for downloads). The server does the copy above for you, once per file, keeps it in its data folder and serves it in place of the `.mka`. Your files are never changed. [MKA audiobooks now play in the iPhone and Android apps](/blog/mka-books-play-everywhere/) has the details.
 - **Other audio inside** plays in the **web player**, converted to MP3 as it streams, and on an Android phone that can decode it. For the iPhone app, convert it as above.
 
 If you convert a book in place, there's no need to delete the `.mka` straight away: AudioSilo leaves out an `.mka` that has the same name as another audio file beside it (`Book.mka` next to `Book.m4b`), treating it as that file's source. The docs list every format AudioSilo reads under [Supported formats](https://docs.audiosilo.app/users/getting-started/organizing-your-library#supported-formats).

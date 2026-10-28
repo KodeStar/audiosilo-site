@@ -2,8 +2,8 @@
 title: "How to back up a self-hosted app before you upgrade it"
 description: An upgrade can change a database in a way the old version can't read. What to copy before you pull a new Docker image, how to copy a SQLite database safely, and how to roll back.
 kind: guide
-published: 2026-10-27
-verified: 2026-10-27
+published: 2026-10-28
+verified: 2026-10-28
 appliesTo: Server 2.5.0
 tags: [backups, docker, upgrades, self-hosting]
 covers:
@@ -16,7 +16,8 @@ related:
   - self-hosted-audiobook-server
   - audiobooks-on-unraid
   - first-run-setup
-draft: true
+  - server-2-5
+draft: false
 ---
 
 Back up before you upgrade, because an upgrade is often a one-way door. A new version of a self-hosted app may **migrate its database** as it starts: add tables, change columns, rewrite data. Once it has, the old version may not be able to read that database any more, so if the new version misbehaves, going back means putting back a copy of the data from before the upgrade. The routine takes a minute: **note the version you're on, stop the app, copy its data folder, then upgrade**. If something goes wrong, stop it, put the copy back and run the old version.

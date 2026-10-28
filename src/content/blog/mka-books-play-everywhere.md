@@ -2,9 +2,9 @@
 title: "MKA audiobooks now play in the iPhone and Android apps"
 description: From server 2.5.0, an .mka audiobook with MP3 inside plays in every AudioSilo player, downloads included. The server repackages it as MP3 losslessly; your files stay as they are.
 kind: feature
-published: 2026-10-27
-verified: 2026-10-27
-appliesTo: Server 2.5.0, app 2.5.0
+published: 2026-10-28
+verified: 2026-10-28
+appliesTo: Server 2.5.0 (any app); app 2.5.0 for iPhone downloads
 tags: [formats, mka, playback, downloads, ffmpeg]
 covers:
   - server:formats
@@ -18,9 +18,10 @@ covers:
   - docs:/users/admin/server
 related:
   - mka-audiobooks
+  - server-2-5
   - m4b-vs-mp3-audiobooks
   - server-2-4
-draft: true
+draft: false
 ---
 
 Server 2.4 indexed `.mka` (Matroska audio) books, but only the web player could play them, because the server had to convert them as they streamed. From **server 2.5.0**, an `.mka` book with **MP3 inside**, which is the usual kind, plays everywhere: in the web player, in the iOS and Android apps, and offline from a download. Your server repackages the MP3 inside into a plain MP3 file, without converting the audio, and sends that instead. Your `.mka` files themselves are never changed.
@@ -28,7 +29,8 @@ Server 2.4 indexed `.mka` (Matroska audio) books, but only the web player could 
 ## What it needs
 
 - **Server 2.5.0 or later, with ffmpeg.** The Docker image includes ffmpeg, and the program on its own finds a copy on your system or downloads one into its data folder. The admin console's **Server > Transcoding** card shows whether it was found.
-- **On an iPhone, the AudioSilo app 2.5.0.** The 2.4.1 app can stop with a false "End of book" about ten seconds into the first play of one of these books (a second play works). Update the app from the App Store and it plays through.
+- **No new app.** The server sends these books as MP3 at the address they always had, so the apps you already have play them. The reporter who asked for this confirmed it on Android the day 2.5.0 came out.
+- **On an iPhone or iPad, app 2.5.0 is best.** The 2.4.1 app streams these books, but it can stop with a false "End of book" about ten seconds into the first play of one (a second play works), and a book it downloads only plays offline once you update. App 2.5.0 fixes both. It came out on 28 October and is in review at the App Store, so update when it reaches you.
 
 There is nothing to switch on. Books that were already in your library start working with the upgrade.
 
@@ -42,7 +44,7 @@ A Matroska file is a container: a wrapper around audio in some other format. Pho
 
 ## Downloads
 
-Downloading one of these books saves the MP3 copy, so it plays with no connection, in the apps and in the web player. The iPhone app 2.5.0 saves it as `.mp3`.
+Downloading one of these books saves the MP3 copy, so it plays with no connection, in the apps and in the web player. The iPhone app 2.5.0 saves it as `.mp3`. A download an older iPhone app made from a 2.5.0 server holds the MP3 too, under an `.mka` name the iPhone won't play; app 2.5.0 renames it when it starts, and it plays.
 
 A copy downloaded **before** your server sent these books as MP3 (from an older server, or one without ffmpeg) holds the Matroska file itself, which an iPhone can't play. Remove that download and download the book again.
 

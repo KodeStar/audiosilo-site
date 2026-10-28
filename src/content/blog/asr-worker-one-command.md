@@ -2,8 +2,8 @@
 title: "Faster transcription for your Bridge: an ASR worker in one command"
 description: Bridge 0.4.0 installs an ASR worker on a Mac with Apple silicon or a Linux PC with an NVIDIA card from one line you paste in a terminal. Run it again to update.
 kind: feature
-published: 2026-10-27
-verified: 2026-10-27
+published: 2026-10-28
+verified: 2026-10-28
 appliesTo: Bridge 0.4.0, Server 2.5.0
 tags: [bridge, asr, workers, recaps, self-hosting]
 covers:
@@ -15,11 +15,11 @@ covers:
   - docs:/users/admin/bridge
 related:
   - bridge-recaps-and-contributions
-  - server-2-4
-draft: true
+  - server-2-5
+draft: false
 ---
 
-Before a [Bridge](/blog/bridge-recaps-and-contributions/) can write characters and chapter recaps for a book from its audio, it transcribes the whole book. In its container that runs on the processor, which takes hours for a long book on a typical NAS. An **ASR worker** (ASR is automatic speech recognition) does the transcribing on a faster computer instead. From **Bridge 0.4.0**, setting one up is a single line: the Bridge's **Workers** tab gives you a command to paste into that computer's terminal, and it downloads the worker from your Bridge, installs it as a service and starts it.
+Before a [Bridge](/blog/bridge-recaps-and-contributions/) can write characters and chapter recaps for a book from its audio, it transcribes the whole book. In its container that runs on the processor, which takes hours for a long book on a typical NAS. An **ASR worker** (ASR is automatic speech recognition) does the transcribing on a faster computer instead. From **Bridge 0.4.0**, out on 28 October alongside server 2.5.0, setting one up is a single line: the Bridge's **Workers** tab gives you a command to paste into that computer's terminal, and it downloads the worker from your Bridge, installs it as a service and starts it.
 
 ## Which computer
 
@@ -56,7 +56,7 @@ A few things worth knowing:
 - **Updating is the same line.** When you update the Bridge, paste the command again (the token is remembered, so you can leave out `--token` and what follows it): it replaces the worker with the Bridge's new version, restarts the service and keeps its settings.
 - **Behind a reverse proxy**, set the Bridge's public address (`public_url`) to the proxy's full address and the command uses it.
 - **A refusal is explained.** If the Bridge turns the download away (from outside your network, say), the command prints why rather than failing silently.
-- Each Bridge release on GitHub also carries the worker downloads, for installing by hand.
+- Each Bridge release on GitHub also carries the worker downloads, for installing by hand (or when the Bridge runs outside Docker, which can't serve them).
 
 ## When the worker is off
 
