@@ -1,0 +1,79 @@
+---
+/** A published benchmark set's files (src/data/benchmarks.ts); built once its post is published. */
+import { readdirSync, statSync } from 'node:fs'
+import { join, relative } from 'node:path'
+import type { GetStaticPaths } from 'astro'
+import Base from '@/layouts/Base.astro'
+import { BENCHMARK_SETS, type BenchmarkSet } from '@/data/benchmarks'
+import { getPosts } from '@/lib/blog'
+
+export const getStaticPaths = (async () => {
+  const live = new Set((await getPosts()).map((p) => p.id))
+  return BENCHMARK_SETS.filter((s) => live.has(s.post)).map((s) => ({ params: { set: s.set }, props: s }))
+}) satisfies GetStaticPaths
+
+type Props = BenchmarkSet
+const { set, post, title, description } = Astro.props
+
+const root = join(process.cwd(), 'public', 'benchmarks', set)
+const walk = (dir: string): string[] =>
+  readdirSync(dir, { withFileTypes: true })
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .flatMap((e) => (e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)]))
+const files = walk(root).map((p) => ({ path: relative(root, p), bytes: statSync(p).size }))
+const dirOf = (path: string) => path.split('/').slice(0, -1).join('/')
+// Folder by folder, the top level first and a folder's own files before its subfolders'.
+const bySegments = (a: string, b: string) => {
+  const x = a ? a.split('/') : [], y = b ? b.split('/') : []
+  for (let i = 0; i < Math.min(x.length, y.length); i++) if (x[i] !== y[i]) return x[i].localeCompare(y[i])
+  return x.length - y.length
+}
+const groups = [...new Set(files.map((f) => dirOf(f.path)))]
+  .sort(bySegments)
+  .map((dir) => ({ dir, files: files.filter((f) => dirOf(f.path) === dir) }))
+const zipBytes = statSync(join(process.cwd(), 'public', 'benchmarks', `${set}.zip`)).size
+const size = (b: number) => (b >= 1048576 ? `${(b / 1048576).toFixed(1)} MB` : b >= 1024 ? `${Math.round(b / 1024)} KB` : `${b} B`)
+const base = `/benchmarks/${set}/`
+const link = 'font-medium text-foreground underline decoration-border underline-offset-4 hover:decoration-foreground focus-visible:outline-2 focus-visible:outline-offset-2'
+---
+
+<Base title={`${title} - AudioSilo`} description={description}>
+  <div class="shell py-14 sm:py-20">
+    <div class="mx-auto max-w-3xl text-[1.0625rem]">
+      <h1 class="t-display">{title}</h1>
+      <p class="t-lede mt-6 mb-8 text-foreground/80">
+        The harness and every result file behind
+        <a class={link} href={`/blog/${post}/`}>AudioSilo vs Audiobookshelf: features and benchmarks compared</a>.
+        Start with the <a class={link} href={`${base}README.md`}>README</a>: what the harness does, how to run it, and
+        every caveat. Each tier's <code>summary.md</code> has all of its numbers.
+      </p>
+      <p class="mb-12">
+        <a
+          class="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background focus-visible:outline-2 focus-visible:outline-offset-2"
+          href={`/benchmarks/${set}.zip`}
+          download
+        >
+          Download everything (.zip, {size(zipBytes)})
+        </a>
+      </p>
+
+      {
+        groups.map((g) => (
+          <section class="mb-10">
+            <h2 class="mb-3 font-display text-[1.25rem] font-bold tracking-[-0.02em]">{g.dir || 'Top level'}</h2>
+            <ul class="space-y-1.5">
+              {g.files.map((f) => (
+                <li class="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-border py-1.5">
+                  <a class={`${link} break-all font-mono text-[0.9375rem]`} href={`${base}${f.path}`}>
+                    {f.path.split('/').pop()}
+                  </a>
+                  <span class="text-sm text-muted-foreground">{size(f.bytes)}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</Base>

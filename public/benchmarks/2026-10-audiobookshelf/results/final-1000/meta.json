@@ -1,0 +1,275 @@
+{
+ "tier": "final-1000",
+ "library_changing": false,
+ "args": {
+  "tier": "final-1000",
+  "apps": "abs,as",
+  "initial": 3,
+  "rescan": 3,
+  "startup": 3,
+  "latency_n": 100,
+  "latency_warmup": 5,
+  "conc_clients": 20,
+  "conc_seconds": 20,
+  "web_runs": 5,
+  "pace_ms": 25,
+  "idle_settle_s": 120,
+  "conc_interval_ms": 500,
+  "stable_check_s": 60,
+  "require_stable": true,
+  "no_latency": false,
+  "host_latency": true,
+  "no_web": false,
+  "as_metadata": "default",
+  "phases": "scan,rescan,startup,latency,web,admin"
+ },
+ "started": "2026-10-28T11:34:54+0000",
+ "host": {
+  "kernel": "6.1.106-Unraid",
+  "cpus": 8,
+  "memtotal": "16150928 kB",
+  "cpu_model": "Intel(R) Core(TM) i3-N305",
+  "docker": "24.0.9"
+ },
+ "other_running_containers": [
+  "audiosilo-edge-bridge-1",
+  "audiosilo-edge-audiosilo-1",
+  "audiosilo-edge-agent-1",
+  "audiosilo-bridge-1",
+  "audiosilo-audiosilo-1",
+  "audiosilo-agent-1",
+  "cloudflared-tunnel",
+  "immich_server",
+  "immich_machine_learning",
+  "immich_db_dumper",
+  "immich_redis",
+  "immich_postgres",
+  "backrest",
+  "heimdall",
+  "audiobookshelf",
+  "caddyv2-caddy-1",
+  "nextcloud",
+  "mariadb"
+ ],
+ "load_at_start": {
+  "load1": 0.09,
+  "load5": 0.1,
+  "load15": 0.03,
+  "procs": "1/1179"
+ },
+ "library_path": "/mnt/user/librivox/tier-1000",
+ "library": {
+  "books": 1000,
+  "mp3": 12653,
+  "m4b": 472,
+  "jpg": 1000,
+  "bytes": 162962780455
+ },
+ "apps": {
+  "abs": {
+   "image": {
+    "repo_digests": [
+     "ghcr.io/advplyr/audiobookshelf@sha256:b897c33f05972fb1bf484f7487bc878fa91ec8691335c1db6e2929c3a7658efa"
+    ],
+    "uncompressed_bytes": 359825863,
+    "image_id": "sha256:428769644edafa69beffc66ea45e4e1458a0f2b52e77e914d46068ca4b9fe53b",
+    "labels": {
+     "org.opencontainers.image.created": "2026-10-23T19:58:49.792Z",
+     "org.opencontainers.image.description": "Self-hosted audiobook and podcast server",
+     "org.opencontainers.image.licenses": "GPL-3.0",
+     "org.opencontainers.image.revision": "edb1f7efc92ecacdef51aafb4d9d5054ce10604f",
+     "org.opencontainers.image.source": "https://github.com/advplyr/audiobookshelf",
+     "org.opencontainers.image.title": "audiobookshelf",
+     "org.opencontainers.image.url": "https://github.com/advplyr/audiobookshelf",
+     "org.opencontainers.image.version": "2.37.2"
+    },
+    "pinned": "ghcr.io/advplyr/audiobookshelf@sha256:b897c33f05972fb1bf484f7487bc878fa91ec8691335c1db6e2929c3a7658efa",
+    "registry": {
+     "index_digest": "sha256:b897c33f05972fb1bf484f7487bc878fa91ec8691335c1db6e2929c3a7658efa",
+     "amd64_manifest_digest": "sha256:37c2057e150694970442579815c646fe6bdc01c95b9d1547c4c9068be8844ef3",
+     "compressed_bytes": 131072648,
+     "layers": 9
+    },
+    "version_label": "2.37.2",
+    "revision_label": "edb1f7efc92ecacdef51aafb4d9d5054ce10604f"
+   },
+   "library_before": {
+    "books": 1000,
+    "mp3": 12653,
+    "m4b": 472,
+    "jpg": 1000,
+    "bytes": 162962780455
+   },
+   "version": "2.37.2",
+   "elapsed_s": 1732.1,
+   "library_after": {
+    "books": 1000,
+    "mp3": 12653,
+    "m4b": 472,
+    "jpg": 1000,
+    "bytes": 162962780455
+   }
+  },
+  "as": {
+   "image": {
+    "repo_digests": [
+     "ghcr.io/kodestar/audiosilo-server@sha256:6085ff292f449fffcd75edc87c563cae9ca6bc3f54ec3214d7c66d95c2e6c9ef"
+    ],
+    "uncompressed_bytes": 179635578,
+    "image_id": "sha256:983feb7e0f7db06a6a104b2765c496b2d61568a65ac499e0792233e00cc45d1d",
+    "labels": {
+     "org.opencontainers.image.created": "2026-10-28T11:31:13.902Z",
+     "org.opencontainers.image.description": "",
+     "org.opencontainers.image.licenses": "AGPL-3.0",
+     "org.opencontainers.image.revision": "e465ccb6620571c8ee83985a624c39caccc9eccd",
+     "org.opencontainers.image.source": "https://github.com/KodeStar/audiosilo-server",
+     "org.opencontainers.image.title": "audiosilo-server",
+     "org.opencontainers.image.url": "https://github.com/KodeStar/audiosilo-server",
+     "org.opencontainers.image.version": "edge"
+    },
+    "pinned": "ghcr.io/kodestar/audiosilo-server@sha256:6085ff292f449fffcd75edc87c563cae9ca6bc3f54ec3214d7c66d95c2e6c9ef",
+    "registry": {
+     "index_digest": "sha256:6085ff292f449fffcd75edc87c563cae9ca6bc3f54ec3214d7c66d95c2e6c9ef",
+     "amd64_manifest_digest": "sha256:0555bc30e8f739004205526b0c98fc597f8c9af51dd756a2ac654137639b4da5",
+     "compressed_bytes": 68366875,
+     "layers": 6
+    },
+    "version_label": "edge",
+    "revision_label": "e465ccb6620571c8ee83985a624c39caccc9eccd"
+   },
+   "library_before": {
+    "books": 1000,
+    "mp3": 12653,
+    "m4b": 472,
+    "jpg": 1000,
+    "bytes": 162962780455
+   },
+   "version": "dev-e465ccb",
+   "elapsed_s": 1597.6,
+   "library_after": {
+    "books": 1000,
+    "mp3": 12653,
+    "m4b": 472,
+    "jpg": 1000,
+    "bytes": 162962780455
+   }
+  }
+ },
+ "picks": {
+  "mp3": {
+   "path": "Caroline Elizabeth Sarah Norton/I Do Not Love Thee",
+   "files": 20
+  },
+  "m4b": {
+   "path": "L. Leslie Brooke/Story of the Three Little Pigs",
+   "files": 1
+  },
+  "cold_covers": [
+   {
+    "path": "Kenneth Grahame/Wind in the Willows"
+   },
+   {
+    "path": "King James Version (KJV)/Bible (KJV) 17- Esther"
+   },
+   {
+    "path": "King James Version (KJV)/Bible (KJV) 19- Psalm 133"
+   },
+   {
+    "path": "King James Version (KJV)/Bible (KJV) Apocrypha-Deuterocanon- Additions to Daniel"
+   },
+   {
+    "path": "King James Version (KJV)/Bible (KJV) Apocrypha-Deuterocanon- Prayer of Manasses"
+   },
+   {
+    "path": "King James Version (KJV)/Bible (KJV) NT 01- The Sermon On the Mount, Matthew 5-7"
+   },
+   {
+    "path": "King James Version (KJV)/Bible (KJV) NT 03- Luke"
+   },
+   {
+    "path": "King James Version (KJV)/Bible (KJV) NT 20- James"
+   },
+   {
+    "path": "King James Version (KJV)/Bible (KJV) NT 26- Jude"
+   },
+   {
+    "path": "L. Frank Baum/Dorothy and the Wizard in Oz"
+   },
+   {
+    "path": "L. Frank Baum/Emerald City of Oz"
+   },
+   {
+    "path": "L. Frank Baum/Enchanted Island of Yew"
+   },
+   {
+    "path": "L. Frank Baum/Life and Adventures of Santa Claus"
+   },
+   {
+    "path": "L. Frank Baum/Little Wizard Stories of Oz"
+   },
+   {
+    "path": "L. Frank Baum/Lost Princess of Oz"
+   },
+   {
+    "path": "L. Frank Baum/Marvelous Land of Oz"
+   },
+   {
+    "path": "L. Frank Baum/Master Key"
+   },
+   {
+    "path": "L. Frank Baum/Mother Goose in Prose"
+   },
+   {
+    "path": "L. Frank Baum/Ozma of Oz"
+   },
+   {
+    "path": "L. Frank Baum/Ozma of Oz (Version 2) (Dramatic Reading)"
+   },
+   {
+    "path": "L. Frank Baum/Patchwork Girl of Oz"
+   },
+   {
+    "path": "L. Frank Baum/Rinkitink in Oz"
+   },
+   {
+    "path": "L. Frank Baum/Road to Oz"
+   },
+   {
+    "path": "L. Frank Baum/Scarecrow of Oz"
+   },
+   {
+    "path": "L. Frank Baum/Sky Island"
+   },
+   {
+    "path": "L. Frank Baum/Tik-Tok of Oz"
+   },
+   {
+    "path": "L. Frank Baum/Wonderful Wizard of Oz"
+   },
+   {
+    "path": "L. Leslie Brooke/Golden Goose Book"
+   },
+   {
+    "path": "L. Leslie Brooke/Johnny Crow's Garden"
+   },
+   {
+    "path": "L. Leslie Brooke/Johnny Crow\u2019s Party"
+   }
+  ]
+ },
+ "finished": "2026-10-28T12:30:36+0000",
+ "elapsed_s": 3334.4,
+ "load_at_end": {
+  "load1": 1.23,
+  "load5": 2.07,
+  "load15": 2.67,
+  "procs": "1/1187"
+ },
+ "library_at_end": {
+  "books": 1000,
+  "mp3": 12653,
+  "m4b": 472,
+  "jpg": 1000,
+  "bytes": 162962780455
+ }
+}
