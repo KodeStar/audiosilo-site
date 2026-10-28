@@ -28,14 +28,14 @@ hero: ../../assets/stills/server-activity-dark.webp
 heroAlt: Activity in the AudioSilo admin console over 90 days, listening hours per day by person and when the household listens
 revisions:
   - date: 2026-10-28
-    note: "Server 2.5.0's ebook reader; casting and CarPlay from the iPhone app (App Store 2.4.1); Audiobookshelf 2.37.2's ebook formats."
+    note: "Server 2.5.0's ebook reader (the web player now, the apps from app 2.5.0); CarPlay and casting in the App Store's app 2.4.1, Android Auto and casting in the Android APK; Audiobookshelf 2.37.2's ebook formats; a link to the benchmarked comparison."
   - date: 2026-10-24
     note: "Server 2.4.0: AudioSilo now has podcasts with a Bridge, and metadata.json also gives the subtitle, publisher, language, abridged, genres and tags."
 ---
 
-You can move from Audiobookshelf to AudioSilo without starting over. AudioSilo reads the same folders, picks up the `metadata.json` files Audiobookshelf leaves beside your books, and imports each person's **listening history**: sessions, progress, finished dates and bookmarks. Podcasts, ebooks, collections and playlists don't come over. Both can run side by side while you decide, because AudioSilo only reads your files and only reads from Audiobookshelf.
+You can move from Audiobookshelf to AudioSilo without starting over. AudioSilo reads the same folders, picks up the `metadata.json` files Audiobookshelf leaves beside your books, and imports each person's **listening history**: sessions, progress, finished dates and bookmarks. Podcasts, collections, playlists and your place in ebooks don't come over. Both can run side by side while you decide, because AudioSilo only reads your files and only reads from Audiobookshelf.
 
-First, an honest look at whether you should.
+First, an honest look at whether you should. For the full feature list and benchmarks of both on the same server, see [AudioSilo vs Audiobookshelf](/blog/audiosilo-vs-audiobookshelf/).
 
 ## Audiobookshelf and AudioSilo compared
 
@@ -44,12 +44,12 @@ Both are self-hosted, open-source servers that run in Docker, keep each person's
 | | Audiobookshelf | AudioSilo |
 |---|---|---|
 | Licence | GPL-3.0 | Server AGPLv3 |
-| What it serves | Audiobooks, podcasts, basic ebooks (EPUB, PDF, CBR, CBZ, AZW3, MOBI) | Audiobooks, and podcasts with the optional Bridge container (server 2.4); a DRM-free EPUB beside an audiobook opens in its reader (server 2.5) |
+| What it serves | Audiobooks, podcasts, basic ebooks (EPUB, PDF, CBR, CBZ, AZW3, MOBI) | Audiobooks, and podcasts with the optional Bridge container (server 2.4); a DRM-free EPUB beside an audiobook opens in its reader (server 2.5: the web player, and the apps from app 2.5.0) |
 | Your files | Can upload books, embed metadata and covers into files, and merge files into an M4B | Never writes to your library; edits live in its database |
-| Phone apps | Android app in beta on Google Play; iOS app in beta on TestFlight (its beta is currently full) | iPhone, iPad and Android apps in the App Store and Google Play |
+| Phone apps | Android app in beta on Google Play; iOS app in beta on TestFlight (its beta is currently full) | iPhone, iPad and Android apps in the App Store and Google Play, and an Android APK on GitHub |
 | Web player | Yes, installable | Yes, installable, with offline downloads |
-| In the car | Android Auto | CarPlay in the iPhone app (2.4.1 and later) |
-| Casting | Chromecast from the web app and the Android app | Chromecast from the iPhone and iPad app, and from the web player (server 2.3, Chromium browsers over HTTPS) |
+| In the car | Android Auto | CarPlay in the iPhone app (App Store 2.4.1 and later); Android Auto in the Android APK (Google Play's app 2.0.0 doesn't have it yet) |
+| Casting | Chromecast from the web app and the Android app | Chromecast from the iPhone app (App Store 2.4.1), the Android APK (not Google Play's app 2.0.0 yet) and the web player (server 2.3, Chromium browsers over HTTPS) |
 | Metadata | Fetches from several sources | Community database at [meta.audiosilo.app](https://meta.audiosilo.app), with spoiler-safe recaps and characters for the books that have them |
 
 **Stay with Audiobookshelf** if you rely on an ebook library (ebooks without audio, PDF or comics), uploading through the web, or having metadata written into your files. AudioSilo does none of those: from server 2.5 it reads the EPUB that sits beside an audiobook, and that's all (see [Read the ebook](/blog/ebook-reader/)). Podcasts work from server 2.4, but need AudioSilo's optional Bridge container to download them: see [Podcasts in AudioSilo](/blog/podcasts/).
@@ -105,7 +105,7 @@ Progress only moves forward: an import never rewinds a book or unfinishes a fini
 
 **Comes over:** listening sessions with their real dates (so stats, the listening calendar, streaks and the Year in listening carry on), progress, start and finish dates, and bookmarks.
 
-**Doesn't:** podcasts, collections, playlists, ebooks, and accounts or passwords. Each server keeps its own. To bring your shows across to a server 2.4 podcast library, export them with **Export OPML** in the menu of an Audiobookshelf podcast library and use **Import a list** in the player's **Add shows**.
+**Doesn't:** podcasts, collections, playlists, your place in ebooks, and accounts or passwords. Each server keeps its own. An EPUB beside an audiobook needs no import: AudioSilo finds it in the folder at its next scan, and its reader starts at the beginning. To bring your shows across to a server 2.4 podcast library, export them with **Export OPML** in the menu of an Audiobookshelf podcast library and use **Import a list** in the player's **Add shows**.
 
 The full walkthrough is [Importing from Audiobookshelf](https://docs.audiosilo.app/users/admin/import) in the docs.
 
