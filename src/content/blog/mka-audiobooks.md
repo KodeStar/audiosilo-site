@@ -52,7 +52,7 @@ Not every player reads chapter frames in an MP3, but the audio plays everywhere.
 ffmpeg -i "Book.mka" -map 0:a:0 -c:a copy -map_chapters 0 "Book.m4b"
 ```
 
-**Opus, FLAC or anything else inside: re-encode, or keep it.** Those don't go into an M4B or MP3 without converting the audio, which loses a little quality. For a spoken voice, AAC at 64 to 96 kbit/s is plenty:
+**Opus, FLAC or anything else inside: re-encode, or keep it.** Those can't go into an MP3 as they are, and most audiobook players won't play them inside an M4B, so the dependable route is converting the audio, which loses a little quality. For a spoken voice, AAC at 64 to 96 kbit/s is plenty:
 
 ```bash
 ffmpeg -i "Book.mka" -map 0:a:0 -c:a aac -b:a 96k -map_chapters 0 "Book.m4b"

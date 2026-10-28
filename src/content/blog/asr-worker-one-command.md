@@ -19,7 +19,7 @@ related:
 draft: false
 ---
 
-Before a [Bridge](/blog/bridge-recaps-and-contributions/) can write characters and chapter recaps for a book from its audio, it transcribes the whole book. In its container that runs on the processor, which takes hours for a long book on a typical NAS. An **ASR worker** (ASR is automatic speech recognition) does the transcribing on a faster computer instead. From **Bridge 0.4.0**, out on 28 October alongside server 2.5.0, setting one up is a single line: the Bridge's **Workers** tab gives you a command to paste into that computer's terminal, and it downloads the worker from your Bridge, installs it as a service and starts it.
+Before a [Bridge](/blog/bridge-recaps-and-contributions/) can write characters and chapter recaps for a book from its audio, it transcribes the whole book. In its standard container that runs on the processor, which takes hours for a long book on a typical NAS. An **ASR worker** (ASR is automatic speech recognition) does the transcribing on a faster computer instead. From **Bridge 0.4.0**, out on 28 October alongside server 2.5.0, setting one up is a single line: the Bridge's **Workers** tab gives you a command to paste into that computer's terminal, and it downloads the worker from your Bridge, installs it as a service and starts it.
 
 ## Which computer
 
@@ -33,7 +33,7 @@ If your Bridge runs in Docker on a Mac, this is the way to get the fast speech r
 ## What you need
 
 - A **Bridge 0.4.0** or later, running in Docker and paired with your server. Update the image (`ghcr.io/kodestar/audiosilo-bridge`) first if yours is older.
-- The worker's computer on the **same local network** as the Bridge, running macOS or Linux. The worker's connection, and its download, are refused from the internet and over a VPN address.
+- The worker's computer on the **same local network** as the Bridge, running macOS or Linux. The worker's connection, and its download, are refused from the internet and over a VPN address like Tailscale's.
 - On a Mac, **Python 3** and **ffmpeg** (for example `brew install python ffmpeg`). On Linux, nothing more: the command uses `curl` and `gzip`.
 
 ## Setting it up
@@ -46,9 +46,9 @@ If your Bridge runs in Docker on a Mac, this is the way to get the fast speech r
 curl -fsSL http://192.168.1.20:8091/worker/install.sh | sh -s -- --token asw_...
 ```
 
-The command downloads the worker build for that computer from your Bridge (the same version as the Bridge), puts it in `~/.audiosilo-bridge-worker`, installs it as a service that starts when you log in and restarts itself if it stops, and starts it. Within a few seconds the worker shows as **Connected** on the Workers tab, with the speech recognition it runs. The server's admin console lists it too, under **Settings > Bridge > Workers**.
+The command downloads the worker build for that computer from your Bridge (the same version as the Bridge), puts it in `~/.audiosilo-bridge-worker`, installs it as a service that starts when you log in and restarts itself if it stops, and starts it.
 
-On a Mac, the first start builds the speech recognition and downloads its model (about 1.6 GB), which takes a few minutes. On Linux, the worker downloads a build for your computer, the GPU one when it finds an NVIDIA driver.
+The first start sets up the speech recognition, which takes a few minutes: on a Mac it builds it (and downloads its model, about 1.6 GB, on the first book it transcribes); on Linux it downloads a build for your computer, the GPU one when it finds an NVIDIA driver. Then the worker shows as **Connected** on the Workers tab, with the speech recognition it runs (after an update, within a few seconds). The server's admin console lists it too, under **Settings > Bridge > Workers**.
 
 A few things worth knowing:
 
@@ -60,6 +60,6 @@ A few things worth knowing:
 
 ## When the worker is off
 
-When no worker is connected (its computer is asleep, say), the Bridge follows its **When no ASR worker is connected** setting: it carries on with its own slower speech recognition (the default), or the book waits until a worker connects. While a book waits, the server's console links its speech recognition step to the Bridge's Workers tab, and so does the Bridge's own **Status** tab.
+When no worker is connected (its computer is asleep, say), the Bridge follows its **When no ASR worker is connected** setting: it carries on with its own slower speech recognition (the default), or the book waits until a worker connects (a Bridge with no speech recognition of its own always waits). While a book waits, the server's console links its speech recognition step to the Bridge's Workers tab, and so does the Bridge's own **Status** tab.
 
 The full walkthrough, including installing by hand and removing a worker, is in the docs: [Running an ASR worker](https://docs.audiosilo.app/users/getting-started/running-a-worker). For what the Bridge does with the transcript, see [Characters and recaps from your own Bridge](/blog/bridge-recaps-and-contributions/).

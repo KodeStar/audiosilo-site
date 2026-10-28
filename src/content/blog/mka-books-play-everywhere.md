@@ -28,7 +28,7 @@ Server 2.4 indexed `.mka` (Matroska audio) books, but only the web player could 
 
 ## What it needs
 
-- **Server 2.5.0 or later, with ffmpeg.** The Docker image includes ffmpeg, and the program on its own finds a copy on your system or downloads one into its data folder. The admin console's **Server > Transcoding** card shows whether it was found.
+- **Server 2.5.0 or later, with ffmpeg.** The Docker image includes ffmpeg, and the program on its own finds a copy on your system or downloads one into its data folder. The admin console's **Server > Settings > Transcoding** shows whether it was found.
 - **No new app.** The server sends these books as MP3 at the address they always had, so the apps you already have play them. The reporter who asked for this confirmed it on Android the day 2.5.0 came out.
 - **On an iPhone or iPad, app 2.5.0 is best.** The 2.4.1 app streams these books, but it can stop with a false "End of book" about ten seconds into the first play of one (a second play works), and a book it downloads only plays offline once you update. App 2.5.0 fixes both. It came out on 28 October and is in review at the App Store, so update when it reaches you.
 
