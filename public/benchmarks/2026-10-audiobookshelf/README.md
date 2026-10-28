@@ -21,7 +21,7 @@ results/    one folder per tier (final-1000, final-1000-m4b, final-5000): summar
 ```
 
 The run was `harness/clean-rerun.sh final` on 2026-10-28, against Audiobookshelf 2.37.2
-and AudioSilo from its `:edge` image of 28 October 2026 (commit `e465ccb`, reported as `dev-e465ccb`), the code that became AudioSilo 2.5.0.
+and AudioSilo from its `:edge` image of 28 October 2026 (commit `e465ccb`, reported as `dev-e465ccb`), the commit tagged as AudioSilo 2.5.0 later that day.
 
 ## What was left out, and what was changed
 

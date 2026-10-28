@@ -1,6 +1,6 @@
 ---
-# TODO(release v2.5.0): /blog release sets published, verified and the measured-build line
-# in "What we measured" once v2.5.0 is out (see the TODO comments in the body).
+# TODO(release v2.5.0): /blog release sets published and verified once both stores carry
+# app 2.5.0 (see the TODO comment under "At a glance").
 title: "AudioSilo vs Audiobookshelf: features and benchmarks compared"
 description: Is AudioSilo a good Audiobookshelf alternative? What each one does that the other doesn't, and benchmarks on the same server and library that you can rerun.
 kind: guide
@@ -30,7 +30,7 @@ heroAlt: "The AudioSilo web player in a desktop browser: the library grid with t
 draft: true
 ---
 
-Yes, AudioSilo is a good Audiobookshelf alternative if what you want is audiobooks: a server that never writes to your folders, released phone apps in the App Store and Google Play, and a player built around listening to whole books. Audiobookshelf is the better fit if you also want an ebook library in many formats, uploads and tag editing from the browser, podcasts without an extra container, single sign-on, or a choice of third-party apps. On the same 8-core server and the same 1,000 to 5,000 LibriVox audiobooks, AudioSilo 2.5.0 finished its first scan 25 to 40% sooner, rescanned an unchanged library about 3 to 7 times faster, idled at 14 MiB of memory to Audiobookshelf's roughly 50, and answered nearly every request we timed sooner. Audiobookshelf used less CPU time to scan, served already-resized covers faster on the smaller libraries, and edged one admin request at 5,000 books.
+Yes, AudioSilo is a good Audiobookshelf alternative if what you want is audiobooks: a server that never writes to your folders, released phone apps in the App Store and Google Play, and a player built around listening to whole books. Audiobookshelf is the better fit if you also want an ebook library in many formats, uploads and tag editing from the browser, podcasts without an extra container, single sign-on, or a choice of third-party apps. On the same 8-core server and the same 1,000 to 5,000 LibriVox audiobooks, AudioSilo 2.5.0 finished its first scan 25 to 40% sooner, rescanned an unchanged library about 3 to 7 times faster, idled at 14 MiB of memory to Audiobookshelf's roughly 50, and answered nearly every request we timed sooner. Audiobookshelf used less CPU time to scan, served covers it had already resized faster (on the 1,000-book libraries from our Mac, and on all three from the server itself), and edged one admin request at 5,000 books.
 
 Audiobookshelf is a great project. It's mature, it has years of releases behind it, most self-hosting guides recommend it first, and a whole family of third-party apps is built on it. We make AudioSilo, so read this with that in mind: we've tried to be fair, every number below comes from a harness [you can download and run yourself](/benchmarks/2026-10-audiobookshelf/), and we show the results where Audiobookshelf comes out ahead as well as where AudioSilo does.
 
@@ -51,7 +51,7 @@ Audiobookshelf is a great project. It's mature, it has years of releases behind 
 | Metadata | Audible, Google Books, iTunes, Open Library and more, plus custom providers | Its community database at [meta.audiosilo.app](https://meta.audiosilo.app), with spoiler-safe recaps and characters |
 | Docker image (measured, amd64) | 125 MiB to download, 343 MiB unpacked | 65 MiB to download, 171 MiB unpacked |
 
-<!-- TODO(release v2.5.0): confirm both stores carry app 2.5.0 (the reader, CarPlay, Android Auto, casting on Android). On 2026-10-28 the App Store had 2.4.1 and Google Play still had 2.0.0, which has no Android Auto or casting. -->
+<!-- TODO(release v2.5.0): publish only once both stores carry app 2.5.0 (the reader in the apps, Android Auto and casting on Android). Checked 2026-10-28: the App Store had 2.4.1 (CarPlay and casting, no reader) and Google Play still had 2.0.0 (no Android Auto, no casting, no reader); app 2.5.0 was out only as the APK on its GitHub release. If Play is still behind, say Android Auto and casting need the GitHub APK. -->
 
 ## What Audiobookshelf does that AudioSilo doesn't
 
@@ -84,7 +84,7 @@ We ran both servers on the same machine, against the same read-only libraries, w
 
 - **Server:** an Intel Core i3-N305 (8 cores) with 16 GB of RAM, running Unraid (Linux 6.1, Docker 24). The libraries sit on the Unraid array, a hard disk reached through Unraid's `/mnt/user` FUSE layer (shfs), the usual place for media on Unraid. Each app's own data went on the cache pool.
 - **Client:** a Mac on the same home network, for the API and web timings. The API timings were also repeated on the server itself, over loopback, to take the network out.
-- **Software:** Audiobookshelf 2.37.2 (`ghcr.io/advplyr/audiobookshelf`, the current release) and AudioSilo from its `:edge` image of 28 October 2026, commit `e465ccb`, the code that became AudioSilo 2.5.0 (it reports its version as `dev-e465ccb`). <!-- TODO(release v2.5.0): confirm v2.5.0 is tagged at or after e465ccb with no scan, cache, API or web player changes in between; if there are, say so here. --> Both images were pinned by digest for the whole run; the digests are in each tier's `meta.json`.
+- **Software:** Audiobookshelf 2.37.2 (`ghcr.io/advplyr/audiobookshelf`, the current release) and AudioSilo from its `:edge` image of 28 October 2026, commit `e465ccb`, the commit tagged as AudioSilo 2.5.0 later that day (the `:edge` build reports its version as `dev-e465ccb`). Both images were pinned by digest for the whole run; the digests are in each tier's `meta.json`.
 - **Settings:** each app's defaults, as a new user would get them. The only change was serving AudioSilo over plain HTTP like Audiobookshelf (`AUDIOSILO_TLS_MODE=off`). Both containers mounted the library read-only.
 - **Quiet host:** the harness ran one app at a time (Audiobookshelf first, then AudioSilo, never both at once), wiped the app's data folder before every first scan, dropped the Linux page cache before every cold measurement, checked that the library wasn't changing, and recorded the load average around every phase. Our other containers on that server were running but idle; their names are in `meta.json`.
 
@@ -163,7 +163,7 @@ Medians of 100 requests from the Mac over the home network, in milliseconds.
 | Steady 40 requests a second, p95 | 2.75 / **1.83** | 3.49 / **3.01** | 8.87 / **2.00** |
 | Saturating load, answers per second | 1,841 / **12,544** | 1,716 / **12,086** | 2,024 / **12,130** |
 
-Everything here is fast for both: a person can't tell 1 ms from 2 ms. What shows is how the gaps grow with the library: at 5,000 books Audiobookshelf's book page took twice as long as at 1,000 and its play start about 60% longer, while AudioSilo's stayed flat. Audiobookshelf served a cover it had already resized sooner on both 1,000-book libraries. AudioSilo's web player doesn't page through the library as Audiobookshelf's does: it loads it all, in pages of 200, which took 6.5 to 7.6 ms for 1,000 books and 29 ms for 4,949.
+Everything here is fast for both: a person can't tell 1 ms from 2 ms. What shows is how the gaps grow with the library: at 5,000 books Audiobookshelf's book page took about twice as long as at 1,000 and its play start 50 to 75% longer, while AudioSilo's stayed flat. Audiobookshelf served a cover it had already resized sooner on both 1,000-book libraries, and on all three in the runs from the server itself. AudioSilo's web player doesn't page through the library as Audiobookshelf's does: it loads it all, in pages of 200, which took 6.5 to 7.6 ms for 1,000 books and 29 ms for 4,949.
 
 ### Web player
 
@@ -179,7 +179,7 @@ Milliseconds from opening the page in Chromium.
 | Library, cold: downloaded | 4,148 KiB / **2,552 KiB** | 4,150 KiB / **2,564 KiB** | 4,283 KiB / **4,220 KiB** |
 | Library, cold: of which JavaScript | 2,643 KiB / **1,297 KiB** | 2,643 KiB / **1,297 KiB** | 2,643 KiB / **1,297 KiB** |
 
-Both web apps put covers on screen in about a quarter of a second or less, apart from Audiobookshelf's library at 5,000 books (about a third of a second). AudioSilo was a few tens of milliseconds sooner on every page, and about 150 ms sooner on that 5,000-book library. On the 5,000-book library AudioSilo downloads almost as much as Audiobookshelf, because it fetches the whole library list where Audiobookshelf fetches only what's on screen.
+Both web apps put covers on screen in about a quarter of a second or less, apart from Audiobookshelf's library at 5,000 books (about 0.35 seconds). AudioSilo was a few tens of milliseconds sooner on every page, and about 150 ms sooner on that 5,000-book library. On the 5,000-book library AudioSilo downloads almost as much as Audiobookshelf, because it fetches the whole library list where Audiobookshelf fetches only what's on screen.
 
 ### Admin health page
 
@@ -194,7 +194,8 @@ This one compares different things. Audiobookshelf has no health page, so the ne
 ## What the numbers don't show
 
 - **AudioSilo scans several files at once.** It probes up to eight audio files at a time (one per CPU core, up to 8), which is why its scans finish sooner but use more CPU time in total. On a NAS with two cores it will use two; on a slow disk or a busy network share you can set `scan.concurrency` lower ([Rescanning](https://docs.audiosilo.app/users/admin/libraries#rescanning) in the docs).
-- **AudioSilo keeps list and search answers ready until something changes.** Book lists, the recent shelf and search answers are cached until the next write to its database, and a progress save is a write. The benchmark repeats the same request, so it mostly measures the cached answer; in a household where people are listening, the cache is dropped often and many requests take the uncached path. The first request after each write is the uncached one, and for a library page that path is no faster than it was in AudioSilo 2.4.1. The console's Health summary is cached the same way. The saturating-load test repeats one library page, so AudioSilo's numbers there are cached answers too.
+- **AudioSilo keeps list and search answers ready until something changes.** Book lists, the recent shelf and search answers are cached until the next write to its database, and a progress save is a write. The benchmark repeats the same request, so it mostly measures the cached answer; in a household where people are listening, the cache is dropped often and many requests take the uncached path. The first request after each write is the uncached one, and for a library page that path is no faster than before the cache was added: about 2 to 2.5 ms against 1.7 to 1.9 ms in our own in-process test of the server code (a generated 5,000-book library, on a Mac, not on the benchmark server). The console's Health summary is cached the same way. The saturating-load test repeats one library page, so AudioSilo's numbers there are cached answers too.
+- **Where the load comes from changes the saturating result.** From the Mac, AudioSilo answered six to seven times as many requests a second. Run from the server itself, where the load generator competes with the app for the same 8 cores, it was about twice as many: 1,592 / 2,971 on the 1,000-book mixed library, 1,448 / 2,961 on mostly M4B and 1,593 / 2,871 at 5,000.
 - **The covers flatter both apps.** LibriVox's `cover.jpg` files are only 180x180 pixels, smaller than either app's thumbnails, so there's almost no resizing to do. Real audiobook art (500 to 2,400 pixels) costs both apps more on a first request. Treat the cover numbers as a lower bound.
 - **AudioSilo rescans every library when it starts.** The cold-start time is until it answers, which it does while that rescan runs in the background.
 - **The two apps don't do identical work.** Audiobookshelf loads its library 36 books at a time as you scroll; AudioSilo's web player loads the whole library in pages of 200 and sorts it in the browser. Audiobookshelf's home is one request; AudioSilo's is several in parallel. Searching for an author's name gives Audiobookshelf an author entry and AudioSilo that author's books. Starting playback creates a session in Audiobookshelf and reads the saved place in AudioSilo. Each row in the harness results records what the answer contained.
