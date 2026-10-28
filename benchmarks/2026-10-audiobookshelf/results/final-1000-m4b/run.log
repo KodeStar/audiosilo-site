@@ -1,0 +1,140 @@
+12:30:43 checking the library is not changing (60 s)...
+12:31:52 ===== Audiobookshelf =====
+12:31:56 [Audiobookshelf] initial scan 1/3: wipe + fresh start
+12:36:22   Audiobookshelf initial-1: wall 131.5 s, app-reported 130.716 s, cpu 385.764 s, peak anon 440.1 MiB
+12:37:27 [Audiobookshelf] initial scan 2/3: wipe + fresh start
+12:41:55   Audiobookshelf initial-2: wall 131.466 s, app-reported 130.685 s, cpu 391.041 s, peak anon 438.0 MiB
+12:43:01 [Audiobookshelf] initial scan 3/3: wipe + fresh start
+12:47:29   Audiobookshelf initial-3: wall 131.534 s, app-reported 130.734 s, cpu 387.038 s, peak anon 457.6 MiB
+12:48:34 [Audiobookshelf] no-change rescan (cold) 1/3
+12:48:45   Audiobookshelf rescan-cold-1: wall 3.616 s, app-reported 2.984 s, cpu 2.017 s, peak anon 161.9 MiB
+12:48:50 [Audiobookshelf] no-change rescan (cold) 2/3
+12:49:00   Audiobookshelf rescan-cold-2: wall 3.567 s, app-reported 2.906 s, cpu 1.726 s, peak anon 204.3 MiB
+12:49:05 [Audiobookshelf] no-change rescan (cold) 3/3
+12:49:15   Audiobookshelf rescan-cold-3: wall 3.516 s, app-reported 2.852 s, cpu 1.633 s, peak anon 214.9 MiB
+12:49:20 [Audiobookshelf] no-change rescan (warm) 1/3
+12:49:25   Audiobookshelf rescan-warm-1: wall 4.009 s, cpu 1.561 s
+12:49:30 [Audiobookshelf] no-change rescan (warm) 2/3
+12:49:35   Audiobookshelf rescan-warm-2: wall 4.087 s, cpu 1.637 s
+12:49:40 [Audiobookshelf] no-change rescan (warm) 3/3
+12:49:46   Audiobookshelf rescan-warm-3: wall 4.013 s, cpu 1.575 s
+12:49:51 [Audiobookshelf] cold start 1/3
+12:49:59   first authenticated response 4.432 s after docker start
+12:50:04 [Audiobookshelf] cold start 2/3
+12:50:13   first authenticated response 4.343 s after docker start
+12:50:18 [Audiobookshelf] cold start 3/3
+12:50:26   first authenticated response 4.409 s after docker start
+12:50:32 [Audiobookshelf] first-request cover latency (30 distinct books)
+  cover_first_request          p50 63.44 ms  p95 65.43 ms  n 30  status {'200': 30}
+{"grid":"http://192.168.0.10:13399/audiobookshelf/api/libraries/8c538df6-9d75-4846-a124-63980756fa82/items?sort=media.metadata.title&desc=0&limit=36&page=0&minified=1&include=rssfeed,numEpisodesIncomplete,share","cover":"http://192.168.0.10:13399/audiobookshelf/api/items/48b96747-b9c0-40de-8cb3-4e69a6b9b635/cover?ts=1793191622315"}
+12:50:36   web probe: grid request http://192.168.0.10:13399/audiobookshelf/api/libraries/8c538df6-9d75-4846-a124-63980756fa82/items?sort=media.metadata.title&desc=0&limit=36&page=0&minified=1&include=rssfeed,numEpisodesIncomplete,share
+12:50:36 [Audiobookshelf] API latency from the Mac (100 x each, 5 warm-up)
+  home_shelves                 p50 2.17 ms  p95 2.85 ms  bytes 28978  status {'200': 100}  counts {'[]': 4, '[].entities': 32}
+  home_library_filterdata      p50 2.19 ms  p95 2.83 ms  bytes 45060  status {'200': 100}  counts None
+  libraries                    p50 1.77 ms  p95 2.32 ms  bytes 872  status {'200': 100}  counts {'libraries': 1}
+  library_page1                p50 2.22 ms  p95 3.17 ms  bytes 42987  status {'200': 100}  counts {'results': 36, 'total': 998}
+  library_deep_page            p50 2.22 ms  p95 3.18 ms  bytes 41324  status {'200': 100}  counts {'results': 36, 'total': 998}
+  search_the                   p50 2.08 ms  p95 2.73 ms  bytes 129076  status {'200': 100}  counts {'book': 12, 'authors': 11, 'series': 0, 'narrators': 0, 'tags': 0, 'genres': 0}
+  search_the_typeahead         p50 1.87 ms  p95 2.52 ms  bytes 45615  status {'200': 100}  counts {'book': 3, 'authors': 3, 'series': 0, 'narrators': 0, 'tags': 0, 'genres': 0}
+  search_dickens               p50 1.71 ms  p95 2.21 ms  bytes 305  status {'200': 100}  counts {'book': 0, 'authors': 1, 'series': 0, 'narrators': 0, 'tags': 0, 'genres': 0}
+  search_title                 p50 1.98 ms  p95 2.66 ms  bytes 26572  status {'200': 100}  counts {'book': 1, 'authors': 0, 'series': 0, 'narrators': 0, 'tags': 0, 'genres': 0}
+  search_dickens_then_author_page p50 13.91 ms  p95 16.42 ms  bytes 10459  status {'200,200': 100}  counts {'libraryItems': 9}
+  search_dickens_typeahead     p50 1.77 ms  p95 2.66 ms  bytes 305  status {'200': 100}  counts {'book': 0, 'authors': 1, 'series': 0, 'narrators': 0, 'tags': 0, 'genres': 0}
+  detail_mp3                   p50 9.09 ms  p95 11.04 ms  bytes 52772  status {'200': 100}  counts {'media.audioFiles': 20, 'media.chapters': 20}
+  detail_m4b                   p50 8.11 ms  p95 9.93 ms  bytes 7127  status {'200': 100}  counts {'media.audioFiles': 1, 'media.chapters': 12}
+  play_first_byte_mp3          p50 15.09 ms  p95 18.25 ms  bytes 77570  status {'200,206': 100}  counts {'audioTracks': 20, 'chapters': 20}
+  play_first_byte_m4b          p50 13.8 ms  p95 16.7 ms  bytes 11446  status {'200,206': 100}  counts {'audioTracks': 1, 'chapters': 12}
+  cover_grid                   p50 1.85 ms  p95 2.67 ms  bytes 10332  status {'200': 100}  counts None
+  concurrency paced 20 clients x 1 req/0.5s for 20s: 40.0 req/s  p50 1.99 p95 3.49 ms  status {'200': 800}
+  concurrency saturating 20x20s: 1716.2 req/s ok  p95 19.73 ms  status {'200': 34324}
+12:52:30 [Audiobookshelf] API latency from the host (python:3-alpine, --network host)
+12:54:21 [Audiobookshelf] web UI (Playwright, 5 cold + 5 warm per page)
+  home: cold first cover 211 ms, screen 217 ms, 59 req, 4156 KiB (JS 2643 KiB) | warm first cover 203 ms, screen 203 ms, 13 KiB
+  grid: cold first cover 231 ms, screen 246 ms, 72 req, 4150 KiB (JS 2643 KiB) | warm first cover 221 ms, screen 221 ms, 13 KiB
+12:55:11 [Audiobookshelf] admin health page (Playwright, 5 cold + 5 warm)
+  issues: cold ready 196 ms (last API 189 ms, 5 API req, 3549 KiB) | warm ready 188 ms
+     POST /audiobookshelf/api/authorize 200 2353 B start 119 dur 2 ms
+     GET /audiobookshelf/api/libraries/8c538df6-9d75-4846-a124-63980756fa82?include=filterdata 200 45356 B start 124 dur 2 ms
+     GET /audiobookshelf/api/libraries 200 1165 B start 193 dur 2 ms
+     GET /audiobookshelf/api/tasks?include=queue 200 341 B start 193 dur 2 ms
+     GET /audiobookshelf/api/libraries/8c538df6-9d75-4846-a124-63980756fa82/items?filter=issues&sort=media.metadata.title&desc=0&limit=36&page=0&minified=1&include=rssfeed,numEpisodesIncomplete,share 200 522 B start 198 dur 14 ms
+12:55:33 [Audiobookshelf] admin health API (100 x each, 5 warm-up)
+  admin_issues                 p50 1.7 ms  p95 2.45 ms  bytes 195  status {'200': 100}  counts {'results': 0, 'total': 0}
+12:55:41 ===== AudioSilo =====
+12:55:46 [AudioSilo] initial scan 1/3: wipe + fresh start
+12:59:18   AudioSilo initial-1: wall 78.329 s, app-reported 78.075 s, cpu 530.925 s, peak anon 231.3 MiB
+13:00:23 [AudioSilo] initial scan 2/3: wipe + fresh start
+13:03:58   AudioSilo initial-2: wall 79.317 s, app-reported 79.203 s, cpu 529.597 s, peak anon 320.3 MiB
+13:05:03 [AudioSilo] initial scan 3/3: wipe + fresh start
+13:08:37   AudioSilo initial-3: wall 78.787 s, app-reported 78.699 s, cpu 528.037 s, peak anon 302.2 MiB
+13:09:43 [AudioSilo] no-change rescan (cold) 1/3
+13:09:50   AudioSilo rescan-cold-1: wall 0.522 s, app-reported 0.397 s, cpu 0.399 s, peak anon 30.8 MiB
+13:09:55 [AudioSilo] no-change rescan (cold) 2/3
+13:10:03   AudioSilo rescan-cold-2: wall 0.519 s, app-reported 0.404 s, cpu 0.405 s, peak anon 31.1 MiB
+13:10:09 [AudioSilo] no-change rescan (cold) 3/3
+13:10:16   AudioSilo rescan-cold-3: wall 0.521 s, app-reported 0.39 s, cpu 0.391 s, peak anon 30.3 MiB
+13:10:21 [AudioSilo] no-change rescan (warm) 1/3
+13:10:23   AudioSilo rescan-warm-1: wall 1.364 s, cpu 0.346 s
+13:10:28 [AudioSilo] no-change rescan (warm) 2/3
+13:10:31   AudioSilo rescan-warm-2: wall 1.388 s, cpu 0.344 s
+13:10:36 [AudioSilo] no-change rescan (warm) 3/3
+13:10:38   AudioSilo rescan-warm-3: wall 1.408 s, cpu 0.338 s
+13:10:44 [AudioSilo] cold start 1/3
+13:10:51   first authenticated response 2.979 s after docker start
+13:10:56 [AudioSilo] cold start 2/3
+13:11:04   first authenticated response 3.322 s after docker start
+13:11:09 [AudioSilo] cold start 3/3
+13:11:17   first authenticated response 3.420 s after docker start
+13:11:22 [AudioSilo] first-request cover latency (30 distinct books)
+  cover_first_request          p50 6.08 ms  p95 7.56 ms  n 30  status {'200': 30}
+{"grid":"http://192.168.0.10:8199/api/v1/libraries/1/books?sort=recent&limit=200","cover":"http://192.168.0.10:8199/api/v1/libraries/1/cover?path=Thomas+Moore%2FWhile+Gazing+on+the+Moon%27s+Light&size=320&v=5c09d12ee6&token=..."}
+13:11:25   web probe: grid request http://192.168.0.10:8199/api/v1/libraries/1/books?sort=recent&limit=200
+13:11:25 [AudioSilo] API latency from the Mac (100 x each, 5 warm-up)
+  home_shelves                 p50 1.56 ms  p95 2.24 ms  bytes 22758  status {'200': 100}  counts {'books': 48}
+  home_progress                p50 1.42 ms  p95 2.07 ms  bytes 18  status {'200': 100}  counts None
+  home_stats                   p50 2.12 ms  p95 3.0 ms  bytes 1827  status {'200': 100}  counts None
+  home_listening               p50 1.71 ms  p95 2.19 ms  bytes 12924  status {'200': 100}  counts None
+  home_favourites              p50 1.57 ms  p95 2.24 ms  bytes 20  status {'200': 100}  counts None
+  libraries                    p50 1.37 ms  p95 2.05 ms  bytes 118  status {'200': 100}  counts {'libraries': 1}
+  server_info                  p50 1.22 ms  p95 2.02 ms  bytes 779  status {'200': 100}  counts None
+  library_page1                p50 1.44 ms  p95 2.01 ms  bytes 79354  status {'200': 100}  counts {'books': 200}
+  library_deep_page            p50 1.45 ms  p95 2.72 ms  bytes 79625  status {'200': 100}  counts {'books': 200}
+  library_all_pages            p50 7.57 ms  p95 9.65 ms  bytes 395803  status {'200,200,200,200,200': 100}  counts {'books': 1000}
+  search_the                   p50 1.54 ms  p95 2.43 ms  bytes 23643  status {'200': 100}  counts {'books': 50}
+  search_dickens               p50 1.47 ms  p95 2.55 ms  bytes 4474  status {'200': 100}  counts {'books': 10}
+  search_title                 p50 1.45 ms  p95 2.54 ms  bytes 456  status {'200': 100}  counts {'books': 1}
+  detail_mp3                   p50 1.81 ms  p95 3.42 ms  bytes 8616  status {'200': 100}  counts {'files': 20, 'chapters': 20}
+  detail_mp3_chapters          p50 1.71 ms  p95 2.58 ms  bytes 8341  status {'200': 100}  counts {'files': 20, 'chapters': 20}
+  detail_m4b                   p50 1.71 ms  p95 2.57 ms  bytes 3107  status {'200': 100}  counts {'files': 1, 'chapters': 12}
+  detail_m4b_chapters          p50 1.55 ms  p95 2.66 ms  bytes 2814  status {'200': 100}  counts {'files': 1, 'chapters': 12}
+  play_first_byte_mp3          p50 5.47 ms  p95 6.86 ms  bytes 19  status {'200,206': 100}  counts None
+  play_first_byte_m4b          p50 5.34 ms  p95 7.16 ms  bytes 19  status {'200,206': 100}  counts None
+  cover_grid                   p50 2.8 ms  p95 3.45 ms  bytes 7548  status {'200': 100}  counts None
+  concurrency paced 20 clients x 1 req/0.5s for 20s: 40.0 req/s  p50 1.49 p95 3.01 ms  status {'200': 800}
+  concurrency saturating 20x20s: 12085.5 req/s ok  p95 1.47 ms  status {'200': 241709}
+13:13:41 [AudioSilo] API latency from the host (python:3-alpine, --network host)
+13:15:50 [AudioSilo] web UI (Playwright, 5 cold + 5 warm per page)
+  home: cold first cover 188 ms, screen 205 ms, 56 req, 1969 KiB (JS 1302 KiB) | warm first cover 190 ms, screen 203 ms, 41 KiB
+  grid: cold first cover 203 ms, screen 222 ms, 78 req, 2564 KiB (JS 1297 KiB) | warm first cover 197 ms, screen 197 ms, 429 KiB
+13:16:39 [AudioSilo] admin health page (Playwright, 5 cold + 5 warm)
+  issues: cold ready 145 ms (last API 145 ms, 8 API req, 598 KiB) | warm ready 144 ms
+     GET /api/v1/me 200 443 B start 85 dur 3 ms
+     GET /api/v1/admin/setup 200 439 B start 135 dur 2 ms
+     GET /api/v1/server 200 1030 B start 136 dur 1 ms
+     GET /api/v1/admin/libraries 200 575 B start 136 dur 4 ms
+     GET /api/v1/admin/events?limit=20 200 653 B start 137 dur 2 ms
+     GET /api/v1/admin/issues 200 1838 B start 147 dur 20 ms
+     GET /api/v1/admin/books?issue=scan_error&sort=added&order=desc&limit=50 200 2129 B start 181 dur 4 ms
+     POST /api/v1/admin/covers 200 86321 B start 197 dur 11 ms
+  system: cold ready 120 ms (last API 103 ms, 6 API req, 461 KiB) | warm ready 114 ms
+     GET /api/v1/me 200 443 B start 50 dur 2 ms
+     GET /api/v1/admin/setup 200 439 B start 91 dur 2 ms
+     GET /api/v1/server 200 1030 B start 92 dur 1 ms
+     GET /api/v1/admin/libraries 200 575 B start 92 dur 2 ms
+     GET /api/v1/admin/events?limit=20 200 653 B start 93 dur 1 ms
+     GET /api/v1/admin/system 200 1513 B start 101 dur 320 ms
+13:17:23 [AudioSilo] admin health API (100 x each, 5 warm-up)
+  admin_issues                 p50 1.55 ms  p95 2.19 ms  bytes 1586  status {'200': 100}  counts {'categories': 10, 'categories.[].count': 1009}
+  admin_issue_books            p50 1.22 ms  p95 1.68 ms  bytes 1877  status {'200': 100}  counts {'books': 2}
+  admin_system                 p50 1.65 ms  p95 2.37 ms  bytes 1261  status {'200': 100}  counts None
+13:17:40 done in 2745.0 s; results in results/final-1000-m4b
