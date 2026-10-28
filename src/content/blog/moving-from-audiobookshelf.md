@@ -5,7 +5,7 @@ kind: guide
 published: 2026-10-14
 updated: 2026-10-28
 verified: 2026-10-28
-appliesTo: Server 2.4.0, app 2.0.0 and later; Audiobookshelf 2.37.2
+appliesTo: Server 2.5.0, app 2.0.0 and later; Audiobookshelf 2.37.2
 tags: [audiobookshelf, migration, comparison]
 covers:
   - server:import
@@ -28,7 +28,7 @@ hero: ../../assets/stills/server-activity-dark.webp
 heroAlt: Activity in the AudioSilo admin console over 90 days, listening hours per day by person and when the household listens
 revisions:
   - date: 2026-10-28
-    note: "Casting and CarPlay from the iPhone app (App Store 2.4.1), Audiobookshelf's full ebook format list, checked against Audiobookshelf 2.37.2."
+    note: "Server 2.5.0's ebook reader; casting and CarPlay from the iPhone app (App Store 2.4.1); Audiobookshelf 2.37.2's ebook formats."
   - date: 2026-10-24
     note: "Server 2.4.0: AudioSilo now has podcasts with a Bridge, and metadata.json also gives the subtitle, publisher, language, abridged, genres and tags."
 ---
@@ -44,7 +44,7 @@ Both are self-hosted, open-source servers that run in Docker, keep each person's
 | | Audiobookshelf | AudioSilo |
 |---|---|---|
 | Licence | GPL-3.0 | Server AGPLv3 |
-| What it serves | Audiobooks, podcasts, basic ebooks (EPUB, PDF, CBR, CBZ, AZW3, MOBI) | Audiobooks, and podcasts with the optional Bridge container (server 2.4) |
+| What it serves | Audiobooks, podcasts, basic ebooks (EPUB, PDF, CBR, CBZ, AZW3, MOBI) | Audiobooks, and podcasts with the optional Bridge container (server 2.4); a DRM-free EPUB beside an audiobook opens in its reader (server 2.5) |
 | Your files | Can upload books, embed metadata and covers into files, and merge files into an M4B | Never writes to your library; edits live in its database |
 | Phone apps | Android app in beta on Google Play; iOS app in beta on TestFlight (its beta is currently full) | iPhone, iPad and Android apps in the App Store and Google Play |
 | Web player | Yes, installable | Yes, installable, with offline downloads |
@@ -52,7 +52,7 @@ Both are self-hosted, open-source servers that run in Docker, keep each person's
 | Casting | Chromecast from the web app and the Android app | Chromecast from the iPhone and iPad app, and from the web player (server 2.3, Chromium browsers over HTTPS) |
 | Metadata | Fetches from several sources | Community database at [meta.audiosilo.app](https://meta.audiosilo.app), with spoiler-safe recaps and characters for the books that have them |
 
-**Stay with Audiobookshelf** if you rely on ebooks, uploading through the web, or having metadata written into your files. AudioSilo does none of those. Podcasts work from server 2.4, but need AudioSilo's optional Bridge container to download them: see [Podcasts in AudioSilo](/blog/podcasts/).
+**Stay with Audiobookshelf** if you rely on an ebook library (ebooks without audio, PDF or comics), uploading through the web, or having metadata written into your files. AudioSilo does none of those: from server 2.5 it reads the EPUB that sits beside an audiobook, and that's all (see [Read the ebook](/blog/ebook-reader/)). Podcasts work from server 2.4, but need AudioSilo's optional Bridge container to download them: see [Podcasts in AudioSilo](/blog/podcasts/).
 
 **AudioSilo suits you** if you want the server to treat your folders as read-only, want phone apps from the stores, or like a player built around the whole book: time left at your speed, an undo for accidental jumps, a sleep timer that can fade out and marks where you dozed off, and a Year in listening.
 
