@@ -3,9 +3,9 @@ title: "How to pair your phone with your AudioSilo server using a QR code"
 description: Sign the iPhone, iPad or Android app in to a self-hosted audiobook server by scanning a QR code. Invites, adding more devices, and what to do when it can't connect.
 kind: tutorial
 published: 2026-10-15
-updated: 2026-10-24
-verified: 2026-10-24
-appliesTo: App 2.0.0 to 2.4.0, server 2.3.1 and 2.4.0
+updated: 2026-10-28
+verified: 2026-10-28
+appliesTo: App 2.0.0 to 2.5.0, server 2.3.1 to 2.5.0
 tags: [apps, pairing, getting-started, invites]
 covers:
   - app:connect
@@ -24,6 +24,8 @@ related:
 hero: ../../assets/stills/server-invite-dark.webp
 heroAlt: An invite ready in the AudioSilo admin console, with a QR code to scan with a phone camera, the invite link and a one-time code
 revisions:
+  - date: 2026-10-28
+    note: "Server and app 2.5.0 say whether an invite is used up or expired, and how long to wait after too many tries."
   - date: 2026-10-24
     note: "App 2.4.0 scans the invite card's QR directly, apps from 2.1 connect over plain HTTP at home to a self-signed server, and setup step 7 pairs a phone."
   - date: 2026-10-21
@@ -82,7 +84,7 @@ When your server has both a home address and a public one, the app learns both w
 - **"Couldn't reach ..."**: check the address for typos and that the server is running. A home address like `192.168.1.20:8080` only works on your home network.
 - **The app can't connect to a server that works in the browser**: the server is still on its self-signed certificate, and the app is 2.0.0 or you're away from home. See the first section.
 - **"That QR code isn't an AudioSilo pairing code."** (apps before 2.4.0): you may have scanned the admin invite card's QR, which opens a web page. Open the invite link in a browser first, then scan the connect page's **pairing QR** with the app. Alternatively, enter the server address and invite code in the app.
-- **An expired or used-up invite**: ask the admin for a new one, or rotate it on the Invites page.
-- **Too many tries**: the server slows down repeated failed sign-ins on purpose. Wait a few minutes.
+- **An expired or used-up invite**: from 2.5.0 the message says which ("This invite has expired", or it has been used on all the devices it allows). Ask the admin for a new one, or rotate it on the Invites page.
+- **Too many tries**: the server slows down repeated failed sign-ins on purpose. Wait a few minutes; from 2.5.0 the message says how many.
 
 The docs cover every route in [Connecting and signing in](https://docs.audiosilo.app/users/listening/connecting).

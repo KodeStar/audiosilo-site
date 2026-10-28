@@ -37,7 +37,10 @@ covers:
   - docs:/users/getting-started/organizing-your-library
   - docs:/users/admin/books
   - docs:/users/admin/health
+supersededBy: server-2-5
+supersededNote: Server 2.5 is out, with the ebook reader in the web player and the apps, a faster server, .mka books that play in the apps, and a database copy before every upgrade. Everything below still applies.
 related:
+  - server-2-5
   - podcasts
   - first-run-setup
   - organize-audiobook-folders
