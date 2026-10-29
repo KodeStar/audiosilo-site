@@ -37,14 +37,14 @@ Since server 2.5.0, AudioSilo opens the [ebook that sits beside an audiobook](/b
 
 ## The Text tab
 
-Play the book and open the player's [companion](https://docs.audiosilo.app/users/listening/companion#text). Right after **Story so far** there is now a **Text** tab. It opens the ebook at the sentence being read, highlights it, and turns the page mid-sentence when the voice gets there, through the chapters too. Pausing, skipping or changing the speed in the player moves the highlight with it.
+Play the book and open the player's [companion](https://docs.audiosilo.app/users/listening/companion#text). It now has a **Text** tab, right after **Story so far** (or first, when your server has community metadata switched off). It opens the ebook at the sentence being read, highlights it, and turns the page mid-sentence when the voice gets there, through the chapters too. Pausing, skipping or changing the speed in the player moves the highlight with it.
 
 - **Tap a sentence** to move the audiobook to the start of it. It moves your place rather than starting playback: a playing book carries on from there, a paused one waits there.
-- **Turn the page yourself** (the edges of the text, or a swipe) to look back or ahead. The tab stops following you around, and **Back to narration** takes you back to the sentence being read.
+- **Turn the page yourself** (the edges of the text, or a swipe) to look back or ahead. The tab stops following the narration, and **Back to narration** takes you back to the sentence being read.
 
-On a computer the tab sits in the companion column beside the player, and on a tablet under the controls with the other tabs. On a phone there's no chip for it yet: open the companion from any chip, then pick **Text** at the top of the sheet.
+On a computer the tab sits in the companion column beside the player, and on a tablet under the controls with the other tabs. On a phone there's no chip for it: open the companion from any chip, then pick **Text** at the top of the sheet.
 
-The Text tab only appears for a book whose read-along fits the book as it is. If the ebook or the audio files changed since the read-along was made, it is out of date, and the tab stays away until an admin makes it again.
+For listeners, the Text tab only appears for a book whose read-along fits the book as it is. If the ebook or the audio files changed since the read-along was made, it is out of date, and the tab stays away until an admin makes it again.
 
 ## Follow narration in the full-screen reader
 
@@ -54,18 +54,18 @@ While the reader follows the narration it doesn't save your reading place, since
 
 ## Offline
 
-A book you [download](https://docs.audiosilo.app/users/listening/offline-downloads) now keeps its read-along beside its ebook, so the Text tab and **Follow narration** work with no connection. If the read-along is made again on the server, the app fetches the new one the next time it sees the book there, and drops its copy if the read-along goes out of date. A download made before 2.6.0 picks up the read-along the next time the app sees the book on your server; until then, the Text tab needs a connection.
+A book you [download](https://docs.audiosilo.app/users/listening/offline-downloads#how-downloaded-playback-differs) now keeps its read-along beside its ebook, so with both saved, the Text tab and **Follow narration** work with no connection. If the read-along is made again on the server, the app fetches the new one the next time it sees the book there, and drops its copy if the read-along goes out of date. A download made before 2.6.0 picks up the read-along the next time the app sees the book on your server; until then, the Text tab needs a connection.
 
 ## Making a read-along
 
-An admin makes a book's read-along once, with a paired Bridge, AudioSilo's optional companion container. The Bridge makes it from the audiobook and its matching EPUB using speech recognition only: **no AI agent is involved, so there is no agent cost**. If the Bridge already transcribed the book, for [characters and recaps](/blog/bridge-recaps-and-contributions/) or for detecting chapters, it reuses that transcript instead of transcribing again.
+An admin makes a book's read-along once, with a paired Bridge, AudioSilo's optional companion container. The Bridge makes it from the audiobook and its matching EPUB using speech recognition only: **no AI agent is involved, so there is no agent cost**. If the Bridge transcribed the book recently, for [characters and recaps](/blog/bridge-recaps-and-contributions/), for detecting chapters or for an earlier read-along, it reuses that transcript instead of transcribing again (it keeps a book's transcript for 30 days after its last job).
 
 There are two places to start one:
 
 - **In the admin console**, a book with an ebook has a **Read-along** card on its page, under Chapters. It says whether the book has a read-along, whether it is up to date, and offers **Make read-along** (or **Make again**).
-- **In the player**, an admin sees the **Text** tab on every book with an ebook. Where there's nothing to follow yet, or the read-along is out of date, the tab offers **Make read-along** right there.
+- **In the player**, an admin with a Bridge that can make read-alongs sees the **Text** tab on every book with an ebook. Where there's nothing to follow yet, or the read-along is out of date, the tab offers **Make read-along** right there.
 
-Either way, a confirmation says what will happen before anything starts: the ebook it lines up, about how long transcription can take on your Bridge (less when it still has the book's transcript), and that no agent is used. While it runs, the card and the Text tab show its progress, with **Cancel**. When it finishes, the text appears.
+Either way, a confirmation says what will happen before anything starts: the ebook it lines up, up to how long transcription can take on your Bridge (less when it still has the book's transcript), and that no agent is used. While it runs, the card and the Text tab show its progress, with **Cancel**. When it finishes, the text appears.
 
 The Bridge needs to be online, offer read-alongs (an older Bridge doesn't, so update it), and be able to write to the book's library: the read-along is saved in the book's hidden `.audiosilo` folder, and the server itself still only reads. Community metadata, a match and the agent container aren't needed.
 
@@ -75,11 +75,11 @@ A poor match is refused. If less than half of the ebook's text lines up with the
 
 ## What it doesn't do
 
-- **It needs a DRM-free EPUB of the same edition.** A locked EPUB can't be read, and a different book or edition doesn't line up.
+- **It needs a DRM-free EPUB of the same book, ideally the same edition.** A locked EPUB can't be read, and a different book or a very different edition doesn't line up.
 - **It's one book at a time.** There's no action to make read-alongs for a whole library or series.
 - **It needs a Bridge.** The server doesn't make read-alongs by itself.
 - **Older players don't show it.** The 2.5.0 web player and apps carry on as before, without the Text tab or Follow narration; update to 2.6.0 to read along.
 
 ## More
 
-The docs have each part with screenshots: [the companion's Text tab](https://docs.audiosilo.app/users/listening/companion#text), [Follow the narration](https://docs.audiosilo.app/users/listening/reading-the-ebook#follow-the-narration) in the reader, [read-alongs offline](https://docs.audiosilo.app/users/listening/offline-downloads) and [Making a read-along](https://docs.audiosilo.app/users/admin/making-read-along), including [from the player](https://docs.audiosilo.app/users/admin/making-read-along#from-the-player). For the reader itself, see [Read the ebook](/blog/ebook-reader/), and for what else a Bridge does, [Characters and recaps from your own Bridge](/blog/bridge-recaps-and-contributions/).
+The docs have each part with screenshots: [the companion's Text tab](https://docs.audiosilo.app/users/listening/companion#text), [Follow the narration](https://docs.audiosilo.app/users/listening/reading-the-ebook#follow-the-narration) in the reader, [read-alongs offline](https://docs.audiosilo.app/users/listening/offline-downloads#how-downloaded-playback-differs) and [Making a read-along](https://docs.audiosilo.app/users/admin/making-read-along), including [from the player](https://docs.audiosilo.app/users/admin/making-read-along#from-the-player). For the reader itself, see [Read the ebook](/blog/ebook-reader/), and for what else a Bridge does, [Characters and recaps from your own Bridge](/blog/bridge-recaps-and-contributions/).
