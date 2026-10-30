@@ -1,6 +1,6 @@
 ---
 title: "Upcoming releases: what's coming in the series you listen to"
-description: AudioSilo now checks the series in your library daily and shows their preorders, new releases and missing volumes in the player, the console and your calendar app.
+description: AudioSilo now checks your series daily and shows their preorders, new releases and missing volumes in the player and the console, and release days in your calendar.
 kind: feature
 published: 2026-10-30
 verified: 2026-10-30
@@ -37,7 +37,7 @@ related:
 draft: true
 ---
 
-Finishing book five and then finding out, months later, that book six came out in the spring is a very familiar way to lose track of a series. From version 2.6.0, AudioSilo keeps an eye on the series in your library for you. Once a day your server checks which books in them you can preorder, which came out recently and which volumes your library is missing, and the player shows them, with their covers, on the home screen, on an **Upcoming** page and on each series page. You can subscribe your calendar app to the release days, too. Admins see the same dates in the console, and can be told when a new book comes out.
+Finishing book five and then finding out, months later, that book six came out in the spring is a very familiar way to lose track of a series. From version 2.6.0, AudioSilo keeps an eye on the series in your library for you. Once a day your server checks which books in them you can preorder, which came out recently and which volumes your library is missing, and the player shows them with their covers on the home screen and an **Upcoming** page, and dates them on each series page. You can subscribe your calendar app to the release days, too. Admins see the same dates in the console, and can be told when a new book comes out.
 
 ## What it needs
 
@@ -74,13 +74,13 @@ Under the list on the Upcoming page, an **Add to your calendar** card gives you 
 Press **Get calendar link** and the card shows the link:
 
 - **Subscribe**, on an iPhone, iPad or Mac, hands the link to the Calendar app, which asks you to confirm the subscription.
-- **Copy link** puts it on the clipboard, to paste into Google Calendar, Outlook or any other calendar app that can add a calendar from a link.
+- **Copy link** puts it on the clipboard, to paste into Google Calendar on the web, Outlook or any other calendar app that can add a calendar from a link.
 
 With more than one server, the card has a row for each server that offers it, each with its own link.
 
 Only books with a release day go in: preorders and recent releases whose exact day the catalogue knows. Missing volumes, most of which came out years ago, and books with only a month or a year to go on are left out. Each event is named after the book and its place in the series, like *"Leviathan Falls (The Expanse #9)"*, and shows as free time, so it never blocks your day. Calendar apps check the link again on their own schedule, so a new release can take a while to appear.
 
-**Google Calendar and other cloud calendars need a public address.** Some calendars fetch the link from their own servers on the internet rather than from your device: Google Calendar, Outlook on the web, and an Apple Calendar subscription kept in iCloud. They can only reach a server with a public HTTPS address and a trusted certificate (see [Remote access](https://docs.audiosilo.app/users/getting-started/remote-access)). A home-only address, or one with the server's own self-signed certificate, works only in a calendar app that fetches the link itself, on a device that can reach your server. When your admin has set the server's public address, the link uses it, so it works from anywhere even when you made it at home.
+**Google Calendar and other cloud calendars need a public address.** Some calendars fetch the link from their own servers on the internet rather than from your device: Google Calendar, Outlook on the web, and an Apple Calendar subscription kept in iCloud. They can only reach a server with a public HTTPS address and a trusted certificate (see [Remote access](https://docs.audiosilo.app/users/getting-started/remote-access)). A home-only address, or one with the server's own self-signed certificate, works only in a calendar app that fetches the link itself, on a device that can reach your server and trusts its certificate. When your admin has set the server's public address, the link uses it, so it works from anywhere even when you made it at home.
 
 Treat the link like a password: anyone who has it can see your upcoming releases, though nothing else on your server. The server shows it only when it's made, and your device keeps its own copy, so on another device the card says **A link is active. Reset it to see it here.**
 
