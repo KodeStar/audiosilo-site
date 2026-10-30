@@ -18,7 +18,7 @@ related:
   - audiobooks-on-unraid
   - organize-audiobook-folders
   - m4b-vs-mp3-audiobooks
-draft: true
+draft: false
 ---
 
 The first scan of a big audiobook library is slow mostly because the server opens every audio file to learn its length, chapters and codec, and many servers do that by **starting an external program, usually ffprobe, once for every file**. Starting a program costs far more than reading the few hundred kilobytes it needs. With tens of thousands of files, those start-ups are the scan. Disks, network shares and the database add to it, but on a modern machine they come second. A server that reads the files itself, and writes to its database in batches, can scan the same library many times faster.
