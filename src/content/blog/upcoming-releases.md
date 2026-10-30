@@ -1,6 +1,6 @@
 ---
 title: "Upcoming releases: what's coming in the series you listen to"
-description: AudioSilo now checks the series in your library once a day and shows the preorders, new releases and missing volumes in them, in the player and the admin console.
+description: AudioSilo now checks your series daily and shows their preorders, new releases and missing volumes in the player and the console, and release days in your calendar.
 kind: feature
 published: 2026-10-30
 verified: 2026-10-30
@@ -13,12 +13,18 @@ covers:
   - server:series
   - server:notifications
   - server:admin_ui
+  - server:upcoming_calendar
+  - server:upcoming_covers
+  - server:meta_covers
+  - server:addresses
+  - server:tls
   - app:upcoming
   - app:home
   - app:series
   - app:you
   - app:kids
   - docs:/users/listening/upcoming
+  - docs:/users/getting-started/remote-access
   - docs:/users/listening/browsing
   - docs:/users/listening/you
   - docs:/users/admin/server
@@ -31,7 +37,7 @@ related:
 draft: true
 ---
 
-Finishing book five and then finding out, months later, that book six came out in the spring is a very familiar way to lose track of a series. From version 2.6.0, AudioSilo keeps an eye on the series in your library for you. Once a day your server checks which books in them you can preorder, which came out recently and which volumes your library is missing, and the player shows them on the home screen, on an **Upcoming** page and on each series page. Admins see the same dates in the console, and can be told when a new book comes out.
+Finishing book five and then finding out, months later, that book six came out in the spring is a very familiar way to lose track of a series. From version 2.6.0, AudioSilo keeps an eye on the series in your library for you. Once a day your server checks which books in them you can preorder, which came out recently and which volumes your library is missing, and the player shows them with their covers on the home screen and an **Upcoming** page, and dates them on each series page. You can subscribe your calendar app to the release days, too. Admins see the same dates in the console, and can be told when a new book comes out.
 
 ## What it needs
 
@@ -43,7 +49,7 @@ The check covers the series your libraries hold, so it only lists series you hav
 
 ## Coming up in your series
 
-The player's home screen gets a **Coming up in your series** shelf, right after **Next in your series**: preorders first, then recent releases, then the books you're missing. Each book is a pale "ghost" cover, since it isn't on your server and there's no artwork to show, with its title, the series and its number in it, and a date line. Tap one to open its series page, or **See all** for the Upcoming page.
+The player's home screen gets a **Coming up in your series** shelf, right after **Next in your series**: preorders first, then recent releases, then the books you're missing. Each book shows its cover from the community catalogue, with its title, the series and its number in it, and a date line. A book the catalogue has no cover for is a pale "ghost" cover, and so is every book while its cover loads or when it can't be loaded. Your server fetches the covers and passes them on, so your device never contacts the sites they come from. Tap one to open its series page, or **See all** for the Upcoming page.
 
 The shelf only appears when there's something in it. Before your server's first check, or when nothing is coming up, Home looks just as it did.
 
@@ -60,6 +66,28 @@ You'll find it from **See all** on Home, in the **Upcoming** section of the **Me
 Each book has one date, as precise as the community catalogue knows it: **Out Nov 12, 2026** for a preorder, **Released Oct 2026** for a recent release, **First released 2014** for a missing book. The date is the book's first release anywhere, the earliest the catalogue lists across its recordings and stores, so your local store may get a new book a little later than the date says. A small **New** badge marks a book your server first listed in the last seven days.
 
 If you're connected to more than one server, the shelf and the page combine them. A book shows once even when two of your servers both lack it, and one listed by a server other than your main one says which server it came from.
+
+## Add to your calendar
+
+Under the list on the Upcoming page, an **Add to your calendar** card gives you a private link for your calendar app to subscribe to. Each book coming out then shows in your calendar as an all-day event on its release day, and the calendar keeps itself up to date: if a book's date slips, its event moves with it, and a book you add to your library drops out.
+
+Press **Get calendar link** and the card shows the link:
+
+- **Subscribe**, on an iPhone, iPad or Mac, hands the link to the Calendar app, which asks you to confirm the subscription.
+- **Copy link** puts it on the clipboard, to paste into Google Calendar on the web, Outlook or any other calendar app that can add a calendar from a link.
+
+With more than one server, the card has a row for each server that offers it, each with its own link.
+
+Only books with a release day go in: preorders and recent releases whose exact day the catalogue knows. Missing volumes, most of which came out years ago, and books with only a month or a year to go on are left out. Each event is named after the book and its place in the series, like *"Leviathan Falls (The Expanse #9)"*, and shows as free time, so it never blocks your day. Calendar apps check the link again on their own schedule, so a new release can take a while to appear.
+
+**Google Calendar and other cloud calendars need a public address.** Some calendars fetch the link from their own servers on the internet rather than from your device: Google Calendar, Outlook on the web, and an Apple Calendar subscription kept in iCloud. They can only reach a server with a public HTTPS address and a trusted certificate (see [Remote access](https://docs.audiosilo.app/users/getting-started/remote-access)). A home-only address, or one with the server's own self-signed certificate, works only in a calendar app that fetches the link itself, on a device that can reach your server and trusts its certificate. When your admin has set the server's public address, the link uses it, so it works from anywhere even when you made it at home.
+
+Treat the link like a password: anyone who has it can see your upcoming releases, though nothing else on your server. The server shows it only when it's made, and your device keeps its own copy, so on another device the card says **A link is active. Reset it to see it here.**
+
+- **Reset link** makes a new link and stops the old one. A calendar subscribed to the old link stops updating until you subscribe again with the new one.
+- **Turn off** stops the link altogether.
+
+Both ask you to confirm first.
 
 ## Dates on series pages
 
@@ -80,10 +108,10 @@ Each book is announced once and never again. The first check after you turn it o
 ## What it doesn't do
 
 - **It's for series you already have.** A series with none of its books on your server isn't checked, and a standalone book isn't either.
-- **Kids don't see it.** A kid's account gets no shelf, no Upcoming page and no You section. The [demo](https://docs.audiosilo.app/users/demo) shows it like any other account.
+- **Kids don't see it.** A kid's account gets no shelf, no Upcoming page, no You section and no calendar link, and a link made before an account became a kid's stops working. The [demo](https://docs.audiosilo.app/users/demo) shows upcoming releases like any other account, but demo accounts can't subscribe to a calendar.
 - **The dates are the community catalogue's.** A book the catalogue has no date for has no date line, and the date is the first release anywhere, not necessarily in your country.
 - **The notification is for admins.** Listeners see what's coming in the player; the message goes to the console's notification channels.
 
 ## More
 
-[Upcoming releases](https://docs.audiosilo.app/users/listening/upcoming) in the docs covers the shelf, the page, the dates and the empty states with screenshots. For admins, see [Community metadata](https://docs.audiosilo.app/users/admin/server#community-metadata) for the switch, [Series](https://docs.audiosilo.app/users/admin/books#series) for the console's dated gaps and [What to send](https://docs.audiosilo.app/users/admin/notifications#what-to-send) for the notification. If your series look wrong to begin with, [Fix covers and series](/blog/fix-covers-and-series/) helps first.
+[Upcoming releases](https://docs.audiosilo.app/users/listening/upcoming) in the docs covers the shelf, the page, the dates and the empty states with screenshots, and [Add to your calendar](https://docs.audiosilo.app/users/listening/upcoming#add-to-your-calendar) has the steps for Apple Calendar, Google Calendar and Outlook. For admins, see [Community metadata](https://docs.audiosilo.app/users/admin/server#community-metadata) for the switch, [Series](https://docs.audiosilo.app/users/admin/books#series) for the console's dated gaps and [What to send](https://docs.audiosilo.app/users/admin/notifications#what-to-send) for the notification. If your series look wrong to begin with, [Fix covers and series](/blog/fix-covers-and-series/) helps first.
