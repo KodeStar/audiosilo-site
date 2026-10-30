@@ -23,7 +23,7 @@ export const APPS_BETA = !(IOS_2_IN_STORE && ANDROID_LIVE)
 export const SUPPORT_CARD_LIVE = true
 
 /** Latest server release, the fallback when the live GitHub lookup fails. */
-export const SERVER_VERSION = 'v2.5.0'
+export const SERVER_VERSION = 'v2.5.1'
 
 /** The native apps' platforms, for "the iPhone and iPad app" or "on iPhone and iPad". */
 export const APP_PLATFORMS = ANDROID_LIVE ? 'iPhone, iPad and Android' : 'iPhone and iPad'

@@ -3,6 +3,7 @@ title: "AudioSilo player tips: 14 features worth knowing"
 description: Undo an accidental jump, let the sleep timer fade out and mark where you dozed off, keep the next books downloaded, set your skip lengths, export your bookmarks and more.
 kind: tip
 published: 2026-10-16
+updated: 2026-10-30
 verified: 2026-10-24
 appliesTo: App 2.0.0 (iPhone, iPad, Android); web player in server 2.0 and later
 tags: [player, tips, sleep-timer, offline]
@@ -26,6 +27,10 @@ related:
   - audiosilo-2-0
   - pair-your-phone
   - m4b-vs-mp3-audiobooks
+  - web-player-streams-by-default
+revisions:
+  - date: 2026-10-30
+    note: "Server 2.5.1: in the web player, Download automatically now starts at Never."
 hero: ../../assets/stills/player-mobile-player-whoswho-dark.webp
 heroAlt: Who's who over the AudioSilo player on a phone, two characters marked Just met, then the people met so far
 ---
@@ -74,7 +79,7 @@ A single long file with no chapter marks gets virtual chapters every 30 minutes,
 
 On the Downloads page:
 
-- **Download automatically**: Never, **On Wi-Fi** or Always.
+- **Download automatically**: Never, **On Wi-Fi** or Always. The apps start at On Wi-Fi. From server 2.5.1 the web player starts at Never, since a browser can't tell Wi-Fi from mobile data (see [why the web player streams by default](/blog/web-player-streams-by-default/)).
 - **Keep the next books ready**: keeps up to three of your next books (Up next first, then the series you're in) on the device, while always leaving free space.
 - **Remove a download when you finish the book** clears space as you go (on by default).
 
