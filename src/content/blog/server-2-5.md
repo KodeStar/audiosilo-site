@@ -1,11 +1,11 @@
 ---
 title: "AudioSilo Server 2.5: read the ebook, a faster server, and .mka everywhere"
-description: Read a book's EPUB beside its audio in the web player and the apps, quicker scans, lists and web player start-up, .mka books in the apps, and a database copy before every upgrade.
+description: "The ebook reader in the web player and the apps, a faster server, .mka books in the apps and a database copy before upgrades. 2.5.1: much faster first scans and read-alongs."
 kind: release
 published: 2026-10-28
-updated: 2026-10-28
-verified: 2026-10-28
-appliesTo: Server 2.5.0 with its bundled web player, app 2.5.0, Bridge 0.4.0
+updated: 2026-10-30
+verified: 2026-10-30
+appliesTo: Server 2.5.0 and 2.5.1 with their bundled web player, app 2.5.0, Bridge 0.4.0 and 0.5.0
 tags: [release, server, reader, ebooks, performance, bridge]
 covers:
   - server:ebooks
@@ -23,18 +23,27 @@ covers:
   - server:series
   - server:metadata
   - server:household
+  - server:ffprobe
+  - server:toolfetch
+  - server:readalong
+  - server:duplicates
   - app:reader
   - app:book-page
   - app:downloads
   - app:connect
   - app:library
   - app:podcasts
+  - app:settings
   - docs:/users/listening/reading-the-ebook
   - docs:/users/listening/offline-downloads
   - docs:/users/listening/connecting
   - docs:/users/getting-started/running-a-worker
   - docs:/users/admin/server
+  - docs:/users/admin/making-read-along
+  - docs:/users/getting-started/install-binary
 related:
+  - faster-first-scans
+  - web-player-streams-by-default
   - ebook-reader
   - mka-books-play-everywhere
   - asr-worker-one-command
@@ -45,19 +54,35 @@ related:
   - m4b-vs-mp3-audiobooks
   - bridge-recaps-and-contributions
 revisions:
+  - date: 2026-10-30
+    note: "v2.5.1: first scans many times faster, the web player streams by default, read-alongs made by a Bridge, plus Bridge v0.5.0. App 2.5.0 is now on the App Store."
   - date: 2026-10-28
     note: "Where to get app 2.5.0 while it is in store review (the Android APK), and links to the posts on .mka books, the ASR worker install and backing up before an upgrade."
 ---
 
 AudioSilo Server **2.5.0** came out on 28 October. The headline is the **ebook reader**: when a book's folder also holds its EPUB, you can read it as well as listen, in the web player and in the iPhone, iPad and Android apps, with your place kept on every device and offline reading for downloaded books. Around it, the server is quicker almost everywhere, `.mka` books play in the apps too, a book folder opens before it's scanned, and the server copies its database before an upgrade changes it. **Bridge 0.4.0** came out alongside, with a one-line install for an ASR worker.
 
-**Where it runs:** the reader and the other new listening features are in the **web player bundled with the server** (`/web`) and in **app 2.5.0** for iPhone, iPad and Android. App 2.5.0 came out on 28 October and is in review at the App Store and Google Play; on Android you can install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.5.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Older apps keep working with 2.5 as before, without **Read the ebook**.
+**Where it runs:** the reader and the other new listening features are in the **web player bundled with the server** (`/web`) and in **app 2.5.0** for iPhone, iPad and Android. App 2.5.0 came out on 28 October and is on the App Store; it is still on its way to Google Play, and on Android you can install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.5.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Older apps keep working with 2.5 as before, without **Read the ebook**.
 
 ## How to update
 
 Update with `docker compose pull && docker compose up -d`, or from [GitHub Releases](https://github.com/KodeStar/audiosilo-server/releases). Three database migrations (0055 to 0057) run on first start, and before they run the server now copies your database into its backups folder for you (more below). The next scan finds your ebooks and records each book's file order, without re-reading the audio.
 
 If you run a Bridge, update its image (`ghcr.io/kodestar/audiosilo-bridge`) to **0.4.0**. Bridge 0.3.0 and later keep working with this server; only the one-command worker install needs 0.4.0.
+
+## 2.5.1: first scans many times faster, and read-alongs
+
+Server **2.5.1** and **Bridge 0.5.0** came out on 30 October. Update the same way (`docker compose pull && docker compose up -d`). One database migration (0058, for read-alongs) runs on first start, after the server copies your database into the backups folder. Cover addresses change once, so the players and the console download each cover once more. If an admin console tab was open during the update, reload it. There are no new apps: the apps you have keep working, and the player fixes below are in the web player bundled with 2.5.1.
+
+- **First scans many times faster.** The server now reads durations, chapters and tags itself instead of starting ffprobe once for every audio file, and asks ffprobe only about a file it isn't sure of. On an Intel N305 running Unraid, a first scan of a real library of 1,165 books (9,165 files) went from 198 seconds to 7.5, with the same index: 0 differences across 1,165 books and 56,673 chapters. It needs **FFmpeg 7.1 or 8.1**. The Docker images (ours and LinuxServer.io's) have 8.1; the native Linux and Windows builds swap a downloaded ffprobe for the FFmpeg 8.1 release build in the background, and scan faster from the next start. With any other ffprobe, scans read every file with ffprobe as in 2.5.0. More in [First scans many times faster in AudioSilo Server 2.5.1](/blog/faster-first-scans/).
+- **Faster everywhere else.** The server compresses its JSON answers (a page of 200 books goes from 41 kB to 10 kB). With its data folder on an Unraid `/mnt/user` share, it reads the database through a memory map (Authors went from 79 ms to 9 ms on the N305; `database.mmap` changes it). Lists stay quick while people listen, **Health > Duplicates** loads 50 groups at a time with **Show more** and reaches every group (before, the list stopped at 500), the console keeps its thumbnails across reloads, and an idle Bridge no longer writes to your server's database.
+- **The web player streams by default.** In the web player, **Download automatically** now starts at **Never**: a browser can't tell Wi-Fi from mobile data, so starting a book used to download all of it alongside the stream. A web player on the old default moves to Never once, unless you had set **Keep the next books ready** above zero. The apps still download On Wi-Fi. More in [The web player no longer downloads the books you play on its own](/blog/web-player-streams-by-default/).
+- **Make read-alongs with a Bridge.** A read-along lines a book's ebook up with its narration, sentence by sentence. With Bridge 0.5.0, a book with an ebook gets a **Read-along** card in the console, under **Chapters**, with **Make read-along**. It uses speech recognition only, so there is no agent and no agent cost, and it reuses a transcript the Bridge already has. A read-along that lines up less than half the text (the wrong edition, say) is refused, and the card says when it's out of date. Following along in the player comes in a later update; see [Making a read-along](https://docs.audiosilo.app/users/admin/making-read-along).
+- **Fixes.** In the web player, a downloaded book opened offline starts where you left off, and listening there can no longer set your place on the server back. Offline, Home and Up next show book titles. A download that can't work in this browser is refused at the start with the reason, and a reload during a single-file book's download keeps the row with **Retry**. In Chrome and Edge, listening is saved to History when you reload or leave the page mid-play. A cover replaced in a book's folder shows everywhere after the next scan, **Find shows** loads the artwork for a whole page of results, and Bridge jobs cancelled in the console say "Cancelled by an admin."
+- **Bridge 0.5.0** makes the read-alongs, and keeps transcripts: **Generate** on a book whose chapter detection was waiting for an ASR worker carries on from the transcription already done. A job asked for straight after you cancel one waits up to 30 seconds for the cancelled one to stop, instead of refusing. An idle Bridge with 2,000 finished books went from 4.45% of a CPU core to 0.14%; a running job now reports every 30 seconds, so a cancel can take up to about 30 seconds to reach it. Update the image (`ghcr.io/kodestar/audiosilo-bridge`) to 0.5.0; Bridge 0.3.0 and later keep working with this server, and only read-alongs need 0.5.0.
+- **New setting:** `database.mmap` (`AUDIOSILO_DB_MMAP`), `auto` by default. Leave it on `auto` unless you know your storage.
+
+Every change to the player API is additive, so existing iOS, Android and web players keep working. The full notes: [v2.5.1](https://github.com/KodeStar/audiosilo-server/releases/tag/v2.5.1) and [Bridge v0.5.0](https://github.com/KodeStar/audiosilo-bridge/releases/tag/v0.5.0).
 
 ## Read the ebook
 
