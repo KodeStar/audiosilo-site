@@ -15,13 +15,26 @@ harness/    the code: run.sh (one tier, both apps), clean-rerun.sh (all three ti
 corpus/     how the LibriVox library was built: catalog.py (the LibriVox catalogue),
             select.py (writes map.txt: 5,000 English titles), fetch.py (downloads them),
             map.txt (<archive.org id>|<Author/Title>|<mp3|m4b>|<LibriVox id>|<seconds>)
-results/    one folder per tier (final-1000, final-1000-m4b, final-5000): summary.md (every number), meta.json
-            (host, images and digests, library facts), run.log, and per app (abs/, as/)
-            the raw JSON; compare.md has the three tiers side by side
+results/    one folder per tier and run: summary.md (every number), meta.json (host, images
+            and digests, library facts), run.log, and per app (abs/, as/) the raw JSON
+              final-1000, final-1000-m4b, final-5000   the first run (AudioSilo 2.5.0);
+                                                       compare.md has its three tiers side by side
+              v251-1000, v251-1000-m4b, v251-5000      the re-run (AudioSilo 2.5.1);
+                                                       v251-compare.md side by side, and
+                                                       v251-summary.md: 2.5.0, 2.5.1 and
+                                                       Audiobookshelf per measure, with the caveats
 ```
 
-The run was `harness/clean-rerun.sh final` on 2026-10-28, against Audiobookshelf 2.37.2
-and AudioSilo from its `:edge` image of 28 October 2026 (commit `e465ccb`, reported as `dev-e465ccb`), the commit tagged as AudioSilo 2.5.0 later that day.
+There are two runs, both against Audiobookshelf 2.37.2 (the same image, by digest):
+
+- **The first run**, `harness/clean-rerun.sh final` on 2026-10-28, against AudioSilo from
+  its `:edge` image of 28 October 2026 (commit `e465ccb`, reported as `dev-e465ccb`), the
+  commit tagged as AudioSilo 2.5.0 later that day. Results in `results/final-*`.
+- **The re-run** on 2026-10-30, the same harness (this folder's), tiers, flags and
+  protocol, against AudioSilo 2.5.1 (`ghcr.io/kodestar/audiosilo-server:2.5.1`, commit
+  `62c9aac`). Before each tier the host was also checked to be idle (low load, no busy
+  container, the library's disk under 10% busy), which it was every time. Results in
+  `results/v251-*`. The blog post reports this run.
 
 ## What was left out, and what was changed
 
@@ -52,10 +65,23 @@ and AudioSilo from its `:edge` image of 28 October 2026 (commit `e465ccb`, repor
   yours. The harness assumes an Unraid-style host (`/mnt/cache/appdata/bench` for app
   data; `BENCH_DATA` changes it).
 
-## Notes on the measured AudioSilo build
+## Notes on the measured AudioSilo builds
 
-The harness notes below were first written against AudioSilo 2.4.1. The measured build
-differs in two ways that matter, and the caveats below say so:
+The harness notes below were first written against AudioSilo 2.4.1. The builds measured
+here differ in ways that matter, and the caveats below say so:
+
+- **AudioSilo 2.5.1 reads audio files inside the server.** Durations, chapters and tags
+  come from its own reader, and only a file it isn't sure of goes to ffprobe (one at a
+  time). AudioSilo 2.5.0, in the first run, started ffprobe for every file. The faster
+  reading needs FFmpeg 7.1 or 8.1 (the Docker image has 8.1); with another ffprobe,
+  2.5.1 reads every file with ffprobe, as 2.5.0 did. On the 5,000-book library its
+  per-book durations matched Audiobookshelf's (ffprobe) for 4,946 of the 4,947 books both
+  apps listed; the exception is a damaged-header M4B (`Leo Tolstoy/Anna Karenina, Book 4`:
+  ffprobe and Audiobookshelf 3,510 s, AudioSilo 13,163 s), tracked as
+  [KodeStar/audiosilo-server#276](https://github.com/KodeStar/audiosilo-server/issues/276).
+- **AudioSilo 2.5.1 compresses its JSON answers** for clients that accept it, and saving
+  listening progress no longer empties its saved list and search answers (only a change to
+  the library does).
 
 - It **scans up to 8 audio files at once** (`scan.concurrency`, default one per CPU up to
   8), where 2.4.1 read one at a time.
@@ -199,13 +225,14 @@ Things one app does that the other does not, or that could not be measured ident
 - **ABS's first scan of a library is always forced** (`Starting (forced) library scan`)
   because the library's metadata precedence was never recorded. That is its out-of-box
   behaviour and it is what is measured; a no-change rescan is not forced.
-- **Scan parallelism.** Both apps probe files in parallel, so their CPU time is several
-  times their wall time on this 8-core host. The measured
-  AudioSilo build reads up to 8 audio files at once (`scan.concurrency`, default one per
+- **Scan parallelism.** Both apps probe files in parallel, so their CPU time is more
+  than their wall time on this 8-core host. Both measured
+  AudioSilo builds read up to 8 audio files at once (`scan.concurrency`, default one per
   CPU up to 8; AudioSilo 2.4.1 and earlier read one at a time). CPU seconds are reported
   next to wall time for that reason.
-- **Work done during a scan.** Both probe every audio file with ffprobe and read tags
-  and folder covers. ABS writes item records with many denormalised fields and keeps
+- **Work done during a scan.** Both read every audio file's duration, chapters and tags
+  and the folder covers: Audiobookshelf and AudioSilo 2.5.0 with ffprobe, AudioSilo 2.5.1
+  with its own reader and ffprobe as the fallback. ABS writes item records with many denormalised fields and keeps
   covers in place (`cover.jpg` exists in every LibriVox folder, so it extracts no embedded
   art here). AudioSilo also reads a fingerprint of each book's primary file (move
   detection) and builds a chapter timeline across all files of a multi-file book. Neither
@@ -286,9 +313,13 @@ Things one app does that the other does not, or that could not be measured ident
   (`/mnt/disk2`). The download that built them was stopped before this run
   (`clean-rerun.sh` stops it), the harness checks the library is not changing, and the
   host load average is recorded around every phase.
-- **The library lives on the Unraid array** (`/mnt/user` FUSE over an XFS data disk), so
-  cold scans are disk bound for both. A spun-down disk adds seconds to the first access:
-  the cache drop does not spin disks down, but a long idle gap before a run can.
+- **The library lives on the Unraid array** (`/mnt/user` FUSE over an XFS data disk,
+  `/mnt/disk2`), and reads go through Unraid's array driver and that FUSE layer. The disk
+  is an NVMe SSD (a 4 TB WD Blue SN5000), as is the rest of the array, parity included;
+  the first version of this README and of the post called it a hard disk, which was wrong.
+  On an array of hard disks cold scans cost both apps more, and a spun-down disk adds
+  seconds to the first access (the cache drop does not spin disks down, but a long idle
+  gap before a run can).
 - **The host is not otherwise empty**: 18 other containers were running but idle; load
   averages are recorded around every phase so a disturbed run can be spotted.
 
@@ -317,7 +348,8 @@ results/<tier>/
   <app>/admin_latency.json   the health page's API requests replayed
   <app>/final_memory.json    memory after all tests
 results/<tier>-admin/       admin health measurement added after a tier's main run
-results/compare.md          tiers side by side (compare.py; picks up <tier>-admin)
+results/compare.md          tiers side by side (compare.py; picks up <tier>-admin);
+                            the re-run's is v251-compare.md
 ```
 
 Before a run that will be published, make sure the library has stopped changing (the
