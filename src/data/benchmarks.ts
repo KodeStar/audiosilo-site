@@ -10,7 +10,7 @@ export const BENCHMARK_SETS = [
     post: 'audiosilo-vs-audiobookshelf',
     title: 'AudioSilo vs Audiobookshelf benchmark (October 2026)',
     description:
-      'The harness and every result file behind the AudioSilo vs Audiobookshelf comparison: scans, memory, start-up, API and web player timings on 1,000 to 5,000 LibriVox books.',
+      'The harness and every result file behind the AudioSilo vs Audiobookshelf comparison: scans, memory, start-up, API and web player timings on 1,000 to 5,000 LibriVox books, run with AudioSilo 2.5.0 and again with 2.5.1.',
   },
 ] as const
 
