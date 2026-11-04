@@ -20,6 +20,7 @@ covers:
   - docs:/users/getting-started/bridge-accounts
   - docs:/users/listening/playback
 related:
+  - audible-backup
   - back-up-your-audible-library
   - bridge-recaps-and-contributions
   - player-tips
@@ -73,7 +74,7 @@ When Audible is busy, sync doesn't stop: the Bridge waits as long as Audible ask
 
 ## Backing up the books themselves
 
-The same Audible module can also back up the books an account owns into your library, so they play in AudioSilo like any other book. Those backups are for **a personal backup of books you bought**, with your own account. Laws on removing DRM, even from your own purchases, differ from country to country, and in some places it isn't allowed at all: check your local law, and keep the copies for yourself. Syncing places doesn't need a backup: a book you already had in your library, matched to the Audible title, syncs too. For the other ways to keep a copy of your Audible books, see [How to back up your Audible library](/blog/back-up-your-audible-library/).
+The same Audible module can also back up the books an account owns into your library, so they play in AudioSilo like any other book. Those backups are for **a personal backup of books you bought**, with your own account. Laws on removing DRM, even from your own purchases, differ from country to country, and in some places it isn't allowed at all: check your local law, and keep the copies for yourself. Syncing places doesn't need a backup: a book you already had in your library, matched to the Audible title, syncs too. [Back up your Audible books straight into your AudioSilo library](/blog/audible-backup/) covers the backups. For the other ways to keep a copy of your Audible books, see [How to back up your Audible library](/blog/back-up-your-audible-library/).
 
 ## More
 
