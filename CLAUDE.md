@@ -107,8 +107,8 @@ docs/PERFORMANCE.md     the performance budget and how it is kept
   carry the redesign, so there is no app beta CTA; the
   2.0 web player is live on every v2.0 server and the demo; manager private
   (no download CTA); the server, player, meta tooling and the Bridge are open
-  source under **AGPLv3** (scope licence claims to those four; the manager is
-  private). All of this reads from
+  source under **AGPLv3** (the Bridge repo checked public on
+  2026-11-04; scope licence claims to those four; the manager is private). All of this reads from
   `src/data/status.ts` flags: flip them there, re-verify first.
 - **Screenshots are generated, never hand-made.** Stills live in
   `src/assets/stills/` (declared in `src/data/media.ts`, imported via
