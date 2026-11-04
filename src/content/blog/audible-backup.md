@@ -10,8 +10,6 @@ covers:
   - server:audible
   - server:bridge
   - server:modules
-  - server:scanner
-  - server:notifications
   - bridge:audible
   - bridge:audible-backup
   - docs:/users/admin/audible
@@ -50,7 +48,7 @@ You can add several accounts, each for one person and one library. [Bridge accou
 
 ## See what's already here
 
-With the module on, the console's **Server > Settings** gains an **Audible** page. It lists every title your accounts own and says, for each one, whether it's **On this server** or **Not here**. The Bridge matches titles to your books by their ASIN first, then by title and author, with the series, the book's number and the narrators to help, so the books you already had count too. A title that isn't here yet says where its backup would go.
+With the module on, the console's **Server > Settings** gains an **Audible** page. It lists every title your accounts own and says, for each one, whether it's **On this server** or **Not here**. The Bridge matches titles to your books by their ASIN first, then by title and author, so the books you already had count too. A title that isn't here yet says where its backup would go.
 
 The server asks the Bridge to check each account every few hours, and **Check now** asks straight away.
 
@@ -60,7 +58,7 @@ The server asks the Bridge to check each account every few hours, and **Check no
 - **Back up everything...** is the one-off for the books the account already owns. It asks you to confirm first, with how many books and roughly how much space they take, then queues every available title that isn't on your server. It leaves out titles you marked **Not this book**, ones that are probably here under another title, and preorders.
 - **Not this book** is for a title the Bridge matched to the wrong book, or one you never want backed up on its own.
 
-For each book, the Bridge asks Audible for it with your account, downloads it, removes the copy protection and copies it into your library. Removing the protection is a **lossless copy**: the audio isn't re-encoded, and the chapters are kept. The result is always an M4B file. The server then indexes the new book straight away and gives it the title's ASIN, so it plays in the web player and the apps like any other book of the library.
+For each book, the Bridge asks Audible for it with your account, downloads it, removes the copy protection without re-encoding it (a **lossless copy** that keeps the chapters) and copies it into your library. The server then indexes the new book straight away and gives it the title's ASIN, so it plays in the web player and the apps like any other book in the library.
 
 The Bridge works through one book at a time per account, so a big library can take days. A download cut off by a dropped connection or a restart carries on where it stopped. Each backup shows in the Bridge's **Jobs** list, and a finished or failed one is notified like the Bridge's other jobs.
 
@@ -72,13 +70,13 @@ If you'd rather name the folders yourself, give the account a **placement templa
 
 ## New purchases, by themselves
 
-**Account settings...** on the account's card sets **Back up by itself**, what the account backs up after each check without being asked:
+**Back up by itself**, in **Account settings...** on the account's card, picks what the Bridge backs up after each check:
 
 - **Every new book** you buy from now on;
 - **New books in series you have**: a new purchase when a book of its series is already on your server for that person;
 - **Only books you choose**: nothing by itself.
 
-These act on new purchases only. The books the account already had are never backed up by a policy; that's what **Back up everything...** is for.
+These act on new purchases only; for the books the account already had, use **Back up everything...**.
 
 ## Preorders on release day
 
@@ -94,4 +92,4 @@ If you don't run a Bridge, or want the files somewhere other than an AudioSilo l
 
 ## More
 
-[Audible](https://docs.audiosilo.app/users/admin/audible) in the docs covers everything here in full: [how titles are matched](https://docs.audiosilo.app/users/admin/audible#how-titles-are-matched), [backing up a book](https://docs.audiosilo.app/users/admin/audible#backing-up-a-book) and [what a failed backup means](https://docs.audiosilo.app/users/admin/audible#when-a-backup-fails), [Back up everything](https://docs.audiosilo.app/users/admin/audible#back-up-everything), [the policies](https://docs.audiosilo.app/users/admin/audible#backing-up-by-itself), [where backups go](https://docs.audiosilo.app/users/admin/audible#where-backups-go) and [preorders](https://docs.audiosilo.app/users/admin/audible#preorders).
+[Audible](https://docs.audiosilo.app/users/admin/audible) in the docs covers everything here in full, including [how titles are matched](https://docs.audiosilo.app/users/admin/audible#how-titles-are-matched) and [what a failed backup means](https://docs.audiosilo.app/users/admin/audible#when-a-backup-fails).

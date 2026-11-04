@@ -33,7 +33,7 @@ It's off until an admin turns it on for an Audible account, and it moves places 
 
 ## What it needs
 
-- **Server 2.6.0 or later** with a [Bridge](https://docs.audiosilo.app/users/admin/bridge) paired and online, in a version that supports Audible.
+- **Server 2.6.0 or later** with a [Bridge](https://docs.audiosilo.app/users/getting-started/running-a-bridge) paired and online, in a version that supports Audible.
 - **Your Audible account signed in on the Bridge.** You sign in, and choose who the account is for and which library it belongs to, on the Bridge's own page: see [Bridge accounts](https://docs.audiosilo.app/users/getting-started/bridge-accounts#audible). Your server never sees your Amazon password.
 - **The Audible module turned on** in the console's **Server > Settings > Modules**. It starts off.
 - **Sync turned on for the account.** On **Server > Settings > Bridge**, the **Audible accounts** card has **Account settings...** for each account: tick **Sync listening places with Audible** and **Save**. It's off for every account until you do.
@@ -74,7 +74,7 @@ When Audible is busy, sync doesn't stop: the Bridge waits as long as Audible ask
 
 ## Backing up the books themselves
 
-The same Audible module can also back up the books an account owns into your library, so they play in AudioSilo like any other book. Those backups are for **a personal backup of books you bought**, with your own account. Laws on removing DRM, even from your own purchases, differ from country to country, and in some places it isn't allowed at all: check your local law, and keep the copies for yourself. Syncing places doesn't need a backup: a book you already had in your library, matched to the Audible title, syncs too. [Back up your Audible books straight into your AudioSilo library](/blog/audible-backup/) covers the backups. For the other ways to keep a copy of your Audible books, see [How to back up your Audible library](/blog/back-up-your-audible-library/).
+The same Audible module can also back up the books an account owns into your library, so they play in AudioSilo like any other book. Those backups are for **a personal backup of books you bought**, with your own account: [Back up your Audible books straight into your AudioSilo library](/blog/audible-backup/) covers them, and what to check about your local law first. Syncing places doesn't need a backup: a book you already had in your library, matched to the Audible title, syncs too. For the other ways to keep a copy of your Audible books, see [How to back up your Audible library](/blog/back-up-your-audible-library/).
 
 ## More
 
