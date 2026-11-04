@@ -23,7 +23,7 @@ related:
 draft: true
 ---
 
-Until now, getting your Audible books into AudioSilo meant running a separate tool: download, convert, then copy the files into your library yourself. From version 2.6.0, your server's **Bridge** can do all of it. Sign in to your Audible account once, and from the admin console you can back up any book that isn't on your server yet, back up everything the account owns in one go, or let the Bridge back up new purchases by itself. Each book arrives as an ordinary M4B file in your library, scanned and ready to play.
+Until now, getting your Audible books into AudioSilo meant running a separate tool: download, convert, then copy the files into your library yourself. From version 2.6.0, your server's **Bridge** can do all of it. Sign in to your Audible account once, and from the admin console you can back up one book at a time, back up all of an account's books that aren't here yet in one go, or let the Bridge back up new purchases by itself. Each book arrives as an ordinary M4B file in your library, scanned and ready to play.
 
 It's off until an admin turns it on, and it's meant for one thing: **a personal backup of books you bought**, with your own account. Laws on removing DRM, even from your own purchases, differ from country to country, and in some places it isn't allowed at all, even for personal use. Check your local law before you use it, and keep the copies for yourself.
 
@@ -42,7 +42,7 @@ As you sign in, you say who the account is for:
 
 - **Belongs to**: the person on your server whose books these are.
 - **Library**: the books library the account's titles are matched against, and where its backups go.
-- **Back up**: what the Bridge backs up on its own (more on that below).
+- **Back up**: what the Bridge backs up on its own. You pick it here when you add the account; after that you change it in the console (more on that below).
 
 You can add several accounts, each for one person and one library. [Bridge accounts](https://docs.audiosilo.app/users/getting-started/bridge-accounts#audible) in the docs walks through the sign-in step by step.
 
@@ -66,7 +66,7 @@ The Bridge works through one book at a time per account, so a big library can ta
 
 By default, a backup goes **beside the series' other books**, named the way your library already names them: the same author folder, the series' folder and its numbering. A book of a series you don't have yet goes under its author and series, and a book in no series under `Author/Title/`.
 
-If you'd rather name the folders yourself, give the account a **placement template** in **Account settings...**, such as `{Author}/{Series}/{ {PaddedSeq} - }{Title}`, or give one title its own **Destination...**. Whatever the placement, a backup **never overwrites anything**: if the place is taken, the backup stops and tells you, and the titles page warns you before you start. [How to organise audiobook folders](/blog/organize-audiobook-folders/) explains the layout these rules follow.
+If you'd rather name the folders yourself, give the account a **placement template** in **Account settings...**, such as `{Author}/{Series}/{ {PaddedSeq} - }{Title}`, or give one title its own **Destination...**. Whatever the placement, a backup **never overwrites anything**: if the place is taken, the backup stops and tells you. For the usual placement, the titles page warns you before you start; a title's own destination is checked when its backup starts. [How to organise audiobook folders](/blog/organize-audiobook-folders/) explains the layout these rules follow.
 
 ## New purchases, by themselves
 

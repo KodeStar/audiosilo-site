@@ -4,7 +4,7 @@ description: With a Bridge signed in to your Audible account, your place in a bo
 kind: feature
 published: 2026-11-04
 verified: 2026-11-04
-appliesTo: Server 2.6.0 with a Bridge, app 2.6.0
+appliesTo: Server 2.6.0 with a Bridge
 tags: [audible, bridge, sync, player, admin]
 covers:
   - server:audible
@@ -70,7 +70,7 @@ The account's **Sync** row on the Audible accounts card says whether it's on and
 - **The account was given to someone else** on the Bridge: sync turns off, since it was turned on for another person. Turn it on again for the new one.
 - **The account's library was deleted**: sync is paused with the account until you choose another library for it on the Bridge.
 
-When Audible is busy, sync doesn't stop: the Bridge waits as long as Audible asks and tries again by itself. The Bridge's setup checklist also says when an account's places aren't syncing, and why. Each sync shows in the Bridge's Jobs list as **Syncing places with Audible**.
+When Audible is busy, sync doesn't stop: the Bridge waits as long as Audible asks and tries again by itself. If the account's person is disabled or made a kid account, nothing syncs until you choose someone else for the account on the Bridge. The Bridge's setup checklist also says when an account's places aren't syncing, and why. Each sync shows in the Bridge's Jobs list as **Syncing places with Audible**.
 
 ## Backing up the books themselves
 
