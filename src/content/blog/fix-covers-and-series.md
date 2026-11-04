@@ -3,7 +3,7 @@ title: Fix wrong covers, titles and series in your audiobook library
 description: Swapped tags, missing covers, a series spelled three ways. How to match books to the community database one at a time or all at once, without touching your files.
 kind: tip
 published: 2026-10-14
-updated: 2026-10-24
+updated: 2026-11-04
 verified: 2026-10-24
 appliesTo: Server 2.4.0
 tags: [metadata, matching, covers, series, admin]
@@ -27,6 +27,8 @@ heroAlt: Compare with community metadata, field by field, what is on your server
 revisions:
   - date: 2026-10-24
     note: "Server 2.4.0: match review lists best matches first and opens Match by hand over it, hand matches are kept, and duplicates can span libraries."
+  - date: 2026-11-04
+    note: "Points to the docs for what matching sends on the newest server."
 ---
 
 Audiobook tags are famously messy: a title tag holding the author's name, no cover, "Book 3" of a series you've never heard of, or the same series spelled three ways. In AudioSilo you fix these from the admin console, with help from the free community database at [meta.audiosilo.app](https://meta.audiosilo.app), and **none of it touches your files**: every fix is stored as an override in the server's database, survives rescans, and can be reverted.
@@ -93,7 +95,7 @@ Since server 2.2, community covers in the players' series rails are fetched by y
 
 ## What matching sends, and how to send nothing
 
-The player's "About this book" lookup sends only a book's ASIN or ISBN. Matching sends what it needs to search: the tagged title, author and series, the length, up to three folder names, and anything you type. Nothing about who listens, and no full file paths.
+The player's "About this book" lookup sends only a book's ASIN or ISBN. Matching sends what it needs to search: the tagged title, author and series, the length, up to three folder names, and anything you type. Nothing about who listens, and no full file paths. That is server 2.4's list; for the newest server's, see [What matching sends](https://docs.audiosilo.app/users/admin/books#matching-with-community-metadata) in the docs.
 
 If you'd rather nothing is looked up over the internet, set community metadata to **Keep a local copy** (`metadata.mode: mirror`, server 2.3). The server downloads the whole community database (about 450 MB to download, 1.8 GB on disk) and answers every lookup from it. Or turn community metadata off entirely with one switch.
 
