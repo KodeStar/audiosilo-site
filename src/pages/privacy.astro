@@ -140,8 +140,8 @@ const link = 'link'
         it was reported, and stores no IP address with them. An address is held in memory for about a
         day after its last request to enforce a rate limit. At meta.audiosilo.app these reports are
         not written to the access log when they arrive over HTTPS, which is how AudioSilo servers send
-        them. If the service fails while answering one, the web server's error log can record the
-        address. The
+        them. The web server's error log can still record the address of a request that goes wrong,
+        such as a report that cannot reach the service while it is restarting. The
         <a class={link} href={`${META_URL}/privacy`} target="_blank" rel="noopener">meta.audiosilo.app privacy page</a> has the
         details.
       </p>
