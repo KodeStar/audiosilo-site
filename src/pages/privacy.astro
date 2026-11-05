@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro'
+import { META_URL } from '@/data/links'
 
 const link = 'link'
 ---
@@ -115,22 +116,21 @@ const link = 'link'
       <p class="mb-4 leading-relaxed text-foreground/85">
         AudioSilo contains <strong class="font-semibold text-foreground">no</strong> analytics, advertising, attribution, or
         third-party tracking software. We do not profile you and do not build advertising identifiers.
-        Nothing about your usage is reported back to us. The one exception is the optional server
-        setting below.
+        Apart from the optional report below, nothing about your usage is reported back to us.
       </p>
 
       <h2 class="mt-14 mb-4 font-display text-[1.625rem] font-bold tracking-[-0.03em]">Optional community report</h2>
       <p class="mb-4 leading-relaxed text-foreground/85">
-        If the administrator of an AudioSilo server turns on
+        If the administrator of an AudioSilo server turns on the off-by-default setting
         <strong class="font-semibold text-foreground">Help complete the community database</strong>, that server sends
         meta.audiosilo.app, once a day, the Audible ASINs of books the community database does not know.
         No titles, file paths, server name or listener information are sent. The service stores each
         ASIN with a count and the first and last date it was reported, and stores no IP address with
         them. An address is held in memory for about a day after its last request to enforce a rate
-        limit. meta.audiosilo.app keeps no access log for these reports when they arrive over HTTPS,
-        which is how AudioSilo servers send them. If the service fails while answering one,
-        the web server's error log can record the address. The setting is off by default. The
-        <a class={link} href="https://meta.audiosilo.app/privacy">meta.audiosilo.app privacy page</a> has the
+        limit. These reports are not written to the access log when they arrive over HTTPS, which is
+        how AudioSilo servers send them. If the service fails while answering one, the web server's
+        error log can record the address. The
+        <a class={link} href={`${META_URL}/privacy`}>meta.audiosilo.app privacy page</a> has the
         details.
       </p>
 
