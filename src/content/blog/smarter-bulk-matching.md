@@ -99,9 +99,15 @@ The identifier rule, the weak-match floor, the title tidy and the tag hints are 
 The new scoring lives in the community database's matching, so it depends on where the answers come from:
 
 - **Keep a local copy** (`metadata.mode: mirror`): at the release, as the copy's matching ships inside the server.
-- **Asking meta.audiosilo.app**: once that service has been updated. Until then, your server gets the old scores with the new rules around them.
+- **Asking meta.audiosilo.app**: that service already runs the new scoring, so series position and length count today. Language and narrators count from 2.6.0, when your server starts sending them.
 
 The benchmark above ran on a local copy, so it shows both halves together.
+
+## A run is much quicker too
+
+A bulk match asking meta.audiosilo.app used to make about three and a half requests per book, waiting on each one. From 2.6.0 it makes one, and six books run at once. A run over the benchmark's 4,044 books took 1 minute 32 seconds against the live service, where a run over a library that size had taken about 13 minutes. The results come out the same on the same data.
+
+Refreshing details and re-picking a marketplace still make their separate requests, so they don't get this speed-up.
 
 ## What a match sends
 
