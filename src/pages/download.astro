@@ -9,7 +9,7 @@ import { DEMO_URL, GITHUB_SERVER_RELEASES_URL, GITHUB_SERVER_URL, LSIO_REPO_URL,
 import { demoLibrary } from '@/data/demo'
 import AppCards from '@/components/site/AppCards.astro'
 import Icon from '@/components/Icon.astro'
-import { APP_PLATFORMS } from '@/data/status'
+import { APP_PLATFORMS, APPLE_WATCH_DOWNLOAD } from '@/data/status'
 
 const source = `git clone ${GITHUB_SERVER_URL}
 cd audiosilo-server
@@ -137,7 +137,8 @@ const platforms = [
           <a href={DEMO_URL} target="_blank" rel="noopener" class="group mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold">Open the demo <Arrow /></a>
         </AppCards>
       </div>
-      <p class="reveal mt-10 text-sm text-muted-foreground">
+      <p class="reveal mt-10 text-sm text-muted-foreground">{APPLE_WATCH_DOWNLOAD}</p>
+      <p class="reveal mt-3 text-sm text-muted-foreground">
         New to this? The <a href="/docs/installation" class="link">installation guide</a> walks through a Docker setup end to end.
       </p>
     </div>
