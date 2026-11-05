@@ -95,7 +95,7 @@ Since server 2.2, community covers in the players' series rails are fetched by y
 
 ## What matching sends, and how to send nothing
 
-The player's "About this book" lookup sends only a book's ASIN or ISBN. Matching sends what it needs to search: the tagged title, author and series, the length, up to three folder names, and anything you type. Nothing about who listens, and no full file paths. That is server 2.4's list; for the newest server's, see [What matching sends](https://docs.audiosilo.app/users/admin/books#matching-with-community-metadata) in the docs.
+The player's "About this book" lookup sends only a book's ASIN or ISBN. Matching sends what it needs to search: the tagged title, author and series, the length, its ASIN or ISBN, up to three folder or file names, and anything you type. Nothing about who listens, and no full file paths. That is server 2.4's list; for the newest server's, see [What matching sends](https://docs.audiosilo.app/users/admin/books#matching-with-community-metadata) in the docs.
 
 If you'd rather nothing is looked up over the internet, set community metadata to **Keep a local copy** (`metadata.mode: mirror`, server 2.3). The server downloads the whole community database (about 450 MB to download, 1.8 GB on disk) and answers every lookup from it. Or turn community metadata off entirely with one switch.
 
