@@ -22,24 +22,21 @@ related:
 draft: true
 ---
 
-Your server looks each book up in the free, community-run catalogue at [meta.audiosilo.app](https://meta.audiosilo.app) by its ASIN or ISBN. When the catalogue doesn't have a book, the lookup comes back empty, and until now that's where it ended: nobody on the community side knew the book was missing. Server 2.6.0 adds a setting that tells them. It's called **Help complete the community database**, and it's **off** until you turn it on.
+Your server looks each book up in the free, community-run catalogue at [meta.audiosilo.app](https://meta.audiosilo.app) by its ASIN or ISBN. When the catalogue doesn't have a book, the lookup comes back empty, and until now that's where it ended: nobody on the community side knew the book was missing. Server 2.6.0 adds a setting that tells them: **Help complete the community database**, **off** until you turn it on.
 
 ## What it needs
 
-- **Server 2.6.0 or later**, with **Look up community metadata** on. The new switch works only while the lookup is on, and is greyed out otherwise.
-- The switch itself, in the admin console's **Server > Settings > Community metadata**.
-
-Players aren't involved. Nothing changes for listeners, and no app update is needed.
+**Server 2.6.0 or later**, with **Look up community metadata** on: the new switch works only while the lookup is on, and is greyed out otherwise. It's in the admin console under **Server > Settings > Community metadata**. Players aren't involved, so no app update is needed.
 
 ## What it does once a day
 
-While the switch is on, the server does three things once a day:
+While the switch is on, the server does three things:
 
 1. It collects your books' Audible ASINs: each book's own ASIN, and an ASIN from a book's tags only when the book has no ASIN or ISBN of its own (nor one you edited or cleared) and no other book's tags carry the same ASIN.
 2. It looks each one up in the community database first, as the ordinary lookup always does, and keeps only the ones the database doesn't know. That's up to 500 lookups a day, and an ASIN is looked up again after 30 days.
-3. It sends those unknown ASINs to the metadata service, and nothing else: no titles, file paths, server name, or anything about who listens.
+3. It sends those unknown ASINs to the metadata service, and nothing else: no titles, file paths, server name, or anything about who listens. An ASIN already sent isn't sent again for a month, and one the database later adds stops being sent.
 
-An ASIN already sent isn't sent again for a month, and one the database later adds stops being sent.
+It sends only over HTTPS: with a **Service address** that starts with `http://` (other than one on the same machine, for testing), nothing is sent. A server in [demo mode](https://docs.audiosilo.app/users/admin/server#demo-mode) never sends a report.
 
 ## With a local copy
 
@@ -54,11 +51,9 @@ The service sees your server's IP address while it receives a report, as any web
 - At meta.audiosilo.app these reports aren't written to the access log when they arrive over HTTPS, which is how AudioSilo servers send them.
 - The web server's error log can still record the address of a request that goes wrong, such as a report that can't reach the service while it's restarting.
 
-Your server sends reports only over HTTPS. With a **Service address** that starts with `http://` (other than one on the same machine, for testing), nothing is sent. A server in [demo mode](https://docs.audiosilo.app/users/admin/server#demo-mode) never sends a report.
-
 ## What happens to a report
 
-A report is a suggestion of where to look, never a record. Nothing in it goes into the database as it is.
+A report is a suggestion of where to look, never a record: nothing in it goes into the database as it is.
 
 The community database's sync bot, the one that already keeps the series it holds complete, reads the reported ASINs and looks each one up as a real Audible listing. What it can add from them is kept narrow:
 
