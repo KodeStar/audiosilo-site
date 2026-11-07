@@ -4,7 +4,7 @@ description: "AudioSilo, Audiobookshelf, BookOrbit and Grimmory compared on firs
 kind: guide
 published: 2026-11-07
 verified: 2026-11-07
-appliesTo: "AudioSilo 2.6.0 and 2.5.1; Audiobookshelf 2.37.2; BookOrbit 3.6.0; Grimmory 3.5.0. Published matching covers AudioSilo 2.5.1; the 2.6.0 matching figures are from our own harness."
+appliesTo: "AudioSilo 2.6.0 and 2.5.1; Audiobookshelf 2.37.2 (2.35.1 in the published matching); BookOrbit 3.6.0; Grimmory 3.5.0. Published matching covers AudioSilo 2.5.1; the 2.6.0 matching figures are from our own harness."
 tags: [comparison, audiobookshelf, bookorbit, grimmory, metadata, benchmarks]
 covers:
   - app:stores
