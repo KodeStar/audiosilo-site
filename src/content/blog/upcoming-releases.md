@@ -8,6 +8,7 @@ verified: 2026-11-07
 appliesTo: Server 2.6.0 with its bundled web player, app 2.6.0
 tags: [series, metadata, player, admin, notifications]
 covers:
+  - app:stores
   - server:upcoming
   - server:metadata
   - server:metadata-mirror

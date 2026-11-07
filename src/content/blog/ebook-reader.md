@@ -8,6 +8,7 @@ verified: 2026-11-07
 appliesTo: Server 2.5.0, app 2.5.0
 tags: [reader, ebooks, player, offline]
 covers:
+  - app:stores
   - server:ebooks
   - server:reading-progress
   - server:scanner

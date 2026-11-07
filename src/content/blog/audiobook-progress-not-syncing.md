@@ -7,6 +7,7 @@ verified: 2026-11-07
 appliesTo: General advice; the AudioSilo section is server 2.6.0 with its bundled web player, app 2.6.0
 tags: [audiobooks, sync, offline, troubleshooting]
 covers:
+  - app:stores
   - server:listening_sync
   - app:listening_sync
   - app:downloads

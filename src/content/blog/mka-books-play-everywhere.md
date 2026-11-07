@@ -8,6 +8,7 @@ verified: 2026-11-07
 appliesTo: Server 2.5.0 (any app); app 2.5.0 for iPhone downloads
 tags: [formats, mka, playback, downloads, ffmpeg]
 covers:
+  - app:stores
   - server:formats
   - server:remux
   - server:transcode

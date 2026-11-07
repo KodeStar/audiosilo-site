@@ -45,7 +45,7 @@ There is a limit to this first step. The player's About panel and the community 
 
 ## Facts, with a separate licence from the audio
 
-AudioSilo normally keeps catalogue imports bounded. Its [licensing policy](https://github.com/KodeStar/audiosilo-meta/blob/main/LICENSING.md#the-public-domain-exception-librivox) makes a named public-domain exception for the LibriVox catalogue, across all languages. That exception applies to LibriVox alone.
+AudioSilo normally keeps catalogue imports bounded. Its [licensing policy](https://github.com/KodeStar/audiosilo-meta/blob/main/LICENSING.md#the-public-domain-exception-librivox) makes a public-domain exception for the LibriVox catalogue alone, in every language.
 
 The imported factual metadata is **CC0-1.0**. Project descriptions are left out under the facts-only policy, since they can contain text quoted from other sources. Audio and cover art stay on archive.org; the database keeps links. The separately written community characters and recaps remain **CC BY-SA 4.0**.
 

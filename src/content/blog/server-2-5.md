@@ -8,6 +8,7 @@ verified: 2026-11-07
 appliesTo: Server 2.5.0 and 2.5.1 with their bundled web player, app 2.5.0, Bridge 0.4.0 and 0.5.0
 tags: [release, server, reader, ebooks, performance, bridge]
 covers:
+  - app:stores
   - server:ebooks
   - server:reading-progress
   - server:scanner

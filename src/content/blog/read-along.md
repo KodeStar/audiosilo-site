@@ -8,6 +8,7 @@ verified: 2026-11-07
 appliesTo: Server 2.6.0 with a Bridge 0.5.0 or later, app 2.6.0
 tags: [reader, ebooks, read-along, bridge, player, offline]
 covers:
+  - app:stores
   - server:readalong
   - server:ebooks
   - server:bridge
