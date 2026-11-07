@@ -23,6 +23,8 @@ draft: true
 
 A familiar title can have several audiobook recordings. AudioSilo Meta's catalogue helps you compare their narrators and details, inspect the chapters in a particular recording, and plan your way through a series. It keeps each recording separate, so you can follow the voice you enjoy and see which details the catalogue still lacks.
 
+This draft describes the unreleased [catalogue update](https://github.com/KodeStar/audiosilo-meta/pull/2929).
+
 ## Find a book, series or narrator
 
 Start at the [catalogue directory](https://meta.audiosilo.app/browse). Follow the lists of [audiobooks](https://meta.audiosilo.app/browse/works), [series](https://meta.audiosilo.app/browse/series), or [authors and narrators](https://meta.audiosilo.app/browse/people), then open an entry. Longer lists have links to the next and previous pages.
@@ -33,7 +35,7 @@ These routes give you a way to explore when you haven't settled on a search term
 
 On a book's page, **Compare recordings** puts the catalogued versions side by side. Each row shows the narrators, language, abridgement, runtime, release date, publisher and chapter count where those details are known. Follow a recording's link to its detailed card on the same page.
 
-This helps with questions such as which narrator reads a version, whether its stated runtime fits the time you have, or whether the catalogue identifies it as abridged or unabridged. Missing details say **Unknown**. A missing abridgement statement stays unknown; it doesn't become an unabridged claim.
+This helps you check who narrates a version, whether its stated runtime fits the time you have, or whether it is explicitly abridged or unabridged. **Unknown** marks details the catalogue doesn't state. A missing abridgement statement stays unknown.
 
 The detailed cards keep their identifiers and retailer links beside the recording they describe. A catalogue entry or retailer link doesn't confirm that a recording is currently available to buy or listen to.
 
