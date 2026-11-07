@@ -202,6 +202,12 @@ const chapter = chapterTitle(chapters)
               or ISBN in the book's tags, anything the admin types and up to three folder or file
               names), and only when an admin opens Match or runs it on the library.
             </p>
+            <p>
+              If your admin turns on Help complete the community database, your server also looks
+              up its books' Audible ASINs (on your server, with a local copy) and sends, once a day,
+              the ones the database doesn't know, and nothing else: no titles, file paths or
+              listener details. It is off by default.
+            </p>
             <p class="rounded-2xl bg-muted/70 p-5 text-[0.9375rem] shadow-[inset_0_0_0_1px_var(--border)]">
               <strong class="font-semibold text-foreground">One switch turns it off.</strong>
               <span class="text-muted-foreground"> Turn community metadata off in the server settings and every outbound lookup stops; players hide the features that need it.</span>
