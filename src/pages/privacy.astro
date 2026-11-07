@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro'
+import { META_URL } from '@/data/links'
 
 const link = 'link'
 ---
@@ -10,7 +11,7 @@ const link = 'link'
   <div class="shell py-14 sm:py-20">
     <div class="mx-auto max-w-3xl text-[1.0625rem]">
       <h1 class="t-display">Privacy Policy</h1>
-      <p class="mt-4 mb-10 text-sm text-muted-foreground">Last updated: 19 October 2026</p>
+      <p class="mt-4 mb-10 text-sm text-muted-foreground">Last updated: 7 November 2026</p>
 
       <p class="t-lede mb-6 text-foreground/80">
         AudioSilo is a <strong class="font-semibold text-foreground">self-hosted audiobook player</strong>. The AudioSilo
@@ -18,7 +19,8 @@ const link = 'link'
         (or whoever administers your server) run and control. In normal use, the app communicates
         <strong class="font-semibold text-foreground">only</strong> with the server address you provide, and the developer
         of AudioSilo operates
-        <strong class="font-semibold text-foreground">no service that receives, stores, or processes your data</strong>.
+        <strong class="font-semibold text-foreground">no service that receives, stores, or processes your data</strong>,
+        apart from the community metadata service your server can use, described below.
       </p>
 
       <h2 class="mt-14 mb-4 font-display text-[1.625rem] font-bold tracking-[-0.03em]">Who we are</h2>
@@ -114,7 +116,36 @@ const link = 'link'
       <p class="mb-4 leading-relaxed text-foreground/85">
         AudioSilo contains <strong class="font-semibold text-foreground">no</strong> analytics, advertising, attribution, or
         third-party tracking software. We do not profile you and do not build advertising identifiers.
-        Nothing about your usage is reported back to us.
+        Apart from the community metadata service below, nothing about your usage is reported back to us.
+      </p>
+
+      <h2 class="mt-14 mb-4 font-display text-[1.625rem] font-bold tracking-[-0.03em]">Community metadata</h2>
+      <p class="mb-4 leading-relaxed text-foreground/85">
+        An AudioSilo server can look its books up in the community metadata database at
+        meta.audiosilo.app (on by default; the server's administrator can turn it off). The app never
+        talks to it; the server does. To look a book up the server sends the book's ASIN or ISBN, never a
+        file path or who is listening. Match sends a little more (title, author, series, length,
+        narrators, language, any ASIN or ISBN in the book's tags, anything the administrator types and
+        up to three folder or file names), and only when an administrator opens Match or runs it on the
+        library.
+      </p>
+
+      <p class="mt-6 mb-2 font-semibold text-foreground">Optional community report</p>
+      <p class="mb-4 leading-relaxed text-foreground/85">
+        If the administrator of an AudioSilo server turns on the off-by-default setting
+        <strong class="font-semibold text-foreground">Help complete the community database</strong>, that server looks
+        up its books' Audible ASINs in the community database (up to 500 a day, each again after 30
+        days; with a local copy of the database these lookups stay on the server) and sends its
+        metadata service (meta.audiosilo.app unless the administrator points it elsewhere), once a
+        day, the ASINs the database does not know. No titles, file paths, server name or listener
+        information are sent. The service stores each ASIN with a count and the first and last date
+        it was reported, and stores no IP address with them. An address is held in memory for about a
+        day after its last request to enforce a rate limit. At meta.audiosilo.app these reports are
+        not written to the access log when they arrive over HTTPS, which is how AudioSilo servers send
+        them. The web server's error log can still record the address of a request that goes wrong,
+        such as a report that cannot reach the service while it is restarting. The
+        <a class={link} href={`${META_URL}/privacy`} target="_blank" rel="noopener">meta.audiosilo.app privacy page</a> has the
+        details.
       </p>
 
       <h2 class="mt-14 mb-4 font-display text-[1.625rem] font-bold tracking-[-0.03em]">Third-party services</h2>
@@ -150,7 +181,7 @@ const link = 'link'
       <h2 class="mt-14 mb-4 font-display text-[1.625rem] font-bold tracking-[-0.03em]">Children's privacy</h2>
       <p class="mb-4 leading-relaxed text-foreground/85">
         AudioSilo is a general-audience audiobook player and is not directed at children under 13. We
-        do not knowingly collect personal information from children; indeed, we collect personal
+        do not knowingly collect personal information from children; indeed, the app collects personal
         information from no one.
       </p>
 
