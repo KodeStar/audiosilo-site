@@ -4,7 +4,7 @@ description: "Check the device you last listened on, its connection, your accoun
 kind: guide
 published: 2026-11-07
 verified: 2026-11-07
-appliesTo: General advice; AudioSilo server and player 2.6.0 section is a release draft
+appliesTo: General advice; the AudioSilo section is server 2.6.0 with its bundled web player, app 2.6.0
 tags: [audiobooks, sync, offline, troubleshooting]
 covers:
   - server:listening_sync
@@ -16,9 +16,9 @@ covers:
   - docs:/users/listening/offline-downloads
 related:
   - listening-sync
+  - server-2-6
   - listen-away-from-home
   - player-tips
-draft: true
 ---
 
 If your audiobook opens at an old place on another device, start with the device you last listened on. Connect it, open the listening app and check that its saved place has synced before resuming elsewhere. Then check that both devices use the same account and the same edition. Avoid signing out or reinstalling while the latest listening is still only on one device.
@@ -37,7 +37,7 @@ Then open the second device and let it check for the saved place before pressing
 
 Make sure both apps are signed in as the same person. For a self-hosted library, check the server too: two servers with the same files don't necessarily share listening progress.
 
-Some players have a separate setting for position sync. Audible's [listening guide](https://help.audible.co.uk/s/article/listen-in-the-app) puts it under **Profile > Settings > Player > Sync listening position**. Check that setting on each device if you use Audible. A control for downloading books is a different thing from a control for syncing your place.
+Some players have a separate setting for position sync. Audible's [listening guide](https://help.audible.co.uk/s/article/listen-in-the-app) puts its position sync switch in the app's player settings (**Profile > Settings > Player**); the switch's exact name varies between app versions. Check it on each device if you use Audible. A control for downloading books is a different thing from a control for syncing your place.
 
 ## 3. Check the copy of the book
 
@@ -47,13 +47,13 @@ Record your chapter and position before replacing a download. If a sync error me
 
 ## 4. Keep the device that has the latest place
 
-Signing out, removing a server or uninstalling can remove information that hasn't reached the service yet. In AudioSilo, signing out or removing a server deletes unsynced progress and the downloads for that server; uninstalling removes the app's local data. Let it finish syncing first.
+Signing out, removing a server or uninstalling can remove information that hasn't reached the service yet. In AudioSilo, signing out or removing a server deletes unsynced progress and the downloads for that server, and from 2.6.0 the app warns first when listening is still waiting; uninstalling removes the app's local data. Let it finish syncing first.
 
 If both devices have been used offline, check which place you actually want. The furthest point isn't always the right one if you deliberately went back to hear a chapter again. Keep a note of that place before choosing between them.
 
 ## In AudioSilo 2.6
 
-The following describes the **2.6.0 server and player**, as a release draft. It doesn't announce a new app-store build.
+These need **server 2.6.0** and a 2.6.0 player: the web player your server serves has them now, and app 2.6.0 brings them to phones and tablets once it reaches the App Store and Google Play (on Android, install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0)). With an older app or server, the app saves your place as before, so steps 1 to 4 are what to check.
 
 - **Home** shows listening waiting to reach the server.
 - Your server's **account page > Listening sync** shows the waiting count and last successful sync. **Couldn't sync** lists rejected listening with a reason, such as a different-length copy or a book that's no longer on the server.

@@ -2,8 +2,8 @@
 title: LibriVox joins AudioSilo's community metadata
 description: LibriVox recordings, readers and sections now join AudioSilo's community catalogue. What server owners can use today, and which player features are planned.
 kind: feature
-published: 2026-11-06
-verified: 2026-11-06
+published: 2026-11-07
+verified: 2026-11-07
 appliesTo: Community metadata; Server 2.6.0
 tags: [librivox, metadata, matching, community]
 covers:
@@ -15,13 +15,13 @@ covers:
   - docs:/users/admin/server
   - docs:/developers/meta/api
 related:
+  - smarter-bulk-matching
   - fix-covers-and-series
   - m4b-vs-mp3-audiobooks
   - organize-audiobook-folders
-draft: true
 ---
 
-LibriVox recordings are now in AudioSilo's community metadata database at [meta.audiosilo.app](https://meta.audiosilo.app). As checked on 6 November, the catalogue holds **21,851 LibriVox recordings**. If you already have LibriVox books on your server, their readings can appear when you search for community metadata in the admin console, ready to compare with your files.
+LibriVox recordings are now in AudioSilo's community metadata database at [meta.audiosilo.app](https://meta.audiosilo.app). As checked on 7 November, the catalogue holds **21,851 LibriVox recordings**. If you already have LibriVox books on your server, their readings can appear when you search for community metadata in the admin console, ready to compare with your files.
 
 [LibriVox](https://librivox.org/pages/about-librivox/) is a volunteer project that records books and makes the audio available for free. Its readers record in many languages, and the Internet Archive hosts the audio. LibriVox uses US public-domain rules for its texts and recordings; its [public-domain page](https://librivox.org/pages/public-domain/) explains what that means for listeners elsewhere.
 
@@ -39,7 +39,9 @@ On the 2.6.0 server, with **Look up community metadata** on, open a book in the 
 
 The same search works in online mode and with **Keep a local copy**, once that copy has updated to include the LibriVox data. With a ready local copy, the server answers the search itself. While the copy is unavailable or a local request fails, it can fall back to the online service.
 
-There is a limit to this first step. The server's automatic About lookup and community chapter lookup still identify recordings by ASIN or ISBN. A LibriVox project number is not yet a saved match identifier, so taking a LibriVox recording's details does not by itself connect those lookups or bring its section list into the player. The [matching guide](/blog/fix-covers-and-series/) covers the field comparison, and [Community metadata](https://docs.audiosilo.app/users/admin/server#community-metadata) explains the online and local-copy settings.
+Server 2.6.0 also remembers which community work and recording you matched a book to, even when it has no ASIN or ISBN. With nothing ticked, **Match to this work** records just the match, so the book counts as matched and later match runs skip it ([how 2.6 matches](/blog/smarter-bulk-matching/)).
+
+There is a limit to this first step. The player's About panel and the community chapter check still look a recording up by its ASIN or ISBN. So for a LibriVox book without one, the match doesn't yet bring its community details or its section list into the player. The [matching guide](/blog/fix-covers-and-series/) covers the field comparison, and [Community metadata](https://docs.audiosilo.app/users/admin/server#community-metadata) explains the online and local-copy settings.
 
 ## Facts, with a separate licence from the audio
 

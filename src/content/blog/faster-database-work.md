@@ -4,7 +4,7 @@ description: "Server 2.6 reuses prepared database queries, and its Docker image 
 kind: feature
 published: 2026-11-07
 verified: 2026-11-07
-appliesTo: Server 2.6.0 (release draft)
+appliesTo: Server 2.6.0
 tags: [server, performance, docker, linux, upgrades]
 covers:
   - server:database
@@ -14,15 +14,13 @@ covers:
   - docs:/users/getting-started/install-binary
   - docs:/users/troubleshooting
 related:
+  - server-2-6
   - back-up-before-upgrading
   - faster-first-scans
   - self-hosted-audiobook-server
-draft: true
 ---
 
 Server 2.6.0 reduces repeated database work and changes the SQLite engine used by its standard Docker image and Linux downloads. For an admin, there isn't another service to install or a database to convert: the server still uses SQLite in its data folder. Update the server in the usual way, with a backup first.
-
-This is a draft for the 2.6.0 release. It describes the merged implementation and build recipes, ahead of publication of the release artifacts.
 
 ## Reuse work the database already did
 
@@ -51,10 +49,10 @@ environment:
   AUDIOSILO_SQLITE: modernc
 ```
 
-For a native Linux installation, set `AUDIOSILO_SQLITE=modernc` in the environment used to start the server and restart it. The choice happens when the process starts. The same database is used, with no export or import between engines.
+For a native Linux installation, set `AUDIOSILO_SQLITE=modernc` in the environment used to start the server and restart it. The choice happens when the process starts. The same database is used, with no export or import between engines. The developer docs describe [the engine setting](https://docs.audiosilo.app/developers/server/configuration#the-sqlite-engine-audiosilo_sqlite).
 
 The startup log names the selected engine in its **database: sqlite** line. That is also useful when reporting a database problem.
 
 ## More
 
-See [Install the native binary](https://docs.audiosilo.app/users/getting-started/install-binary) for updating without Docker. [Faster first scans](/blog/faster-first-scans/) describes the separate file-probing changes from 2.5.1; this release's database changes work alongside those.
+See [Install the native binary](https://docs.audiosilo.app/users/getting-started/install-binary) for updating without Docker. [Faster first scans](/blog/faster-first-scans/) describes the separate file-probing changes from 2.5.1; this release's database changes work alongside those, and [AudioSilo 2.6](/blog/server-2-6/) covers the rest of the release.
