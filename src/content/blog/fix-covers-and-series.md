@@ -3,7 +3,7 @@ title: Fix wrong covers, titles and series in your audiobook library
 description: Swapped tags, missing covers, a series spelled three ways. How to match books to the community database one at a time or all at once, without touching your files.
 kind: tip
 published: 2026-10-14
-updated: 2026-11-04
+updated: 2026-11-07
 verified: 2026-10-24
 appliesTo: Server 2.4.0
 tags: [metadata, matching, covers, series, admin]
@@ -27,7 +27,7 @@ heroAlt: Compare with community metadata, field by field, what is on your server
 revisions:
   - date: 2026-10-24
     note: "Server 2.4.0: match review lists best matches first and opens Match by hand over it, hand matches are kept, and duplicates can span libraries."
-  - date: 2026-11-04
+  - date: 2026-11-07
     note: "Points to the docs for what matching sends on the newest server."
 ---
 
