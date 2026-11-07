@@ -4,6 +4,10 @@ description: In server 2.6.0, bulk matching trusts an ASIN or ISBN the community
 kind: feature
 published: 2026-11-07
 verified: 2026-11-07
+updated: 2026-11-07
+revisions:
+  - date: 2026-11-07
+    note: "The online run time is now the released 2.6.0's (about 2 minutes), not a development build's."
 appliesTo: Server 2.6.0
 tags: [metadata, matching, admin]
 covers:
@@ -163,7 +167,7 @@ The benchmark above ran on a local copy, so it shows both halves together.
 
 ## A run is much quicker too
 
-A bulk match asking meta.audiosilo.app used to make about three and a half requests per book, waiting on each one. From 2.6.0 it makes one, and six books run at once. A run over the benchmark's 4,044 books took 1 minute 32 seconds against the live service, where a run over a library that size had taken about 13 minutes. The results come out the same on the same data.
+A bulk match asking meta.audiosilo.app used to make about three and a half requests per book, waiting on each one. From 2.6.0 it makes one, and six books run at once. On the released 2.6.0, a run over the benchmark's 4,044 books took about 2 minutes against the live service, where a run over a library that size had taken about 13 minutes. The results come out the same on the same data.
 
 Refreshing details and re-picking a marketplace still make their separate requests, so they don't get this speed-up.
 
