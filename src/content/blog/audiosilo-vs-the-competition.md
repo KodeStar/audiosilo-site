@@ -26,6 +26,8 @@ revisions:
     note: "Added the completed Phase E local matching result and distinguished it from LibraForge's published audit."
   - date: 2026-11-07
     note: "Updated for the 2.6.0 release: released 2.6.0 and 2.5.1 measured side by side on the same host, and matching times plus a 2.6.0 row added to the matching table."
+  - date: 2026-11-07
+    note: "Added the 2.6.0 release's online matching time (2 minutes 1 second against meta.audiosilo.app)."
 draft: true
 ---
 
@@ -100,7 +102,7 @@ An **accepted right-book** result identifies the right work, but may still have 
 | Tested tool | Accepted right book | Fully correct* | Accepted wrong book | Held | None | Time taken for 4,044 books† |
 |---|---:|---:|---:|---:|---:|---|
 | LibraForge build 527247d | 3,942 | 3,831 | 0 | 34 | 68 | 11 minutes, 5 search workers |
-| AudioSilo 2.6.0, our harness‡ | 3,806 | Not audited‡ | 4 | 148 | 85 | 24 seconds, local copy; online not re-timed‡ |
+| AudioSilo 2.6.0, our harness‡ | 3,806 | Not audited‡ | 4 | 148 | 85 | 24 seconds with a local copy; 2 minutes online‡ |
 | AudioSilo 2.5.1 | 2,987 | 2,571 | 27 | 966 | 64 | About 1 minute with a local copy; 13 minutes online |
 | Audiobookshelf Quick Match 2.35.1 | 2,808 | 2,657 | 1,167 | 0 | 69 | 4 hours 44 minutes |
 | BookOrbit, build undisclosed | 2,917 | 1,431 | 820 | 0 | 307 | 15 hours 53 minutes |
@@ -124,7 +126,7 @@ Published AudioSilo 2.5.1 accepted 3,014 books, or 74.5% of the corpus. Of those
 
 Our harness only checks whether each pick is the right work: against the benchmark's reference ASIN, else LibraForge's hand-checked pick, else the audited 2.5.1 pick, else title and author. It doesn't check every final field, so a right work can still carry another recording or an incorrect detail, and there is no fully-correct figure for 2.6.0. It also uses LibraForge's earlier reference data, a local copy of the community database and the US region. So please don't set 3,806 against LibraForge's 3,942 or 3,831, or against 2.5.1's audited 2,987 and 2,571, as a measured gain or lead; only a fresh independent audit could settle that.
 
-The 2.6.0 time is our harness matching all 4,044 books with six at a time, as a real run does, against a local copy of the community database on a Mac. It covers the matching only, not a scan or writing the results, so treat it as a rough guide rather than a like-for-like with the published times. A run against the online service wasn't timed on the release build. On 5 November a full run of these books against meta.audiosilo.app took 1 minute 32 seconds on a 2.6 development build with the same request path (one request per book, six books at a time), before the last matching changes.
+The 2.6.0 times are our harness matching all 4,044 books on the released code with six at a time, as a real run does, from a Mac: 24 seconds against a local copy of the community database, and 2 minutes 1 second against meta.audiosilo.app on 7 November, with no failed books and no requests to slow down. Both cover the matching only, not a scan or writing the results, and the online time depends on the connection and how busy the service is, so treat them as a rough guide rather than a like-for-like with the published times.
 
 ## Features that may decide it before any benchmark
 
