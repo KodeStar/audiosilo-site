@@ -60,7 +60,7 @@ related:
 
 AudioSilo Server **2.6.0** came out on 7 November. Your server now keeps an eye on the series you listen to and tells you what's coming, in the player and in your calendar. Your devices send what you listened to rather than just where you are, so listening on two devices, or offline, comes together properly. The player's **Text** tab follows the ebook as the narrator reads it. And **Bridge 0.6.0**, out the same day, brings Audible to the Bridge: sign in to your accounts, back up the books you bought into your library, and keep your listening place in step with the Audible app.
 
-**Where it runs:** the new listening features are in the **web player bundled with the server** (`/web`) today. **App 2.6.0** for iPhone, iPad and Android brings them to the apps once it reaches the App Store and Google Play. Older apps keep working with 2.6 as before, without Upcoming, Sync v2 or the Text tab. An Apple Watch companion for the iPhone app is in the works. It isn't available yet, and we'll say so here when it is.
+**Where it runs:** the new listening features are in the **web player bundled with the server** (`/web`) today. **App 2.6.0** for iPhone, iPad and Android brings them to the apps once it reaches the App Store and Google Play. Older apps keep working with 2.6 as before, without Upcoming, Sync v2 or the Text tab. An Apple Watch companion for the iPhone app isn't available yet; we'll say so here when it is.
 
 ## How to update
 
@@ -98,7 +98,7 @@ A downloaded book keeps its read-along with its ebook, so it works offline. A mi
 
 With **Bridge 0.6.0** and the **Audible** module turned on in the console (it starts off):
 
-- **Sign in on the Bridge's Accounts tab.** Each Audible account belongs to a person on your server and a books library. Your Amazon credentials stay sealed on the Bridge. The console's **Settings > Audible** lists the account's titles, which are already on your server, and where a backup would go.
+- **Sign in on the Bridge's Accounts tab.** Each Audible account belongs to a person on your server and a books library. Your Amazon credentials stay sealed on the Bridge. The console's **Settings > Audible** lists the account's titles, shows which are already on your server, and where a backup would go.
 - **Back up books you bought into your library.** Back up one title, **Back up everything**, or set a policy for future purchases: every new book, or new books in series you already have. The Bridge saves an M4B without re-encoding the audio, keeps the chapters, places it beside your series' other books (or by a template or destination you choose), never replaces an existing file, and asks the server to index it. Backups need the library mapped and writable on the Bridge.
 - **Keep your place in step, both ways.** Turn on **Sync listening places with Audible** for an account. About every 15 minutes the Bridge brings across an Audible place that is further on, and a few minutes after you stop listening in AudioSilo it can send your place back to Audible. **Don't sync** leaves a title out. Only places move: Audible listening adds nothing to your AudioSilo history or stats.
 
@@ -136,7 +136,7 @@ The Docker image and the native Linux downloads now use the native SQLite engine
 - **Changing your password signs your other sessions out**, keeping the device you changed it on. An admin's password reset and **Sign out everywhere** end sessions too. Personal API keys and calendar links keep working.
 - **Android, in app 2.6.0:** a very long single-file M4B or M4A book no longer runs out of memory at chapter changes.
 - **Characters and recaps follow your copy's chapters**, and an appearance past the last chapter reads **Near the end**.
-- **Dramatized recordings are chosen more carefully**, and **Unlink** is refused while a match run is working, so the run can't write the match back.
+- **Unlink** is refused while a match run is working, so the run can't write the match back.
 
 ## After updating
 
