@@ -31,7 +31,7 @@ This is **Sync v2**, new in AudioSilo 2.6.0 ([what else is in 2.6](/blog/server-
 
 ## What you need
 
-Use **server 2.6.0** with the web player it serves, which has Sync v2 today, or **app 2.6.0** on a phone or tablet. App 2.6.0 reaches iPhone and iPad when the App Store publishes it and Google Play after that; on Android you can install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Sign each device in to the same account on the same server. There's no new switch to turn on and no Bridge to install for listening between AudioSilo devices.
+Use **server 2.6.0** with the web player it serves, which has Sync v2 today, or **app 2.6.0** on a phone or tablet. App 2.6.0 reaches the apps once the App Store and Google Play publish it; on Android you can install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Sign each device in to the same account on the same server. There's no new switch to turn on and no Bridge to install for listening between AudioSilo devices.
 
 Older apps keep saving their place through the existing progress route. A new player connected to an older server also keeps the previous position-saving behavior. The changes below need the new player and server together.
 

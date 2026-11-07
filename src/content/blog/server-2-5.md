@@ -3,8 +3,8 @@ title: "AudioSilo Server 2.5: read the ebook, a faster server, and .mka everywhe
 description: "The ebook reader in the web player and the apps, a faster server, .mka books in the apps and a database copy before upgrades. 2.5.1: much faster first scans and read-alongs."
 kind: release
 published: 2026-10-28
-updated: 2026-10-30
-verified: 2026-10-30
+updated: 2026-11-07
+verified: 2026-11-07
 appliesTo: Server 2.5.0 and 2.5.1 with their bundled web player, app 2.5.0, Bridge 0.4.0 and 0.5.0
 tags: [release, server, reader, ebooks, performance, bridge]
 covers:
@@ -56,6 +56,8 @@ related:
   - m4b-vs-mp3-audiobooks
   - bridge-recaps-and-contributions
 revisions:
+  - date: 2026-11-07
+    note: "App 2.5.0 is now on Google Play too."
   - date: 2026-10-30
     note: "v2.5.1: first scans many times faster, the web player streams by default, read-alongs made by a Bridge, plus Bridge v0.5.0. App 2.5.0 is now on the App Store."
   - date: 2026-10-28
@@ -64,7 +66,7 @@ revisions:
 
 AudioSilo Server **2.5.0** came out on 28 October. The headline is the **ebook reader**: when a book's folder also holds its EPUB, you can read it as well as listen, in the web player and in the iPhone, iPad and Android apps, with your place kept on every device and offline reading for downloaded books. Around it, the server is quicker almost everywhere, `.mka` books play in the apps too, a book folder opens before it's scanned, and the server copies its database before an upgrade changes it. **Bridge 0.4.0** came out alongside, with a one-line install for an ASR worker.
 
-**Where it runs:** the reader and the other new listening features are in the **web player bundled with the server** (`/web`) and in **app 2.5.0** for iPhone, iPad and Android. App 2.5.0 came out on 28 October and is on the App Store; it is still on its way to Google Play, and on Android you can install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.5.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Older apps keep working with 2.5 as before, without **Read the ebook**.
+**Where it runs:** the reader and the other new listening features are in the **web player bundled with the server** (`/web`) and in **app 2.5.0** for iPhone, iPad and Android. App 2.5.0 came out on 28 October and is on the App Store and Google Play; on Android you can also install it from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.5.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Older apps keep working with 2.5 as before, without **Read the ebook**.
 
 ## How to update
 

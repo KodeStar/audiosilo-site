@@ -27,6 +27,8 @@ related:
   - audiobooks-on-unraid
 hero: ../../assets/stills/player-desktop-upnext-dark.webp
 heroAlt: "The AudioSilo web player in a desktop browser: the library grid with the Up next drawer open, four books queued and the series to continue"
+supersededBy: audiosilo-vs-the-competition
+supersededNote: "There's a newer comparison: AudioSilo 2.6.0 and 2.5.1 against Audiobookshelf, BookOrbit and Grimmory, measured again on a different storage route, with published matching results. Its first-scan, CPU and memory figures replace the ones below."
 revisions:
   - date: 2026-10-30
     note: "Benchmarks re-run with AudioSilo 2.5.1: first scans about 30 times quicker than Audiobookshelf and now lighter on CPU too; the library disk is an NVMe SSD, not a hard disk; app 2.5.0 is on the App Store."

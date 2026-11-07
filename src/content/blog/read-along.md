@@ -35,7 +35,7 @@ Since server 2.5.0, AudioSilo opens the [ebook that sits beside an audiobook](/b
 
 ## What it needs
 
-- **Server 2.6.0 or later**, with its web player, or **app 2.6.0** on a phone or tablet once it reaches the App Store and Google Play (on Android, install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play))). Older players and apps (2.5.0) simply don't show it, and carry on working as before.
+- **Server 2.6.0 or later**, with its web player, or **app 2.6.0** on a phone or tablet once it reaches the App Store and Google Play (on Android, install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0); see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Older players and apps (2.5.0) simply don't show it, and carry on working as before.
 - **A book with a DRM-free EPUB beside its audio**, the same one [Read the ebook](https://docs.audiosilo.app/users/listening/reading-the-ebook) opens. It has to be the same book as the narration, and ideally the same edition.
 - **A read-along for that book**, made once by an admin with a [Bridge](https://docs.audiosilo.app/users/admin/bridge) (more on that [below](#making-a-read-along)). There's nothing for listeners to switch on.
 
