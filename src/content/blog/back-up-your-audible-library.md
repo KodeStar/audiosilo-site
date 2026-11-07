@@ -3,9 +3,9 @@ title: How to back up your Audible library to M4B and listen on your own server
 description: Download the Audible books you bought as plain M4B files with Libation, OpenAudible or audible-cli, keep them in a folder that scans cleanly, and play them anywhere.
 kind: guide
 published: 2026-10-17
-updated: 2026-10-24
+updated: 2026-11-07
 verified: 2026-10-24
-appliesTo: Server 2.4.0, app 2.0.0; Libation 14.2.2, OpenAudible 5.0.3, audible-cli 0.6.0
+appliesTo: Server 2.4.0, app 2.0.0; Libation 14.2.2, OpenAudible 5.0.3, audible-cli 0.6.0; Bridge 0.6.0 with server 2.6.0
 tags: [audible, backup, m4b, self-hosting]
 covers:
   - bridge:audible
@@ -16,17 +16,20 @@ covers:
   - docs:/users/getting-started/quickstart-docker
   - docs:/users/admin/health
 related:
+  - audible-backup
   - organize-audiobook-folders
   - m4b-vs-mp3-audiobooks
   - self-hosted-audiobook-server
 hero: ../../assets/stills/player-ipad-series-dark.webp
 heroAlt: The Stormlight Archive on an iPad, the books you own as spines in reading order, the ones you are missing as dashed ghost spines
 revisions:
+  - date: 2026-11-07
+    note: "Server 2.6.0: the AudioSilo Bridge can back up your Audible books into your library; added to the tools table."
   - date: 2026-10-24
     note: "Server 2.4.0: a new server's first console sign-in opens Set up your server, which adds the library."
 ---
 
-To back up your Audible library, you use a tool that signs in to **your own Audible account**, downloads the books you bought and saves them as ordinary **M4B** (or MP3) files. The three tools people use today are **Libation** (free), **OpenAudible** (paid, free to try) and **audible-cli** (free, command line). Once the files are on your own disk, any audiobook player can play them, and a self-hosted server lets you stream them to your phone with your place kept in sync.
+To back up your Audible library, you use a tool that signs in to **your own Audible account**, downloads the books you bought and saves them as ordinary **M4B** (or MP3) files. The three standalone tools people use today are **Libation** (free), **OpenAudible** (paid, free to try) and **audible-cli** (free, command line); from server 2.6.0, an AudioSilo server's [Bridge](/blog/audible-backup/) can also back them up straight into your library. Once the files are on your own disk, any audiobook player can play them, and a self-hosted server lets you stream them to your phone with your place kept in sync.
 
 This guide covers why the files need converting, which tools are maintained right now, a plain note on the law, a folder layout that works in any audiobook server, and how to listen to the result with AudioSilo.
 
@@ -57,13 +60,14 @@ These tools are for making **personal backup copies of books you bought**, with 
 
 ## The tools that are maintained in 2026
 
-All three are in active use; Libation and audible-cli both released new versions in September 2026. Audible changes its sign-in from time to time, so whichever you choose, update it before a big download and look at its issue tracker if signing in fails.
+The three standalone tools are all in active use; Libation and audible-cli both released new versions in September 2026. Audible changes its sign-in from time to time, so whichever you choose, update it before a big download and look at its issue tracker if signing in fails.
 
 | Tool | Cost and licence | How you use it | Systems | Output | Latest release checked |
 |---|---|---|---|---|---|
 | [Libation](#libation) | Free, open source (GPL-3.0) | Desktop app, plus a command line | Windows, macOS, Linux | M4B by default, MP3 as an option | 14.2.2 (September 2026) |
 | [OpenAudible](#openaudible) | Paid one-time licence, free to try | Desktop app, also a Docker image | Windows, macOS, Linux, Docker | M4B or MP3 | 5.0.3 |
 | [audible-cli](#audible-cli) | Free, open source (AGPL-3.0) | Command line (Python, or a prebuilt binary) | Windows, macOS, Linux | AAX or AAXC with chapters and metadata; converting is a separate step | 0.6.0 (September 2026) |
+| [AudioSilo Bridge](/blog/audible-backup/) | Free, open source (AGPL-3.0) | A container beside your AudioSilo server; you choose the books in the admin console | Docker | M4B, a lossless copy with chapters, placed in your library and scanned | Bridge 0.6.0 with server 2.6.0 |
 
 ### Libation
 
