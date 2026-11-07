@@ -12,6 +12,8 @@ export const DOCS_URL = 'https://docs.audiosilo.app'
 export const UNRAID_DOCS_URL = `${DOCS_URL}/users/getting-started/install-unraid`
 /** LinuxServer.io's image repo: lscr.io/linuxserver/audiosilo, the app Unraid's Community Applications lists. */
 export const LSIO_REPO_URL = 'https://github.com/linuxserver/docker-audiosilo'
+/** Generating characters and recaps with a Bridge (and contributing them). */
+export const BRIDGE_GENERATE_DOCS_URL = `${DOCS_URL}/users/admin/generating-characters-and-recaps`
 /** The community metadata database (audiosilo-meta). */
 export const META_URL = 'https://meta.audiosilo.app'
 
@@ -28,4 +30,3 @@ export const GITHUB_SERVER_RELEASES_URL = `${GITHUB_SERVER_URL}/releases`
 /** GitHub API: the server's latest release (VersionBadge reads its tag). */
 export const GITHUB_SERVER_LATEST_API = 'https://api.github.com/repos/KodeStar/audiosilo-server/releases/latest'
 export const GITHUB_META_URL = 'https://github.com/KodeStar/audiosilo-meta'
-export const GITHUB_SIDECARS_URL = 'https://github.com/KodeStar/audiosilo-sidecars'

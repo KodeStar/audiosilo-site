@@ -12,7 +12,7 @@ import TourButton from '@/components/media/TourButton.astro'
 import { stills } from '@/data/media'
 import { demoLibrary } from '@/data/demo'
 import { META_STATS, STATS_AS_OF } from '@/data/status'
-import { DISCORD_URL, GITHUB_META_URL, GITHUB_SIDECARS_URL, META_URL } from '@/data/links'
+import { BRIDGE_GENERATE_DOCS_URL, DISCORD_URL, GITHUB_META_URL, META_URL } from '@/data/links'
 import { cn } from '@/lib/utils'
 import { chapterTitle } from '@/lib/chapters'
 
@@ -173,14 +173,14 @@ const chapter = chapterTitle(chapters)
         </p>
         <Points
           items={[
-            `<strong>The sidecars tool</strong> (open source, AGPLv3): point it at an audiobook folder and it transcribes on your machine, then drafts and checks character sheets and recaps with your own Claude or ChatGPT account. Needs that account and a computer that can run speech recognition.`,
+            `<strong>A Bridge beside your server</strong> (optional): for a book nobody has covered yet, it transcribes the audio (or reads the ebook), then writes characters and recaps with your own Claude or ChatGPT subscription, or an API key. Keep them on your server or contribute them under your GitHub account.`,
             'Missing books in known series are filled in automatically.',
             'Watch a series on the site and get new entries in a feed, or by message from the AudioSilo Discord bot.',
           ]}
         />
         <div class="flex flex-wrap gap-x-6 gap-y-2 pt-2 text-sm font-semibold">
           <a href={`${META_URL}/contribute`} target="_blank" rel="noopener" class="link">Start contributing</a>
-          <a href={GITHUB_SIDECARS_URL} target="_blank" rel="noopener" class="link">The sidecars tool</a>
+          <a href={BRIDGE_GENERATE_DOCS_URL} target="_blank" rel="noopener" class="link">Generate them with a Bridge</a>
           <a href={DISCORD_URL} target="_blank" rel="noopener" class="link">Discord</a>
         </div>
       </FeatureRow>
