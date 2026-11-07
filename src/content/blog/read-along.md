@@ -42,7 +42,7 @@ Play the book and open the player's [companion](https://docs.audiosilo.app/users
 - **Tap a sentence** to move the audiobook to the start of it. It moves your place rather than starting playback: a playing book carries on from there, a paused one waits there.
 - **Turn the page yourself** (the edges of the text, or a swipe) to look back or ahead. The tab stops following the narration, and **Back to narration** takes you back to the sentence being read.
 
-On a computer the tab sits in the companion column beside the player, and on a tablet under the controls with the other tabs. On a phone there's no chip for it: open the companion from any chip, then pick **Text** at the top of the sheet.
+On a computer the tab sits in the companion column beside the player, and on a tablet under the controls with the other tabs. On a phone, a **Text** chip under the player's actions opens the companion sheet straight on it.
 
 For listeners, the Text tab only appears for a book whose read-along fits the book as it is. If the ebook or the audio files changed since the read-along was made, it is out of date, and the tab stays away until an admin makes it again.
 
@@ -78,7 +78,7 @@ A poor match is refused. If less than half of the ebook's text lines up with the
 - **It needs a DRM-free EPUB of the same book, ideally the same edition.** A locked EPUB can't be read, and a different book or a very different edition doesn't line up.
 - **It's one book at a time.** There's no action to make read-alongs for a whole library or series.
 - **It needs a Bridge.** The server doesn't make read-alongs by itself.
-- **Older players don't show it.** The 2.5.0 web player and apps carry on as before, without the Text tab or Follow narration; update to 2.6.0 to read along.
+- **Older players don't show it.** The 2.5.0 web player and apps carry on as before, without the Text tab or Follow narration. The web player bundled with server 2.6.0 has them, and app 2.6.0 brings them to phones and tablets once it reaches the stores.
 
 ## More
 

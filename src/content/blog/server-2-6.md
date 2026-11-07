@@ -60,7 +60,7 @@ related:
 
 AudioSilo Server **2.6.0** came out on 7 November. Your server now keeps an eye on the series you listen to and tells you what's coming, in the player and in your calendar. Your devices send what you listened to rather than just where you are, so listening on two devices, or offline, comes together properly. The player's **Text** tab follows the ebook as the narrator reads it. And **Bridge 0.6.0**, out the same day, brings Audible to the Bridge: sign in to your accounts, back up the books you bought into your library, and keep your listening place in step with the Audible app.
 
-**Where it runs:** the new listening features are in the **web player bundled with the server** (`/web`) today. **App 2.6.0** for iPhone, iPad and Android brings them to the apps once it reaches the App Store and Google Play. Older apps keep working with 2.6 as before, without Upcoming, Sync v2 or the Text tab. An Apple Watch companion is coming with the 2.6.0 iPhone app once it passes the App Store's review; it isn't available yet, and we'll say so here when it is.
+**Where it runs:** the new listening features are in the **web player bundled with the server** (`/web`) today. **App 2.6.0** for iPhone, iPad and Android brings them to the apps once it reaches the App Store and Google Play. Older apps keep working with 2.6 as before, without Upcoming, Sync v2 or the Text tab. An Apple Watch companion for the iPhone app is in the works. It isn't available yet, and we'll say so here when it is.
 
 ## How to update
 
@@ -114,7 +114,7 @@ It's meant for **a personal backup of books you bought**, with your own account;
 - **The right recording**, with more care over running time and dramatizations, and **books with no ASIN or ISBN**: a confident match to a store listing can apply when the full author and series position agree and both lengths are within 2%. A match is now remembered per book, so later runs skip it, and for a book matched with no ASIN or ISBN, **Unlink** on its page removes it.
 - **Online runs are quicker.** Against meta.audiosilo.app, the match and its details arrive together, six books are checked at once, and busy or rate-limited answers are retried.
 
-**A known limitation:** reverting a community ASIN on a matched book doesn't reject the match, and a later refresh can write the ASIN back. Use **Unlink** first ([server #330](https://github.com/KodeStar/audiosilo-server/issues/330)). If you host your own metadata service, deploy v0.25.5 or later as well. The details, and what one benchmark measured, are in [Match automatically gets more of your library right](/blog/smarter-bulk-matching/).
+**A known limitation:** reverting a community ASIN on a matched book doesn't reject the match, and a later refresh can write the ASIN back. To remove a match, clear the book's ASIN and ISBN, then use **Unlink** before the next refresh ([server #330](https://github.com/KodeStar/audiosilo-server/issues/330)). If you host your own metadata service, deploy v0.25.5 or later as well. The details, and what one benchmark measured, are in [Match automatically gets more of your library right](/blog/smarter-bulk-matching/).
 
 ## Help fill gaps in the community catalogue, if you choose
 
@@ -134,7 +134,7 @@ The Docker image and the native Linux downloads now use the native SQLite engine
 ## Fixes worth knowing
 
 - **Changing your password signs your other sessions out**, keeping the device you changed it on. An admin's password reset and **Sign out everywhere** end sessions too. Personal API keys and calendar links keep working.
-- **Android:** a very long single-file M4B or M4A book no longer runs out of memory at chapter changes.
+- **Android, in app 2.6.0:** a very long single-file M4B or M4A book no longer runs out of memory at chapter changes.
 - **Characters and recaps follow your copy's chapters**, and an appearance past the last chapter reads **Near the end**.
 - **Dramatized recordings are chosen more carefully**, and **Unlink** is refused while a match run is working, so the run can't write the match back.
 

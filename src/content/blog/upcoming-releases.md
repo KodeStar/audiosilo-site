@@ -82,7 +82,7 @@ Only books with a release day go in: preorders and recent releases whose exact d
 
 **Google Calendar and other cloud calendars need a public address.** Some calendars fetch the link from their own servers on the internet rather than from your device: Google Calendar, Outlook on the web, and an Apple Calendar subscription kept in iCloud. They can only reach a server with a public HTTPS address and a trusted certificate (see [Remote access](https://docs.audiosilo.app/users/getting-started/remote-access)). A home-only address, or one with the server's own self-signed certificate, works only in a calendar app that fetches the link itself, on a device that can reach your server and trusts its certificate. When your admin has set the server's public address, the link uses it, so it works from anywhere even when you made it at home.
 
-Treat the link like a password: anyone who has it can see your upcoming releases, though nothing else on your server. The server shows it only when it's made, and your device keeps its own copy, so on another device the card says **A link is active. Reset it to see it here.**
+Treat the link like a password: anyone who has it can see your upcoming releases, though nothing else on your server. The server shows it only when it's made, and your device keeps its own copy, so on another device the card says a link is active and is shown only on the device that made it; resetting it gives you a new link there.
 
 - **Reset link** makes a new link and stops the old one. A calendar subscribed to the old link stops updating until you subscribe again with the new one.
 - **Turn off** stops the link altogether.
