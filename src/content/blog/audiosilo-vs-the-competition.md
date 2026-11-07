@@ -112,7 +112,7 @@ An **accepted right-book** result identifies the right work, but may still have 
 
 †Time depends on the matching mode, how many books run at once, pauses between requests and the live services each tool asks, so it isn't a measure of processor work or a scanner ranking. Audiobookshelf, BookOrbit, Grimmory and ReadMeABook matched one book at a time, some with deliberate pauses; beets ran four separate imports, each looking up one book at a time. AudioSilo 2.5.1's times are LibraForge's, with two books at a time; its local-copy time leaves out downloading the roughly 2 GB community database.
 
-‡The 2.6.0 row is not from LibraForge's audit. It comes from our own test harness on the same 4,044 books, judged by whether each pick is the right work, so it has no fully-correct count and its columns aren't directly comparable with the audited rows. Details below the table.
+‡The 2.6.0 row is not from LibraForge's audit. It comes from our own test harness on the same 4,044 books, judged by whether each pick is the right work, so it has no fully-correct count and its columns aren't directly comparable with the audited rows. It accepted one more book that the harness couldn't judge either way, so the row adds up to 4,043. Details below the table.
 
 Source for every other row: [LibraForge benchmark and methods](https://coconautilus17.github.io/LibraForge/#method). The beets-audible version is undisclosed. Audiobookshelf used Audible US; Grimmory had Audible enabled and first. These specific automatic modes do not measure manual matching, every provider choice, newer builds or player quality.
 
