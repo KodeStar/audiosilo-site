@@ -3,8 +3,9 @@ title: "AudioSilo vs the competition: matching, first scans and everyday feature
 description: "AudioSilo, Audiobookshelf, BookOrbit and Grimmory compared on first scans, matching, memory, CPU and the features that help you choose."
 kind: guide
 published: 2026-11-07
+updated: 2026-11-07
 verified: 2026-11-07
-appliesTo: "AudioSilo 2.6 candidate dev-f750889; Audiobookshelf 2.37.2; BookOrbit 3.6.0; Grimmory 3.5.0. Matching uses separately labelled builds."
+appliesTo: "AudioSilo 2.6 scan candidate dev-f750889, Phase E matcher f00e227; Audiobookshelf 2.37.2; BookOrbit 3.6.0; Grimmory 3.5.0. Published matching includes AudioSilo 2.5.1."
 tags: [comparison, audiobookshelf, bookorbit, grimmory, metadata, benchmarks]
 covers:
   - server:scanner
@@ -20,12 +21,15 @@ related:
   - audiosilo-vs-audiobookshelf
   - moving-from-audiobookshelf
   - self-hosted-audiobook-server
+revisions:
+  - date: 2026-11-07
+    note: "Added the completed Phase E local matching result and distinguished it from LibraForge's published audit."
 draft: true
 ---
 
 Choose AudioSilo if you want a small audiobook server that reads your existing folders, with a player built around listening across devices. Choose Audiobookshelf for its established audiobook and podcast tools and client ecosystem. BookOrbit and Grimmory deserve a look if reading ebooks, PDFs and comics matters as much as listening. Their strengths go well beyond how quickly they can index audio.
 
-We make AudioSilo. Here we compare those four playback servers using a fresh first-scan benchmark, published metadata-matching results, and documented features. The scan test used an **AudioSilo 2.6 candidate, `dev-f750889`, not a released 2.6.0 build**. Matching uses the separately labelled versions below, including the published AudioSilo 2.5.1 result.
+We make AudioSilo. Here we compare those four playback servers using a fresh first-scan benchmark, published metadata-matching results, our newer local matching test, and documented features. The scan test used an **AudioSilo 2.6 candidate, `dev-f750889`, not a released 2.6.0 build**. Matching uses the separately labelled versions below: published AudioSilo 2.5.1 and a newer 2.6 candidate after Phase E.
 
 The scan and resource measurements here supersede the older figures in [AudioSilo vs Audiobookshelf](/blog/audiosilo-vs-audiobookshelf/). The storage route has also changed, so this is a new comparison rather than a direct measure of improvement since that post. [How we measured](#how-we-measured) explains the boundaries and caveats.
 
@@ -82,7 +86,7 @@ AudioSilo had the smallest anonymous-memory footprint here. BookOrbit settled be
 
 ## Matching: the right book and the right details
 
-Indexing finds files. Matching identifies the book and recording, then supplies details such as narrator and series. For that we use [LibraForge's published benchmark](https://coconautilus17.github.io/LibraForge/), captured on 6 November 2026, displaying a benchmark date of 4 November.
+Indexing finds files. Matching identifies the book and recording, then supplies details such as narrator and series. We show [LibraForge's published benchmark](https://coconautilus17.github.io/LibraForge/), captured on 6 November 2026, displaying a benchmark date of 4 November, followed by our newer local test on its book set.
 
 It tested **4,044 books** using silent surrogate files with the original paths, tags and runtimes. This is a metadata test, separate from our real-audio scan test. Its seven tools include three companions: LibraForge prepares metadata and files, ReadMeABook handles requests and imports, and beets with beets-audible manages a local library. They can complement a playback server. [LibraForge's documentation](https://github.com/coconautilus17/LibraForge/blob/cb6024a15538b0d274a03d2e35992d3e1023124f/README.md), [ReadMeABook's documentation](https://github.com/kikootwo/ReadMeABook/blob/75efadff6453d700db9753904d3bafa14cebc66f/README.md), [beets-audible's documentation](https://github.com/Neurrone/beets-audible/blob/d443a6ca6a9189f821bb54f9eaa371e9c1a67c3e/README.md).
 
@@ -106,15 +110,9 @@ Published AudioSilo 2.5.1 accepted 3,014 books, or 74.5% of the corpus. Of those
 
 **LibraForge leads AudioSilo's published entry on coverage and final-field correctness.** It accepted 3,942 books with no wrong-work picks in the captured audit, and 3,831 of those were fully correct. Audiobookshelf Quick Match produced more fully correct results than AudioSilo 2.5.1 in total, alongside many more wrong-work picks. beets was another cautious option, leaving over half the corpus unmatched. Neither caution nor coverage alone tells the whole story.
 
-<!-- (confirm at publish: LibraForge Phase E still running)
-Newest saved local E5+E7 harness observation: 3,620 auto-right / 4 auto-wrong;
-3,540 auto picks judged the reference recording. Attribution to combined main is
-(inferred): the saved JSON does not record its exact server revision, metadata
-artifact build/hash or command. Do not promote this to a released 2.6 claim until
-the owner supplies reproducible provenance. It uses older LibraForge references
-and our identity judge, with one review unjudged; it is not an independent audit
-of final fields. Do not compare auto-right directly with LibraForge fully-correct.
--->
+**Phase E is complete: our local harness on LibraForge's 4,044-book set produced 3,806 auto-right / 4 auto-wrong** for the AudioSilo 2.6 candidate after [server#329](https://github.com/KodeStar/audiosilo-server/pull/329), revision `f00e227`. The older LibraForge reference used by that harness records **3,833 fully correct / 2 wrong**. AudioSilo still trails slightly in these reported totals, but the success counts use different criteria: our auto-right judges work identity, while LibraForge's fully correct requires correct final fields. A local auto-right can still have a different recording or incorrect fields. One further automatic pick could not be judged.
+
+This is our harness result, using a local metadata mirror in the US region and older LibraForge references. It is not an independent final-field audit or LibraForge's own published AudioSilo score. The published table above still shows AudioSilo 2.5.1; it uses a newer reference capture and remains unchanged.
 
 ## Features that may decide it before any benchmark
 
