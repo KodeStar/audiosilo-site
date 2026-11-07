@@ -11,7 +11,7 @@ const link = 'link'
   <div class="shell py-14 sm:py-20">
     <div class="mx-auto max-w-3xl text-[1.0625rem]">
       <h1 class="t-display">Privacy Policy</h1>
-      <p class="mt-4 mb-10 text-sm text-muted-foreground">Last updated: 5 November 2026</p>
+      <p class="mt-4 mb-10 text-sm text-muted-foreground">Last updated: 7 November 2026</p>
 
       <p class="t-lede mb-6 text-foreground/80">
         AudioSilo is a <strong class="font-semibold text-foreground">self-hosted audiobook player</strong>. The AudioSilo
@@ -124,8 +124,10 @@ const link = 'link'
         An AudioSilo server can look its books up in the community metadata database at
         meta.audiosilo.app (on by default; the server's administrator can turn it off). The app never
         talks to it; the server does. To look a book up the server sends the book's ASIN or ISBN, never a
-        file path or who is listening. Match sends a little more (title, author, series, length and up
-        to three folder names), and only when an administrator opens Match or runs it on the library.
+        file path or who is listening. Match sends a little more (title, author, series, length,
+        narrators, language, any ASIN or ISBN in the book's tags, anything the administrator types and
+        up to three folder or file names), and only when an administrator opens Match or runs it on the
+        library.
       </p>
 
       <p class="mt-6 mb-2 font-semibold text-foreground">Optional community report</p>
