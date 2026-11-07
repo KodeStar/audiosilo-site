@@ -23,22 +23,21 @@ export const APPS_BETA = !(IOS_2_IN_STORE && ANDROID_LIVE)
 export const SUPPORT_CARD_LIVE = true
 
 /**
- * The Apple Watch app is in the App Store, inside the iPhone app. False words
- * it as coming and keeps it off the home page. It is built for the 2.6.0 iPhone
- * app but held back from the store copy until its device checks pass, so the
- * App Store carrying 2.6.0 is not enough: flip it only once the watch app is
- * confirmed in a live App Store build, re-verified by the iTunes lookup.
+ * The Apple Watch app is in the App Store, inside the iPhone app: it ships with
+ * iPhone app 2.6.0, so it is live once the App Store carries 2.6.0 (check with
+ * the iTunes lookup for bundleId app.audiosilo). False words it as coming and
+ * keeps it off the home page.
  */
-export const APPLE_WATCH_LIVE = false
+export const APPLE_WATCH_LIVE = true
 
 /** The player page's offline row. */
 export const APPLE_WATCH_OFFLINE = APPLE_WATCH_LIVE
-  ? 'Out for a run? The Apple Watch app plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It needs server 2.6 or later.'
+  ? 'Out for a run? The Apple Watch app plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It needs iPhone app 2.6 or later, watchOS 11 or later, and server 2.6 or later with ffmpeg.'
   : 'Coming to the iPhone app: an Apple Watch app that plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It will need server 2.6 or later.'
 
 /** The download page, under the app cards. */
 export const APPLE_WATCH_DOWNLOAD = APPLE_WATCH_LIVE
-  ? 'On Apple Watch: the watch app comes with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It needs server 2.6 or later.'
+  ? 'On Apple Watch: the watch app comes with the iPhone app from 2.6. Set it up from your iPhone, send it a book and leave the phone at home. It needs watchOS 11 or later and server 2.6 or later with ffmpeg.'
   : 'Coming to the iPhone app: an Apple Watch app, included with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It will need server 2.6 or later.'
 
 /** Latest server release, the fallback when the live GitHub lookup fails. */
