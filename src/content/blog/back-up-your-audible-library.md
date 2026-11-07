@@ -29,7 +29,7 @@ revisions:
     note: "Server 2.4.0: a new server's first console sign-in opens Set up your server, which adds the library."
 ---
 
-To back up your Audible library, you use a tool that signs in to **your own Audible account**, downloads the books you bought and saves them as ordinary **M4B** (or MP3) files. The three tools people use today are **Libation** (free), **OpenAudible** (paid, free to try) and **audible-cli** (free, command line). Once the files are on your own disk, any audiobook player can play them, and a self-hosted server lets you stream them to your phone with your place kept in sync.
+To back up your Audible library, you use a tool that signs in to **your own Audible account**, downloads the books you bought and saves them as ordinary **M4B** (or MP3) files. The three standalone tools people use today are **Libation** (free), **OpenAudible** (paid, free to try) and **audible-cli** (free, command line); from server 2.6.0, an AudioSilo server's [Bridge](/blog/audible-backup/) can also back them up straight into your library. Once the files are on your own disk, any audiobook player can play them, and a self-hosted server lets you stream them to your phone with your place kept in sync.
 
 This guide covers why the files need converting, which tools are maintained right now, a plain note on the law, a folder layout that works in any audiobook server, and how to listen to the result with AudioSilo.
 

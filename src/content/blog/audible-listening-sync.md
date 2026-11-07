@@ -33,7 +33,7 @@ It's off until an admin turns it on for an Audible account, and it moves places 
 
 ## What it needs
 
-- **Server 2.6.0 or later** with a [Bridge](https://docs.audiosilo.app/users/getting-started/running-a-bridge) paired and online, on **Bridge 0.6.0**, the release that came out beside server 2.6.0. Update the two together: Audible's jobs need both.
+- **Server 2.6.0 or later** with a [Bridge](https://docs.audiosilo.app/users/getting-started/running-a-bridge) paired and online, on **Bridge 0.6.0** or later (0.6.0 came out beside server 2.6.0). Update the two together: Audible's jobs need both.
 - **Your Audible account signed in on the Bridge.** You sign in, and choose who the account is for and which library it belongs to, on the Bridge's own page: see [Bridge accounts](https://docs.audiosilo.app/users/getting-started/bridge-accounts#audible). Your server never sees your Amazon password.
 - **The Audible module turned on** in the console's **Server > Settings > Modules**. It starts off.
 - **Sync turned on for the account.** On **Server > Settings > Bridge**, the **Audible accounts** card has **Account settings...** for each account: tick **Sync listening places with Audible** and **Save**. It's off for every account until you do.

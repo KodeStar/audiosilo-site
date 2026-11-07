@@ -64,7 +64,7 @@ AudioSilo Server **2.6.0** came out on 7 November. Your server now keeps an eye 
 
 ## How to update
 
-Update with `docker compose pull && docker compose up -d`, or from [GitHub Releases](https://github.com/KodeStar/audiosilo-server/releases). Eleven database migrations (0059 to 0069) run on first start. Before they run, the server copies your database into its backups folder, as it has since 2.5 (see [How to back up a self-hosted app before you upgrade it](/blog/back-up-before-upgrading/)).
+Update with `docker compose pull && docker compose up -d`, or from [GitHub Releases](https://github.com/KodeStar/audiosilo-server/releases). Coming from 2.5.1, eleven database migrations (0059 to 0069) run on first start. Before they run, the server copies your database into its backups folder, as it has since 2.5 (see [How to back up a self-hosted app before you upgrade it](/blog/back-up-before-upgrading/)).
 
 - **Docker needs 20.10.10 or newer.** The image now uses the native SQLite engine, and older Docker can stop it at start-up. `docker version` shows yours.
 - **If you run a Bridge, update it to 0.6.0** (`ghcr.io/kodestar/audiosilo-bridge`) alongside the server. Audible needs the two together. Older Bridges keep their previous jobs, and making read-alongs still needs Bridge 0.5.0 or later.
@@ -134,7 +134,7 @@ The Docker image and the native Linux downloads now use the native SQLite engine
 ## Fixes worth knowing
 
 - **Changing your password signs your other sessions out**, keeping the device you changed it on. An admin's password reset and **Sign out everywhere** end sessions too. Personal API keys and calendar links keep working.
-- **Android, in app 2.6.0:** a very long single-file M4B or M4A book no longer runs out of memory at chapter changes.
+- **Android, in app 2.6.0 once it reaches Google Play:** a very long single-file M4B or M4A book no longer runs out of memory at chapter changes.
 - **Characters and recaps follow your copy's chapters**, and an appearance past the last chapter reads **Near the end**.
 - **Unlink** is refused while a match run is working, so the run can't write the match back.
 

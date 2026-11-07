@@ -29,7 +29,7 @@ It's off until an admin turns it on, and it's meant for one thing: **a personal 
 
 ## What it needs
 
-- **Server 2.6.0 or later** with a [Bridge](https://docs.audiosilo.app/users/getting-started/running-a-bridge) paired and online, on **Bridge 0.6.0**, the release that came out beside server 2.6.0 (its Accounts tab has an **Audible** card). Update the two together: Audible's jobs need both.
+- **Server 2.6.0 or later** with a [Bridge](https://docs.audiosilo.app/users/getting-started/running-a-bridge) paired and online, on **Bridge 0.6.0** or later, whose Accounts tab has an **Audible** card (0.6.0 came out beside server 2.6.0). Update the two together: Audible's jobs need both.
 - **The Audible module turned on** in the console's **Server > Settings > Modules**. It starts off.
 - **The account's library Ready on the Bridge**: mapped and writable on the Bridge's **Libraries** tab. The server itself still only reads your books; the Bridge is the part that writes them.
 - **Room for the books**, in the Bridge's data folder while it downloads and in the library afterwards.
