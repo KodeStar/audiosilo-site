@@ -50,7 +50,7 @@ On the iPhone, **Downloads** has an **On your Apple Watch** section listing the 
 
 The watch player has the chapter and the time left in it, back 15 and forward 30 seconds, previous and next chapter, a chapter list, speed and a sleep timer. Before a book plays, the watch asks your server for your place if it can reach it; if another device is somewhere else in the book, it offers **Jump there** or **Stay here**, like the other apps.
 
-What you listen to is kept on the watch until your server has it, with the time you heard it, so it lands on the right day in your history and stats. With the app open, the watch sends it when you open the app, when you stop, and about once a minute while anything is waiting. As you leave the app, it hands what's waiting to watchOS to send through your away address when a network appears; when that happens is up to watchOS. **Opening the app is the sure way to send it**, and the watch's **Sync** page shows what's waiting, with **Sync now**.
+What you listen to is kept on the watch until your server has it, with the time you heard it, so it lands on the right day in your history and stats. The watch sends it when you open the app, when you stop, and about once a minute while the app is open and anything is waiting. As you leave the app, it hands what's waiting to watchOS to send through your away address when a network appears; when that happens is up to watchOS. **Opening the app is the sure way to send it**, and the watch's **Sync** page shows what's waiting, with **Sync now**.
 
 ## A small companion
 

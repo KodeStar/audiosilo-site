@@ -8,6 +8,7 @@ verified: 2026-11-07
 appliesTo: Server 2.6.0 with its bundled web player, app 2.6.0, Bridge 0.6.0
 tags: [release, server, sync, read-along, audible, bridge, metadata]
 covers:
+  - app:stores
   - server:upcoming
   - server:upcoming_calendar
   - server:upcoming_covers

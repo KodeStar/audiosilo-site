@@ -30,14 +30,17 @@ export const SUPPORT_CARD_LIVE = true
  */
 export const APPLE_WATCH_LIVE = true
 
+/** What the watch app needs, shared by the live lines below. */
+const APPLE_WATCH_NEEDS = 'watchOS 11 or later and server 2.6 or later with ffmpeg'
+
 /** The player page's offline row. */
 export const APPLE_WATCH_OFFLINE = APPLE_WATCH_LIVE
-  ? 'Out for a run? The Apple Watch app plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It needs iPhone app 2.6 or later, watchOS 11 or later, and server 2.6 or later with ffmpeg.'
+  ? `Out for a run? The Apple Watch app plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It needs iPhone app 2.6 or later, ${APPLE_WATCH_NEEDS}.`
   : 'Coming to the iPhone app: an Apple Watch app that plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It will need server 2.6 or later.'
 
 /** The download page, under the app cards. */
 export const APPLE_WATCH_DOWNLOAD = APPLE_WATCH_LIVE
-  ? 'On Apple Watch: the watch app comes with the iPhone app from 2.6. Set it up from your iPhone, send it a book and leave the phone at home. It needs watchOS 11 or later and server 2.6 or later with ffmpeg.'
+  ? `On Apple Watch: the watch app comes with iPhone app 2.6 and later. Set it up from your iPhone, send it a book and leave the phone at home. It needs ${APPLE_WATCH_NEEDS}.`
   : 'Coming to the iPhone app: an Apple Watch app, included with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It will need server 2.6 or later.'
 
 /** Latest server release, the fallback when the live GitHub lookup fails. */
