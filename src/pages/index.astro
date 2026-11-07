@@ -13,7 +13,7 @@ import MediaThemeSwitch from '@/components/theme/MediaThemeSwitch.astro'
 import TourButton from '@/components/media/TourButton.astro'
 import VersionBadge from '@/components/VersionBadge.tsx'
 import { loops, stills } from '@/data/media'
-import { GET_APP_LINE, META_STATS, PLATFORMS_LINE, PLAYER_PLATFORMS, REDESIGN_WHERE, STATS_AS_OF } from '@/data/status'
+import { APPLE_WATCH_LIVE, GET_APP_LINE, META_STATS,PLATFORMS_LINE, PLAYER_PLATFORMS, REDESIGN_WHERE, STATS_AS_OF } from '@/data/status'
 import { META_URL } from '@/data/links'
 import { dockerRun } from '@/data/install'
 import { demoLibrary } from '@/data/demo'
@@ -91,6 +91,7 @@ import { demoLibrary } from '@/data/demo'
                   'Series bookcases, with the books you are missing shown as ghost spines',
                   'A chapter seek bar that gives fine control in a 30-hour book',
                   'A sleep timer that fades you out, and a bookmark where you drifted off',
+                  ...(APPLE_WATCH_LIVE ? ['An Apple Watch app that plays downloaded books with your iPhone left at home'] : []),
                 ]}
               />
             </div>
