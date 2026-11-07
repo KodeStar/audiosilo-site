@@ -3,9 +3,9 @@ title: How to organise audiobook folders so every player gets them right
 description: One folder per book, inside its series, inside its author. The layout, naming rules, tags, covers and the awkward cases (disc folders, short stories) that trip scanners up.
 kind: guide
 published: 2026-10-18
-updated: 2026-10-28
-verified: 2026-10-28
-appliesTo: Server 2.5.0
+updated: 2026-11-07
+verified: 2026-11-07
+appliesTo: Server 2.5.0 and 2.6.0
 tags: [library, folders, metadata, getting-started]
 covers:
   - bridge:audible
@@ -25,6 +25,8 @@ related:
 hero: ../../assets/stills/server-series-dark.webp
 heroAlt: Series in the AudioSilo admin console, a complete shelf of seven spines and a series with books 2 to 4 missing
 revisions:
+  - date: 2026-11-07
+    note: "Server 2.6.0: a name like Author; Series; Book 04; Title gives the series and number, and an album tag that is only the series name no longer becomes the title."
   - date: 2026-10-28
     note: "Server 2.5.0: a decimal position like 02.5 works in a folder name, an .m4b's narrator tag beats composer, and an EPUB beside the audio opens in the reader."
   - date: 2026-10-24
@@ -87,10 +89,10 @@ Folder names give every book a sensible baseline, but most audiobook files also 
 
 | What | Where it usually lives |
 |---|---|
-| Title | The *album* tag (or *title*, when that holds the fuller "Series: Book" name) |
+| Title | The *album* tag (or *title*, when that holds the fuller "Series: Book" name; from 2.6.0, an album that is only the series name gives way to the title tag or the name on disk) |
 | Author | *album artist* or *artist* |
 | Narrator | a *narrator* tag, or *composer* (from 2.5.0 an `.m4b`'s narrator tag wins over composer) |
-| Series | a series tag, where the file has one |
+| Series | a series tag, where the file has one; from 2.6.0, also a folder or file name like `Author; Series; Book 04; Title` |
 
 Junk tags such as "Track 01" are ignored in favour of the folder name. If your folders are well named and your tags are a mess, switch the library to take book details from **folder names first** (Edit library in the admin console) rather than retagging hundreds of files.
 
