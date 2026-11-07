@@ -41,6 +41,8 @@ covers:
   - docs:/users/admin/server
   - docs:/users/admin/making-read-along
   - docs:/users/getting-started/install-binary
+supersededBy: server-2-6
+supersededNote: Server 2.6 is out, with upcoming releases in the player and your calendar, listening that syncs across devices and offline, an ebook that follows the narration, and Audible on the Bridge. Everything below still applies.
 related:
   - faster-first-scans
   - web-player-streams-by-default

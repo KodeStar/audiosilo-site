@@ -40,7 +40,7 @@ export const APPLE_WATCH_DOWNLOAD = APPLE_WATCH_LIVE
   : 'Coming in the 2.6 app update: an Apple Watch app, included with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It will need server 2.6 or later.'
 
 /** Latest server release, the fallback when the live GitHub lookup fails. */
-export const SERVER_VERSION = 'v2.5.1'
+export const SERVER_VERSION = 'v2.6.0'
 
 /** The native apps' platforms, for "the iPhone and iPad app" or "on iPhone and iPad". */
 export const APP_PLATFORMS = ANDROID_LIVE ? 'iPhone, iPad and Android' : 'iPhone and iPad'
