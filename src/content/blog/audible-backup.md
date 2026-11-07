@@ -2,9 +2,9 @@
 title: Back up your Audible books straight into your AudioSilo library
 description: Your server's Bridge can sign in to your Audible accounts, back up the books you bought as M4B files into your library, and keep backing up new ones as you buy them.
 kind: feature
-published: 2026-11-04
-verified: 2026-11-04
-appliesTo: Server 2.6.0 with a Bridge
+published: 2026-11-07
+verified: 2026-11-07
+appliesTo: Server 2.6.0 with Bridge 0.6.0
 tags: [audible, bridge, backup, m4b, admin]
 covers:
   - server:audible
@@ -17,10 +17,10 @@ covers:
   - docs:/users/getting-started/bridge-accounts
   - docs:/users/getting-started/running-a-bridge
 related:
+  - server-2-6
   - audible-listening-sync
   - back-up-your-audible-library
   - organize-audiobook-folders
-draft: true
 ---
 
 Until now, getting your Audible books into AudioSilo meant running a separate tool: download, convert, then copy the files into your library yourself. From version 2.6.0, your server's **Bridge** can do all of it. Sign in to your Audible account once, and from the admin console you can back up one book at a time, back up all of an account's books that aren't here yet in one go, or let the Bridge back up new purchases by itself. Each book arrives as an ordinary M4B file in your library, scanned and ready to play.
@@ -29,7 +29,7 @@ It's off until an admin turns it on, and it's meant for one thing: **a personal 
 
 ## What it needs
 
-- **Server 2.6.0 or later** with a [Bridge](https://docs.audiosilo.app/users/getting-started/running-a-bridge) paired and online, in a version that supports Audible (its Accounts tab has an **Audible** card).
+- **Server 2.6.0 or later** with a [Bridge](https://docs.audiosilo.app/users/getting-started/running-a-bridge) paired and online, on **Bridge 0.6.0** or later, whose Accounts tab has an **Audible** card (0.6.0 came out beside server 2.6.0). Update the two together: Audible's jobs need both.
 - **The Audible module turned on** in the console's **Server > Settings > Modules**. It starts off.
 - **The account's library Ready on the Bridge**: mapped and writable on the Bridge's **Libraries** tab. The server itself still only reads your books; the Bridge is the part that writes them.
 - **Room for the books**, in the Bridge's data folder while it downloads and in the library afterwards.
@@ -50,7 +50,7 @@ You can add several accounts, each for one person and one library. [Bridge accou
 
 With the module on, the console's **Server > Settings** gains an **Audible** page. It lists every title your accounts own and says, for each one, whether it's **On this server** or **Not here**. The Bridge matches titles to your books by their ASIN first, then by title and author, so the books you already had count too. A title that isn't here yet says where its backup would go.
 
-The server asks the Bridge to check each account every few hours, and **Check now** asks straight away.
+The server asks the Bridge to check each account every 6 hours, and **Check now** asks straight away.
 
 ## Back up a book, or everything
 
@@ -80,7 +80,7 @@ These act on new purchases only; for the books the account already had, use **Ba
 
 ## Preorders on release day
 
-**Back up** on a preorder remembers it, and the title shows **Backs up on release**. From the release date, the server checks the account every hour instead of every few hours, and the first check that finds the book available backs it up. A preorder the account's policy covers is backed up the same way. If it still isn't out 14 days after its release date, the title says so and asks you to check it on Audible.
+**Back up** on a preorder remembers it, and the title shows **Backs up on release**. From the release date, the server checks the account every hour instead of every 6 hours, and the first check that finds the book available backs it up. A preorder the account's policy covers is backed up the same way. If it still isn't out 14 days after its release date, the title says so and asks you to check it on Audible.
 
 ## Keeping your place in step too
 

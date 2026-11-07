@@ -2,7 +2,7 @@
 title: Match automatically gets more of your library right
 description: In server 2.6.0, bulk matching trusts an ASIN or ISBN the community knows, drops weak guesses, reads series from folder names, picks the recording and matches store listings.
 kind: feature
-published: 2026-11-05
+published: 2026-11-07
 verified: 2026-11-07
 appliesTo: Server 2.6.0
 tags: [metadata, matching, admin]
@@ -19,12 +19,12 @@ covers:
   - docs:/users/admin/libraries
   - docs:/users/getting-started/organizing-your-library
 related:
+  - server-2-6
   - fix-covers-and-series
   - organize-audiobook-folders
   - moving-from-audiobookshelf
 hero: ../../assets/stills/server-health-dark.webp
 heroAlt: Health in the AudioSilo admin console, the Not matched list with the Match automatically card above the books still to match
-draft: true
 ---
 
 Run **Match automatically** over a big library and the slow part comes afterwards. Right books wait for review because another book in the same series scored nearly as well, the review list fills with guesses that were never close, and a file title like "Emergence: The Mystic Knight, Book 1 (Unabridged)" stays that way. Server 2.6.0 works on all three. It also reads a book's series from a folder name that states one, picks the recording your book's length names, and matches books the community knows only from a store listing with no ASIN or ISBN.
@@ -143,7 +143,7 @@ Right matches left waiting in **To review** fell by the same 186. The same cavea
 
 **A wrong ASIN in a tag can apply the wrong work.** Nothing else checks a hint. An ASIN that names another work of about the same length is confident and ticked like any other, so it can apply the wrong book, or the right book's other recording. Look through **Confident** before you apply, especially if your tags came from a source you don't trust.
 
-To undo one, revert the values on the book's page, or use **Clear community matches** (**Server > Settings > Community metadata > Danger zone**) to undo every community match in a library. The next run will find the same tag again, so correct the tag, or match the book by hand, which keeps it out of later runs.
+To undo one, clear the book's ASIN (and ISBN, if it has one) on its page, then use **Unlink** there to remove the match it recorded. In 2.6.0, reverting the values alone leaves the match in place, and a later **Fill in matched books** can write the community's ASIN back: a [known issue](https://docs.audiosilo.app/users/admin/health#filling-in-books-that-are-already-matched) ([server #330](https://github.com/KodeStar/audiosilo-server/issues/330)). To undo every community match in a library, use **Clear community matches** (**Server > Settings > Community metadata > Danger zone**). The next run will find the same tag again, so correct the tag, or match the book by hand, which keeps it out of later runs.
 
 **Players don't show "About this book" for a store-listing match yet.** Players look community details up by ASIN or ISBN, so a book matched to a store listing has none to offer them. The values the match wrote are the book's own, so its title, series, narrator and cover show everywhere. The community chapter check, the community's places and gaps on the **Series** page and **Suggest corrections** leave such a book out too.
 
@@ -155,8 +155,9 @@ The identifier rule, the weak-match floor, the title tidy, the tag hints, the se
 
 The new scoring lives in the community database's matching, so it depends on where the answers come from:
 
-- **Keep a local copy** (`metadata.mode: mirror`): at the release, as the copy's matching ships inside the server.
-- **Asking meta.audiosilo.app**: that service already runs the new scoring, so series position and length count today. Language and narrators count from 2.6.0, when your server starts sending them. The series' own listing and the "Dungeon Diving 102" rule came later, and count once that service is updated.
+- **Keep a local copy** (`metadata.mode: mirror`): with 2.6.0, as the copy's matching ships inside the server.
+- **Asking meta.audiosilo.app**: that service runs all of the new scoring, the series' own listing and the "Dungeon Diving 102" rule included, since 7 November 2026. Language and narrators count from 2.6.0, when your server starts sending them.
+- **Your own metadata service**: if you host one, it needs v0.25.5 or later for these rules. Refreshing its data alone doesn't update its matching.
 
 The benchmark above ran on a local copy, so it shows both halves together.
 

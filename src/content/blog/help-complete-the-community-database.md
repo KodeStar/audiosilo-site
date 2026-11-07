@@ -2,8 +2,8 @@
 title: Help complete the community database from your own server
 description: From server 2.6.0, an opt-in setting sends the community metadata service, once a day, the Audible ASINs of your books it doesn't know, and nothing else, so they can be added.
 kind: feature
-published: 2026-11-06
-verified: 2026-11-06
+published: 2026-11-07
+verified: 2026-11-07
 appliesTo: Server 2.6.0
 tags: [metadata, admin, privacy]
 covers:
@@ -16,10 +16,10 @@ covers:
   - docs:/users/admin/server
   - docs:/users/faq
 related:
+  - server-2-6
   - smarter-bulk-matching
   - upcoming-releases
   - fix-covers-and-series
-draft: true
 ---
 
 Your server looks each book up in the free, community-run catalogue at [meta.audiosilo.app](https://meta.audiosilo.app) by its ASIN or ISBN. When the catalogue doesn't have a book, the lookup comes back empty, and until now that's where it ended: unless someone added the book by hand, the community side never heard it was missing. Server 2.6.0 adds a setting that tells them: **Help complete the community database**, **off** until you turn it on.

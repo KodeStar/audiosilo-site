@@ -23,24 +23,26 @@ export const APPS_BETA = !(IOS_2_IN_STORE && ANDROID_LIVE)
 export const SUPPORT_CARD_LIVE = true
 
 /**
- * The Apple Watch app is in the App Store: it ships inside the iPhone app from
- * 2.6.0. False words it as coming and keeps it off the home page. Flip it once
- * the App Store carries 2.6.0, re-verified by the iTunes lookup.
+ * The Apple Watch app is in the App Store, inside the iPhone app. False words
+ * it as coming and keeps it off the home page. It is built for the 2.6.0 iPhone
+ * app but held back from the store copy until its device checks pass, so the
+ * App Store carrying 2.6.0 is not enough: flip it only once the watch app is
+ * confirmed in a live App Store build, re-verified by the iTunes lookup.
  */
 export const APPLE_WATCH_LIVE = false
 
 /** The player page's offline row. */
 export const APPLE_WATCH_OFFLINE = APPLE_WATCH_LIVE
   ? 'Out for a run? The Apple Watch app plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It needs server 2.6 or later.'
-  : 'Coming in the 2.6 app update: an Apple Watch app that plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It will need server 2.6 or later.'
+  : 'Coming to the iPhone app: an Apple Watch app that plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It will need server 2.6 or later.'
 
 /** The download page, under the app cards. */
 export const APPLE_WATCH_DOWNLOAD = APPLE_WATCH_LIVE
   ? 'On Apple Watch: the watch app comes with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It needs server 2.6 or later.'
-  : 'Coming in the 2.6 app update: an Apple Watch app, included with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It will need server 2.6 or later.'
+  : 'Coming to the iPhone app: an Apple Watch app, included with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It will need server 2.6 or later.'
 
 /** Latest server release, the fallback when the live GitHub lookup fails. */
-export const SERVER_VERSION = 'v2.5.1'
+export const SERVER_VERSION = 'v2.6.0'
 
 /** The native apps' platforms, for "the iPhone and iPad app" or "on iPhone and iPad". */
 export const APP_PLATFORMS = ANDROID_LIVE ? 'iPhone, iPad and Android' : 'iPhone and iPad'

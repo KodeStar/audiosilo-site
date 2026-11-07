@@ -2,9 +2,9 @@
 title: "Upcoming releases: what's coming in the series you listen to"
 description: AudioSilo now checks your series daily and shows their preorders, new releases and missing volumes in the player and the console, and release days in your calendar.
 kind: feature
-published: 2026-10-30
-verified: 2026-10-30
-appliesTo: Server 2.6.0, app 2.6.0
+published: 2026-11-07
+verified: 2026-11-07
+appliesTo: Server 2.6.0 with its bundled web player, app 2.6.0
 tags: [series, metadata, player, admin, notifications]
 covers:
   - server:upcoming
@@ -31,10 +31,10 @@ covers:
   - docs:/users/admin/books
   - docs:/users/admin/notifications
 related:
+  - server-2-6
   - fix-covers-and-series
   - player-tips
   - server-2-5
-draft: true
 ---
 
 Finishing book five and then finding out, months later, that book six came out in the spring is a very familiar way to lose track of a series. From version 2.6.0, AudioSilo keeps an eye on the series in your library for you. Once a day your server checks which books in them you can preorder, which came out recently and which volumes your library is missing, and the player shows them with their covers on the home screen and an **Upcoming** page, and dates them on each series page. You can subscribe your calendar app to the release days, too. Admins see the same dates in the console, and can be told when a new book comes out.
@@ -43,7 +43,7 @@ Finishing book five and then finding out, months later, that book six came out i
 
 - **Server 2.6.0 or later** with the [community metadata](https://docs.audiosilo.app/users/admin/server#community-metadata) lookup on. The list comes from the free, community-run catalogue at [meta.audiosilo.app](https://meta.audiosilo.app). No [Bridge](https://docs.audiosilo.app/users/admin/bridge) is needed.
 - **Check for upcoming releases** on, in the console's **Server > Settings > Community metadata**. It's on by default.
-- **App 2.6.0 or later**, or the web player your 2.6.0 server serves, to see it as a listener. Older players and apps carry on as before, without it.
+- **The web player your 2.6.0 server serves**, to see it as a listener today, or **app 2.6.0** for iPhone, iPad and Android once it reaches the App Store and Google Play. Older players and apps carry on as before, without it.
 
 The check covers the series your libraries hold, so it only lists series you have at least one book of, and never a book you already have. Your server asks the metadata service only about series and books, never about who is listening, and with a [local copy](https://docs.audiosilo.app/users/admin/server#keeping-a-local-copy) of the community metadata it answers the check itself.
 
@@ -82,7 +82,7 @@ Only books with a release day go in: preorders and recent releases whose exact d
 
 **Google Calendar and other cloud calendars need a public address.** Some calendars fetch the link from their own servers on the internet rather than from your device: Google Calendar, Outlook on the web, and an Apple Calendar subscription kept in iCloud. They can only reach a server with a public HTTPS address and a trusted certificate (see [Remote access](https://docs.audiosilo.app/users/getting-started/remote-access)). A home-only address, or one with the server's own self-signed certificate, works only in a calendar app that fetches the link itself, on a device that can reach your server and trusts its certificate. When your admin has set the server's public address, the link uses it, so it works from anywhere even when you made it at home.
 
-Treat the link like a password: anyone who has it can see your upcoming releases, though nothing else on your server. The server shows it only when it's made, and your device keeps its own copy, so on another device the card says **A link is active. Reset it to see it here.**
+Treat the link like a password: anyone who has it can see your upcoming releases, though nothing else on your server. The server shows it only when it's made, and your device keeps its own copy, so on another device the card says a link is active but shows it only on the device that made it; reset it to get a new one there.
 
 - **Reset link** makes a new link and stops the old one. A calendar subscribed to the old link stops updating until you subscribe again with the new one.
 - **Turn off** stops the link altogether.

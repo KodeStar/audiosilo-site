@@ -2,9 +2,9 @@
 title: "Read along: the ebook follows the narration in the AudioSilo player"
 description: With a read-along made by your Bridge, the player highlights the sentence being read in the book's EPUB and turns the pages with the voice, online or offline.
 kind: feature
-published: 2026-10-29
-verified: 2026-10-29
-appliesTo: Server 2.6.0 with a Bridge, app 2.6.0
+published: 2026-11-07
+verified: 2026-11-07
+appliesTo: Server 2.6.0 with a Bridge 0.5.0 or later, app 2.6.0
 tags: [reader, ebooks, read-along, bridge, player, offline]
 covers:
   - server:readalong
@@ -20,18 +20,18 @@ covers:
   - docs:/users/listening/reading-the-ebook
   - docs:/users/listening/offline-downloads
 related:
+  - server-2-6
   - ebook-reader
   - bridge-recaps-and-contributions
   - player-tips
   - server-2-5
-draft: true
 ---
 
 Since server 2.5.0, AudioSilo opens the [ebook that sits beside an audiobook](/blog/ebook-reader/), but reading and listening went their separate ways. From version 2.6.0 they meet. Once your server's **Bridge** has made a book's **read-along**, lining its ebook up with the narration sentence by sentence, the player shows the text as you listen: the sentence being read is highlighted, and the pages turn by themselves as the narrator goes on.
 
 ## What it needs
 
-- **Server 2.6.0 or later**, with its web player, and **app 2.6.0 or later** on a phone or tablet. Older players and apps (2.5.0) simply don't show it, and carry on working as before.
+- **Server 2.6.0 or later**, with its web player, or **app 2.6.0** on a phone or tablet once it reaches the App Store and Google Play. Older players and apps (2.5.0) simply don't show it, and carry on working as before.
 - **A book with a DRM-free EPUB beside its audio**, the same one [Read the ebook](https://docs.audiosilo.app/users/listening/reading-the-ebook) opens. It has to be the same book as the narration, and ideally the same edition.
 - **A read-along for that book**, made once by an admin with a [Bridge](https://docs.audiosilo.app/users/admin/bridge) (more on that [below](#making-a-read-along)). There's nothing for listeners to switch on.
 
@@ -42,7 +42,7 @@ Play the book and open the player's [companion](https://docs.audiosilo.app/users
 - **Tap a sentence** to move the audiobook to the start of it. It moves your place rather than starting playback: a playing book carries on from there, a paused one waits there.
 - **Turn the page yourself** (the edges of the text, or a swipe) to look back or ahead. The tab stops following the narration, and **Back to narration** takes you back to the sentence being read.
 
-On a computer the tab sits in the companion column beside the player, and on a tablet under the controls with the other tabs. On a phone there's no chip for it: open the companion from any chip, then pick **Text** at the top of the sheet.
+On a computer the tab sits in the companion column beside the player, and on a tablet under the controls with the other tabs. On a phone, a **Text** chip under the player's actions opens the companion sheet straight on it.
 
 For listeners, the Text tab only appears for a book whose read-along fits the book as it is. If the ebook or the audio files changed since the read-along was made, it is out of date, and the tab stays away until an admin makes it again.
 
@@ -54,7 +54,7 @@ While the reader follows the narration it doesn't save your reading place, since
 
 ## Offline
 
-A book you [download](https://docs.audiosilo.app/users/listening/offline-downloads#how-downloaded-playback-differs) now keeps its read-along beside its ebook, so with both saved, the Text tab and **Follow narration** work with no connection. If the read-along is made again on the server, the app fetches the new one the next time it sees the book there, and drops its copy if the read-along goes out of date. A download made before 2.6.0 picks up the read-along the next time the app sees the book on your server; until then, the Text tab needs a connection.
+A book you [download](https://docs.audiosilo.app/users/listening/offline-downloads#how-downloaded-playback-differs) now keeps its read-along beside its ebook, so with both saved, the Text tab and **Follow narration** work with no connection. If the read-along is made again on the server, the app fetches the new one the next time it sees the book there, as long as it was made from the same ebook as the one in your download. If the server's ebook is replaced, the download keeps its own read-along with its own ebook. A read-along that went out of date on the server is dropped from the download, unless it still fits the download's own ebook and audio. A download made before 2.6.0 picks up the read-along the next time the app sees the book on your server; until then, the Text tab needs a connection.
 
 ## Making a read-along
 
@@ -78,7 +78,7 @@ A poor match is refused. If less than half of the ebook's text lines up with the
 - **It needs a DRM-free EPUB of the same book, ideally the same edition.** A locked EPUB can't be read, and a different book or a very different edition doesn't line up.
 - **It's one book at a time.** There's no action to make read-alongs for a whole library or series.
 - **It needs a Bridge.** The server doesn't make read-alongs by itself.
-- **Older players don't show it.** The 2.5.0 web player and apps carry on as before, without the Text tab or Follow narration; update to 2.6.0 to read along.
+- **Older players don't show it.** The 2.5.0 web player and apps carry on as before, without the Text tab or Follow narration. The web player bundled with server 2.6.0 has them, and app 2.6.0 brings them to phones and tablets once it reaches the stores.
 
 ## More
 

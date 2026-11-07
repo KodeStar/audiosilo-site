@@ -2,9 +2,9 @@
 title: "Audible and AudioSilo keep your listening place in step, both ways"
 description: With a Bridge signed in to your Audible account, your place in a book moves between the Audible app and AudioSilo, so you can switch between them mid-book.
 kind: feature
-published: 2026-11-04
-verified: 2026-11-04
-appliesTo: Server 2.6.0 with a Bridge
+published: 2026-11-07
+verified: 2026-11-07
+appliesTo: Server 2.6.0 with Bridge 0.6.0
 tags: [audible, bridge, sync, player, admin]
 covers:
   - server:audible
@@ -20,11 +20,11 @@ covers:
   - docs:/users/getting-started/bridge-accounts
   - docs:/users/listening/playback
 related:
+  - server-2-6
   - audible-backup
   - back-up-your-audible-library
   - bridge-recaps-and-contributions
   - player-tips
-draft: true
 ---
 
 If some of your books live in both the Audible app and AudioSilo, you've probably had to find your place twice: a chapter in the car on Audible, then the rest at home on AudioSilo, scrubbing to where you left off. From version 2.6.0, your server's **Bridge** can keep the two in step. Listen on Audible and your place in AudioSilo moves on; listen in AudioSilo and the Audible app picks up where you stopped.
@@ -33,7 +33,7 @@ It's off until an admin turns it on for an Audible account, and it moves places 
 
 ## What it needs
 
-- **Server 2.6.0 or later** with a [Bridge](https://docs.audiosilo.app/users/getting-started/running-a-bridge) paired and online, in a version that supports Audible.
+- **Server 2.6.0 or later** with a [Bridge](https://docs.audiosilo.app/users/getting-started/running-a-bridge) paired and online, on **Bridge 0.6.0** or later (0.6.0 came out beside server 2.6.0). Update the two together: Audible's jobs need both.
 - **Your Audible account signed in on the Bridge.** You sign in, and choose who the account is for and which library it belongs to, on the Bridge's own page: see [Bridge accounts](https://docs.audiosilo.app/users/getting-started/bridge-accounts#audible). Your server never sees your Amazon password.
 - **The Audible module turned on** in the console's **Server > Settings > Modules**. It starts off.
 - **Sync turned on for the account.** On **Server > Settings > Bridge**, the **Audible accounts** card has **Account settings...** for each account: tick **Sync listening places with Audible** and **Save**. It's off for every account until you do.
@@ -51,6 +51,8 @@ A place from Audible **never moves yours back**. One that's behind your place in
 When you stop listening in AudioSilo, the Bridge waits until your place has stayed put for 3 minutes, then sends it to Audible, so the Audible app has it about 3 to 4 minutes after you stop. It's sent as it is: if you went back a chapter in AudioSilo, Audible goes back too.
 
 It never overwrites a newer place on Audible. If you listened further on in the Audible app in the meantime, your AudioSilo place isn't sent; the place further on wins, and the next sync brings it to AudioSilo. When sync first starts, only places you changed in the last 10 minutes are sent; the rest reach Audible the next time you listen to those books.
+
+**A known limitation in Bridge 0.6.0:** the Audible app can still resume at an older place after the Bridge has reported sending yours. The Bridge doesn't yet send your place again when Audible overwrites it; that's [Bridge #51](https://github.com/KodeStar/audiosilo-bridge/issues/51).
 
 ## Only places
 
