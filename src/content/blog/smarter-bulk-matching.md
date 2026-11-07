@@ -1,9 +1,9 @@
 ---
 title: Match automatically gets more of your library right
-description: From server 2.6.0, bulk matching trusts an ASIN or ISBN the community knows, keeps weak guesses out of review, reads series from folder names and picks the recording that fits.
+description: In server 2.6.0, bulk matching trusts an ASIN or ISBN the community knows, drops weak guesses, reads series from folder names, picks the recording and matches store listings.
 kind: feature
 published: 2026-11-05
-verified: 2026-11-06
+verified: 2026-11-07
 appliesTo: Server 2.6.0
 tags: [metadata, matching, admin]
 covers:
@@ -27,7 +27,7 @@ heroAlt: Health in the AudioSilo admin console, the Not matched list with the Ma
 draft: true
 ---
 
-Run **Match automatically** over a big library and the slow part comes afterwards. Right books wait for review because another book in the same series scored nearly as well, the review list fills with guesses that were never close, and a file title like "Emergence: The Mystic Knight, Book 1 (Unabridged)" stays that way. Server 2.6.0 works on all three. It also reads a book's series from a folder name that states one, and picks the recording your book's length names.
+Run **Match automatically** over a big library and the slow part comes afterwards. Right books wait for review because another book in the same series scored nearly as well, the review list fills with guesses that were never close, and a file title like "Emergence: The Mystic Knight, Book 1 (Unabridged)" stays that way. Server 2.6.0 works on all three. It also reads a book's series from a folder name that states one, picks the recording your book's length names, and matches books the community knows only from a store listing with no ASIN or ISBN.
 
 There's nothing to turn on. It's the same card in **Health > Not matched**: **Find matches**, then **Review and apply**. Nothing changes until you click **Apply**, so "confident" below still means ticked and waiting for you, not already written.
 
@@ -64,6 +64,22 @@ Some library tools name each book's folder and file `Author; Series; Book NN; Ti
 - The title part at the end is optional (`A.R. Wise; Deadlocked; Book 01`).
 
 The files' tags still come first: a series tag wins over the name, and when the tags give a series but no number, the name's number is kept. In a library set to take [folder names first](https://docs.audiosilo.app/users/admin/libraries#where-book-details-come-from), the name's series, number and title win over the tags. Books already on your server get their series at the first scan after the upgrade, without a re-index, and your own edits stay on top.
+
+## Store listings with no ASIN
+
+The community database holds some books only as a store listing with no ASIN or ISBN, such as Audiobook Guild and GraphicAudio titles. A match to one always waited in **To review**, since a confident match needs an ASIN or ISBN to attach. Even once you applied it, the book stayed under **Not matched**, and the next run asked about it again.
+
+From 2.6.0 such a match goes into **Confident**, ticked, when all of these hold:
+
+- it scores at least 90, 10 points ahead of the next candidate;
+- the community names the book's author in full and places the work at the book's number in its series, so a book outside a series always goes to review;
+- both lengths are known, and the recording's is within 2% of the book's. A narrator who reads it doesn't widen that.
+
+Anything else goes to **To review**, as before, where you can tick it.
+
+Applying such a match, from a run or from the match dialog, now records the community work the book is, and for a book with no ASIN or ISBN that's what makes it matched. It counts as **Matched** in **Books**' **Community metadata** filter, it leaves **Health > Not matched**, and later match runs skip it. **Fill in matched books** looks it up by that work, following it if the community merges or renames it, and offers an ASIN or ISBN if the recording has gained one since.
+
+The book's **Community metadata** card shows **Community work**, which opens the work on the community site, and says how and when it was matched: "No ASIN or ISBN: matched to its store listing by a bulk match 2 days ago." **Unlink**, beside **Compare fields**, undoes the match. It asks first, and there's no undo: the community's values and cover go with it, the book is **Not matched** again, and the next run asks about it again. Your own edits stay, and matching the book again brings the values back.
 
 ## Weak matches stop cluttering review
 
@@ -114,7 +130,14 @@ We then made the harness's checking stricter in one place. A book whose referenc
 | Confident and right | 3,463 | 3,590 |
 | Confident and wrong | 8 | 7 |
 
-The same caveats hold: one test, one list of books, our harness.
+With every change above, on a newer copy of the community database, the same harness counted 3,620 confident and right and 4 confident and wrong. Matching store listings was the last change measured:
+
+| Of 4,044 books | Before | After |
+|---|---:|---:|
+| Confident and right | 3,620 | 3,806 |
+| Confident and wrong | 4 | 4 |
+
+Right matches left waiting in **To review** fell by the same 186. The same caveats hold: one test, one list of books, our harness.
 
 ## Limits worth knowing
 
@@ -122,11 +145,13 @@ The same caveats hold: one test, one list of books, our harness.
 
 To undo one, revert the values on the book's page, or use **Clear community matches** (**Server > Settings > Community metadata > Danger zone**) to undo every community match in a library. The next run will find the same tag again, so correct the tag, or match the book by hand, which keeps it out of later runs.
 
+**Players don't show "About this book" for a store-listing match yet.** Players look community details up by ASIN or ISBN, so a book matched to a store listing has none to offer them. The values the match wrote are the book's own, so its title, series, narrator and cover show everywhere. The community chapter check, the community's places and gaps on the **Series** page and **Suggest corrections** leave such a book out too.
+
 **A book that states no language isn't always judged on it.** In a library of mixed languages, or one where fewer than 20 books state a language, a book with no language tag isn't judged on it, so an English work can still be a confident match for a German book, as it could before.
 
 ## When you get it
 
-The identifier rule, the weak-match floor, the title tidy, the tag hints, the series in folder names, the recording choice and the library's language are in the server, so they arrive with 2.6.0 however your server looks books up.
+The identifier rule, the weak-match floor, the title tidy, the tag hints, the series in folder names, the recording choice, the library's language and store-listing matching are in the server, so they arrive with 2.6.0 however your server looks books up.
 
 The new scoring lives in the community database's matching, so it depends on where the answers come from:
 
@@ -145,4 +170,4 @@ Refreshing details and re-picking a marketplace still make their separate reques
 
 To find these books, a match now sends more than it used to: the book's tagged title, author and series, its length, narrators and language, its ASIN or ISBN (with neither, any in its tags), anything you type, and up to three of its folder names (the top folder, the folder holding the book, and the book's own folder or file name). It sends nothing about your server or who listens. With a local copy that's ready, none of it leaves your server. To show a candidate's cover, your server also downloads the image from wherever the catalogue keeps it, such as Audible's image servers or Open Library; only the image itself is asked for.
 
-The full rules are in the docs: [Matching every book at once](https://docs.audiosilo.app/users/admin/health#matching-every-book-at-once), including [ASIN and ISBN tags are hints](https://docs.audiosilo.app/users/admin/health#asin-and-isbn-tags-are-hints), [Weak matches](https://docs.audiosilo.app/users/admin/health#weak-matches) and [Tidied titles](https://docs.audiosilo.app/users/admin/health#tidied-titles). For matching one book at a time and fixing what a match can't, see [Fix wrong covers, titles and series](/blog/fix-covers-and-series/).
+The full rules are in the docs: [Matching every book at once](https://docs.audiosilo.app/users/admin/health#matching-every-book-at-once), including [ASIN and ISBN tags are hints](https://docs.audiosilo.app/users/admin/health#asin-and-isbn-tags-are-hints), [Store listings with no ASIN or ISBN](https://docs.audiosilo.app/users/admin/health#store-listings-with-no-asin-or-isbn), [Weak matches](https://docs.audiosilo.app/users/admin/health#weak-matches) and [Tidied titles](https://docs.audiosilo.app/users/admin/health#tidied-titles), and [Books matched to a store listing](https://docs.audiosilo.app/users/admin/books#books-matched-to-a-store-listing) for the book page's **Community work** and **Unlink**. For matching one book at a time and fixing what a match can't, see [Fix wrong covers, titles and series](/blog/fix-covers-and-series/).
