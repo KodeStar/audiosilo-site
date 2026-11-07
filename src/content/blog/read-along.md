@@ -3,6 +3,7 @@ title: "Read along: the ebook follows the narration in the AudioSilo player"
 description: With a read-along made by your Bridge, the player highlights the sentence being read in the book's EPUB and turns the pages with the voice, online or offline.
 kind: feature
 published: 2026-11-07
+updated: 2026-11-07
 verified: 2026-11-07
 appliesTo: Server 2.6.0 with a Bridge 0.5.0 or later, app 2.6.0
 tags: [reader, ebooks, read-along, bridge, player, offline]
@@ -25,13 +26,16 @@ related:
   - bridge-recaps-and-contributions
   - player-tips
   - server-2-5
+revisions:
+  - date: 2026-11-07
+    note: "Android users can install app 2.6.0 now from the APK on GitHub."
 ---
 
 Since server 2.5.0, AudioSilo opens the [ebook that sits beside an audiobook](/blog/ebook-reader/), but reading and listening went their separate ways. From version 2.6.0 they meet. Once your server's **Bridge** has made a book's **read-along**, lining its ebook up with the narration sentence by sentence, the player shows the text as you listen: the sentence being read is highlighted, and the pages turn by themselves as the narrator goes on.
 
 ## What it needs
 
-- **Server 2.6.0 or later**, with its web player, or **app 2.6.0** on a phone or tablet once it reaches the App Store and Google Play. Older players and apps (2.5.0) simply don't show it, and carry on working as before.
+- **Server 2.6.0 or later**, with its web player, or **app 2.6.0** on a phone or tablet once it reaches the App Store and Google Play (on Android, install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play))). Older players and apps (2.5.0) simply don't show it, and carry on working as before.
 - **A book with a DRM-free EPUB beside its audio**, the same one [Read the ebook](https://docs.audiosilo.app/users/listening/reading-the-ebook) opens. It has to be the same book as the narration, and ideally the same edition.
 - **A read-along for that book**, made once by an admin with a [Bridge](https://docs.audiosilo.app/users/admin/bridge) (more on that [below](#making-a-read-along)). There's nothing for listeners to switch on.
 
@@ -78,7 +82,7 @@ A poor match is refused. If less than half of the ebook's text lines up with the
 - **It needs a DRM-free EPUB of the same book, ideally the same edition.** A locked EPUB can't be read, and a different book or a very different edition doesn't line up.
 - **It's one book at a time.** There's no action to make read-alongs for a whole library or series.
 - **It needs a Bridge.** The server doesn't make read-alongs by itself.
-- **Older players don't show it.** The 2.5.0 web player and apps carry on as before, without the Text tab or Follow narration. The web player bundled with server 2.6.0 has them, and app 2.6.0 brings them to phones and tablets once it reaches the stores.
+- **Older players don't show it.** The 2.5.0 web player and apps carry on as before, without the Text tab or Follow narration. The web player bundled with server 2.6.0 has them, and app 2.6.0 brings them to phones and tablets once it reaches the stores, or now on Android from the APK on GitHub.
 
 ## More
 
