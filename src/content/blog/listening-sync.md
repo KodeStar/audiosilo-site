@@ -3,7 +3,8 @@ title: "Listening sync: your place and offline listening across devices"
 description: "AudioSilo 2.6 keeps offline listening until it syncs, counts it when it happened, and lets you choose between places from different devices."
 kind: feature
 published: 2026-11-07
-verified: 2026-11-07
+updated: 2026-11-08
+verified: 2026-11-08
 appliesTo: Server 2.6.0 with its bundled web player, app 2.6.0
 tags: [player, sync, offline, history, downloads]
 covers:
@@ -24,6 +25,9 @@ related:
   - audiobook-progress-not-syncing
   - listen-away-from-home
   - player-tips
+revisions:
+  - date: 2026-11-08
+    note: "App 2.6.0 is on the App Store now; on Android, the APK until 2.6.0 reaches Google Play."
 ---
 
 Listen on your phone without a connection, then carry on at your desk. In AudioSilo 2.6.0, each device sends **what you listened to and when**, so the server can join up listening from different devices. Offline listening waits on the device until the server is reachable. When two devices have different places, the player gives you a choice about where to carry on.
@@ -32,7 +36,7 @@ This is **Sync v2**, new in AudioSilo 2.6.0 ([what else is in 2.6](/blog/server-
 
 ## What you need
 
-Use **server 2.6.0** with the web player it serves, which has Sync v2 today, or **app 2.6.0** on a phone or tablet. App 2.6.0 arrives once the App Store and Google Play publish it; on Android you can install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Sign each device in to the same account on the same server. There's no new switch to turn on and no Bridge to install for listening between AudioSilo devices.
+Use **server 2.6.0** with the web player it serves, which has Sync v2 today, or **app 2.6.0** on a phone or tablet: from the App Store on iPhone and iPad, and on Android from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0) until 2.6.0 reaches Google Play (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Sign each device in to the same account on the same server. There's no new switch to turn on and no Bridge to install for listening between AudioSilo devices.
 
 Older apps keep saving their place through the existing progress route. A new player connected to an older server also keeps the previous way of saving your place. The changes below need the new player and server together.
 

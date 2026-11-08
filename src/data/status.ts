@@ -1,16 +1,16 @@
 /**
  * Availability switches. Every sentence on the site that depends on what is
  * in which store reads from here, so the owner can flip wording in one place
- * when a release lands. Verified live 2026-10-12 (FACTS.md sections 0 and 4):
- * the App Store has 2.0.0 (since 2026-10-10, per the iTunes lookup) and Google
- * Play has 2.0.0 (since 2026-10-12), so both stores carry the redesign.
+ * when a release lands. Both stores first carried the redesign at 2.0.0 (App
+ * Store 2026-10-10, Google Play 2026-10-12; FACTS.md sections 0 and 4). As of
+ * 2026-11-08 the App Store has 2.6.0 and Google Play has 2.5.0.
  */
 import { DISCORD_URL } from './links'
 
-/** The redesigned 2.0 iOS/iPadOS app is live in the App Store (2.0.0, since 2026-10-10). */
+/** The redesigned 2.0 iOS/iPadOS app is live in the App Store (since 2026-10-10; 2.6.0 as of 2026-11-08). */
 export const IOS_2_IN_STORE = true
 
-/** The Android app is live on Google Play (2.0.0, since 2026-10-12). */
+/** The Android app is live on Google Play (since 2026-10-12; 2.5.0 as of 2026-11-08). */
 export const ANDROID_LIVE = true
 
 /** The 2.0 apps are in a beta testers join through Discord. Turn off once both stores carry 2.0. */
@@ -23,22 +23,24 @@ export const APPS_BETA = !(IOS_2_IN_STORE && ANDROID_LIVE)
 export const SUPPORT_CARD_LIVE = true
 
 /**
- * The Apple Watch app is in the App Store, inside the iPhone app. False words
- * it as coming and keeps it off the home page. It is built for the 2.6.0 iPhone
- * app but held back from the store copy until its device checks pass, so the
- * App Store carrying 2.6.0 is not enough: flip it only once the watch app is
- * confirmed in a live App Store build, re-verified by the iTunes lookup.
+ * The Apple Watch app is in the App Store, inside the iPhone app: it ships with
+ * iPhone app 2.6.0, which the App Store has carried since 2026-11-08 (the iTunes
+ * lookup for bundleId app.audiosilo). False words it as coming and keeps it off
+ * the home page.
  */
-export const APPLE_WATCH_LIVE = false
+export const APPLE_WATCH_LIVE = true
+
+/** What the watch app needs, shared by the live lines below. */
+const APPLE_WATCH_NEEDS = 'iPhone app 2.6 or later, watchOS 11 or later and server 2.6 or later with ffmpeg'
 
 /** The player page's offline row. */
 export const APPLE_WATCH_OFFLINE = APPLE_WATCH_LIVE
-  ? 'Out for a run? The Apple Watch app plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It needs server 2.6 or later.'
+  ? `Out for a run? The Apple Watch app plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs with your server once the watch can reach it. It needs ${APPLE_WATCH_NEEDS}.`
   : 'Coming to the iPhone app: an Apple Watch app that plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It will need server 2.6 or later.'
 
 /** The download page, under the app cards. */
 export const APPLE_WATCH_DOWNLOAD = APPLE_WATCH_LIVE
-  ? 'On Apple Watch: the watch app comes with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It needs server 2.6 or later.'
+  ? `On Apple Watch: the watch app comes with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It needs ${APPLE_WATCH_NEEDS}.`
   : 'Coming to the iPhone app: an Apple Watch app, included with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It will need server 2.6 or later.'
 
 /** Latest server release, the fallback when the live GitHub lookup fails. */

@@ -3,7 +3,7 @@ title: "Moving from Audiobookshelf to AudioSilo: what carries over, what doesn't
 description: An honest comparison of Audiobookshelf and AudioSilo, and the steps to switch without losing anyone's progress, finished books, bookmarks or listening stats.
 kind: guide
 published: 2026-10-14
-updated: 2026-10-28
+updated: 2026-11-08
 verified: 2026-10-28
 appliesTo: Server 2.5.0, app 2.0.0 and later; Audiobookshelf 2.37.2
 tags: [audiobookshelf, migration, comparison]
@@ -27,6 +27,8 @@ related:
 hero: ../../assets/stills/server-activity-dark.webp
 heroAlt: Activity in the AudioSilo admin console over 90 days, listening hours per day by person and when the household listens
 revisions:
+  - date: 2026-11-08
+    note: "Google Play now has app 2.5.0, so Android Auto and casting are on Google Play too."
   - date: 2026-10-28
     note: "Server 2.5.0's ebook reader (the web player now, the apps from app 2.5.0); CarPlay and casting in the App Store's app 2.4.1, Android Auto and casting in the Android APK; Audiobookshelf 2.37.2's ebook formats; a link to the benchmarked comparison."
   - date: 2026-10-24
@@ -48,8 +50,8 @@ Both are self-hosted, open-source servers that run in Docker, keep each person's
 | Your files | Can upload books, embed metadata and covers into files, and merge files into an M4B | Never writes to your library; edits live in its database |
 | Phone apps | Android app in beta on Google Play; iOS app in beta on TestFlight (its beta is currently full) | iPhone, iPad and Android apps in the App Store and Google Play, and an Android APK on GitHub |
 | Web player | Yes, installable | Yes, installable, with offline downloads |
-| In the car | Android Auto | CarPlay in the iPhone app (App Store 2.4.1 and later); Android Auto in the Android APK (Google Play's app 2.0.0 doesn't have it yet) |
-| Casting | Chromecast from the web app and the Android app | Chromecast from the iPhone app (App Store 2.4.1), the Android APK (not Google Play's app 2.0.0 yet) and the web player (server 2.3, Chromium browsers over HTTPS) |
+| In the car | Android Auto | CarPlay in the iPhone app (App Store 2.4.1 and later); Android Auto in the Android app (2.1 and later, on Google Play and as an APK) |
+| Casting | Chromecast from the web app and the Android app | Chromecast from the iPhone app (App Store 2.4.1 and later), the Android app (2.1 and later, on Google Play and as an APK) and the web player (server 2.3, Chromium browsers over HTTPS) |
 | Metadata | Fetches from several sources | Community database at [meta.audiosilo.app](https://meta.audiosilo.app), with spoiler-safe recaps and characters for the books that have them |
 
 **Stay with Audiobookshelf** if you rely on an ebook library (ebooks without audio, PDF or comics), uploading through the web, or having metadata written into your files. AudioSilo does none of those: from server 2.5 it reads the EPUB that sits beside an audiobook, and that's all (see [Read the ebook](/blog/ebook-reader/)). Podcasts work from server 2.4, but need AudioSilo's optional Bridge container to download them: see [Podcasts in AudioSilo](/blog/podcasts/).

@@ -3,7 +3,8 @@ title: "Why isn't my audiobook progress syncing between devices?"
 description: "Check the device you last listened on, its connection, your account and the book's edition before resetting anything. A practical guide to getting your place across."
 kind: guide
 published: 2026-11-07
-verified: 2026-11-07
+updated: 2026-11-08
+verified: 2026-11-08
 appliesTo: General advice; the AudioSilo section is server 2.6.0 with its bundled web player, app 2.6.0
 tags: [audiobooks, sync, offline, troubleshooting]
 covers:
@@ -20,6 +21,9 @@ related:
   - server-2-6
   - listen-away-from-home
   - player-tips
+revisions:
+  - date: 2026-11-08
+    note: "App 2.6.0 is on the App Store now; on Android, the APK until 2.6.0 reaches Google Play."
 ---
 
 If your audiobook opens at an old place on another device, start with the device you last listened on. Connect it, open the listening app and check that its saved place has synced before resuming elsewhere. Then check that both devices use the same account and the same edition. Avoid signing out or reinstalling while the latest listening is still only on one device.
@@ -54,7 +58,7 @@ If both devices have been used offline, check which place you actually want. The
 
 ## In AudioSilo 2.6
 
-These need **server 2.6.0** and a 2.6.0 player: the web player your server serves has them now, and app 2.6.0 brings them to phones and tablets once it reaches the App Store and Google Play (on Android, install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0)). With an older app or server, the app saves your place as before, so steps 1 to 4 are what to check.
+These need **server 2.6.0** and a 2.6.0 player: the web player your server serves has them, and so does app 2.6.0, on the App Store now for iPhone and iPad (on Android, install it from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0) until 2.6.0 reaches Google Play). With an older app or server, the app saves your place as before, so steps 1 to 4 are what to check.
 
 - **Home** shows listening waiting to reach the server.
 - Your server's **account page > Listening sync** shows the waiting count and last successful sync. **Couldn't sync** lists rejected listening with a reason, such as a different-length copy or a book that's no longer on the server.

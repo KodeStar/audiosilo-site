@@ -3,7 +3,8 @@ title: "AudioSilo vs the competition: matching, first scans and everyday feature
 description: "AudioSilo, Audiobookshelf, BookOrbit and Grimmory compared on first scans, matching, memory, CPU and the features that help you choose."
 kind: guide
 published: 2026-11-07
-verified: 2026-11-07
+updated: 2026-11-08
+verified: 2026-11-08
 appliesTo: "AudioSilo 2.6.0 and 2.5.1; Audiobookshelf 2.37.2 (2.35.1 in the published matching); BookOrbit 3.6.0; Grimmory 3.5.0. Published matching covers AudioSilo 2.5.1; the 2.6.0 matching figures are from our own harness."
 tags: [comparison, audiobookshelf, bookorbit, grimmory, metadata, benchmarks]
 covers:
@@ -21,6 +22,9 @@ related:
   - audiosilo-vs-audiobookshelf
   - moving-from-audiobookshelf
   - self-hosted-audiobook-server
+revisions:
+  - date: 2026-11-08
+    note: "iPhone app 2.6.0 and its Apple Watch app are on the App Store now; Google Play's 2.6.0 is still to follow."
 ---
 
 Choose AudioSilo if you want a small audiobook server that reads your existing folders, with a player built around listening across devices. Choose Audiobookshelf for its established audiobook and podcast tools and client ecosystem. BookOrbit and Grimmory deserve a look if reading ebooks, PDFs and comics matters as much as listening. Their strengths go well beyond how quickly they can index audio.
@@ -141,7 +145,7 @@ Sources: [AudioSilo server](https://github.com/KodeStar/audiosilo-docs/blob/cfa9
 
 **AudioSilo focuses on your audiobook and its context.** Alongside [offline downloads](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/listening/offline-downloads.md), it has [household controls](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/admin/users-and-invites.md) and [spoiler-safe recaps and characters](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/listening/recaps-and-characters.md). Its server reads your folders; the optional Bridge handles writing and heavy jobs. It reads one companion EPUB per audiobook.
 
-Server 2.6.0 lets you [follow the narration in that EPUB, including offline in a downloaded book](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/listening/reading-the-ebook.md). It works today in the web player bundled with the server; the iOS and Android apps need app 2.6.0, which follows once it reaches the App Store and Google Play, and which Android users can install now from [the APK on GitHub](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play). [Creating the alignment needs a Bridge that can write to the library](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/admin/making-read-along.md); budget separately for alignment and any speech-recognition jobs or models. [Apple Watch support](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/listening/apple-watch.md) comes with iPhone app 2.6.0, so it arrives when the App Store carries that update; it needs server 2.6.0 with ffmpeg, excludes podcasts, and there is no Wear OS app.
+Server 2.6.0 lets you [follow the narration in that EPUB, including offline in a downloaded book](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/listening/reading-the-ebook.md). It works in the web player bundled with the server and in app 2.6.0: on the App Store for iPhone and iPad, and on Android from [the APK on GitHub](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play) until it reaches Google Play. [Creating the alignment needs a Bridge that can write to the library](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/admin/making-read-along.md); budget separately for alignment and any speech-recognition jobs or models. [Apple Watch support](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/listening/apple-watch.md) comes with iPhone app 2.6.0; it needs server 2.6.0 with ffmpeg, excludes podcasts, and there is no Wear OS app.
 
 If you already run Audiobookshelf, trying AudioSilo need not mean moving your files first. [Moving from Audiobookshelf](/blog/moving-from-audiobookshelf/) covers a gradual trial. Staying with Audiobookshelf is also compatible with using [AudioSilo's community metadata provider](https://meta.audiosilo.app/audiobookshelf).
 

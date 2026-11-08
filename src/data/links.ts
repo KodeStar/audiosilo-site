@@ -17,9 +17,9 @@ export const BRIDGE_GENERATE_DOCS_URL = `${DOCS_URL}/users/admin/generating-char
 /** The community metadata database (audiosilo-meta). */
 export const META_URL = 'https://meta.audiosilo.app'
 
-/** iOS app (live, the store has 2.0.0 since 2026-10-10). */
+/** iOS app (live since 2026-10-10; 2.6.0 as of 2026-11-08). */
 export const APP_STORE_URL = 'https://apps.apple.com/us/app/audiosilo/id6783431375'
-/** Android app (live on Google Play since 2026-10-12, 2.0.0). */
+/** Android app (live on Google Play since 2026-10-12; 2.5.0 as of 2026-11-08). */
 export const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=app.audiosilo'
 
 export const SPONSORS_URL = 'https://github.com/sponsors/KodeStar'
