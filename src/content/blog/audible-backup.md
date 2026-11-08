@@ -3,7 +3,8 @@ title: Back up your Audible books straight into your AudioSilo library
 description: Your server's Bridge can sign in to your Audible accounts, back up the books you bought as M4B files into your library, and keep backing up new ones as you buy them.
 kind: feature
 published: 2026-11-07
-verified: 2026-11-07
+updated: 2026-11-08
+verified: 2026-11-08
 appliesTo: Server 2.6.0 with Bridge 0.6.0
 tags: [audible, bridge, backup, m4b, admin]
 covers:
@@ -21,6 +22,9 @@ related:
   - audible-listening-sync
   - back-up-your-audible-library
   - organize-audiobook-folders
+revisions:
+  - date: 2026-11-08
+    note: "Added how the Bridge's Audible support was built, crediting mkb79/Audible and Libation."
 ---
 
 Until now, getting your Audible books into AudioSilo meant running a separate tool: download, convert, then copy the files into your library yourself. From version 2.6.0, your server's **Bridge** can do all of it. Sign in to your Audible account once, and from the admin console you can back up one book at a time, back up all of an account's books that aren't here yet in one go, or let the Bridge back up new purchases by itself. Each book arrives as an ordinary M4B file in your library, scanned and ready to play.
@@ -85,6 +89,17 @@ These act on new purchases only; for the books the account already had, use **Ba
 ## Keeping your place in step too
 
 The same Audible module can also keep your listening place in step with the Audible app, both ways, so you can switch between them mid-book. That's a separate switch for each account, and it works for books you already had as well as the ones the Bridge backed up: see [Audible and AudioSilo keep your listening place in step](/blog/audible-listening-sync/).
+
+## How we built it
+
+The Bridge is written in Go, and there was no Go library for Audible we could build on, so we wrote that part ourselves: signing in, registering the Bridge as a device, reading your library, fetching each book and keeping your place in step. The copy protection itself is removed by ffmpeg.
+
+We didn't start from nothing. Two open-source projects showed us how Audible works, and we checked our work against them:
+
+- **[mkb79/Audible](https://github.com/mkb79/Audible)**, the Python library behind audible-cli, our main reference for how Audible's sign-in and API behave.
+- **[Libation](https://github.com/rmcrackan/Libation)**, the free desktop backup tool, especially for what Audible's refusals mean and which app details it accepts at sign-in.
+
+Our thanks to both. If you'd rather not run a Bridge, Libation and audible-cli are also good ways to back up your books on their own (see below).
 
 ## Other ways to back up
 
