@@ -5,7 +5,7 @@ kind: guide
 published: 2026-11-07
 updated: 2026-11-08
 verified: 2026-11-08
-appliesTo: "AudioSilo 2.6.0 and 2.5.1; Audiobookshelf 2.37.2 (2.35.1 in the published matching); BookOrbit 3.6.0; Grimmory 3.5.0. Published matching covers AudioSilo 2.5.1; the 2.6.0 matching figures are from our own harness."
+appliesTo: "AudioSilo 2.6.0 and 2.5.1; Audiobookshelf 2.37.2 (2.35.1 in the published matching); BookOrbit 3.6.0; Grimmory 3.5.0. Published matching covers AudioSilo 2.6.0 (LibraForge, 8 November 2026)."
 tags: [comparison, audiobookshelf, bookorbit, grimmory, metadata, benchmarks]
 covers:
   - app:stores
@@ -25,11 +25,13 @@ related:
 revisions:
   - date: 2026-11-08
     note: "iPhone app 2.6.0 and its Apple Watch app are on the App Store now; Google Play's 2.6.0 is still to follow."
+  - date: 2026-11-08
+    note: "Matching now uses LibraForge's independent audit of AudioSilo 2.6.0 (captured 8 November), scored like every other tool on the 3,622 books with a confirmed listing. It replaces our own harness's 2.6.0 figures and the earlier 2.5.1 row."
 ---
 
 Choose AudioSilo if you want a small audiobook server that reads your existing folders, with a player built around listening across devices. Choose Audiobookshelf for its established audiobook and podcast tools and client ecosystem. BookOrbit and Grimmory deserve a look if reading ebooks, PDFs and comics matters as much as listening. Their strengths go well beyond how quickly they can index audio.
 
-We make AudioSilo. Here we compare those four playback servers using a fresh first-scan benchmark, published metadata-matching results, our own matching test of the new release, and documented features. AudioSilo appears twice: **2.6.0, released on 7 November 2026**, and the previous release, **2.5.1**, measured the same way on the same machine.
+We make AudioSilo. Here we compare those four playback servers using a fresh first-scan benchmark, published metadata-matching results that now include the new release, and documented features. In the scan, CPU and memory results AudioSilo appears twice: **2.6.0, released on 7 November 2026**, and the previous release, **2.5.1**, measured the same way on the same machine. The matching results are for 2.6.0.
 
 The scan and resource measurements here supersede the older figures in [AudioSilo vs Audiobookshelf](/blog/audiosilo-vs-audiobookshelf/). The storage route has also changed, so this is a new comparison rather than a direct measure of improvement since that post. [How we measured](#how-we-measured) explains the boundaries and caveats.
 
@@ -89,40 +91,39 @@ AudioSilo had the smallest anonymous-memory footprint here. 2.6.0 used a little 
 
 ## Matching: the right book and the right details
 
-Indexing finds files. Matching identifies the book and recording, then supplies details such as narrator and series. We show [LibraForge's published benchmark](https://coconautilus17.github.io/LibraForge/), captured on 6 November 2026, displaying a benchmark date of 4 November, followed by our newer local test on its book set.
+Indexing finds files. Matching identifies the book and recording, then supplies details such as narrator and series. We show [LibraForge's published benchmark](https://coconautilus17.github.io/LibraForge/) as captured on 8 November 2026 (LibraForge build 527247d), which now includes its own independent audit of AudioSilo 2.6.0.
 
-It tested **4,044 books** using silent surrogate files with the original paths, tags and runtimes. This is a metadata test, separate from our real-audio scan test. Its seven tools include three companions: LibraForge prepares metadata and files, ReadMeABook handles requests and imports, and beets with beets-audible manages a local library. They can complement a playback server. [LibraForge's documentation](https://github.com/coconautilus17/LibraForge/blob/cb6024a15538b0d274a03d2e35992d3e1023124f/README.md), [ReadMeABook's documentation](https://github.com/kikootwo/ReadMeABook/blob/75efadff6453d700db9753904d3bafa14cebc66f/README.md), [beets-audible's documentation](https://github.com/Neurrone/beets-audible/blob/d443a6ca6a9189f821bb54f9eaa371e9c1a67c3e/readme.md).
+It tested **4,044 books** using silent files carrying the original paths and tags, as long as the real book for tools that check runtime. This is a metadata test, separate from our real-audio scan test. Every tool is scored on the same **3,622 books with a confirmed listing**; the other 422 have none (not on Audible, or no listing of the file's own recording), so they aren't scored. Its seven tools include three companions: LibraForge prepares metadata and files, ReadMeABook handles requests and imports, and beets with beets-audible manages a local library. They can complement a playback server. [LibraForge's documentation](https://github.com/coconautilus17/LibraForge/blob/cb6024a15538b0d274a03d2e35992d3e1023124f/README.md), [ReadMeABook's documentation](https://github.com/kikootwo/ReadMeABook/blob/75efadff6453d700db9753904d3bafa14cebc66f/README.md), [beets-audible's documentation](https://github.com/Neurrone/beets-audible/blob/d443a6ca6a9189f821bb54f9eaa371e9c1a67c3e/readme.md).
 
-An **accepted right-book** result identifies the right work, but may still have the wrong recording or an incorrect field. **Held** means a candidate was left for review rather than applied. **None** means no result was written; for ReadMeABook's Bulk Import test, it means no listing was returned.
+**Wrote** counts every book a tool wrote details to, and splits four ways. **Fully correct** is the right book with every field it ends up with right. **Other recording** is the right book with another recording's details. **A field off** is the right book, but the title, an author, the narrator or the series is wrong or missing. **Wrong book** means another book's details were written. **Held** means the tool found a candidate but waited for you to confirm it; LibraForge's table splits that into right and wrong picks, which we've merged into one column. **Nothing written** is the rest. Each row adds up to 3,622.
 
-| Tested tool | Accepted right book | Fully correct* | Accepted wrong book | Held | None | Time taken for 4,044 books† |
-|---|---:|---:|---:|---:|---:|---|
-| LibraForge build 527247d | 3,942 | 3,831 | 0 | 34 | 68 | 11 minutes, 5 search workers |
-| AudioSilo 2.6.0, our harness‡ | 3,806 | Not audited‡ | 4 | 148 | 85 | 24 seconds with a local copy; 2 minutes online‡ |
-| AudioSilo 2.5.1 | 2,987 | 2,571 | 27 | 966 | 64 | About 1 minute with a local copy; 13 minutes online |
-| Audiobookshelf Quick Match 2.35.1 | 2,808 | 2,657 | 1,167 | 0 | 69 | 4 hours 44 minutes |
-| BookOrbit, build undisclosed | 2,917 | 1,431 | 820 | 0 | 307 | 15 hours 53 minutes |
-| Grimmory 3.5.0 | 2,693 | 1,564 | 1,010 | 0 | 341 | 4 hours 23 minutes |
-| ReadMeABook 1.2.12, Bulk Import | 2,355 | 2,296 | 506 | 0 | 1,183 | 1 hour 41 minutes |
-| beets 2.14 + beets-audible | 1,622 | 1,537 | 89 | 0 | 2,333 | 50 minutes |
+| Tested tool | Wrote | Fully correct | Other recording | A field off | Wrong book | Held | Nothing written | Time for all 4,044 books† |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| LibraForge build 527247d | 3,579 (98.8%) | 3,510 (96.9%) | 13 | 56 | 0 | 22 (all right picks) | 21 | 11 minutes, 5 at once |
+| AudioSilo 2.6.0 | 3,526 (97.3%) | 2,910 (80.3%) | 3 | 612 | 1 | 75 (66 right, 9 wrong picks) | 21 | 30 seconds with a local copy; 2 minutes 15 seconds online; 6 at once |
+| Audiobookshelf Quick Match 2.35.1 | 3,596 (99.3%) | 2,610 (72.1%) | 27 | 69 | 890 | 0 | 26 | 4 hours 44 minutes, 1 at once |
+| Grimmory 3.5.0 | 3,364 (92.9%) | 1,497 (41.3%) | 55 | 1,039 | 773 | 0 | 258 | 4 hours 23 minutes, 1 at once |
+| ReadMeABook 1.2.12, Bulk Import* | 2,742 (75.7%) | 2,231 (61.6%) | 44 | 0 | 467 | 0 | 880 | 1 hour 41 minutes, 1 at once |
+| BookOrbit, image of 20 October 2026 | 3,344 (92.3%) | 1,235 (34.1%) | 17 | 1,591 | 501 | 0 | 278 | 15 hours 53 minutes, 1 at once |
+| beets 2.14 + beets-audible | 1,665 (46.0%) | 1,541 (42.5%) | 28 | 14 | 82 | 0 | 1,957 | 50 minutes, 4 imports at once, 1 book each |
 
-*Fully correct is a subset of accepted right-book picks, not an additional outcome bucket. It requires all audited final fields to be correct.
+Percentages are of the 3,622 scored books.
 
-†Time depends on the matching mode, how many books run at once, pauses between requests and the live services each tool asks, so it isn't a measure of processor work or a scanner ranking. Audiobookshelf, BookOrbit, Grimmory and ReadMeABook matched one book at a time, some with deliberate pauses; beets ran four separate imports, each looking up one book at a time. AudioSilo 2.5.1's times are LibraForge's, with two books at a time; its local-copy time leaves out downloading the roughly 2 GB community database.
+*ReadMeABook's Bulk Import picks a listing per book and writes nothing, to files or a library, so it is judged only on whether its pick is the book; its scan returns no series. Books it merged into another folder count as nothing written.
 
-‡The 2.6.0 row is not from LibraForge's audit. It comes from our own test harness on the same 4,044 books, judged by whether each pick is the right work, so it has no fully-correct count and its columns aren't directly comparable with the audited rows. It accepted one more book that the harness couldn't judge either way, so the row adds up to 4,043. Details below the table.
+†Time is the whole run over all 4,044 books, start to finish, including the 422 that aren't scored. It depends on the matching mode, how many books run at once, pauses between requests and the live services each tool asks, so it isn't a measure of processor work or a scanner ranking. Audiobookshelf, BookOrbit, Grimmory and ReadMeABook matched one book at a time, ReadMeABook with a 1.5-second pause between searches and BookOrbit with 2 to 5 seconds between books; beets ran four separate imports. AudioSilo's local-copy time leaves out downloading the community database (about 530 MB compressed on 8 November 2026).
 
-Source for every other row: [LibraForge benchmark and methods](https://coconautilus17.github.io/LibraForge/#method). The beets-audible version is undisclosed. Audiobookshelf used Audible US; Grimmory had Audible enabled and first. These specific automatic modes do not measure manual matching, every provider choice, newer builds or player quality.
+Source for every row: [LibraForge benchmark and methods](https://coconautilus17.github.io/LibraForge/#method). AudioSilo ran **Match automatically** in mirror mode (a local copy of the community database) and was timed again against its online service; its confident matches count as written and "to review" as held. Audiobookshelf used Audible US; Grimmory had Audible enabled and first; BookOrbit used its default providers. The beets-audible version is undisclosed. These specific automatic modes do not measure manual matching, every provider choice, newer builds or player quality.
 
-Published AudioSilo 2.5.1 accepted 3,014 books, or 74.5% of the corpus. Of those accepted picks, 99.1% identified the right book, but only **2,571, or 85.3%, were fully correct across the audited fields**. Its caution also leaves work for the owner: 966 held candidates to review.
+**LibraForge leads on fully correct results.** It wrote 3,579 of the 3,622 scored books, and 3,510 of them, 96.9%, were fully correct, with no wrong book. All 22 books it held for review were the right pick.
 
-**LibraForge leads AudioSilo's published entry on coverage and final-field correctness.** It accepted 3,942 books with no wrong-work picks in the captured audit, and 3,831 of those were fully correct. Audiobookshelf Quick Match produced more fully correct results than AudioSilo 2.5.1 in total, alongside many more wrong-work picks. beets was another cautious option, leaving over half the corpus unmatched. Neither caution nor coverage alone tells the whole story.
+**AudioSilo 2.6.0 wrote nearly as many, with fewer fully correct.** It wrote 3,526 books (97.3%) with 1 wrong book, held 75 for review (66 of them the right pick) and wrote nothing for 21. Of what it wrote, 2,910 (80.3% of the scored books) came out fully correct. Its weak spot is **a field off: 612 books** where it found the right book but the title, an author, the narrator or the series ended up wrong or missing. LibraForge's notes point to one reason: a confident match fills only blank fields, so a file's own wrong title or series stays. Its coverage is also only what the community database holds. Of 122 scored books Audible's search hid where these runs were made, AudioSilo got 114 right, since it reads its own database, against LibraForge's 119.
 
-**AudioSilo 2.6.0, released on 7 November, changes bulk matching a good deal** ([what changed](/blog/smarter-bulk-matching/)). LibraForge hasn't audited it, so its row comes from our own test harness, run on the released 2.6.0 code over the same 4,044 books with their original tags. It automatically accepted 3,806 books as the right work and 4 as the wrong work, plus 1 pick our harness could not judge. It held 148 for review (105 of them the right work) and wrote nothing for 85. Of the 3,806, 3,546 also chose the reference recording.
+**AudioSilo was by far the quickest.** With a local copy of the community database it matched all 4,044 books in 30 seconds, as matching is then a query on the same disk; against its online service it took 2 minutes 15 seconds. LibraForge took 11 minutes, and the other tools between 50 minutes and almost 16 hours.
 
-Our harness only checks whether each pick is the right work: against the benchmark's reference ASIN, else LibraForge's hand-checked pick, else the audited 2.5.1 pick, else title and author. It doesn't check every final field, so a right work can still carry another recording or an incorrect detail, and there is no fully-correct figure for 2.6.0. It also uses LibraForge's earlier reference data, a local copy of the community database and the US region. So please don't set 3,806 against LibraForge's 3,942 or 3,831, or against 2.5.1's audited 2,987 and 2,571, as a measured gain or lead; only a fresh independent audit could settle that.
+LibraForge's earlier capture, on 6 November, scored every tool on all 4,044 books and included AudioSilo 2.5.1, which held 966 of them for review. That row is no longer published, and its basis differs from the table above, so we don't set the two against each other.
 
-The 2.6.0 times are our harness matching all 4,044 books on the released code with six at a time, as a real run does, from a Mac: 24 seconds against a local copy of the community database, and 2 minutes 1 second against meta.audiosilo.app on 7 November, with no failed books and no requests to slow down. Both cover the matching only, not a scan or writing the results, and the online time depends on the connection and how busy the service is, so treat them as a rough guide rather than a like-for-like with the published times.
+Audiobookshelf Quick Match wrote the most books, 3,596, and 2,610 were fully correct, but 890 were the wrong book. Grimmory and BookOrbit each wrote over 90% of the books, mostly with a field off or the wrong book. beets was the most cautious, writing 1,665 books with 82 wrong and leaving over half the scored books unmatched. Neither caution nor coverage alone tells the whole story.
 
 ## Features that may decide it before any benchmark
 
@@ -159,4 +160,4 @@ Timing stops at each server's native successful indexing signal, not a universal
 
 Host checks and counters remain part of the result. All selected AudioSilo (both versions) and Audiobookshelf scans, plus BookOrbit's third trial, exceeded the flag threshold of 25% of one core outside the measured stack in at least one scan window. AudioSilo's short scans make that residual especially sensitive to sampling and coordinator overhead. BookOrbit's third trial remained busy after the preflight wait, with activity including Immich, kernel reclaim and the user-share process. These flags limit precision; they do not identify the cause of every in-trial spike.
 
-Matching follows [LibraForge's separate method](https://coconautilus17.github.io/LibraForge/#method). Its automated audit had human supervision, with spot-check errors corrected; not all 4,044 books were hand-audited. Regional Audible restrictions also affected some inputs. Zero wrong-book picks is an observation in that captured audit, not a universal guarantee. Our newer local identity harness uses older references and different judging, so its results cannot be substituted for an independent final-field audit. A right work, a right recording and fully correct metadata remain three different outcomes.
+Matching follows [LibraForge's separate method](https://coconautilus17.github.io/LibraForge/#method), from its page captured on 8 November 2026 (build 527247d). We didn't run or judge any of it. Its book-by-book review was done with Claude, an AI model, under human supervision; a second audit of 100 random books found 20 of 700 verdicts wrong (2.9%) and a fresh 100 found 6 (0.9%), each corrected for all books, but not every book was hand-checked. Each tool ran on its own date, from 28 October to 8 November, against live services. Regional Audible restrictions also affected some inputs: 122 scored books were hidden from Audible's search where the runs were made. Zero wrong-book picks is an observation in that audit, not a universal guarantee. A right book, a right recording and fully correct metadata remain three different outcomes.
