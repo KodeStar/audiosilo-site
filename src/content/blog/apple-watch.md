@@ -2,8 +2,8 @@
 title: "AudioSilo on Apple Watch: leave the phone at home, take a book with you"
 description: "AudioSilo's Apple Watch app plays books downloaded to the watch, signs in from your iPhone and syncs your listening with your server."
 kind: feature
-published: 2026-11-07
-verified: 2026-11-07
+published: 2026-11-08
+verified: 2026-11-08
 appliesTo: Server 2.6.0 with ffmpeg, iPhone app 2.6.0, watchOS 11
 tags: [apple-watch, player, offline, downloads, sync]
 covers:
@@ -20,6 +20,7 @@ covers:
   - docs:/users/getting-started/remote-access
 related:
   - server-2-6
+  - listening-sync
   - listen-away-from-home
   - pair-your-phone
 ---
@@ -56,4 +57,4 @@ What you listen to is kept on the watch until your server has it, with the time 
 
 The watch holds **one account on one server** and plays **books**. It lists Continue listening and the books you've put on it, with no library browsing and no podcasts. Kids' accounts and demos don't offer it. Bookmarks, notes, the ebook, read-along and casting stay on your other devices. The watch app is in English for now, and there's no Wear OS app.
 
-The [Apple Watch guide](https://docs.audiosilo.app/users/listening/apple-watch) covers every screen and message. [Listening on more than one device](https://docs.audiosilo.app/users/listening/playback#listening-on-more-than-one-device) explains how devices agree on your place, [Listen away from home](/blog/listen-away-from-home/) covers reaching your server outside your network, and [AudioSilo 2.6](/blog/server-2-6/) has the rest of the release.
+The [Apple Watch guide](https://docs.audiosilo.app/users/listening/apple-watch) covers every screen and message. [Listening sync](/blog/listening-sync/) explains how devices agree on your place, [Listen away from home](/blog/listen-away-from-home/) covers reaching your server outside your network, and [AudioSilo 2.6](/blog/server-2-6/) has the rest of the release.

@@ -24,9 +24,9 @@ export const SUPPORT_CARD_LIVE = true
 
 /**
  * The Apple Watch app is in the App Store, inside the iPhone app: it ships with
- * iPhone app 2.6.0, so it is live once the App Store carries 2.6.0 (check with
- * the iTunes lookup for bundleId app.audiosilo). False words it as coming and
- * keeps it off the home page.
+ * iPhone app 2.6.0, which the App Store has carried since 2026-11-08 (the iTunes
+ * lookup for bundleId app.audiosilo). False words it as coming and keeps it off
+ * the home page.
  */
 export const APPLE_WATCH_LIVE = true
 

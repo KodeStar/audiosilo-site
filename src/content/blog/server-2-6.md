@@ -3,8 +3,8 @@ title: "AudioSilo Server 2.6: upcoming releases, Sync v2, read-along and Audible
 description: "Upcoming releases in the player and your calendar, listening that syncs across devices and offline, an ebook that follows the narration, and Audible on the Bridge."
 kind: release
 published: 2026-11-07
-updated: 2026-11-07
-verified: 2026-11-07
+updated: 2026-11-08
+verified: 2026-11-08
 appliesTo: Server 2.6.0 with its bundled web player, app 2.6.0, Bridge 0.6.0
 tags: [release, server, sync, read-along, audible, bridge, metadata]
 covers:
@@ -50,6 +50,7 @@ covers:
   - docs:/users/getting-started/quickstart-docker
   - docs:/users/getting-started/running-a-bridge
 related:
+  - apple-watch
   - upcoming-releases
   - read-along
   - audible-backup
@@ -59,13 +60,15 @@ related:
   - back-up-before-upgrading
   - server-2-5
 revisions:
+  - date: 2026-11-08
+    note: "iPhone app 2.6.0 and its Apple Watch app are on the App Store now; Google Play's 2.6.0 is still to follow, with the APK until then."
   - date: 2026-11-07
     note: "Android users can install app 2.6.0 now from the APK on GitHub; the Apple Watch app arrives with iPhone app 2.6.0 on the App Store."
 ---
 
 AudioSilo Server **2.6.0** came out on 7 November. Your server now keeps an eye on the series you listen to and tells you what's coming, in the player and in your calendar. Your devices send what you listened to rather than just where you are, so listening on two devices, or offline, comes together properly. The player's **Text** tab follows the ebook as the narrator reads it. And **Bridge 0.6.0**, out the same day, brings Audible to the Bridge: sign in to your accounts, back up the books you bought into your library, and keep your listening place in step with the Audible app.
 
-**Where it runs:** the new listening features are in the **web player bundled with the server** (`/web`) today. **App 2.6.0** for iPhone, iPad and Android brings them to the apps once it reaches the App Store and Google Play; on Android you can install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Older apps keep working with 2.6 as before, without Upcoming, Sync v2 or the Text tab. The Apple Watch app comes with iPhone app 2.6.0, so it arrives when the App Store carries that update; the [Apple Watch guide](https://docs.audiosilo.app/users/listening/apple-watch) covers what it needs.
+**Where it runs:** the new listening features are in the **web player bundled with the server** (`/web`) and in **app 2.6.0**, on the App Store now for iPhone and iPad. On Android, 2.6.0 is still to come on Google Play; you can install it now from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Older apps keep working with 2.6 as before, without Upcoming, Sync v2 or the Text tab. The [Apple Watch app](/blog/apple-watch/) comes with iPhone app 2.6.0, so it's on the App Store now too; the [Apple Watch guide](https://docs.audiosilo.app/users/listening/apple-watch) covers what it needs.
 
 ## How to update
 
