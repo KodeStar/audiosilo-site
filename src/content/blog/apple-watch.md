@@ -37,7 +37,7 @@ A phone is a lot to carry for the sake of a book. AudioSilo's Apple Watch app pl
 
 On your iPhone, open the **Watch** app and install AudioSilo on your watch. Then, in AudioSilo on the iPhone, open your account page for the server and choose **Set up Apple Watch** on the **Apple Watch** card. Open AudioSilo on the watch to finish: there's no password to type there. The sign-in lasts ten minutes; if the watch doesn't take it in time, **Send again**.
 
-The watch reaches your server directly. At home, a server with the default self-signed certificate works over its plain HTTP home address, and setting the watch up on the same network as the server is the surest start. Away from home, the watch needs an address with a certificate it trusts, as the phone apps do; it can't click through a certificate warning. Without one it still plays its downloaded books anywhere, and syncs when you open it at home. The docs explain [a self-signed server](https://docs.audiosilo.app/users/listening/apple-watch#a-self-signed-server).
+The watch reaches your server directly. At home, a server with the default self-signed certificate works over its plain HTTP home address, and setting the watch up on the same network as the server is the surest start. That address has to be an IP address, a `.local` name or a single word like `audiosilo`; a name like `nas.lan` doesn't work. Away from home, the watch needs an address with a certificate it trusts, as the phone apps do; it can't click through a certificate warning. Without one it still plays its downloaded books anywhere, and syncs when you open it at home. The docs explain [a self-signed server](https://docs.audiosilo.app/users/listening/apple-watch#a-self-signed-server).
 
 ## Put a book on the watch before you go
 

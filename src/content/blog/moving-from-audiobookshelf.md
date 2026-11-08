@@ -51,7 +51,7 @@ Both are self-hosted, open-source servers that run in Docker, keep each person's
 | Phone apps | Android app in beta on Google Play; iOS app in beta on TestFlight (its beta is currently full) | iPhone, iPad and Android apps in the App Store and Google Play, and an Android APK on GitHub |
 | Web player | Yes, installable | Yes, installable, with offline downloads |
 | In the car | Android Auto | CarPlay in the iPhone app (App Store 2.4.1 and later); Android Auto in the Android app (2.1 and later, on Google Play and as an APK) |
-| Casting | Chromecast from the web app and the Android app | Chromecast from the iPhone app (App Store 2.4.1), the Android app (2.1 and later, on Google Play and as an APK) and the web player (server 2.3, Chromium browsers over HTTPS) |
+| Casting | Chromecast from the web app and the Android app | Chromecast from the iPhone app (App Store 2.4.1 and later), the Android app (2.1 and later, on Google Play and as an APK) and the web player (server 2.3, Chromium browsers over HTTPS) |
 | Metadata | Fetches from several sources | Community database at [meta.audiosilo.app](https://meta.audiosilo.app), with spoiler-safe recaps and characters for the books that have them |
 
 **Stay with Audiobookshelf** if you rely on an ebook library (ebooks without audio, PDF or comics), uploading through the web, or having metadata written into your files. AudioSilo does none of those: from server 2.5 it reads the EPUB that sits beside an audiobook, and that's all (see [Read the ebook](/blog/ebook-reader/)). Podcasts work from server 2.4, but need AudioSilo's optional Bridge container to download them: see [Podcasts in AudioSilo](/blog/podcasts/).
