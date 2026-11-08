@@ -3,10 +3,12 @@ title: "MKA audiobooks now play in the iPhone and Android apps"
 description: From server 2.5.0, an .mka audiobook with MP3 inside plays in every AudioSilo player, downloads included. The server repackages it as MP3 losslessly; your files stay as they are.
 kind: feature
 published: 2026-10-28
-verified: 2026-10-28
+updated: 2026-11-07
+verified: 2026-11-07
 appliesTo: Server 2.5.0 (any app); app 2.5.0 for iPhone downloads
 tags: [formats, mka, playback, downloads, ffmpeg]
 covers:
+  - app:stores
   - server:formats
   - server:remux
   - server:transcode
@@ -22,6 +24,9 @@ related:
   - m4b-vs-mp3-audiobooks
   - server-2-4
 draft: false
+revisions:
+  - date: 2026-11-07
+    note: "App 2.5.0 is now on the App Store."
 ---
 
 Server 2.4 indexed `.mka` (Matroska audio) books, but only the web player could play them, because the server had to convert them as they streamed. From **server 2.5.0**, an `.mka` book with **MP3 inside**, which is the usual kind, plays everywhere: in the web player, in the iOS and Android apps, and offline from a download. Your server repackages the MP3 inside into a plain MP3 file, without converting the audio, and sends that instead. Your `.mka` files themselves are never changed.
@@ -30,7 +35,7 @@ Server 2.4 indexed `.mka` (Matroska audio) books, but only the web player could 
 
 - **Server 2.5.0 or later, with ffmpeg.** The Docker image includes ffmpeg, and the program on its own finds a copy on your system or downloads one into its data folder. The admin console's **Server > Settings > Transcoding** shows whether it was found.
 - **No new app.** The server sends these books as MP3 at the address they always had, so the apps you already have play them. The reporter who asked for this confirmed it on Android the day 2.5.0 came out.
-- **On an iPhone or iPad, app 2.5.0 is best.** The 2.4.1 app streams these books, but it can stop with a false "End of book" about ten seconds into the first play of one (a second play works), and a book it downloads only plays offline once you update. App 2.5.0 fixes both. It came out on 28 October and is in review at the App Store, so update when it reaches you.
+- **On an iPhone or iPad, app 2.5.0 is best.** The 2.4.1 app streams these books, but it can stop with a false "End of book" about ten seconds into the first play of one (a second play works), and a book it downloads only plays offline once you update. App 2.5.0 fixes both. It came out on 28 October and is on the App Store.
 
 There is nothing to switch on. Books that were already in your library start working with the upgrade.
 
