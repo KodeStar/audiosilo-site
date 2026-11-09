@@ -22,8 +22,10 @@ interface Props {
 const { id, class: className } = Astro.props
 const grid = COMPARISON_GRIDS[id]
 const titleId = `glance-${id}`
-const checked = new Date(`${grid.checked}T00:00:00Z`)
-const marks: Mark[] = ['yes', 'partial', 'no', 'unknown']
+const checked = formatDate(new Date(`${grid.checked}T00:00:00Z`))
+// The key lists only the marks this grid uses, in MARK_LABELS order.
+const used = new Set(grid.groups.flatMap((g) => g.rows.flatMap((r) => (r.kind === 'feature' ? r.cells.map((c) => c.mark) : []))))
+const marks = (Object.keys(MARK_LABELS) as Mark[]).filter((m) => used.has(m))
 const cols = grid.columns.length
 ---
 
@@ -32,14 +34,14 @@ const cols = grid.columns.length
     <p class="t-eyebrow text-muted-foreground">At a glance</p>
     <p id={titleId} class="t-heading mt-1.5 text-balance">{grid.title}</p>
     <p class="mt-1.5 text-sm text-muted-foreground">
-      {grid.versions}. Checked <time datetime={grid.checked}>{formatDate(checked)}</time>.
-      <a href={grid.details.href} class="glance-link whitespace-nowrap">{grid.details.label}</a>
+      {grid.versions}. Checked <time datetime={grid.checked}>{checked}</time>.
+      <a href={grid.details.href} class="link whitespace-nowrap">{grid.details.label}</a>
     </p>
   </div>
 
   <div class="glance-scroll" role="region" aria-labelledby={titleId} tabindex="0">
     <table>
-      <caption class="sr-only">{grid.title}: {grid.versions}, checked {formatDate(checked)}.</caption>
+      <caption class="sr-only">{grid.title}: {grid.versions}, checked {checked}.</caption>
       <thead>
         <tr>
           <td class="glance-corner"></td>
@@ -58,7 +60,7 @@ const cols = grid.columns.length
           <tbody>
             <tr class="glance-group">
               <th scope="rowgroup" colspan={cols + 1}>
-                <span class="glance-group-label">{g.title}</span>
+                <span class="glance-group-label t-eyebrow">{g.title}</span>
               </th>
             </tr>
             {g.rows.map((row) => (
@@ -70,7 +72,7 @@ const cols = grid.columns.length
                 {row.kind === 'value'
                   ? row.cells.map((cell, i) => (
                       <td class:list={['glance-value', { 'glance-ours': grid.columns[i]?.ours, 'glance-best': cell.best }]}>
-                        <span class:list={['glance-figure', { 'glance-text': !/\d/.test(cell.value) }]}>{cell.value}</span>
+                        <span class:list={['glance-figure', { 'glance-text': row.text }]}>{cell.value}</span>
                         {cell.best && <span class="sr-only"> (best)</span>}
                         {cell.note && <span class="glance-note">{cell.note}</span>}
                       </td>
@@ -81,7 +83,7 @@ const cols = grid.columns.length
                         <span class="sr-only">{MARK_LABELS[cell.mark]}{cell.note ? ': ' : ''}</span>
                         {cell.note &&
                           (cell.href ? (
-                            <a href={cell.href} class="glance-note glance-link">{cell.note}</a>
+                            <a href={cell.href} class="glance-note link">{cell.note}</a>
                           ) : (
                             <span class="glance-note">{cell.note}</span>
                           ))}
@@ -106,12 +108,17 @@ const cols = grid.columns.length
         ))
       }
     </ul>
-    <p>"Not documented" means the cited sources don't say, not that a feature is missing.</p>
+    {used.has('unknown') && <p>"Not documented" means the cited sources don't say, not that a feature is missing.</p>}
     {grid.notes.map((n) => <p>{n}</p>)}
   </div>
 </div>
 
-<style>
+{
+  /* Inline, not scoped: scoped styles would ship on every blog post (the
+     layout imports this component), inline ones only where a grid renders.
+     So every selector is under .glance. ComparisonMark's styles live here. */
+}
+<style is:inline>
   .glance {
     border-radius: 1.5rem;
     background: var(--card);
@@ -119,34 +126,25 @@ const cols = grid.columns.length
     padding-block: 1.25rem 1rem;
     color: var(--card-foreground);
   }
-  .glance-head,
-  .glance-foot {
+  .glance .glance-head,
+  .glance .glance-foot {
     padding-inline: 1.25rem;
-  }
-  .glance-link {
-    text-decoration: underline;
-    text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
-    text-underline-offset: 3px;
-    color: var(--foreground);
-  }
-  .glance-link:hover {
-    text-decoration-color: currentColor;
   }
 
   /* Only the table scrolls sideways; the ring shows when a keyboard user
      tabs in to scroll it. Relative, so the cells' absolutely positioned
      sr-only text stays inside the scroller instead of widening the page. */
-  .glance-scroll {
+  .glance .glance-scroll {
     position: relative;
     margin-top: 1rem;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     outline: none;
   }
-  .glance-scroll:focus-visible {
+  .glance .glance-scroll:focus-visible {
     box-shadow: inset 0 0 0 2px var(--ring);
   }
-  table {
+  .glance table {
     --glance-label: 9rem;
     --glance-col: 6.5rem;
     width: 100%;
@@ -157,41 +155,37 @@ const cols = grid.columns.length
     line-height: 1.35;
   }
   @media (min-width: 640px) {
-    table {
+    .glance table {
       --glance-label: 12rem;
       --glance-col: 7.5rem;
     }
   }
-  th,
-  td {
+  .glance th,
+  .glance td {
     padding: 0.6rem 0.5rem;
     border-bottom: 1px solid var(--border);
     vertical-align: middle;
   }
-  tbody:last-child tr:last-child > * {
+  .glance tbody:last-child tr:last-child > * {
     border-bottom: 0;
   }
 
   /* The row labels stay in view while the cells scroll under them. */
-  .glance-corner,
-  .glance-label {
+  .glance .glance-corner,
+  .glance .glance-label {
     position: sticky;
     left: 0;
     z-index: 1;
-    background: var(--card);
-  }
-
-  .glance-corner,
-  .glance-label {
     width: var(--glance-label);
     padding-left: 1.25rem;
     text-align: left;
+    background: var(--card);
   }
-  .glance-label {
+  .glance .glance-label {
     font-weight: 600;
     box-shadow: 1px 0 0 var(--border);
   }
-  .glance-hint {
+  .glance .glance-hint {
     display: block;
     margin-top: 0.15rem;
     font-size: 0.75rem;
@@ -199,23 +193,23 @@ const cols = grid.columns.length
     color: var(--muted-foreground);
   }
 
-  thead th,
-  thead td {
+  .glance thead th,
+  .glance thead td {
     border-bottom-color: var(--border-strong);
     vertical-align: bottom;
   }
-  .glance-col {
+  .glance .glance-col {
     min-width: var(--glance-col);
     text-align: center;
   }
-  .glance-name {
+  .glance .glance-name {
     display: block;
     font-family: var(--font-display);
     font-size: 0.9375rem;
     font-weight: 700;
     letter-spacing: -0.01em;
   }
-  .glance-version {
+  .glance .glance-version {
     display: block;
     margin-top: 0.1rem;
     font-family: var(--font-code);
@@ -224,35 +218,32 @@ const cols = grid.columns.length
     color: var(--muted-foreground);
   }
   /* Our own column: a quiet tint, never pink. */
-  .glance-ours {
+  .glance .glance-ours {
     background: color-mix(in oklab, var(--foreground) 4.5%, transparent);
   }
-  thead .glance-ours {
+  .glance thead .glance-ours {
     border-radius: 0.75rem 0.75rem 0 0;
   }
 
-  .glance-group th {
+  .glance .glance-group th {
     padding-top: 1.1rem;
     padding-left: 1.25rem;
     text-align: left;
     border-bottom-color: var(--border-strong);
   }
-  /* A group heading spans the whole row, so its words (not the cell) stick. */
-  .glance-group-label {
+  /* A group heading spans the whole row, so its words (not the cell) stick.
+     The type is t-eyebrow's, a step smaller. */
+  .glance .glance-group-label {
     position: sticky;
     left: 1.25rem;
     font-size: 0.6875rem;
-    font-weight: 650;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted-foreground);
   }
 
-  .glance-value,
-  .glance-mark {
+  .glance .glance-value,
+  .glance .glance-mark {
     text-align: center;
   }
-  .glance-figure {
+  .glance .glance-figure {
     display: block;
     font-family: var(--font-display);
     font-size: 0.9375rem;
@@ -261,39 +252,57 @@ const cols = grid.columns.length
     color: color-mix(in oklab, var(--foreground) 78%, transparent);
   }
   /* Words (a licence, a stack) wrap; figures never split. */
-  .glance-figure.glance-text {
+  .glance .glance-figure.glance-text {
     font-family: var(--font-text);
     font-size: 0.875rem;
     white-space: normal;
     text-wrap: balance;
   }
-  .glance-best .glance-figure {
+  .glance .glance-best .glance-figure {
     font-weight: 750;
     color: var(--foreground);
   }
-  .glance-note {
+  .glance .glance-note {
     display: block;
     margin-top: 0.2rem;
     font-size: 0.75rem;
     line-height: 1.3;
     color: var(--muted-foreground);
   }
-  .glance-mark :global(.glance-icon) {
+
+  /* ComparisonMark: shape and colour both differ per mark. */
+  .glance .mark {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+  }
+  .glance .glance-icon {
     display: inline-block;
     vertical-align: middle;
   }
+  .glance .mark-yes {
+    color: var(--success);
+  }
+  .glance .mark-partial {
+    color: var(--warning);
+  }
+  .glance .mark-no {
+    color: var(--destructive);
+  }
+  .glance .mark-unknown {
+    color: var(--subtle-foreground);
+  }
 
-  .glance-foot {
+  .glance .glance-foot {
     margin-top: 0.75rem;
     font-size: 0.75rem;
     line-height: 1.5;
     color: var(--muted-foreground);
   }
-  .glance-foot p + p,
-  .glance-legend + p {
+  .glance .glance-foot p + p {
     margin-top: 0.35rem;
   }
-  .glance-legend {
+  .glance .glance-legend {
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem 1rem;
@@ -301,12 +310,12 @@ const cols = grid.columns.length
     font-size: 0.8125rem;
     color: var(--foreground);
   }
-  .glance-legend li {
+  .glance .glance-legend li {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
   }
-  .glance-legend :global(.glance-key) {
+  .glance .glance-legend .glance-key {
     width: 1rem;
     height: 1rem;
   }

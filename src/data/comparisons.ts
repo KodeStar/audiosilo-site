@@ -30,7 +30,14 @@ export interface ValueCell {
 
 export type GridRow =
   | { kind: 'feature'; label: string; cells: FeatureCell[] }
-  | { kind: 'value'; label: string; hint?: string; cells: ValueCell[] }
+  | {
+      kind: 'value'
+      label: string
+      hint?: string
+      /** Words, not figures (a licence, a stack): set in text type and allowed to wrap. */
+      text?: true
+      cells: ValueCell[]
+    }
 
 export interface GridColumn {
   name: string
@@ -395,16 +402,19 @@ const audiobookshelf: ComparisonGridData = {
         {
           kind: 'value',
           label: 'Licence',
+          text: true,
           cells: [{ value: 'AGPLv3' }, { value: 'GPL-3.0' }],
         },
         {
           kind: 'value',
           label: 'Built with',
+          text: true,
           cells: [{ value: 'Go and SQLite' }, { value: 'Node.js and SQLite' }],
         },
         {
           kind: 'value',
           label: 'Metadata',
+          text: true,
           cells: [
             { value: 'Community database' },
             { value: 'Audible, Google Books, Open Library and more' },

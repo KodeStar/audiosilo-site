@@ -3,7 +3,8 @@
  * One comparison mark (ComparisonGrid.astro): a filled tick (yes), a
  * half-filled circle (partly), a crossed circle (no) and a dashed question
  * mark (not documented), each in its own colour. Decorative: the cell or
- * legend carries the words.
+ * legend carries the words. Styled by ComparisonGrid's inline styles (the
+ * .mark classes), its only user.
  */
 import type { Mark } from '@/data/comparisons'
 
@@ -50,22 +51,3 @@ const { mark, class: className } = Astro.props
   }
 </svg>
 
-<style>
-  .mark {
-    width: 1.25rem;
-    height: 1.25rem;
-    flex: none;
-  }
-  .mark-yes {
-    color: var(--success);
-  }
-  .mark-partial {
-    color: var(--warning);
-  }
-  .mark-no {
-    color: var(--destructive);
-  }
-  .mark-unknown {
-    color: var(--subtle-foreground);
-  }
-</style>
