@@ -86,7 +86,7 @@ const competition: ComparisonGridData = {
           label: 'First scan, 1,000 books',
           hint: 'Lower is better',
           cells: [
-            { value: '4.4 s', note: 'Covers done by 38 s', best: true },
+            { value: '4.4 s', note: 'Cover colours by about 38 s', best: true },
             { value: '3 min 41 s', note: '999 books indexed' },
             { value: '15.1 min' },
             { value: '54.8 s', note: '64 without a duration' },
@@ -186,7 +186,7 @@ const competition: ComparisonGridData = {
           label: 'Offline listening',
           cells: [
             { mark: 'yes', note: 'Apps and web player' },
-            { mark: 'yes', note: 'In the apps', href: ABSORB },
+            { mark: 'yes', note: 'In apps such as Absorb', href: ABSORB },
             { mark: 'yes', note: 'iPhone and Watch' },
             { mark: 'unknown' },
           ],
@@ -198,7 +198,7 @@ const competition: ComparisonGridData = {
             { mark: 'yes', note: 'Read-only by design' },
             { mark: 'no', note: 'Writes when you edit' },
             { mark: 'no', note: 'Moves, renames, writes files' },
-            { mark: 'partial', note: 'Only in network mode' },
+            { mark: 'partial', note: 'Network mode turns off file operations' },
           ],
         },
         {
@@ -271,11 +271,14 @@ const competition: ComparisonGridData = {
   ],
   notes: [
     'Scan, CPU and memory: the same 1,000 LibriVox books on one Intel Core i3-N305 server, medians of three runs. CPU runs to 120 seconds after indexing. Memory is anonymous memory, not a full RAM footprint.',
-    "Matching: LibraForge's published benchmark, 8 November 2026, scored on 3,622 books. LibraForge itself, not shown here, matched Audible's listing for 96.9%.",
+    "Matching: LibraForge's published benchmark, 8 November 2026, scored on 3,622 books. It ran Audiobookshelf 2.35.1's Quick Match and BookOrbit's image of 20 October 2026, not the versions above. LibraForge itself, not shown here, matched Audible's listing for 96.9%.",
   ],
 }
 
-/** Sources: audiosilo-vs-audiobookshelf.md (as of its 30 October check). */
+/**
+ * Sources: audiosilo-vs-audiobookshelf.md (as of its 30 October check), plus
+ * the third-party apps audiosilo-vs-the-competition.md links (Absorb).
+ */
 const audiobookshelf: ComparisonGridData = {
   title: 'AudioSilo and Audiobookshelf at a glance',
   versions: 'AudioSilo server 2.5.1 and apps 2.5.0 against Audiobookshelf 2.37.2',
@@ -334,7 +337,7 @@ const audiobookshelf: ComparisonGridData = {
           label: 'Offline listening',
           cells: [
             { mark: 'yes', note: 'Apps and web player' },
-            { mark: 'yes', note: 'In the apps', href: ABSORB },
+            { mark: 'yes', note: 'In apps such as Absorb', href: ABSORB },
           ],
         },
         {
@@ -424,7 +427,7 @@ const audiobookshelf: ComparisonGridData = {
     },
   ],
   notes: [
-    'Measured on the 1,000-book mixed library, one Intel Core i3-N305 server, medians of three runs. Memory is anonymous memory, not a full RAM footprint.',
+    'Measured on the 1,000-book mixed library, one Intel Core i3-N305 server: the scan and memory are medians of three runs, the cover the median of 100 requests from a Mac on the home network. Memory is anonymous memory, not a full RAM footprint.',
   ],
 }
 

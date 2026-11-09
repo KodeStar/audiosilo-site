@@ -9,6 +9,7 @@ import Icon from '@/components/Icon.astro'
 import Wash from '@/components/site/Wash.astro'
 import Device from '@/components/media/Device.astro'
 import ComparisonGrid from '@/components/site/ComparisonGrid.astro'
+import { COMPARISON_GRIDS } from '@/data/comparisons'
 import BlogShell from './BlogShell.astro'
 import Chapters from './Chapters.astro'
 import ReadScrubber from './ReadScrubber.astro'
@@ -40,6 +41,11 @@ const { post, all } = Astro.props
 const loaded = await loadPost(post, all)
 const { chapters, minutes, supersededBy, supersedes, related, hero, video } = loaded
 const { kind, title, description, published, updated, tags, supersededNote, glance } = post.data
+// A grid's cells are checked with the post (src/data/comparisons.ts): re-verifying
+// the post means re-checking the grid and moving its `checked` date too.
+if (glance && COMPARISON_GRIDS[glance].checked !== isoDate(post.data.verified)) {
+  throw new Error(`${post.id}: verified ${isoDate(post.data.verified)} but its "${glance}" grid was checked ${COMPARISON_GRIDS[glance].checked}`)
+}
 const cover = await coverStyle(post.id)
 // The share image: the hero, else a tour's first frame, else the site's og.png.
 const heroUrl = post.data.hero?.src ?? (video?.type === 'tour' ? video.files.poster.dark : undefined)

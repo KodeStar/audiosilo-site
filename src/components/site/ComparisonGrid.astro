@@ -27,96 +27,17 @@ const checked = formatDate(new Date(`${grid.checked}T00:00:00Z`))
 const used = new Set(grid.groups.flatMap((g) => g.rows.flatMap((r) => (r.kind === 'feature' ? r.cells.map((c) => c.mark) : []))))
 const marks = (Object.keys(MARK_LABELS) as Mark[]).filter((m) => used.has(m))
 const cols = grid.columns.length
+// A row with the wrong number of cells would put figures under the wrong product.
+for (const r of grid.groups.flatMap((g) => g.rows)) {
+  if (r.cells.length !== cols) throw new Error(`ComparisonGrid "${id}": row "${r.label}" has ${r.cells.length} cells for ${cols} columns`)
+}
 ---
-
-<div class={cn('glance', className)} style={`--glance-cols: ${cols}`}>
-  <div class="glance-head">
-    <p class="t-eyebrow text-muted-foreground">At a glance</p>
-    <p id={titleId} class="t-heading mt-1.5 text-balance">{grid.title}</p>
-    <p class="mt-1.5 text-sm text-muted-foreground">
-      {grid.versions}. Checked <time datetime={grid.checked}>{checked}</time>.
-      <a href={grid.details.href} class="link whitespace-nowrap">{grid.details.label}</a>
-    </p>
-  </div>
-
-  <div class="glance-scroll" role="region" aria-labelledby={titleId} tabindex="0">
-    <table>
-      <caption class="sr-only">{grid.title}: {grid.versions}, checked {checked}.</caption>
-      <thead>
-        <tr>
-          <td class="glance-corner"></td>
-          {
-            grid.columns.map((c) => (
-              <th scope="col" class:list={['glance-col', { 'glance-ours': c.ours }]}>
-                <span class="glance-name">{c.name}</span>
-                {c.version && <span class="glance-version">{c.version}</span>}
-              </th>
-            ))
-          }
-        </tr>
-      </thead>
-      {
-        grid.groups.map((g) => (
-          <tbody>
-            <tr class="glance-group">
-              <th scope="rowgroup" colspan={cols + 1}>
-                <span class="glance-group-label t-eyebrow">{g.title}</span>
-              </th>
-            </tr>
-            {g.rows.map((row) => (
-              <tr>
-                <th scope="row" class="glance-label">
-                  {row.label}
-                  {row.kind === 'value' && row.hint && <span class="glance-hint">{row.hint}</span>}
-                </th>
-                {row.kind === 'value'
-                  ? row.cells.map((cell, i) => (
-                      <td class:list={['glance-value', { 'glance-ours': grid.columns[i]?.ours, 'glance-best': cell.best }]}>
-                        <span class:list={['glance-figure', { 'glance-text': row.text }]}>{cell.value}</span>
-                        {cell.best && <span class="sr-only"> (best)</span>}
-                        {cell.note && <span class="glance-note">{cell.note}</span>}
-                      </td>
-                    ))
-                  : row.cells.map((cell, i) => (
-                      <td class:list={['glance-mark', { 'glance-ours': grid.columns[i]?.ours }]}>
-                        <ComparisonMark mark={cell.mark} class="glance-icon" />
-                        <span class="sr-only">{MARK_LABELS[cell.mark]}{cell.note ? ': ' : ''}</span>
-                        {cell.note &&
-                          (cell.href ? (
-                            <a href={cell.href} class="glance-note link">{cell.note}</a>
-                          ) : (
-                            <span class="glance-note">{cell.note}</span>
-                          ))}
-                      </td>
-                    ))}
-              </tr>
-            ))}
-          </tbody>
-        ))
-      }
-    </table>
-  </div>
-
-  <div class="glance-foot">
-    <ul class="glance-legend" aria-label="Key">
-      {
-        marks.map((m) => (
-          <li>
-            <ComparisonMark mark={m} class="glance-key" />
-            {MARK_LABELS[m]}
-          </li>
-        ))
-      }
-    </ul>
-    {used.has('unknown') && <p>"Not documented" means the cited sources don't say, not that a feature is missing.</p>}
-    {grid.notes.map((n) => <p>{n}</p>)}
-  </div>
-</div>
 
 {
   /* Inline, not scoped: scoped styles would ship on every blog post (the
      layout imports this component), inline ones only where a grid renders.
-     So every selector is under .glance. ComparisonMark's styles live here. */
+     So every selector is under .glance. ComparisonMark's styles live here.
+     Before the markup, so the table never paints unstyled. */
 }
 <style is:inline>
   .glance {
@@ -131,18 +52,16 @@ const cols = grid.columns.length
     padding-inline: 1.25rem;
   }
 
-  /* Only the table scrolls sideways; the ring shows when a keyboard user
-     tabs in to scroll it. Relative, so the cells' absolutely positioned
-     sr-only text stays inside the scroller instead of widening the page. */
+  /* Only the table scrolls sideways. A keyboard user tabs in to scroll it
+     and gets the site's focus outline, drawn outside the scroller where the
+     sticky labels can't cover it. Relative, so the cells' absolutely
+     positioned sr-only text stays inside the scroller instead of widening
+     the page. */
   .glance .glance-scroll {
     position: relative;
     margin-top: 1rem;
     overflow-x: auto;
     overscroll-behavior-x: contain;
-    outline: none;
-  }
-  .glance .glance-scroll:focus-visible {
-    box-shadow: inset 0 0 0 2px var(--ring);
   }
   .glance table {
     --glance-label: 9rem;
@@ -320,3 +239,87 @@ const cols = grid.columns.length
     height: 1rem;
   }
 </style>
+
+<div class={cn('glance', className)} style={`--glance-cols: ${cols}`}>
+  <div class="glance-head">
+    <p class="t-eyebrow text-muted-foreground">At a glance</p>
+    <p id={titleId} class="t-heading mt-1.5 text-balance">{grid.title}</p>
+    <p class="mt-1.5 text-sm text-muted-foreground">
+      {grid.versions}. Checked <time datetime={grid.checked}>{checked}</time>.
+      <a href={grid.details.href} class="link whitespace-nowrap">{grid.details.label}</a>
+    </p>
+  </div>
+
+  <div class="glance-scroll" role="region" aria-labelledby={titleId} tabindex="0">
+    <table>
+      <caption class="sr-only">{grid.title}: {grid.versions}, checked {checked}.</caption>
+      <thead>
+        <tr>
+          <td class="glance-corner"></td>
+          {
+            grid.columns.map((c) => (
+              <th scope="col" class:list={['glance-col', { 'glance-ours': c.ours }]}>
+                <span class="glance-name">{c.name}</span>
+                {c.version && <span class="glance-version">{c.version}</span>}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      {
+        grid.groups.map((g) => (
+          <tbody>
+            <tr class="glance-group">
+              <th scope="rowgroup" colspan={cols + 1}>
+                <span class="glance-group-label t-eyebrow">{g.title}</span>
+              </th>
+            </tr>
+            {g.rows.map((row) => (
+              <tr>
+                <th scope="row" class="glance-label">
+                  {row.label}
+                  {row.kind === 'value' && row.hint && <span class="glance-hint">{row.hint}</span>}
+                </th>
+                {row.kind === 'value'
+                  ? row.cells.map((cell, i) => (
+                      <td class:list={['glance-value', { 'glance-ours': grid.columns[i]?.ours, 'glance-best': cell.best }]}>
+                        <span class:list={['glance-figure', { 'glance-text': row.text }]}>{cell.value}</span>
+                        {cell.best && <span class="sr-only"> (best)</span>}
+                        {cell.note && <span class="glance-note">{cell.note}</span>}
+                      </td>
+                    ))
+                  : row.cells.map((cell, i) => (
+                      <td class:list={['glance-mark', { 'glance-ours': grid.columns[i]?.ours }]}>
+                        <ComparisonMark mark={cell.mark} class="glance-icon" />
+                        <span class="sr-only">{MARK_LABELS[cell.mark]}{cell.note ? ': ' : ''}</span>
+                        {cell.note &&
+                          (cell.href ? (
+                            <a href={cell.href} class="glance-note link">{cell.note}</a>
+                          ) : (
+                            <span class="glance-note">{cell.note}</span>
+                          ))}
+                      </td>
+                    ))}
+              </tr>
+            ))}
+          </tbody>
+        ))
+      }
+    </table>
+  </div>
+
+  <div class="glance-foot">
+    <ul class="glance-legend" aria-label="Key">
+      {
+        marks.map((m) => (
+          <li>
+            <ComparisonMark mark={m} class="glance-key" />
+            {MARK_LABELS[m]}
+          </li>
+        ))
+      }
+    </ul>
+    {used.has('unknown') && <p>"Not documented" means the cited sources don't say, not that a feature is missing.</p>}
+    {grid.notes.map((n) => <p>{n}</p>)}
+  </div>
+</div>
