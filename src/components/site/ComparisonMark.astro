@@ -1,0 +1,53 @@
+---
+/**
+ * One comparison mark (ComparisonGrid.astro): a filled tick (yes), a
+ * half-filled circle (partly), a crossed circle (no) and a dashed question
+ * mark (not documented), each in its own colour. Decorative: the cell or
+ * legend carries the words. Styled by ComparisonGrid's inline styles (the
+ * .mark classes), its only user.
+ */
+import type { Mark } from '@/data/comparisons'
+
+interface Props {
+  mark: Mark
+  class?: string
+}
+const { mark, class: className } = Astro.props
+---
+
+<svg viewBox="0 0 20 20" class:list={['mark', `mark-${mark}`, className]} aria-hidden="true" focusable="false">
+  {
+    mark === 'yes' && (
+      <>
+        <circle cx="10" cy="10" r="9" fill="currentColor" />
+        <path d="m6 10.3 2.7 2.7L14.2 7.4" fill="none" stroke="var(--card)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+      </>
+    )
+  }
+  {
+    mark === 'partial' && (
+      <>
+        <circle cx="10" cy="10" r="8.1" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <path d="M10 1.9a8.1 8.1 0 0 0 0 16.2Z" fill="currentColor" />
+      </>
+    )
+  }
+  {
+    mark === 'no' && (
+      <>
+        <circle cx="10" cy="10" r="8.1" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <path d="m7 7 6 6m0-6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </>
+    )
+  }
+  {
+    mark === 'unknown' && (
+      <>
+        <circle cx="10" cy="10" r="8.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2.6 2.4" />
+        <path d="M8 8.1a2.1 2.1 0 1 1 2.9 1.9c-.6.3-.9.7-.9 1.3v.3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+        <circle cx="10" cy="14.2" r="1" fill="currentColor" />
+      </>
+    )
+  }
+</svg>
+

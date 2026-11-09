@@ -3,8 +3,8 @@ title: "AudioSilo vs the competition: matching, first scans and everyday feature
 description: "AudioSilo, Audiobookshelf, BookOrbit and Grimmory compared on first scans, matching, memory, CPU and the features that help you choose."
 kind: guide
 published: 2026-11-07
-updated: 2026-11-08
-verified: 2026-11-08
+updated: 2026-11-09
+verified: 2026-11-09
 appliesTo: "AudioSilo 2.6.0 and 2.5.1; Audiobookshelf 2.37.2 (2.35.1 in the published matching); BookOrbit 3.6.0; Grimmory 3.5.0. Published matching covers AudioSilo 2.6.0 (LibraForge, 8 November 2026)."
 tags: [comparison, audiobookshelf, bookorbit, grimmory, metadata, benchmarks]
 covers:
@@ -22,7 +22,10 @@ related:
   - audiosilo-vs-audiobookshelf
   - moving-from-audiobookshelf
   - self-hosted-audiobook-server
+glance: competition
 revisions:
+  - date: 2026-11-09
+    note: "Added an at-a-glance grid at the top: the measured figures and the documented features side by side, including where AudioSilo falls short. Every cell was checked against this post and the sources it links."
   - date: 2026-11-08
     note: "iPhone app 2.6.0 and its Apple Watch app are on the App Store now; Google Play's 2.6.0 is still to follow."
   - date: 2026-11-08
