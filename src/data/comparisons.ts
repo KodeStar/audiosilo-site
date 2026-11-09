@@ -136,6 +136,17 @@ const competition: ComparisonGridData = {
             { value: '773' },
           ],
         },
+        {
+          kind: 'value',
+          label: 'Matching: time for the whole run',
+          hint: 'All 4,044 books, lower is better',
+          cells: [
+            { value: '2 min 15 s', note: '6 at once; 30 s with a local copy', best: true },
+            { value: '4 h 44 min', note: '1 at a time' },
+            { value: '15 h 53 min', note: '1 at a time, 2-5 s pauses' },
+            { value: '4 h 23 min', note: '1 at a time' },
+          ],
+        },
       ],
     },
     {
@@ -271,7 +282,7 @@ const competition: ComparisonGridData = {
   ],
   notes: [
     'Scan, CPU and memory: the same 1,000 LibriVox books on one Intel Core i3-N305 server, medians of three runs. CPU runs to 120 seconds after indexing. Memory is anonymous memory, not a full RAM footprint.',
-    "Matching: LibraForge's published benchmark, 8 November 2026, scored on 3,622 books. It ran Audiobookshelf 2.35.1's Quick Match and BookOrbit's image of 20 October 2026, not the versions above. Right book includes another recording of the same book. LibraForge itself, not shown here, wrote the right book for 3,579 (98.8%).",
+    "Matching: LibraForge's published benchmark, 8 November 2026, scored on 3,622 books. It ran Audiobookshelf 2.35.1's Quick Match and BookOrbit's image of 20 October 2026, not the versions above. Right book includes another recording of the same book. LibraForge itself, not shown here, wrote the right book for 3,579 (98.8%). Matching time is start to finish over all 4,044 books and depends on how many books each tool matches at once and the services it asks; AudioSilo's local-copy time leaves out downloading the community database.",
   ],
 }
 
