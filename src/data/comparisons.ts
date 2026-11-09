@@ -244,6 +244,26 @@ const competition: ComparisonGridData = {
         },
         {
           kind: 'feature',
+          label: 'Back up your Audible books',
+          cells: [
+            { mark: 'yes', note: 'With the Bridge', href: 'https://docs.audiosilo.app/users/admin/audible' },
+            { mark: 'unknown' },
+            { mark: 'unknown' },
+            { mark: 'unknown' },
+          ],
+        },
+        {
+          kind: 'feature',
+          label: 'Upcoming books in your series',
+          cells: [
+            { mark: 'yes', note: 'Preorders, new and missing', href: 'https://docs.audiosilo.app/users/listening/upcoming' },
+            { mark: 'unknown' },
+            { mark: 'unknown' },
+            { mark: 'unknown' },
+          ],
+        },
+        {
+          kind: 'feature',
           label: 'Ebook library (EPUB, PDF, comics)',
           cells: [
             { mark: 'partial', note: 'Companion EPUB, read-along' },
