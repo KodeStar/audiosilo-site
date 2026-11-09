@@ -109,6 +109,17 @@ const competition: ComparisonGridData = {
         },
         {
           kind: 'value',
+          label: "Matching: same as Audible's listing",
+          hint: 'Of 3,622 books, higher is better',
+          cells: [
+            { value: '80.3%', note: '2,910 books', best: true },
+            { value: '72.1%', note: '2,610 books' },
+            { value: '34.1%', note: '1,235 books' },
+            { value: '41.3%', note: '1,497 books' },
+          ],
+        },
+        {
+          kind: 'value',
           label: 'Matching: wrong book written',
           hint: 'Of 3,622 books, lower is better',
           cells: [
@@ -253,7 +264,7 @@ const competition: ComparisonGridData = {
   ],
   notes: [
     'Scan, CPU and memory: the same 1,000 LibriVox books on one Intel Core i3-N305 server, medians of three runs. CPU runs to 120 seconds after indexing. Memory is anonymous memory, not a full RAM footprint.',
-    "Matching: LibraForge's published benchmark, 8 November 2026, scored on 3,622 books.",
+    "Matching: LibraForge's published benchmark, 8 November 2026, scored on 3,622 books. LibraForge itself, not shown here, matched Audible's listing for 96.9%.",
   ],
 }
 
