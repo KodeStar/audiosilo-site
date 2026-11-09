@@ -1,6 +1,7 @@
 import { defineCollection, reference, z } from 'astro:content'
 import { glob } from 'astro/loaders'
 import { BLOG_KINDS, type BlogKind } from './data/blog'
+import { COMPARISON_GRID_IDS } from './data/comparisons'
 
 /** Blog posts: one Markdown file per post, src/content/blog/<slug>.md. See BLOG-SPIKE.md. */
 const blog = defineCollection({
@@ -45,6 +46,8 @@ const blog = defineCollection({
           chapters: z.array(z.string()).default([]),
         })
         .optional(),
+      /** An "at a glance" grid from src/data/comparisons.ts, shown above the post's first paragraph. */
+      glance: z.enum(COMPARISON_GRID_IDS).optional(),
       revisions: z.array(z.object({ date: z.coerce.date(), note: z.string() })).default([]),
       draft: z.boolean().default(false),
     }),

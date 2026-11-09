@@ -3,7 +3,7 @@ title: "AudioSilo vs Audiobookshelf: features and benchmarks compared"
 description: Is AudioSilo a good Audiobookshelf alternative? What each one does that the other doesn't, and benchmarks on the same server and library that you can rerun.
 kind: guide
 published: 2026-10-28
-updated: 2026-10-30
+updated: 2026-11-09
 verified: 2026-10-30
 appliesTo: Server 2.5.1 (first run 2.5.0); apps 2.5.0 (App Store and Android APK) and 2.0.0 (Google Play); Audiobookshelf 2.37.2
 tags: [audiobookshelf, comparison, performance, benchmarks]
@@ -29,7 +29,10 @@ hero: ../../assets/stills/player-desktop-upnext-dark.webp
 heroAlt: "The AudioSilo web player in a desktop browser: the library grid with the Up next drawer open, four books queued and the series to continue"
 supersededBy: audiosilo-vs-the-competition
 supersededNote: "There's a newer comparison: AudioSilo 2.6.0 and 2.5.1 against Audiobookshelf, BookOrbit and Grimmory, measured again on a different storage route, with published matching results. Its first-scan, CPU and memory figures replace the ones below."
+glance: audiobookshelf
 revisions:
+  - date: 2026-11-09
+    note: "Added an at-a-glance grid at the top, replacing the At a glance table, with the measured figures (including the one where Audiobookshelf is quicker) beside the features. The grid describes the versions this post was checked against."
   - date: 2026-10-30
     note: "Benchmarks re-run with AudioSilo 2.5.1: first scans about 30 times quicker than Audiobookshelf and now lighter on CPU too; the library disk is an NVMe SSD, not a hard disk; app 2.5.0 is on the App Store."
 ---
@@ -37,22 +40,6 @@ revisions:
 Yes, AudioSilo is a good Audiobookshelf alternative if what you want is audiobooks: a server that never writes to your folders, released phone apps in the App Store and Google Play, and a player built around listening to whole books. Audiobookshelf is the better fit if you also want an ebook library, uploads and tag editing from the browser, podcasts without an extra container, single sign-on, or its big ecosystem of third-party apps and tools. On the same low-power home server and the same libraries of 1,000 to 5,000 audiobooks, AudioSilo 2.5.1 finished its first scan 27 to 35 times sooner using 1 to 2% of the CPU time, rescanned an unchanged library five to seven times faster, idled at under half the memory and handled one and a half to nearly nine times the load. Audiobookshelf sent an already-resized cover a little sooner, and the one query behind its nearest thing to a health page was level or a hair quicker on two of the three libraries. [The benchmark](#the-benchmark) has the details.
 
 [Audiobookshelf](https://audiobookshelf.org/) is a great project. It's mature, it has years of releases behind it, most self-hosting guides recommend it first, and a whole family of third-party apps and tools is built on it. We make AudioSilo, so read this with that in mind: we've tried to be fair, every number below comes from a harness [you can download and run yourself](/benchmarks/2026-10-audiobookshelf/), and we show the results where Audiobookshelf comes out ahead as well as where AudioSilo does.
-
-## At a glance
-
-| | Audiobookshelf | AudioSilo |
-|---|---|---|
-| Licence | GPL-3.0 | AGPLv3 |
-| Built with | Node.js and SQLite | Go and SQLite |
-| What it serves | Audiobooks, podcasts and ebooks | Audiobooks, podcasts (with the Bridge) and an audiobook's EPUB |
-| Your files | Uploading, merging, metadata editing and embedding | Read-only: edits stay in its database |
-| Phone apps | Android and iOS apps in beta (the iOS beta is full) | iPhone, iPad and Android apps in the App Store and Google Play |
-| In the car | Android Auto | CarPlay and Android Auto |
-| Third-party apps and tools | [A big ecosystem](https://audiobookshelf.org/) | None yet; the [API is documented](https://docs.audiosilo.app/developers/server/api) |
-| Web player | PWA | PWA with offline downloads |
-| Casting | Chromecast: web, Android | Chromecast: iOS, Android, web |
-| Sign-in | Accounts, single sign-on (OpenID Connect), API keys | Accounts, QR-code invites, API keys |
-| Metadata | Audible, Google Books, Open Library and more, plus custom providers | Its [community database](https://meta.audiosilo.app), with spoiler-safe recaps and characters |
 
 On Android, Android Auto and casting need app 2.1 or later, which today means [the APK from GitHub](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play): Google Play still has 2.0.0. Reading the EPUB in the apps comes with app 2.5.0, which is in the App Store; on Android it's in the APK for now.
 
