@@ -79,11 +79,13 @@ for (const r of grid.groups.flatMap((g) => g.rows)) {
       --glance-col: 7.5rem;
     }
   }
+  /* Every body cell is top-aligned with the same padding, so a row's marks,
+     figures and label start on one line whatever the qualifiers under them. */
   .glance th,
   .glance td {
     padding: 0.6rem 0.5rem;
     border-bottom: 1px solid var(--border);
-    vertical-align: middle;
+    vertical-align: top;
   }
   .glance tbody:last-child tr:last-child > * {
     border-bottom: 0;
@@ -195,9 +197,10 @@ for (const r of grid.groups.flatMap((g) => g.rows)) {
     height: 1.25rem;
     flex: none;
   }
+  /* A block, so the icon's top is the cell's top padding, not a line box's. */
   .glance .glance-icon {
-    display: inline-block;
-    vertical-align: middle;
+    display: block;
+    margin-inline: auto;
   }
   .glance .mark-yes {
     color: var(--success);
