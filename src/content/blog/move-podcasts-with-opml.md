@@ -3,6 +3,7 @@ title: How to move your podcast subscriptions to another app with OPML
 description: Most podcast apps export the shows you follow as an OPML file and import one. What the file carries and leaves out, the apps that can't export, and how AudioSilo uses it.
 kind: guide
 published: 2026-10-24
+updated: 2026-11-10
 verified: 2026-10-24
 appliesTo: Server 2.4.0 with Bridge 0.3.0, app 2.4.0
 tags: [podcasts, opml, player, getting-started]
@@ -18,13 +19,16 @@ related:
   - self-hosted-audiobook-server
   - player-tips
   - moving-from-audiobookshelf
+revisions:
+  - date: 2026-11-10
+    note: "Rewritten to be shorter and easier to read. No facts changed."
 ---
 
-To move your podcasts from one app to another, **export your subscriptions as an OPML file** in the old app and **import that file** in the new one. OPML is a plain list of the RSS feed addresses of the shows you follow, and nearly every independent podcast app reads and writes it, so the switch takes a minute and you don't have to search for each show again. The two big exceptions are Apple Podcasts and Spotify, which don't export one (more below).
+**Export your subscriptions as an OPML file** in the old app and **import that file** in the new one. Nearly every independent podcast app reads and writes OPML, so the switch takes a minute. The big exceptions are Apple Podcasts and Spotify, which don't export one.
 
 ## What an OPML file is
 
-OPML (Outline Processor Markup Language) is a small XML file. For podcasts it holds one line per show: its title and the address of its RSS feed, the same feed every podcast app reads. A short one looks like this:
+OPML (Outline Processor Markup Language) is a small XML file. For podcasts it holds one line per show: its title and RSS feed address. A short one looks like this:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -37,35 +41,42 @@ OPML (Outline Processor Markup Language) is a small XML file. For podcasts it ho
 </opml>
 ```
 
-Because it is only a list of feeds, it carries **which shows you follow** and nothing else: no listening progress, no played or unplayed marks, no downloads, no playlists. Plan on marking a few episodes as played in the new app.
+It carries **which shows you follow** and nothing else: no progress, no played marks, no downloads, no playlists. Plan on marking a few episodes as played in the new app.
 
 ## Exporting from the app you use now
 
-The option is usually in the app's settings, under a name like **Import/Export**, **Export OPML** or **Export subscriptions**. A few examples at the time of writing (menus move between versions, so look nearby if yours differs):
+Look in the app's settings for **Import/Export**, **Export OPML** or **Export subscriptions**. Some examples at the time of writing (menus move, so look nearby):
 
-- **Pocket Casts**: Profile, then the settings cog, then **Import & Export**.
-- **AntennaPod**: Settings, then **Import/Export**, then the OPML export.
-- **Overcast**: **Export OPML** is near the bottom of its settings screen.
+| App | Where |
+|---|---|
+| **Pocket Casts** | Profile > settings cog > **Import & Export** |
+| **AntennaPod** | Settings > **Import/Export** > OPML export |
+| **Overcast** | **Export OPML**, near the bottom of settings |
 
-The app saves the file or offers it through your phone's share sheet. Save it somewhere you can reach from the new app, such as your Files app, a cloud drive or an email to yourself.
+The app saves the file or offers it through the share sheet. Put it somewhere the new app can reach: your Files app, a cloud drive or an email to yourself.
 
 ## The apps that don't export
 
-- **Apple Podcasts** has no OPML export on iPhone or Mac. The practical route is to make a list of your shows and follow them again in the new app by searching for each one by name.
-- **Spotify** neither imports nor exports OPML at the time of writing, and its exclusive shows have no public RSS feed at all, so they can't move to another app.
-
-A **private or members-only feed** (a Patreon or paid feed, say) is an address with your personal key in it. Some apps leave those out of an export; where one is included, treat the file like a password and don't share it.
+- **Apple Podcasts** has no OPML export on iPhone or Mac. List your shows and follow them again in the new app by name.
+- **Spotify** neither imports nor exports OPML at the time of writing. Its exclusive shows have no public RSS feed, so they can't move.
 
 ## Importing into the new app
 
-Look for **Import OPML** in the same part of the new app's settings, or open the file from your Files app or an email and pick the podcast app to open it with. The app reads each feed, so a long list can take a little while, and a show whose feed has moved or shut down may fail to add. That's normal: an OPML file can outlive the feeds in it. Find those shows again by name.
+Look for **Import OPML** in the new app's settings, or open the file from Files or an email and choose the podcast app. A long list can take a while.
+
+A show whose feed has moved or shut down may fail to add. That's normal: an OPML file can outlive its feeds. Find those shows again by name.
 
 ## Doing it with AudioSilo
 
-From **server 2.4.0**, with a paired Bridge and the Podcasts module on, AudioSilo keeps your podcasts on your own server next to your audiobooks, and OPML works both ways in the player. That means app 2.4.0 or the web player bundled with your server: until app 2.4.0 reaches your device, use the web player, since older apps don't show podcasts at all.
+From **server 2.4.0**, with a paired Bridge and the Podcasts module on, AudioSilo keeps your podcasts on your own server and OPML works both ways. You need app 2.4.0 or the web player bundled with your server. Older apps don't show podcasts at all, so use the web player until app 2.4.0 reaches your device.
 
-- **Import a list**, on the **Add shows** page of a podcast library, takes an OPML file from another app (up to 1 MB) and follows every show in it. Your server adds new shows five at a time, and the player sends the next batch by itself while the page is open. Each show in the list says how it went (**Following**, **Already following**, **Being added**), so importing the same file again is safe. A feed that failed to add in the last hour isn't asked for again, so a few dead feeds don't hold up the rest, and **Try again** on that show's row asks for it on its own.
-- **Export my shows**, in the Shows **...** menu, saves the shows you follow as an OPML file any podcast app can import. Private feeds are never written into an export, for anyone.
-- Coming from Apple Podcasts, use **Search** on the same page instead: it searches Apple Podcasts through your server (or Podcast Index, if your admin has set it up), so you can follow your shows again one by one.
+- **Import a list**, on a podcast library's **Add shows** page, follows every show in an OPML file (up to 1 MB). The server adds five shows at a time, and the player sends the next batch while the page is open. Each show says how it went: **Following**, **Already following** or **Being added**. Importing the same file again is safe.
+- **Export my shows**, in the Shows **...** menu, saves the shows you follow as an OPML file any podcast app can import.
+- **Coming from Apple Podcasts?** Use **Search** on the same page. It searches Apple Podcasts through your server (or Podcast Index, if your admin set it up), so you can follow your shows again one by one.
 
-[Podcasts in AudioSilo](/blog/podcasts/) covers the rest: following shows, keeping episodes and playing any episode on demand. The docs' [Podcasts page](https://docs.audiosilo.app/users/listening/podcasts) has the screens, including [Adding shows](https://docs.audiosilo.app/users/listening/podcasts#adding-shows). For what a self-hosted server is and why you might run one, see [Self-hosted audiobook server](/blog/self-hosted-audiobook-server/).
+## Good to know
+
+- **Private feeds** (a Patreon or paid feed, say) contain your personal key. Some apps leave them out of an export. If one is included, treat the file like a password. AudioSilo never writes private feeds into an export, for anyone.
+- **Dead feeds in AudioSilo:** a feed that failed in the last hour isn't asked for again, so a few dead feeds don't hold up the rest. **Try again** on that show's row retries it on its own.
+
+[Podcasts in AudioSilo](/blog/podcasts/) covers following shows, keeping episodes and playing any episode on demand. The docs' [Podcasts page](https://docs.audiosilo.app/users/listening/podcasts) has the screens, including [Adding shows](https://docs.audiosilo.app/users/listening/podcasts#adding-shows). For why you might run your own server, see [Self-hosted audiobook server](/blog/self-hosted-audiobook-server/).

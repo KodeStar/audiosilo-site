@@ -3,7 +3,7 @@ title: How to organise audiobook folders so every player gets them right
 description: One folder per book, inside its series, inside its author. The layout, naming rules, tags, covers and the awkward cases (disc folders, short stories) that trip scanners up.
 kind: guide
 published: 2026-10-18
-updated: 2026-11-07
+updated: 2026-11-10
 verified: 2026-11-07
 appliesTo: Server 2.5.0 and 2.6.0
 tags: [library, folders, metadata, getting-started]
@@ -25,6 +25,8 @@ related:
 hero: ../../assets/stills/server-series-dark.webp
 heroAlt: Series in the AudioSilo admin console, a complete shelf of seven spines and a series with books 2 to 4 missing
 revisions:
+  - date: 2026-11-10
+    note: "Rewritten to be shorter and easier to read. No facts changed."
   - date: 2026-11-07
     note: "Server 2.6.0: a name like Author; Series; Book 04; Title gives the series and number, and an album tag that is only the series name no longer becomes the title."
   - date: 2026-10-28
@@ -35,7 +37,7 @@ revisions:
     note: "Links the new guide to fixing audiobook files that play out of order."
 ---
 
-The short answer: give **every book its own folder**, put it inside a folder for its **series** (if it has one), and put that inside a folder for its **author**. Start the book folder with its number in the series. That one layout works in AudioSilo, in Audiobookshelf and in most other audiobook players:
+Give **every book its own folder**, inside a folder for its **series** (if it has one), inside a folder for its **author**. Start the book folder with its number in the series. That layout works in AudioSilo, Audiobookshelf and most other audiobook players:
 
 ```text
 Audiobooks/
@@ -52,40 +54,36 @@ Audiobooks/
         └── Project Hail Mary.m4b
 ```
 
-The rest of this guide explains why it works, what to do with the awkward cases, and how tags fit in.
-
 ## One folder, one book
 
-The rule audiobook servers share is that **a folder that directly holds audio files is one book**. Every audio file in it is a part of that book, played in the order of their names. It makes no difference whether the folder holds one M4B or fifty MP3s.
+**A folder that directly holds audio files is one book.** Every audio file in it is a part, played in name order. One M4B or fifty MP3s, it's the same.
 
-Two things follow from that:
+- **Never put two books' files in one folder.** They'd be read as one long book.
+- **Number multi-file parts in order.** AudioSilo 2.4.0 and later plays `Part 2.mp3` before `Part 10.mp3`. Some other players don't, so leading zeros (`01`, `02` ... `10`) are still safest if more than one player reads the library. [Why audiobook files play out of order](/blog/audiobook-files-out-of-order/) shows how to rename a whole folder.
 
-- **Never put two books' files in the same folder.** They would be read as one long book.
-- **Number multi-file parts in order.** AudioSilo 2.4.0 and later sorts numbers as numbers, whatever the punctuation around them, so `Part 2.mp3` plays before `Part 10.mp3` and padded numbers (`01`, `02` ... `10`) work just as well. Some other players sort strictly letter by letter and put part 10 after part 1, so leading zeros are still the safe choice for a library more than one player reads. [Why audiobook files play out of order](/blog/audiobook-files-out-of-order/) shows how to rename a whole folder at once.
-
-A loose audio file sitting directly in the top folder of the library is the exception: it is read as a book of its own. So a flat folder of M4B files works too, with no folders at all, although you then lose the author and series that folder names give you.
+A loose audio file in the library's top folder is a book of its own. A flat folder of M4Bs works, but you lose the author and series that folder names give.
 
 ## Authors, series and numbers
 
-When a book's tags don't say otherwise, AudioSilo reads the layout like this:
+When tags don't say otherwise:
 
-- `Author/Series/03 - Title/` is book 3 of *Series* by *Author*.
-- `Author/Title/` is a standalone by *Author*, with no series.
-- A leading number followed by a separator (`03 - Title`, `Book 3 - Title`, `Vol 3 - Title`) is the book's place in the series. A number that is part of the title, like `20,000 Leagues Under the Sea` or `1984`, is left alone.
+| Folder | Read as |
+|---|---|
+| `Author/Series/03 - Title/` | Book 3 of *Series* by *Author* |
+| `Author/Title/` | A standalone by *Author* |
+| `02.5 - Gods of Risk` (server 2.5.0+) | Book 2.5 |
 
-From server 2.5.0 an in-between novella can carry a decimal in its folder name: `02.5 - Gods of Risk` is book 2.5. For an omnibus that covers books 1 to 3, set the series number in the admin console instead, where ranges like `1-3` are supported.
-
-## One M4B or a folder of MP3s?
-
-Both work equally well as far as the server is concerned: a folder of MP3 chapter files plays as one book with one continuous timeline, just like a single M4B. The difference is in what the file carries: an M4B holds its chapters and cover inside it, while a folder of MP3s usually gets one chapter per file. [M4B vs MP3](/blog/m4b-vs-mp3-audiobooks/) compares them properly.
+A leading number with a separator (`03 - Title`, `Book 3 - Title`, `Vol 3 - Title`) is the place in the series. A number that's part of the title, like `20,000 Leagues Under the Sea` or `1984`, is left alone. For an omnibus, set a range like `1-3` in the admin console.
 
 ## Covers
 
-Drop a `cover.jpg` (or `cover.png`, `folder.jpg`, `folder.png`) into the book's folder. Otherwise AudioSilo uses another image in the book's folder, and failing that the art embedded in the audio file. Most M4B files carry their cover inside, so many books need nothing at all.
+Drop a `cover.jpg` (or `cover.png`, `folder.jpg`, `folder.png`) into the book's folder. Otherwise AudioSilo uses another image there, then the art embedded in the audio. Most M4Bs carry their own.
 
-## Tags: the other half of the story
+For one M4B against a folder of MP3s, see [M4B vs MP3](/blog/m4b-vs-mp3-audiobooks/). Both play as one book.
 
-Folder names give every book a sensible baseline, but most audiobook files also carry **tags**, and by default AudioSilo lets meaningful tags win:
+## Tags
+
+By default, meaningful tags win over folder names:
 
 | What | Where it usually lives |
 |---|---|
@@ -94,49 +92,40 @@ Folder names give every book a sensible baseline, but most audiobook files also 
 | Narrator | a *narrator* tag, or *composer* (from 2.5.0 an `.m4b`'s narrator tag wins over composer) |
 | Series | a series tag, where the file has one; from 2.6.0, also a folder or file name like `Author; Series; Book 04; Title` |
 
-Junk tags such as "Track 01" are ignored in favour of the folder name. If your folders are well named and your tags are a mess, switch the library to take book details from **folder names first** (Edit library in the admin console) rather than retagging hundreds of files.
+Junk tags like "Track 01" are ignored. If your folders are good and your tags a mess, set the library to take details from **folder names first** (Edit library in the admin console).
 
-To fix tags in the files themselves, a tag editor such as [Mp3tag](https://www.mp3tag.de/en/) (Windows and macOS) or the command-line [tone](https://github.com/sandreas/tone) handles both MP3 and M4B. You don't have to, though: corrections made in AudioSilo's admin console are stored in its database and never touch your files.
+You don't need to retag files: corrections in the admin console live in its database. If you want to, [Mp3tag](https://www.mp3tag.de/en/) (Windows and macOS) or the command-line [tone](https://github.com/sandreas/tone) handle MP3 and M4B.
 
 ## The awkward cases
 
-### Books split into disc folders
+| Case | What to do |
+|---|---|
+| A book split into `CD1`, `CD2` subfolders | Set its folder to **Always one book** (Folder detection, in the library's menu). Discs join in order. Health points these out. |
+| A folder of unrelated short stories | Set it to **Separate books** so each file is its own book. |
+| `.aax` or `.aaxc` files | Locked to your Audible account, so not indexed. Convert to M4B: [How to back up your Audible library](/blog/back-up-your-audible-library/). |
 
-A rip that keeps `CD1`, `CD2` subfolders inside the book's folder is read as one book per disc at first. Set the book's folder to **Always one book** (Folder detection, in the library's menu) and AudioSilo joins the discs into one book in disc order, with each disc's files in natural order. Health points these folders out for you.
+Both folder overrides survive rescans.
 
-### A folder of unrelated short stories
+**Coming from Audiobookshelf?** AudioSilo 2.3.1 and later reads the `metadata.json` its **Store metadata with item** setting leaves in each folder, and never writes to it. See [Moving from Audiobookshelf](/blog/moving-from-audiobookshelf/).
 
-`Short Stories/The Dead.m4b`, `Short Stories/The Gift of the Magi.m4b` and so on would be read as one book in three parts. Set that folder to **Separate books** and each file becomes its own book. Both overrides survive rescans.
-
-### Coming from Audiobookshelf
-
-If Audiobookshelf left a `metadata.json` in each book's folder (its **Store metadata with item** setting), AudioSilo 2.3.1 and later reads it: the title, authors, narrators, series and number, published year, description, ASIN and ISBN in the file go over the tags, as they do in Audiobookshelf. From 2.4.0 it also reads the subtitle, publisher, language, abridged, genres and tags. Books with an ASIN or ISBN in that file count as matched straight away. AudioSilo never writes to the file. More in [Moving from Audiobookshelf](/blog/moving-from-audiobookshelf/).
-
-### The ebook beside the audio
-
-From server 2.5.0, a DRM-free `.epub` in a book's folder (exactly one), or beside a single-file book with the same name, gives the book a **Read the ebook** button in the player. More in [Read the ebook](/blog/ebook-reader/).
-
-### Audible files
-
-`.aax` and `.aaxc` files are locked to your Audible account and aren't indexed. Convert them to M4B first: [How to back up your Audible library](/blog/back-up-your-audible-library/).
-
-### Upgrading from an older server
-
-Before 2.4.0, AudioSilo played a book's files in strict character order, so `10` came before `2`. A book whose files now sort differently is re-read at its next scan and plays in the new order, and someone partway through it may find their place in it has moved. A copy downloaded to a phone keeps its download order until the book is next started online with app 2.4.0.
+**An ebook beside the audio:** from server 2.5.0, a DRM-free `.epub` in a book's folder (exactly one), or beside a single-file book with the same name, adds **Read the ebook**. See [Read the ebook](/blog/ebook-reader/).
 
 ## Reorganise freely
 
-AudioSilo keeps your listening progress, bookmarks and notes attached to the book, not to a database row. Retagging a file changes nothing. Renaming or moving a book is noticed too: the server fingerprints each file, and when a known file disappears from one place and appears in another, its progress and bookmarks move with it.
+Progress, bookmarks and notes are attached to the book, not a database row. Retagging changes nothing. Move or rename a book and the server recognises each file by its fingerprint, so progress and bookmarks follow it.
 
-If your books live on a network share, mount it on the server first and point the library at the mounted path. Should the share drop while the server runs, AudioSilo refuses to treat the missing books as deleted, so nothing is lost; they come back when the share does.
+## Good to know
+
+- **Network shares:** mount the share on the server and point the library at the mounted path. If it drops, AudioSilo won't treat the missing books as deleted; they come back with the share.
+- **Upgrading from before 2.4.0:** older servers sorted `10` before `2`. A book whose files now sort differently is re-read at its next scan, and a listener partway through may find their place moved. A phone download keeps its old order until the book is next started online with app 2.4.0.
 
 ## A checklist
 
 - Each book in its own folder, inside `Author/Series/` or `Author/`.
-- Book folders in a series start with a whole number: `01 - Title`.
-- Multi-file parts numbered in order (leading zeros help other players; AudioSilo 2.4.0 doesn't need them).
+- Series book folders start with a whole number: `01 - Title`.
+- Multi-file parts numbered in order.
 - A `cover.jpg` where the files don't carry art.
-- No `.aax` files: convert them to M4B.
-- Then let the server do the rest, and fix stragglers in the console: see [Fix covers and series](/blog/fix-covers-and-series/).
+- No `.aax` files.
+- Fix stragglers in the console: [Fix covers and series](/blog/fix-covers-and-series/).
 
-The full reference is [Organizing your library](https://docs.audiosilo.app/users/getting-started/organizing-your-library) in the AudioSilo docs.
+The full reference is [Organizing your library](https://docs.audiosilo.app/users/getting-started/organizing-your-library) in the docs.
