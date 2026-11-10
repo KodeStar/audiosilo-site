@@ -3,7 +3,7 @@ title: "Set up AudioSilo with Traefik: Docker Compose and HTTPS"
 description: "A step-by-step Traefik reverse proxy guide for AudioSilo, with downloadable Compose files, screenshots, HTTPS settings, phone pairing and troubleshooting."
 kind: tutorial
 published: 2026-10-21
-updated: 2026-10-28
+updated: 2026-11-10
 verified: 2026-10-28
 appliesTo: "Server 2.3.1 (LinuxServer v2.3.1-ls6); Traefik 3.7.16; app 2.0.0"
 tags: [reverse-proxy, https, remote-access, docker, traefik]
@@ -62,37 +62,43 @@ screenshots:
     caption: "Check that the library opens, audio plays and seeking works through the same HTTPS address."
     address: "books.example.com:28443/web"
 revisions:
+  - date: 2026-11-10
+    note: "Rewritten to be shorter and easier to read. No facts changed."
   - date: 2026-10-28
     note: "Server 2.5.0 copies its database before an upgrade that changes it; links the backup-before-upgrading guide."
   - date: 2026-10-24
     note: "Noted the Set up your server flow a new 2.4.0 server opens on first sign-in, and that app 2.4.0 scans the invite card's QR directly."
 ---
 
-To put AudioSilo behind **Traefik**, let Traefik serve HTTPS and forward to **`http://audiosilo:8080`**, with **AudioSilo's HTTPS mode set to Off**. Set its public address to your HTTPS hostname and trust the proxy's address for client IP handling. This guide gives you the files and takes you from a fresh Docker Compose stack to listening on your phone.
+To put AudioSilo behind **Traefik**, let Traefik serve HTTPS and forward to **`http://audiosilo:8080`**, with **AudioSilo's HTTPS mode set to Off**. Set its public address to your HTTPS hostname and trust the proxy's address for client IP handling. The files below take you from a fresh Docker Compose stack to listening on your phone.
 
 Traefik handles HTTPS, certificate renewal and the HTTP redirect. A small file provider configuration connects its router to AudioSilo, without mounting the Docker socket.
 
-## Step 1: Prepare the hostname and network
+## What you need
 
-Use a Linux host with [Docker Engine and the Compose plugin](https://docs.docker.com/engine/install/) installed. These instructions use a terminal on that host. Confirm both commands work:
+- A Linux host with [Docker Engine and the Compose plugin](https://docs.docker.com/engine/install/), and a terminal on it.
+- An existing audiobook folder on that host.
+- A domain you control and an email address for the certificate account.
+
+Confirm Docker works:
 
 ```sh
 docker version
 docker compose version
 ```
 
-You'll also need an existing audiobook folder on that host, a domain you control and an email address for the certificate account. The example hostname is **`books.example.com`**; replace it with your own throughout.
+The example hostname is **`books.example.com`**. Replace it with your own throughout.
 
-1. In your DNS provider, add an **A record** for `books` pointing to the host's public IPv4 address. For a server at home, that is your router's public address, not `192.168.x.x`.
-2. Add an **AAAA record only if incoming IPv6 also reaches this host**. Remove a stale AAAA record before continuing. If you use a DNS/CDN service with a proxy toggle, use DNS-only while setting up this direct connection.
-3. Give the Docker host a stable LAN address. Forward **TCP 80 to TCP 80** and **TCP 443 to TCP 443** on that host in your router, and allow those ports through its firewall. A VPS needs its provider firewall configured too. The exact screens depend on your router and DNS provider.
-4. Confirm no other service already owns ports 80 or 443. This is a fresh, dedicated proxy stack; [use the existing-proxy instructions below](#if-you-already-run-traefik) if those ports belong to a proxy you want to keep.
+## Step 1: Prepare the hostname and network
 
-You can inspect the public records with `nslookup books.example.com`. If your internet connection uses CGNAT and cannot accept incoming connections, this particular port-forwarding setup cannot validate a certificate or serve remote listeners; use the [VPN route](/blog/listen-away-from-home/#option-3-keep-it-private-with-a-vpn) or a reachable host instead.
+1. In your DNS provider, add an **A record** for `books` pointing to the host's public IPv4 address. At home, that is your router's public address, not `192.168.x.x`.
+2. Add an **AAAA record only if incoming IPv6 also reaches this host**, and remove a stale one. If your DNS/CDN service has a proxy toggle, use DNS-only for now.
+3. Give the Docker host a stable LAN address. Forward **TCP 80 to TCP 80** and **TCP 443 to TCP 443** to it on your router, and allow both through its firewall. A VPS needs its provider firewall opened too.
+4. Make sure nothing else owns ports 80 or 443. If a proxy you want to keep does, see [If you already run Traefik](#if-you-already-run-traefik).
+
+Check the public records with `nslookup books.example.com`. Behind CGNAT, with no incoming connections, this setup can't get a certificate or serve remote listeners: use the [VPN route](/blog/listen-away-from-home/#option-3-keep-it-private-with-a-vpn) or a reachable host instead.
 
 ## Step 2: Download and edit the files
-
-Create a directory for this stack, then download its files:
 
 ```sh
 mkdir -p ~/audiosilo-traefik
@@ -103,9 +109,9 @@ curl -fL https://audiosilo.app/downloads/reverse-proxy/traefik/env.example -o .e
 curl -fL https://audiosilo.app/downloads/reverse-proxy/traefik/dynamic/audiosilo.yaml -o dynamic/audiosilo.yaml
 ```
 
-You can also save the [Compose file](/downloads/reverse-proxy/traefik/compose.yaml), [environment example](/downloads/reverse-proxy/traefik/env.example) and [dynamic/audiosilo.yaml](/downloads/reverse-proxy/traefik/dynamic/audiosilo.yaml) directly. Save the environment example as **`.env`**, including the leading dot, beside `compose.yaml`.
+Or save the [Compose file](/downloads/reverse-proxy/traefik/compose.yaml), [environment example](/downloads/reverse-proxy/traefik/env.example) and [dynamic/audiosilo.yaml](/downloads/reverse-proxy/traefik/dynamic/audiosilo.yaml) directly. Save the environment example as **`.env`**, with the leading dot, beside `compose.yaml`.
 
-Open `.env` with your editor, for example `nano .env`, and replace these values:
+Open `.env` in an editor, for example `nano .env`, and replace these values:
 
 ```dotenv
 BOOKS_HOST=books.example.com
@@ -119,9 +125,16 @@ PROXY_IP=172.30.90.2
 AUDIOSILO_IP=172.30.90.3
 ```
 
-`BOOKS_HOST` is just the hostname, without `https://`, a port or a path. `AUDIOBOOKS_DIR` is the **existing absolute folder on the host** containing your books. Use the output of `id -u` and `id -g` for `PUID` and `PGID`, choosing a user/group that can read that folder; on Unraid these are commonly `99` and `100`. Set `TZ` to your timezone, such as `Europe/London`. Quote a value containing spaces in `.env`.
+| Value | What to enter |
+|---|---|
+| `BOOKS_HOST` | Just the hostname: no `https://`, port or path. |
+| `AUDIOBOOKS_DIR` | The **existing absolute folder on the host** that holds your books. |
+| `PUID`, `PGID` | The output of `id -u` and `id -g`, for a user/group that can read that folder. On Unraid, commonly `99` and `100`. |
+| `TZ` | Your timezone, such as `Europe/London`. |
 
-The dedicated Docker network uses `172.30.90.0/24`. If that overlaps your LAN, VPN or another Docker network, change **all three** `PROXY_SUBNET`, `PROXY_IP` and `AUDIOSILO_IP` to an unused subnet and two different addresses inside it. For example, `172.30.91.0/24`, `172.30.91.2` and `172.30.91.3`. The fixed addresses prevent Docker assigning the proxy's reserved IP to AudioSilo first. AudioSilo trusts only the proxy IP with `/32`.
+Quote any value that contains spaces.
+
+If `172.30.90.0/24` overlaps your LAN, VPN or another Docker network, change **all three** `PROXY_SUBNET`, `PROXY_IP` and `AUDIOSILO_IP` to an unused subnet and two addresses in it, such as `172.30.91.0/24`, `172.30.91.2` and `172.30.91.3`. Fixed addresses stop Docker giving the proxy's IP to AudioSilo, which trusts only the proxy IP with `/32`.
 
 The AudioSilo service already contains the settings that matter:
 
@@ -132,7 +145,7 @@ AUDIOSILO_PUBLIC_URL: https://${BOOKS_HOST}
 AUDIOSILO_TRUSTED_PROXIES: ${PROXY_IP}/32
 ```
 
-Compose expands those variables from `.env`. AudioSilo has **no published host port**: the proxy reaches it over the Docker network. The LinuxServer image stores configuration and its database in `./audiosilo`, mounted at `/config`, and reads your books at `/audiobooks:ro`. The first-party KodeStar image uses `/data` instead; keep the image and data mount together if adapting this example. The [LinuxServer AudioSilo reference](https://docs.linuxserver.io/images/docker-audiosilo/) describes this image.
+AudioSilo has **no published host port**: the proxy reaches it over the Docker network. The LinuxServer image keeps its configuration and database in `./audiosilo` (mounted at `/config`) and reads your books at `/audiobooks:ro`. The first-party KodeStar image uses `/data` instead. See the [LinuxServer AudioSilo reference](https://docs.linuxserver.io/images/docker-audiosilo/).
 
 <!-- screenshot:files -->
 
@@ -155,9 +168,7 @@ http:
           - url: http://audiosilo:8080
 ```
 
-Traefik expands `BOOKS_HOST` in this **dynamic file**. Compose passes the variable to the container; it also sets the static entry points, file provider and Let's Encrypt resolver through Traefik's command arguments. The HTTP challenge uses port 80, and the `traefik_acme` volume preserves certificate state. Traefik's public dashboard is not enabled.
-
-The file provider deliberately keeps discovery simple: no Docker socket, container labels or Docker API version setting is required. The upstream name `audiosilo` resolves on the shared Docker network. See Traefik's [file provider](https://doc.traefik.io/traefik/providers/file/) and [ACME documentation](https://doc.traefik.io/traefik/https/acme/) for the two parts of this configuration.
+Traefik expands `BOOKS_HOST` in this **dynamic file**. Compose sets the static entry points, file provider and Let's Encrypt resolver through Traefik's command arguments. The HTTP challenge uses port 80, and the `traefik_acme` volume keeps certificate state. Traefik's public dashboard is not enabled. See Traefik's [file provider](https://doc.traefik.io/traefik/providers/file/) and [ACME documentation](https://doc.traefik.io/traefik/https/acme/).
 
 ## Step 4: Start the stack and sign in
 
@@ -171,7 +182,7 @@ docker compose ps
 docker compose logs traefik
 ```
 
-The config command should finish without errors. Both services should be running, and the proxy log should show successful certificate setup without DNS, connection or ACME errors. On a public hostname, wait for a trusted certificate before sending credentials through the site.
+The config command should finish without errors and both services should be running. The proxy log should show no DNS, connection or ACME errors. On a public hostname, wait for a trusted certificate before signing in.
 
 <!-- screenshot:running -->
 
@@ -181,63 +192,65 @@ Now read AudioSilo's first-run log:
 docker compose logs audiosilo
 ```
 
-On a new configuration directory it prints a generated **admin password** and **auth code** once. Save them privately. Open **`https://books.example.com/admin`**, sign in as `admin` with that password, and keep the auth code for the phone step. Use your real hostname here. If this is an existing configuration, use the credentials you already have; restarting does not print a fresh password.
+On a new configuration directory it prints an **admin password** and **auth code** once. Save them privately; a restart does not print them again.
 
-The pinned download runs 2.3.1, which opens the console directly. On a new server running **2.4.0 or later**, signing in opens **Set up your server** first: its steps cover the books folder (`/audiobooks` here), the addresses and pairing a phone, and **Finish later** takes you to the console to follow this guide instead.
+Open **`https://books.example.com/admin`** and sign in as `admin` with that password. Keep the auth code for Step 7.
+
+The pinned download runs 2.3.1, which opens the console directly. A new server on **2.4.0 or later** opens **Set up your server** first; **Finish later** takes you to the console to follow this guide.
 
 <!-- screenshot:login -->
 
-## Step 5: Check the three AudioSilo settings
+## Step 5: Check the AudioSilo settings
 
-In the admin console, open **Server > Settings > Network & HTTPS**. Confirm **HTTPS mode is Off** and **Trusted proxies** contains `172.30.90.2/32`, or the address you chose. AudioSilo speaks HTTP inside Docker; Traefik supplies the HTTPS visitors use.
+Open **Server > Settings > Network & HTTPS**. Confirm **HTTPS mode is Off** and **Trusted proxies** contains `172.30.90.2/32`, or the address you chose.
 
 <!-- screenshot:network -->
 
-Open **Server > Settings > General** and confirm **Public address** is `https://books.example.com`, using your real hostname and no `:8080` suffix.
+Open **Server > Settings > General**. Confirm **Public address** is `https://books.example.com`, with no `:8080`.
 
 <!-- screenshot:address -->
 
-These fields show as **locked by environment variables** in this setup. That is expected: supported `AUDIOSILO_*` environment variables override `config.yaml`, including after the file has been generated. To change one, edit Compose or `.env` and run **`docker compose up -d`** to recreate the affected container. `docker compose restart` keeps the old environment.
+These fields are **locked by environment variables**, as expected: supported `AUDIOSILO_*` variables override `config.yaml`. To change one, edit Compose or `.env` and run **`docker compose up -d`**. `docker compose restart` keeps the old environment.
 
-**Trusted proxies** controls whose forwarded client IP is believed for rate limits and sign-in lockouts. It does not disable HTTPS redirects. A single stable proxy IP is sufficient; there is no need to trust every container or your whole LAN.
+**Trusted proxies** decides whose forwarded client IP is believed for rate limits and sign-in lockouts. It does not disable HTTPS redirects. Trust the one proxy IP, not your whole LAN.
 
 ## Step 6: Add your audiobook library
 
-Go to **Library > Libraries > Add library**. Give the library a name and set **Folder** to **`/audiobooks`**, then click **Add library and scan**. Use the path inside the container, even if the host path in `.env` was `/srv/audiobooks` or a NAS mount. Let the scan fill in the covers.
+Go to **Library > Libraries > Add library**. Name it, set **Folder** to **`/audiobooks`** (the path inside the container) and click **Add library and scan**.
 
 <!-- screenshot:library -->
 
-If the folder is empty or unavailable, check the host path in `.env`, its mount and read permissions for your chosen `PUID`/`PGID`. AudioSilo's library mount is read-only; keep managing the files on the host. The [library documentation](https://docs.audiosilo.app/users/admin/libraries) covers scans and folder selection.
+If the folder is empty, check the host path in `.env`, its mount and read permissions for your `PUID`/`PGID`. The mount is read-only, so keep managing files on the host. See the [library documentation](https://docs.audiosilo.app/users/admin/libraries).
 
 ## Step 7: Pair your phone and test playback
 
-Open **`https://books.example.com/`** in a browser and enter the **auth code** from the first-run log. The connect page signs in and displays the **pairing QR code** and **Open in app** action. In the AudioSilo iOS or Android app, choose **Scan a QR code** on its connect screen and scan that pairing QR. You can pair the admin account; creating a separate listener is optional.
+1. Open **`https://books.example.com/`** in a browser and enter the **auth code**. The connect page shows a **pairing QR code**.
+2. In the AudioSilo iOS or Android app, choose **Scan a QR code** and scan it. Pairing the admin account is fine.
 
 <!-- screenshot:pairing -->
 
-For someone else, use **People > Invite someone** in the admin console. Open the resulting **invite link in a browser** first, or scan its QR with the phone's normal camera. That page then provides the pairing QR for the AudioSilo app. **Scanned with the phone's camera, the QR on the admin invite card opens a web page. App 2.4.0's scanner also signs in with it directly; earlier apps need the pairing QR on the connect page.** You can also enter the server address in the app and sign in with the invite code.
+For someone else, use **People > Invite someone**. They open the **invite link in a browser** for a pairing QR, or enter the server address and invite code in the app. App 2.4.0's scanner also accepts the invite card's QR directly; earlier apps need the connect page's pairing QR.
 
-Open **`https://books.example.com/web`** to check the web player too. Start a book, seek forward, pause and resume. Covers and audio should load through the HTTPS hostname.
+Open **`https://books.example.com/web`**. Start a book, seek forward, pause and resume.
 
 <!-- screenshot:player -->
 
-Finally, turn **Wi-Fi off** on your phone and repeat the connection and playback test over mobile data. That checks DNS, router forwarding and the public certificate from outside your home. A test on your home Wi-Fi alone cannot confirm remote access. If mobile data works but home Wi-Fi does not, check your router's NAT loopback support or configure local DNS to resolve the same hostname to the Docker host's LAN address.
+Then turn **Wi-Fi off** on your phone and repeat the test over mobile data. Home Wi-Fi alone can't confirm remote access. If mobile data works but Wi-Fi does not, check your router's NAT loopback support or point the hostname at the host's LAN address in local DNS.
 
-Leave **Home address** empty for this proxy-only stack unless you have a separate, reachable home endpoint with a certificate your app trusts. Do not enter `http://192.168.x.x:8080`: this example does not publish AudioSilo's port 8080. [Pair your phone](/blog/pair-your-phone/) and [Connecting and signing in](https://docs.audiosilo.app/users/listening/connecting) explain the other sign-in routes.
+Leave **Home address** empty unless you have a separate home endpoint with a certificate your app trusts. This stack does not publish port 8080, so `http://192.168.x.x:8080` won't work. [Pair your phone](/blog/pair-your-phone/) and [Connecting and signing in](https://docs.audiosilo.app/users/listening/connecting) cover other sign-in routes.
 
 ## Troubleshooting
 
-- **An `https://...:80` redirect or a redirect loop:** confirm `AUDIOSILO_TLS_MODE` is exactly `off` on the running AudioSilo container and recreate it with `docker compose up -d`. The upstream must be **HTTP** on 8080. Public URL should be the external **HTTPS** address. Trusted proxies is a separate client-IP setting.
-- **A changed setting is ignored:** environment variables take precedence over the config file. Check `docker compose config` for the resolved values, then recreate the service. The admin console's lock badge identifies the variable in control.
-- **A port is already allocated:** keep the service that owns 80/443 and use the existing-proxy section below, or choose a different host for this fresh stack.
-- **A subnet overlap error:** select an unused `PROXY_SUBNET` and update `PROXY_IP` and `AUDIOSILO_IP` with it in `.env`.
-- **An older app rejects the invite QR:** open the invite link in a browser and scan the **connect page's pairing QR**, or enter the server address and invite code in the app.
+- **An `https://...:80` redirect or a redirect loop:** confirm `AUDIOSILO_TLS_MODE` is exactly `off` on the running container and recreate it with `docker compose up -d`. The upstream must be **HTTP** on 8080.
+- **A changed setting is ignored:** environment variables win. Check `docker compose config` for the resolved values, then recreate the service.
+- **A port is already allocated:** see [If you already run Traefik](#if-you-already-run-traefik), or use a different host.
+- **A subnet overlap error:** pick an unused `PROXY_SUBNET` and update `PROXY_IP` and `AUDIOSILO_IP` to match.
 - **Traefik returns 404:** its router did not match. Use the exact hostname in `BOOKS_HOST`, check that `dynamic/audiosilo.yaml` exists, and read `docker compose logs traefik` for template or YAML errors. A request to an IP address does not match the hostname rule.
 - **502 Bad Gateway:** the router matched but the backend is unreachable. Check AudioSilo's log, the shared network and the upstream `http://audiosilo:8080`.
-- **A default or untrusted certificate:** inspect the ACME error in Traefik's log. Check DNS and public port 80 before trying again. Keep the certificate volume between restarts.
-- **A Docker API error from another configuration:** this example uses the file provider and does not need Docker access. Remove unrelated Docker provider settings when testing the dedicated example.
+- **A default or untrusted certificate:** read the ACME error in Traefik's log. Check DNS and public port 80 before trying again. Keep the certificate volume between restarts.
+- **A Docker API error from another configuration:** this example uses the file provider and does not need Docker access. Remove unrelated Docker provider settings.
 
-For the proxy's own check/log command:
+Read Traefik's log with:
 
 ```sh
 docker compose logs traefik
@@ -245,17 +258,24 @@ docker compose logs traefik
 
 ## If you already run Traefik
 
-Use the existing proxy that owns ports 80/443. The complete downloadable stack above is for a new proxy instance.
+Use the proxy that already owns ports 80/443; the download above is for a new proxy instance.
 
-Keep your existing Traefik ports, certificate storage and entry points. Enable the file provider if you do not already use it, then add the downloaded `dynamic/audiosilo.yaml` to its watched directory. Set the rule to your actual hostname, or pass `BOOKS_HOST` into that Traefik container. Match `websecure` and `letsencrypt` to your existing entry point and certificate resolver names.
+1. Keep your existing Traefik ports, certificate storage and entry points. Enable the file provider if you do not already use it.
+2. Add the downloaded `dynamic/audiosilo.yaml` to its watched directory. Set the rule to your actual hostname, or pass `BOOKS_HOST` into that Traefik container.
+3. Match `websecure` and `letsencrypt` to your existing entry point and certificate resolver names.
+4. Connect AudioSilo to Traefik's Docker network and make sure `audiosilo` resolves there. The backend is HTTP port 8080.
+5. Set AudioSilo's TLS mode to `off`, public URL to `https://books.example.com` and trusted proxies to the actual Traefik IP with `/32`. Give the proxy a stable address.
+6. Watch Traefik's logs after it loads the file, then check `/admin`, `/web` and playback.
 
-Connect AudioSilo to Traefik's Docker network and ensure `audiosilo` resolves there. Use HTTP port 8080 as the backend, set AudioSilo's TLS mode to `off`, public URL to `https://books.example.com` and trusted proxies to the actual Traefik IP with `/32`. Give the proxy a stable address. Watch Traefik's logs after it loads the file, then verify `/admin`, `/web` and playback. If your existing setup uses the Docker provider, you can instead describe the same hostname router and port 8080 service with labels; the downloadable example is the file-provider version.
+If your setup uses the Docker provider, you can describe the same hostname router and port 8080 service with labels instead. The download is the file-provider version.
 
 ## Updating the pinned images
 
-The download pins the exact image builds listed below so the setup is reproducible. `docker compose pull` fetches those tags; it does not choose a newer version automatically.
+The download pins the image versions in [What we tested](#what-we-tested); `docker compose pull` never picks a newer one by itself.
 
-Before upgrading, make a restorable backup of AudioSilo's configuration/database and the proxy's certificate state. Use AudioSilo's backup feature or stop the container before copying its database files. From server 2.5.0, the server also copies its database itself before an upgrade that changes it (**Before an upgrade** in Settings > Backups); [How to back up a self-hosted app before you upgrade it](/blog/back-up-before-upgrading/) covers rolling back. Edit the `image:` tags in `compose.yaml` to the published versions you want, then run:
+1. Back up AudioSilo's configuration/database and the proxy's certificate state. Use AudioSilo's backup feature, or stop the container before copying its database files.
+2. Edit the `image:` tags in `compose.yaml` to the versions you want.
+3. Pull and recreate:
 
 ```sh
 docker compose pull
@@ -263,12 +283,19 @@ docker compose up -d
 docker compose ps
 ```
 
-Read both services' logs and repeat admin sign-in, phone connection, playback and seeking. Keep the same data directories and certificate volumes when recreating the containers.
+Read both logs, then repeat sign-in, pairing, playback and seeking. `docker compose down` keeps named volumes; `down -v` removes them.
+
+From server 2.5.0, the server also copies its database before an upgrade that changes it (**Before an upgrade** in Settings > Backups). [How to back up a self-hosted app before you upgrade it](/blog/back-up-before-upgrading/) covers rolling back.
 
 ## What we tested
 
-The screenshots come from a local Docker test of these files on 21 October 2026, using the released LinuxServer AudioSilo **v2.3.1-ls6** image and **Traefik 3.7.16**. The test hostname was `books.example.com`, mapped locally, with HTTPS on **28443**; alternate local test ports leave existing host services in place. That is why the screenshots include `:28443`; the public recipe uses standard ports 80/443 and no port in Public address.
+| | |
+|---|---|
+| Date | 21 October 2026 |
+| AudioSilo | LinuxServer **v2.3.1-ls6** image |
+| Proxy | **Traefik 3.7.16** |
+| Test address | `books.example.com`, mapped locally, HTTPS on **28443** |
 
-The lab uses a local certificate authority to exercise HTTPS routing. **Public DNS, router forwarding and Let's Encrypt issuance are not verified by that local test**; follow the external checks in steps 1 and 7 for your deployment. The local run checks the admin UI, environment-controlled settings, library access, connect-page pairing, web player and audio requests through the proxy. It also checks redirects and forwarded client-IP handling. The captured invite and pairing QR are invalidated after capture, and the disposable containers are stopped.
+The screenshots come from a local Docker test of these files, hence `:28443`; the public recipe uses ports 80/443 and no port in Public address. The test used a local certificate authority, so **public DNS, router forwarding and Let's Encrypt issuance were not verified**: do the outside checks in steps 1 and 7. It did check the admin UI, locked settings, library access, connect-page pairing, the web player, audio, redirects and forwarded client IPs through the proxy.
 
-For general background, see [remote access and HTTPS](/blog/listen-away-from-home/) and the documentation's [Remote access](https://docs.audiosilo.app/users/getting-started/remote-access) page. Keep the configuration/database directory and certificate data backed up before upgrades; normal `docker compose down` preserves named volumes, while `down -v` removes them.
+For background, see [remote access and HTTPS](/blog/listen-away-from-home/) and the docs' [Remote access](https://docs.audiosilo.app/users/getting-started/remote-access) page.

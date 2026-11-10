@@ -3,6 +3,7 @@ title: "AudioSilo 2.6: less database work, native SQLite on Linux"
 description: "Server 2.6 reuses prepared database queries, and its Docker image and Linux downloads use native SQLite. What changes for an admin, and how to choose the fallback."
 kind: feature
 published: 2026-11-07
+updated: 2026-11-10
 verified: 2026-11-07
 appliesTo: Server 2.6.0
 tags: [server, performance, docker, linux, upgrades]
@@ -18,41 +19,55 @@ related:
   - back-up-before-upgrading
   - faster-first-scans
   - self-hosted-audiobook-server
+revisions:
+  - date: 2026-11-10
+    note: "Rewritten to be shorter and easier to read. No facts changed."
 ---
 
-Server 2.6.0 reduces repeated database work and changes the SQLite engine used by its standard Docker image and Linux downloads. For an admin, there isn't another service to install or a database to convert: the server still uses SQLite in its data folder. Update the server in the usual way, with a backup first.
+Server 2.6.0 does less repeated database work, and its Docker image and Linux downloads switch to native SQLite. There's no new service to install and no database to convert. Back up, then update as usual.
 
 ## Reuse work the database already did
 
-Before a database query runs, SQLite parses it and plans how to answer it. AudioSilo now keeps prepared statements on each database connection and reuses them for repeated queries, binding fresh values each time. That removes repeated preparation for queries the server keeps making, without caching an old answer.
+Before SQLite runs a query, it parses it and plans how to answer it. AudioSilo now keeps those prepared queries on each connection and reuses them, with fresh values each time. Nothing old is cached as an answer.
 
-This applies with either database engine, including the macOS and Windows builds. It doesn't depend on changing your library layout or rematching your books.
+This works with either database engine, including on macOS and Windows. You don't need to change your library or rematch books.
 
 ## Linux uses native SQLite
 
-The standard Docker build and the Linux release binaries for **amd64 and arm64** now include the native SQLite engine. The macOS and Windows release binaries continue using the pure-Go engine. Both use the same database file format.
+| Build | Engine |
+|---|---|
+| Docker image | Native SQLite |
+| Linux binaries (**amd64 and arm64**) | Native SQLite |
+| macOS and Windows binaries | Pure-Go (as before) |
 
-There's no separate SQLite container to run. If you use Docker, keep your existing persistent data mount. If you use a Linux binary, replace the server program as usual and keep its data folder. [Back up before upgrading](/blog/back-up-before-upgrading/) explains how to make a consistent copy before changing versions.
+Both engines use the same database file format. There's no separate SQLite container.
+
+- **Docker:** keep your existing data mount.
+- **Linux binary:** replace the server program and keep its data folder.
+
+[Back up before upgrading](/blog/back-up-before-upgrading/) shows how to make a consistent copy first.
 
 ## Check Docker before updating
 
-The new Docker image needs **Docker 20.10.10 or newer**. Run `docker version` on the host to check. An older Docker installation can block a system call the new binary needs and stop the container at startup.
+The new image needs **Docker 20.10.10 or newer**. Run `docker version` on the host to check.
 
-The [Docker quick start](https://docs.audiosilo.app/users/getting-started/quickstart-docker) lists the requirement, and [Troubleshooting](https://docs.audiosilo.app/users/troubleshooting#the-container-stops-at-start-up-with-pthread_create-failed) describes that startup failure. Update Docker before starting the new image if your host is older.
+An older Docker can block a system call the new binary needs, and the container stops at startup. Update Docker first if yours is older. The [Docker quick start](https://docs.audiosilo.app/users/getting-started/quickstart-docker) lists the requirement, and [Troubleshooting](https://docs.audiosilo.app/users/troubleshooting#the-container-stops-at-start-up-with-pthread_create-failed) describes the failure.
 
 ## The pure-Go fallback is still there
 
-Linux builds also retain the previous engine. To choose it, add this environment variable to the server's Compose service and recreate the container:
+Linux builds keep the previous engine too. To choose it, add this to the server's Compose service and recreate the container:
 
 ```yaml
 environment:
   AUDIOSILO_SQLITE: modernc
 ```
 
-For a native Linux installation, set `AUDIOSILO_SQLITE=modernc` in the environment used to start the server and restart it. The choice happens when the process starts. The same database is used, with no export or import between engines. The developer docs describe [the engine setting](https://docs.audiosilo.app/developers/server/configuration#the-sqlite-engine-audiosilo_sqlite).
+On a native Linux install, set `AUDIOSILO_SQLITE=modernc` in the server's environment and restart it.
 
-The startup log names the selected engine in its **database: sqlite** line. That is also useful when reporting a database problem.
+The engine is chosen at startup. It uses the same database, with no export or import. The startup log names the engine in its **database: sqlite** line, which helps when reporting a problem. The developer docs describe [the engine setting](https://docs.audiosilo.app/developers/server/configuration#the-sqlite-engine-audiosilo_sqlite).
 
 ## More
 
-See [Install the native binary](https://docs.audiosilo.app/users/getting-started/install-binary) for updating without Docker. [Faster first scans](/blog/faster-first-scans/) describes the separate file-probing changes from 2.5.1; this release's database changes work alongside those, and [AudioSilo 2.6](/blog/server-2-6/) covers the rest of the release.
+- [Install the native binary](https://docs.audiosilo.app/users/getting-started/install-binary) covers updating without Docker.
+- [Faster first scans](/blog/faster-first-scans/) covers the separate file-reading changes from 2.5.1.
+- [AudioSilo 2.6](/blog/server-2-6/) covers the rest of the release.

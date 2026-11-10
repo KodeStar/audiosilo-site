@@ -139,6 +139,9 @@ docs/PERFORMANCE.md     the performance budget and how it is kept
   image. Writing, updating and auditing posts goes through the workspace's
   **`/blog` skill** (`../.claude/skills/blog/SKILL.md`); `yarn blog:audit`
   lists the posts a release or a change touches (`covers` keys).
+  Every post follows the readability rules in
+  [docs/BLOG-WRITING.md](docs/BLOG-WRITING.md) (answer first, short sentences,
+  tables over prose, no internal names, length targets).
 - `VersionBadge.tsx` fetches the latest server release tag at runtime; bump
   `SERVER_VERSION` in `src/data/status.ts` (its fallback) when a server
   release is cut.
