@@ -1,6 +1,6 @@
 ---
 title: "AudioSilo Server 2.5: read the ebook, a faster server, and .mka everywhere"
-description: "The ebook reader in the web player and the apps, a faster server, .mka books in the apps and a database copy before upgrades. 2.5.1: first scans 26 times faster, and read-alongs."
+description: "The ebook reader in the web player and the apps, a faster server, .mka books in the apps and a database copy before upgrades. 2.5.1: first scans up to 26x faster, and read-alongs."
 kind: release
 published: 2026-10-28
 updated: 2026-11-10
@@ -67,7 +67,7 @@ revisions:
     note: "Where to get app 2.5.0 while it is in store review (the Android APK), and links to the posts on .mka books, the ASR worker install and backing up before an upgrade."
 ---
 
-AudioSilo Server **2.5.0** came out on 28 October, and **2.5.1** on 30 October. The headline is the **ebook reader**: when a book's folder also holds its EPUB, you can read it as well as listen, with your place kept on every device. In 2.5.1, a first scan of 1,165 books took 7.5 seconds instead of 198. `.mka` books play in the apps, and the server copies its database before an upgrade changes it.
+AudioSilo Server **2.5.0** came out on 28 October, and **2.5.1** on 30 October. The headline is the **ebook reader**: when a book's folder also holds its EPUB, you can read it as well as listen, with your place kept on every device. In 2.5.1, a first scan of 1,165 books on our test server took 7.5 seconds instead of 198. `.mka` books play in the apps, and the server copies its database before an upgrade changes it.
 
 **Where it runs:** the reader and the other new listening features are in the **web player bundled with the server** (`/web`) and in **app 2.5.0** for iPhone, iPad and Android, on the App Store and Google Play. On Android you can also install the APK from [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.5.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Older apps keep working, without **Read the ebook**.
 

@@ -80,7 +80,7 @@ Each cell reads **Audiobookshelf / AudioSilo** (Audiobookshelf 2.37.2, AudioSilo
 
 - **First scans were 27 to 35 times faster, using 1 to 2% of the CPU time.** This is new in 2.5.1. In the first run, 2.5.0 took only 25 to 40% less time (171 s, 79 s and 971 s) and used 9 to 37% more CPU time (1,217 s, 530 s and 6,927 s).
 - **Why:** 2.5.0 started ffprobe, a separate program, for every audio file. 2.5.1 reads durations, chapters and tags itself, and hands a file to ffprobe only when unsure. That needs FFmpeg 7.1 or 8.1, which the Docker image has. With another ffprobe, 2.5.1 scans like 2.5.0.
-- **2.5.1 does the same work as 2.5.0, and puts none of it off.** It found the same books, database size and unreadable files. At 5,000 books, durations matched Audiobookshelf's for 4,946 of the 4,947 books both listed. The odd one has a damaged header (Anna Karenina, Book 4): Audiobookshelf reads 3,510 seconds, AudioSilo 13,163, closer to what the file's size suggests ([our bug report](https://github.com/KodeStar/audiosilo-server/issues/276)).
+- **2.5.1 does the same work as 2.5.0, and puts none of it off.** It ended with the same books, database size and unreadable files. At 5,000 books, durations matched Audiobookshelf's for 4,946 of the 4,947 books both listed. The odd one has a damaged header (Anna Karenina, Book 4): Audiobookshelf reads 3,510 seconds, AudioSilo 13,163, closer to what the file's size suggests ([our bug report](https://github.com/KodeStar/audiosilo-server/issues/276)).
 - 2.5.1 didn't change rescans.
 
 ### Memory, disk and start-up

@@ -1,6 +1,6 @@
 ---
 title: Match automatically gets more of your library right
-description: In server 2.6.0, bulk matching trusts a known ASIN or ISBN, drops weak guesses, reads series from folder names, picks the recording and matches store listings.
+description: In server 2.6.0, bulk matching trusts an ASIN or ISBN the community knows, drops weak guesses, reads series from folder names, picks the recording and matches store listings.
 kind: feature
 published: 2026-11-07
 verified: 2026-11-07

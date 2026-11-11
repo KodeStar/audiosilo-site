@@ -50,7 +50,7 @@ So most of the time went on starting ffprobe, not on the disk or the network.
 
 ## What doesn't help
 
-- **More parallel probes.** Going from 8 at a time to 16 made each ffprobe run take twice as long and the scan no quicker (58 seconds against 53 to 58 on a 5,000-book test library). Going down to 4 made it slower (76 seconds). One probe at a time per core was right.
+- **More parallel probes.** Going from 8 at a time to 16 made each ffprobe run take twice as long and the scan no quicker (58 seconds against 53 to 58 on a 5,000-book test library). Going down to 4 made it slower (76 seconds). One probe per core was right.
 - **Cheaper ffprobe options.** Asking for fewer fields, or less of each file, saved no measurable time, because the cost is in starting it.
 - **Walking more folders at once.** Past 8 at a time, listing got no faster, even on Unraid's `/mnt/user`.
 
