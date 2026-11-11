@@ -56,7 +56,7 @@ Each server got the same 1,000 LibriVox book folders: 12,653 MP3 and 472 M4B fil
 
 - **AudioSilo's 4.4 seconds is when indexing finished.** Cover-colour work carries on to about 38 seconds, in both versions. We didn't find an equivalent "all done" signal for every other server.
 - **One source M4B is damaged.** Audiobookshelf leaves it out; the others keep it without a usable duration.
-- **Grimmory had 64 books without a positive duration**, including that one. In its first trial, 355 books shared with Audiobookshelf had durations differing by more than both ten seconds and 0.1%: a metadata difference, not a playback test.
+- **Grimmory had 64 books without a positive duration**, including that one. In its first trial, 355 books shared with Audiobookshelf had durations differing by more than both ten seconds and 0.1%. This is a metadata difference, not a playback test.
 - **BookOrbit's third trial hit a busy host** (45.3 minutes, against 14.4 and 15.1). We kept it in the range and median.
 
 ## CPU
@@ -125,7 +125,7 @@ Three tools here are companions rather than playback servers, and can work along
 - **AudioSilo's 612 "a field differs" books mostly come down to a setting.** Bulk matching offers three choices of what to write; the run used the default, **Fill in what's missing**, which never replaces what a file already says. In 469 of the 612, every differing field is the file's own tag: "11 - War Factory" where Audible has "War Factory", or one author where the listing credits two. **Use community values** wasn't tested, so its score is unmeasured; the community's values can differ from Audible's too.
 - **Books Audible's search hid:** of 122 scored books hidden where the runs were made, AudioSilo got 114 right against LibraForge's 119.
 - **AudioSilo was by far the quickest**, because with a local copy, matching is a query on the same disk.
-- **Coverage alone isn't the story.** Audiobookshelf Quick Match wrote the most books, but 890 were the wrong book. beets was the most cautious, leaving over half unmatched.
+- **Coverage alone doesn't measure quality.** Audiobookshelf Quick Match wrote the most books, but 890 were the wrong book. beets was the most cautious, leaving over half unmatched.
 
 ## Features that may decide it before any benchmark
 
@@ -136,7 +136,7 @@ Start with the jobs you need done. These are documented capabilities, not a clai
 | AudioSilo | Read-only library access, cross-platform listening and household controls | No documented OIDC; companion EPUB rather than a standalone ebook library; Bridge needed for podcast fetching |
 | Audiobookshelf | Established audiobook/podcast tools, file editing and a broad client ecosystem | Its official apps are beta; some device features come from third-party clients |
 | BookOrbit | Broad reading library, iPhone/Watch listening, reader-device sync, OIDC and chapter timing editing | PostgreSQL required; Android app not shipped in the cited release |
-| Grimmory | Browser reading, personal shelves, OPDS/Kobo support and OIDC | MariaDB required; integrated offline audiobook playback and native apps not established by the inspected sources |
+| Grimmory | Browser reading, personal shelves, OPDS/Kobo support and OIDC | MariaDB required; integrated offline audiobook playback and phone apps not established by the inspected sources |
 
 Sources: [AudioSilo server](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/admin/server.md), [AudioSilo accounts](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/admin/users-and-invites.md), [AudioSilo podcasts](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/admin/podcasts.md), [Audiobookshelf](https://github.com/advplyr/audiobookshelf/blob/edb1f7efc92ecacdef51aafb4d9d5054ce10604f/readme.md), [BookOrbit](https://github.com/bookorbit/bookorbit/blob/a96ff0c85a4c25e9126dfa4c71ea87537a3baf7a/README.md), [Grimmory](https://github.com/grimmory-tools/grimmory/blob/402e89b4452f8e2b17ab95f16c1621c003516cd2/README.md). Unknown support is not a claim of absence.
 
@@ -147,7 +147,7 @@ More sources behind the grid:
 - **Grimmory:** standalone ebook, PDF and comic libraries in the browser, with shelves, reading progress and e-reader access. Its [documented OIDC support](https://github.com/grimmory-tools/grimmory/blob/402e89b4452f8e2b17ab95f16c1621c003516cd2/README.md) may settle it for a household that already uses an identity provider.
 - **AudioSilo:** [offline downloads](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/listening/offline-downloads.md), [household controls](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/admin/users-and-invites.md) and [spoiler-safe recaps and characters](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/listening/recaps-and-characters.md). The server reads your folders; the optional Bridge does the writing and heavy jobs. Server 2.6.0 lets you [follow the narration in the companion EPUB, offline too](https://github.com/KodeStar/audiosilo-docs/blob/cfa9fc51d45132f9deeb8bbc5342c651b5fa8baf/docs-users/listening/reading-the-ebook.md).
 
-Already on Audiobookshelf? Trying AudioSilo needn't mean moving your files first: [Moving from Audiobookshelf](/blog/moving-from-audiobookshelf/) covers a gradual trial. You can also stay and use [AudioSilo's community metadata provider](https://meta.audiosilo.app/audiobookshelf).
+Already on Audiobookshelf? Trying AudioSilo needn't mean moving your files first. [Moving from Audiobookshelf](/blog/moving-from-audiobookshelf/) covers a gradual trial. You can also stay, and use the community database as [a custom metadata provider for Audiobookshelf](https://meta.audiosilo.app/audiobookshelf).
 
 ## Good to know
 

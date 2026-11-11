@@ -25,15 +25,15 @@ revisions:
     note: "Rewritten to be shorter and easier to read. No facts changed."
 ---
 
-A first scan is slow mostly because many servers **start an external program, usually ffprobe, once for every audio file** to learn its length, chapters and codec. Starting a program costs far more than reading the few hundred kilobytes it needs. With tens of thousands of files, those start-ups are the scan.
+A first scan is slow mostly because many servers **start an external program, usually ffprobe, once for every audio file** to learn its length, chapters and codec. Starting a program costs far more than reading the few hundred kilobytes it needs. With tens of thousands of files, starting the program takes up most of the scan.
 
-A server that reads the files itself, and writes to its database in batches, can scan the same library many times faster. The numbers below come from one small server, so take them as proportions, not promises.
+A server that reads the files itself, and writes to its database in batches, can scan the same library many times faster. The numbers below come from one small server. Your own times will differ, so read them as proportions.
 
 ## What a scan has to read
 
 For each book, a server wants the tags, the length, the chapters, the codec (can a phone or browser play it as it is?) and a cover. In an MP3 most of this sits near the start (an ID3 block, a Xing or VBRI header). In an M4B or M4A it's in the file's index, the `moov` box.
 
-None of this needs the audio itself. A well-written reader touches a few hundred kilobytes of a 500 MB M4B. But an M4B whose index is at the end of the file (common when a tool doesn't "fast-start" it) needs a jump to the end, which costs a seek on a hard disk.
+None of this needs the audio itself. A well-written parser touches a few hundred kilobytes of a 500 MB M4B. But an M4B whose index is at the end of the file (common when a tool doesn't "fast-start" it) needs a jump to the end, which costs a seek on a hard disk.
 
 ## Where the time actually goes
 
@@ -46,20 +46,20 @@ None of this needs the audio itself. A well-written reader touches a few hundred
 | At that rate: 5,000 books | About 14 minutes |
 | At that rate: 20,000 books | About an hour |
 
-So the disk and the network weren't where most of the time went. Process start-up was.
+So most of the time went on starting ffprobe, not on the disk or the network.
 
 ## What doesn't help
 
-- **More parallel readers.** Going from 8 readers to 16 made each ffprobe run take twice as long and the scan no quicker (58 seconds against 53 to 58 on a 5,000-book test library). Going down to 4 made it slower (76 seconds). One reader per core was right.
-- **Cheaper ffprobe options.** Asking for fewer fields, or less of each file, saved no measurable time: the cost is in starting it.
+- **More parallel probes.** Going from 8 at a time to 16 made each ffprobe run take twice as long and the scan no quicker (58 seconds against 53 to 58 on a 5,000-book test library). Going down to 4 made it slower (76 seconds). One probe at a time per core was right.
+- **Cheaper ffprobe options.** Asking for fewer fields, or less of each file, saved no measurable time, because the cost is in starting it.
 - **Walking more folders at once.** Past 8 at a time, listing got no faster, even on Unraid's `/mnt/user`.
 
 ## What makes it fast
 
 1. **Read the files in the server's own process.** Parsing an MP3's headers or an M4B's index in running code costs about 1 to 2 ms a file instead of 30-plus. The hard part is matching ffprobe exactly (durations to the microsecond, chapter ends, odd encoders), so a careful server keeps ffprobe as the fallback for any file it isn't sure about.
-2. **Write to the database in batches.** Once reading is cheap, the database is the floor: one transaction per book took about 1.5 ms a book. Writing several books per transaction cut that by about 12%.
+2. **Write to the database in batches.** Once reading is cheap, writing to the database is what limits the scan. One transaction per book took about 1.5 ms a book. Writing several books per transaction cut that by about 12%.
 3. **Don't look at each file twice.** Taking file dates from the folder walk, instead of asking again later, cut that step from about 15 seconds of work to under 3.
-4. **On rescans, skip what hasn't changed.** A book whose files have the same size and modification time needs no reading. This is why a second scan is usually quick on any server, and the first one hurts.
+4. **On rescans, skip what hasn't changed.** A book whose files have the same size and modification time needs no reading. This is why a second scan is usually quick on any server, and the first one is the slow one.
 
 ## Disks, network shares and Unraid
 
