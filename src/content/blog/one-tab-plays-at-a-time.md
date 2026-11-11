@@ -1,5 +1,5 @@
 ---
-title: "The web player: one tab plays at a time, and every tab keeps one place"
+title: "The web player: one tab plays at a time, and tabs on one book share its place"
 description: "In AudioSilo 2.7, playing in a second browser tab pauses the first. Your listening counts once, and with one book in both, the tab you go back to picks up where the other stopped."
 kind: feature
 published: 2026-11-11
@@ -38,9 +38,13 @@ Now one tab plays, its listening is recorded once, and the saved place no longer
 
 ## What you see
 
-1. Start a book in one tab, then press play in another tab.
-2. The first tab pauses. When you look at it, it shows **Playing in another tab**.
-3. Press play in the first tab to take it back. The second tab pauses in turn.
+To move playing from one tab to another:
+
+1. Start a book in one tab.
+2. Press play in another tab. The first tab pauses. When you look at it, it shows **Playing in another tab**.
+3. To take it back, press play in the first tab.
+
+The second tab now pauses in turn, and the first tab plays.
 
 The newest play wins. If you press play in two tabs at the same moment, exactly one of them keeps playing.
 
@@ -72,7 +76,7 @@ Undo waits for that send, then takes the finish back. The book ends up not finis
 ## Good to know
 
 - A tab left open from before the update doesn't follow the new rule. Reload it once after your server moves to 2.7.0.
-- Two windows side by side, both in view, behave the same way. The paused one shows the place it stopped at until you press play, then it moves to the other window's place.
+- Two windows side by side, both in view, are never brought to the front. So the paused one shows the place it stopped at until you press play, then it moves to the other window's place.
 - The apps on iPhone, iPad and Android have no tabs, so nothing changes there.
 
 ## More

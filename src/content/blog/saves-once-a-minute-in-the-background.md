@@ -29,7 +29,7 @@ related:
 draft: true
 ---
 
-When the app is in the background, or the book is downloaded, AudioSilo 2.7.0 sends your place to the server once a minute instead of every 15 seconds. The phone still keeps its own record every 15 seconds, and the slower send loses no listening. And with the screen off, the player no longer redraws its seek bar and times every second for nobody.
+When the app is in the background, or the book is downloaded, AudioSilo 2.7.0 sends your place to the server once a minute instead of every 15 seconds. The device still keeps its own record every 15 seconds, and the slower send loses no listening. And with the screen off, the player no longer redraws its seek bar and times every second.
 
 Both changes are in the app and the web player. They need no setting and work with any server.
 
@@ -66,12 +66,12 @@ On Wi-Fi, on a Pixel 6a, the pace made no measurable difference. We did not meas
 
 ## What stays on the device
 
-The phone writes its own record of your place every 15 seconds, at every pace. That costs no network. It is what the app reads when you resume without a connection.
+The device writes its own record of your place every 15 seconds, at every pace. That costs no network. It is what the app reads when you resume without a connection.
 
-If the app is closed mid-book, by you or by the phone, the next launch picks up the listening it left behind:
+If the app is closed mid-book, by you or by the phone:
 
-- On a server with listening sync, you resume at most about 5 seconds of playing behind where you stopped, and that listening reaches your history, Journal and stats.
-- If you press play before the app has recovered it, or the server has no listening sync, you resume up to 15 seconds behind.
+- On a server with listening sync, the next launch picks up the listening it left behind. You resume at most about 5 seconds of playing behind where you stopped, and that listening reaches your history, Journal and stats. In the web player, a page opened within 30 seconds of the close picks it up 30 seconds later.
+- If you press play before the app has recovered it, or the server has no listening sync, you resume up to 15 seconds of playing behind.
 
 ## Other devices can be a minute behind
 
@@ -83,7 +83,7 @@ To pick up exactly where you stopped on another device, pause first. A pause sav
 
 A player screen left open stayed mounted with the phone locked or the tab hidden. It redrew the seek bar, the times and the chapter list once a second.
 
-Now, while the app is in the background, those ticks are not drawn. When you come back, the screen shows the live place at once. In our 15-minute test with the screen off, the app's JavaScript thread used 11.9 seconds of processor time, down from 49.6.
+Now, while the app is in the background, those ticks are not drawn. When you come back, the screen shows the live place at once. In a separate 15-minute test with the screen off, the app's JavaScript thread used 11.9 seconds of processor time, down from 49.6.
 
 Everything that does not depend on the screen carries on as before:
 
