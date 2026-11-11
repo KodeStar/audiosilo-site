@@ -1,6 +1,6 @@
 ---
 title: "AudioSilo Server 2.5: read the ebook, a faster server, and .mka everywhere"
-description: "The ebook reader in the web player and the apps, a faster server, .mka books in the apps and a database copy before upgrades. 2.5.1: much faster first scans and read-alongs."
+description: "The ebook reader in the web player and the apps, a faster server, .mka books in the apps and a database copy before upgrades. 2.5.1: first scans up to 26x faster, and read-alongs."
 kind: release
 published: 2026-10-28
 updated: 2026-11-10
@@ -67,7 +67,7 @@ revisions:
     note: "Where to get app 2.5.0 while it is in store review (the Android APK), and links to the posts on .mka books, the ASR worker install and backing up before an upgrade."
 ---
 
-AudioSilo Server **2.5.0** came out on 28 October, and **2.5.1** on 30 October. The headline is the **ebook reader**: when a book's folder also holds its EPUB, you can read it as well as listen, with your place kept on every device. The server is also much faster, `.mka` books play in the apps, and the server copies its database before an upgrade changes it.
+AudioSilo Server **2.5.0** came out on 28 October, and **2.5.1** on 30 October. The headline is the **ebook reader**: when a book's folder also holds its EPUB, you can read it as well as listen, with your place kept on every device. In 2.5.1, a first scan of 1,165 books on our test server took 7.5 seconds instead of 198. `.mka` books play in the apps, and the server copies its database before an upgrade changes it.
 
 **Where it runs:** the reader and the other new listening features are in the **web player bundled with the server** (`/web`) and in **app 2.5.0** for iPhone, iPad and Android, on the App Store and Google Play. On Android you can also install the APK from [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.5.0) (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Older apps keep working, without **Read the ebook**.
 
@@ -116,7 +116,7 @@ When a new version changes the database, the server first copies it into the bac
 
 The index is the same: 0 differences across 1,165 books and 56,673 chapters. JSON answers are compressed too (a page of 200 books goes from 41 kB to 10 kB). See [First scans many times faster](/blog/faster-first-scans/).
 
-The fast scan needs **FFmpeg 7.1 or 8.1**. The Docker images (ours and LinuxServer.io's) have 8.1, and the native Linux and Windows builds swap a downloaded ffprobe for the FFmpeg 8.1 build in the background, then scan faster from the next start.
+The fast scan needs **FFmpeg 7.1 or 8.1**. The Docker images (ours and LinuxServer.io's) have 8.1. The native Linux and Windows builds swap a downloaded ffprobe for the FFmpeg 8.1 build in the background, and scan faster from the next start.
 
 ## Signed-in devices aren't throttled together
 
@@ -150,7 +150,7 @@ A read-along lines a book's ebook up with its narration, sentence by sentence. W
 - **A book whose files were re-ordered** (natural file order, 2.4.0) keeps your place as a time in the whole book, so that time may now fall in a different part of the book.
 - **A web player on the old download default** moves to Never once, unless you had set **Keep the next books ready** above zero.
 - **With any other ffprobe**, scans read every file with ffprobe as in 2.5.0.
-- **An `.mka` holding another codec** (AAC, say) still plays in the web player only ([how to convert an MKA audiobook](/blog/mka-audiobooks/)). On iPhone, `.mka` books are best with app 2.5.0: the 2.4.1 app can stop with a false "End of book" on the first play.
+- **An `.mka` holding another codec** (AAC, say) still plays in the web player only ([how to convert an MKA audiobook](/blog/mka-audiobooks/)). On iPhone, `.mka` books are best with app 2.5.0. The 2.4.1 app can stop with a false "End of book" on the first play.
 - **Cover addresses change once** in 2.5.1, so the players and the console download each cover once more.
 - **New settings:** `scan.concurrency`, `rate_limit.{address,token,media}.{rate,burst}` and `database.mmap` (`AUDIOSILO_DB_MMAP`, `auto` by default), each with an `AUDIOSILO_` environment variable. The defaults suit most servers.
 - **The narrator and decimal-position fixes** reach an existing book when its files change, or with **Read the files again** on its console page.

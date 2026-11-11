@@ -41,9 +41,9 @@ revisions:
 
 Yes, AudioSilo is a good Audiobookshelf alternative if what you want is audiobooks. AudioSilo never writes to your folders, has released phone apps in the App Store and Google Play, and has a player built around listening to whole books. Audiobookshelf fits better if you also want an ebook library, browser uploads and tag editing, podcasts without an extra container, single sign-on, or its big ecosystem of third-party apps and tools.
 
-On the same low-power home server, AudioSilo 2.5.1 was quicker and lighter on almost every measure. Audiobookshelf sent an already-resized cover a little sooner, and its one health-page query was level or a hair quicker on two of the three libraries. [The results](#the-results) have the details.
+On the same low-power home server, AudioSilo 2.5.1 was quicker and lighter on almost every measure. Audiobookshelf sent an already-resized cover a little sooner, and its one health-page query was level or slightly quicker on two of the three libraries. [The results](#the-results) have the details.
 
-[Audiobookshelf](https://audiobookshelf.org/) is a great, mature project. We make AudioSilo, so read this with that in mind. Every number comes from a harness [you can run yourself](/benchmarks/2026-10-audiobookshelf/).
+[Audiobookshelf](https://audiobookshelf.org/) is a great, mature project. We make AudioSilo, so read this with that in mind. Every number comes from [the benchmark harness](/benchmarks/2026-10-audiobookshelf/), which you can run yourself.
 
 ## What Audiobookshelf does that AudioSilo doesn't
 
@@ -78,9 +78,9 @@ Each cell reads **Audiobookshelf / AudioSilo** (Audiobookshelf 2.37.2, AudioSilo
 | No-change rescan, warm cache | 3.7 s / **0.5 s** | 2.4 s / **0.5 s** | 19.1 s / **2.6 s** |
 | Books in the library afterwards | 999 / 1,000 | 998 / 1,000 | 4,947 / 4,949 |
 
-- **First scans were 27 to 35 times sooner, using 1 to 2% of the CPU time.** This is new in 2.5.1. In the first run, 2.5.0 was only 25 to 40% sooner (171 s, 79 s and 971 s) and used 9 to 37% more CPU time (1,217 s, 530 s and 6,927 s).
+- **First scans were 27 to 35 times faster, using 1 to 2% of the CPU time.** This is new in 2.5.1. In the first run, 2.5.0 took only 25 to 40% less time (171 s, 79 s and 971 s) and used 9 to 37% more CPU time (1,217 s, 530 s and 6,927 s).
 - **Why:** 2.5.0 started ffprobe, a separate program, for every audio file. 2.5.1 reads durations, chapters and tags itself, and hands a file to ffprobe only when unsure. That needs FFmpeg 7.1 or 8.1, which the Docker image has. With another ffprobe, 2.5.1 scans like 2.5.0.
-- **Same work, not work put off.** Same books, database size and unreadable files as 2.5.0. At 5,000 books, durations matched Audiobookshelf's for 4,946 of the 4,947 books both listed. The odd one has a damaged header (Anna Karenina, Book 4): Audiobookshelf reads 3,510 seconds, AudioSilo 13,163, closer to what the file's size suggests ([reported](https://github.com/KodeStar/audiosilo-server/issues/276)).
+- **2.5.1 does the same work as 2.5.0, and puts none of it off.** It ended with the same books, database size and unreadable files. At 5,000 books, durations matched Audiobookshelf's for 4,946 of the 4,947 books both listed. The odd one has a damaged header (Anna Karenina, Book 4): Audiobookshelf reads 3,510 seconds, AudioSilo 13,163, closer to what the file's size suggests ([our bug report](https://github.com/KodeStar/audiosilo-server/issues/276)).
 - 2.5.1 didn't change rescans.
 
 ### Memory, disk and start-up
@@ -108,7 +108,7 @@ Medians of 100 requests from a Mac on the home network, in milliseconds.
 | Cover, cached | **2.06** / 2.73 | **2.05** / 2.64 | **2.08** / 2.77 |
 | Saturating load, answers per second | 1,843 / **14,409** | 1,683 / **14,608** | 1,941 / **14,571** |
 
-Both are fast: nobody can tell 1 ms from 2 ms. Home, library pages and search took about 1 to 3 ms for both (AudioSilo a little sooner every time).
+Both are fast. Nobody can tell 1 ms from 2 ms. Home, library pages and search took about 1 to 3 ms for both, and AudioSilo was a little quicker every time.
 
 - **Under full load** from the Mac, AudioSilo answered 7.5 to 8.7 times as many requests a second. From the server itself the gap was about 1.6 times (see [What the numbers don't show](#what-the-numbers-dont-show)).
 - **Library size:** at 5,000 books Audiobookshelf's book page took about twice as long as at 1,000, and its play start 44 to 54% longer. AudioSilo's stayed about flat.
@@ -186,7 +186,7 @@ All come from the first 5,000 English LibriVox titles by catalogue number, every
 
 | Measure | How |
 |---|---|
-| Initial scan | Fresh data folder, first-run setup, add the library, drop the page cache, time from the request until the app's own "scan finished" signal. Three times per app (once on the 5,000-book library); median. |
+| First scan | Fresh data folder, first-run setup, add the library, drop the page cache, time from the request until the app's own "scan finished" signal. Three times per app (once on the 5,000-book library); median. |
 | Scan CPU time | User plus system CPU seconds the container used during that scan. |
 | No-change rescan | Rescan with nothing changed, three times with a cold page cache and three times warm; median. |
 | Memory | The container's anonymous memory (the app's own heap, without the page cache that reading audio files charges to it), sampled every half second. Idle is two minutes after setup with an empty library. |

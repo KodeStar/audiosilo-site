@@ -37,11 +37,11 @@ revisions:
 
 With server 2.4.0 and a paired **Bridge**, AudioSilo's optional companion container, your server can write characters and chapter recaps for books the community database hasn't covered. Some hours later the book's **Characters** and **Recaps** tabs appear in the player.
 
-If you like, the Bridge then offers them to the community at [meta.audiosilo.app](https://meta.audiosilo.app), so every other server gets them too.
+If you like, the Bridge then offers them to the community database on [AudioSilo Meta](https://meta.audiosilo.app), so every other server gets them too.
 
 ## How it works
 
-The Bridge transcribes the book (or reads its ebook), has an AI agent pick out the people and events, checks the result for mistakes and spoilers, and saves it with the book. You only see what you've reached, as with the community's recaps.
+The Bridge transcribes the book (or reads its ebook), has an AI agent pick out the people and events, checks the result for mistakes and spoilers, and saves it with the book. You only see what you've reached, as with the community database's recaps.
 
 ## What it needs
 
@@ -55,7 +55,7 @@ The book doesn't need a community match, an ASIN or an ISBN.
 ## Generating a book
 
 1. On the book's page in the console, press **Generate characters and recaps** on the **Community metadata** card. (Admins see the same button in the player.)
-2. Read the confirmation: whether it reads **the audio** or **the ebook beside it** (much quicker), how long transcription should take, and an **Agent cost** estimate.
+2. Read the confirmation: whether it reads **the audio** or **the ebook beside it** (which skips transcription), how long transcription should take, and an **Agent cost** estimate.
 3. Confirm. The page shows the current step, progress and time left. You can close it; the Bridge carries on.
 
 **Generate for the series**, on a series card in **Library > Series**, queues every book without recaps in reading order.
@@ -69,13 +69,13 @@ The book doesn't need a community match, an ASIN or an ISBN.
 
 - **Characters** and **Recaps** tabs, and the companion's **Who's who** and **Story so far**, marked **Generated on this server**.
 - **A short, spoiler-free description**, from the opening chapters only, shown in About when nothing else describes the book. It stays on your server.
-- **Chapters for a single file that has none**, found where the narrator reads each heading. They arrive hours before the recaps. **Detect chapters** on the Health page does just this, with no agent cost.
+- **Chapters for a single file that has none**, found where the narrator reads each heading. They arrive hours before the recaps. **Detect chapters** on the Health page does only this, with no agent cost.
 
-The community's always comes first. Once it has a book's characters and recaps, yours step aside but stay in the book's folder.
+The community database always comes first. Once it has a book's characters and recaps, yours step aside but stay in the book's folder.
 
 ## Sharing with the community
 
-Everything stays on your server unless you send it. To be able to:
+Everything stays on your server unless you send it. To be able to send it:
 
 1. Sign the Bridge in to GitHub on its **Accounts** tab.
 2. Turn on the **Contributions** module under **Server > Settings > Modules**.
@@ -84,13 +84,13 @@ A book's page in the console then offers:
 
 - **Also contribute to the community**, in the Generate dialog, on by default.
 - **Share with the community**, for a book you generated and kept local. Nothing is generated again, so the agent costs nothing.
-- **Suggest corrections**, when your edits to a matched book's title, author, narrator, series, published date or ISBN differ from the community's.
+- **Suggest corrections**, when your edits to a matched book's title, author, narrator, series, published date or ISBN differ from the community database's.
 
-Each submission becomes an issue on the community's GitHub repositories under your GitHub name, and is reviewed before it's merged. Nothing about your listeners, your library or your other books is sent.
+Each submission becomes an issue on the community database's GitHub repositories under your GitHub name, and is reviewed before it's merged. Nothing about your listeners, your library or your other books is sent.
 
 ## Good to know
 
-- **Players:** the Generate button, the **Generated on this server** mark and the description need the web player bundled with your server (`/web`) or **app 2.4.0**. Older apps show the tabs only for books matched to the community. Chapters a Bridge finds reach older apps too.
+- **Players:** the Generate button, the **Generated on this server** mark and the description need the web player bundled with your server (`/web`) or **app 2.4.0**. Older apps show the tabs only for books matched to the community database. Chapters a Bridge finds reach older apps too.
 - **Sharing characters and recaps** needs the book to be matched to a community entry.
 - **Corrections:** some, such as a title, apply automatically once checked; others wait for a maintainer.
 - **Licences:** characters and recaps are shared under **CC BY-SA 4.0**, corrections as **CC0**, like the rest of the database.

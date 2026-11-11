@@ -24,7 +24,7 @@ revisions:
     note: "Rewritten to be shorter and easier to read. No facts changed."
 ---
 
-From **server 2.5.1**, the first scan of a library is many times quicker. On our test server, a real library of 1,165 books and 9,165 files went from **198 seconds** to **7.5 seconds**. The server now reads each file's details itself instead of starting ffprobe for every file.
+From **server 2.5.1**, the first scan of a library is 7 to 26 times quicker on our test server. A real library of 1,165 books and 9,165 files went from **198 seconds** to **7.5 seconds**. The server now reads each file's details itself instead of starting ffprobe for every file.
 
 ## What changed
 
@@ -45,9 +45,9 @@ On the test library, every duration, chapter start and end, title and tag matche
 
 ## What you need
 
-- **FFmpeg 7.1 or 8.1.** The official Docker image and the [LinuxServer.io image](/blog/audiobooks-on-unraid/) have 8.1, so there's nothing to do: the next scan is the fast one.
+- **FFmpeg 7.1 or 8.1.** The official Docker image and the [LinuxServer.io image](/blog/audiobooks-on-unraid/) have 8.1, so there's nothing to do. The next scan is the fast one.
 - **Running the program directly?** If the server downloads FFmpeg for you (no ffmpeg next to it or on your `PATH`), it now fetches an 8.1 release build on Linux and Windows. Older servers downloaded a development build the fast reader doesn't recognise. 2.5.1 fetches 8.1 in the background and uses it from the next start.
-- **Any other version** (Ubuntu 24.04's 6.1, for example) still works: ffprobe reads every file, as before.
+- **Any other version** (Ubuntu 24.04's 6.1, for example) still works, with ffprobe reading every file as before.
 
 To check your version, run `ffprobe -version` or look at the ffprobe row on **Health > System** in the admin console. The server's start-up log also says whether the faster reading is on ("in-process probe on") or off.
 
@@ -72,7 +72,7 @@ The real library's speed-up is closer to what you'll see. Scaled by the same per
 
 ## When you'll notice it
 
-Rescans were already quick when little had changed: the server skips books whose files have the same size and modification time. The new reader matters when files are new to the server:
+Rescans were already quick when little had changed, because the server skips books whose files have the same size and modification time. The new reader matters when files are new to the server:
 
 - the first scan of a library
 - a big batch of books added at once

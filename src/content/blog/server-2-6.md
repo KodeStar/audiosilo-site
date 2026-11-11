@@ -3,7 +3,7 @@ title: "AudioSilo Server 2.6: upcoming releases, Sync v2, read-along and Audible
 description: "Upcoming releases in the player and your calendar, listening that syncs across devices and offline, an ebook that follows the narration, and Audible on the Bridge."
 kind: release
 published: 2026-11-07
-updated: 2026-11-10
+updated: 2026-11-11
 verified: 2026-11-08
 appliesTo: Server 2.6.0 with its bundled web player, app 2.6.0, Bridge 0.6.0
 tags: [release, server, sync, read-along, audible, bridge, metadata]
@@ -60,6 +60,8 @@ related:
   - back-up-before-upgrading
   - server-2-5
 revisions:
+  - date: 2026-11-11
+    note: "Corrected the Audible sign-in: your Amazon password never reaches the Bridge, which keeps only the sign-in Amazon gives it, encrypted."
   - date: 2026-11-10
     note: "Rewritten to be shorter and easier to read. No facts changed."
   - date: 2026-11-08
@@ -68,7 +70,7 @@ revisions:
     note: "Android users can install app 2.6.0 now from the APK on GitHub; the Apple Watch app arrives with iPhone app 2.6.0 on the App Store."
 ---
 
-AudioSilo Server **2.6.0** came out on 7 November. Your server now tells you what's coming in the series you listen to, in the player and in your calendar. Listening on two devices, or offline, comes together properly, and the player's **Text** tab follows the ebook as the narrator reads it.
+AudioSilo Server **2.6.0** came out on 7 November. Your server now tells you what's coming in the series you listen to, in the player and in your calendar. Listening on two devices, or offline, now syncs without moving your place back. The player's **Text** tab follows the ebook as the narrator reads it.
 
 **Bridge 0.6.0**, out the same day, brings Audible to the Bridge: back up the books you bought into your library, and keep your place in step with the Audible app.
 
@@ -83,7 +85,7 @@ AudioSilo Server **2.6.0** came out on 7 November. Your server now tells you wha
 
 ## What's coming in your series
 
-Once a day your server checks the series in your library against the community catalogue at [meta.audiosilo.app](https://meta.audiosilo.app). Home shows **Coming up in your series**: preorders, recent releases and the volumes you're missing. An **Upcoming** page lists everything, and series pages show release dates for books you don't have yet.
+Once a day your server checks the series in your library against the community database on [AudioSilo Meta](https://meta.audiosilo.app). Home shows **Coming up in your series**: preorders, recent releases and the volumes you're missing. An **Upcoming** page lists everything, and series pages show release dates for books you don't have yet.
 
 Upcoming also gives you a private calendar link for Apple Calendar, Google Calendar, Outlook or any calendar app that takes a link. See [Upcoming releases](/blog/upcoming-releases/) and the docs' [Upcoming releases](https://docs.audiosilo.app/users/listening/upcoming).
 
@@ -101,7 +103,7 @@ The player's **Text** tab now follows the ebook as you listen, highlighting the 
 
 With **Bridge 0.6.0** and the **Audible** module turned on in the console:
 
-1. **Sign in** on the Bridge's **Accounts** tab. Each Audible account belongs to a person on your server and a books library. Your Amazon credentials stay sealed on the Bridge.
+1. **Sign in** on the Bridge's **Accounts** tab. Each Audible account belongs to a person on your server and a books library. You sign in on Amazon's own page, so your Amazon password never reaches the Bridge. The Bridge keeps the sign-in Amazon gives it encrypted.
 2. **Back up** one title, **Back up everything**, or set a policy for new purchases. The Bridge saves an M4B without re-encoding, keeps the chapters, places it beside your series' other books, and never replaces an existing file.
 3. **Sync listening places with Audible**, if you want. About every 15 minutes the Bridge brings across an Audible place that is further on, and it can send your AudioSilo place back a few minutes after you stop.
 
@@ -109,13 +111,13 @@ It's meant for **a personal backup of books you bought**, with your own account.
 
 ## Smarter matching
 
-**Match automatically** gets more of a library right, with less waiting. It weighs narrator, language, series position and running time alongside title and author. ASIN and ISBN tags count as hints to check, very weak guesses stay out of review, and runs against meta.audiosilo.app check six books at once.
+**Match automatically** gets more of a library right. It weighs narrator, language, series position and running time alongside title and author. ASIN and ISBN tags count as hints to check, and very weak guesses stay out of review. Runs against AudioSilo Meta check six books at once, so you wait less.
 
 **Fill in what's missing** can strip series labels and edition clutter from a confidently matched title; your own edits stay locked. A book with no ASIN or ISBN can now match a store listing when the full author and series position agree and both lengths are within 2%. **Unlink** on its page removes such a match. See [Match automatically gets more of your library right](/blog/smarter-bulk-matching/).
 
-## Help fill gaps in the community catalogue
+## Help complete the community database
 
-**Help complete the community database** (**Settings > Community metadata**, off by default) runs a daily check and reports the ASINs the catalogue doesn't know. It sends ASINs only: no file names, paths, people, listening history or server identifier. See [Help complete the community database](/blog/help-complete-the-community-database/).
+**Help complete the community database** (**Server > Settings > Community metadata**, off by default) runs a daily check and reports the ASINs the community database doesn't know. It sends ASINs only: no file names, paths, people, listening history or server identifier. See [Help complete the community database](/blog/help-complete-the-community-database/).
 
 ## Folder names that state their series
 
@@ -123,7 +125,7 @@ A book named `Author; Series; Book 02; Title` now gives its series and number fr
 
 ## Faster database work on Linux
 
-The Docker image and the native Linux downloads now use the native SQLite engine, with a faster matching path. The macOS and Windows downloads keep the pure-Go engine. The database format is the same, and on Linux you can switch back with `AUDIOSILO_SQLITE=modernc` and a restart.
+The Docker image and the native Linux downloads now use the native SQLite engine. The macOS and Windows downloads keep the pure-Go engine. The database format is the same, and on Linux you can switch back with `AUDIOSILO_SQLITE=modernc` and a restart. See [AudioSilo 2.6: less database work, native SQLite on Linux](/blog/faster-database-work/).
 
 ## Fixes
 
@@ -136,13 +138,13 @@ The Docker image and the native Linux downloads now use the native SQLite engine
 ## Good to know
 
 - **Defaults:** Upcoming is on while community metadata is on. The unknown-ASIN report, the Audible module and Audible place sync start off.
-- **Upcoming dates** are the earliest audiobook release the catalogue knows, which can differ from your local store. The first full check runs about an hour after the server starts, and kids' accounts don't see it.
+- **Upcoming dates** are the earliest audiobook release the community database knows, which can differ from your local store. The first full check runs about an hour after the server starts, and kids' accounts don't see it.
 - **The calendar link is private:** anyone with it can read that feed, and resetting it stops the old one. A cloud calendar such as Google Calendar needs your server at a public HTTPS address with a trusted certificate.
 - **Older apps** keep saving their place as before, without Upcoming, Sync v2 or the Text tab.
 - **Read-alongs** need Bridge 0.5.0 or later to make. A missing or out-of-date one isn't offered to listeners.
 - **Audible backups** need the library mapped and writable on the Bridge. Audible listening adds nothing to your AudioSilo history or stats. An account signed in with an older device profile may need **Sign in again**, then **Back up** again for titles that failed.
 - **Audible sync limitation:** the Audible app can still resume at an older place after the Bridge has reported sending yours.
 - **Matching limitation:** reverting a community ASIN doesn't reject the match, and a later refresh can write it back. To remove a match, clear the book's ASIN and ISBN, then use **Unlink** before the next refresh.
-- **Self-hosted metadata service?** Deploy v0.25.5 or later as well.
+- **Running your own copy of AudioSilo Meta?** Deploy v0.25.5 or later as well.
 
 Every change to the player API is additive, so existing iOS, Android and web players keep working. The full notes: [v2.6.0](https://github.com/KodeStar/audiosilo-server/releases/tag/v2.6.0) and [Bridge v0.6.0](https://github.com/KodeStar/audiosilo-bridge/releases/tag/v0.6.0).

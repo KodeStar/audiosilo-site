@@ -1,6 +1,6 @@
 ---
 title: LibriVox joins AudioSilo's community metadata
-description: LibriVox recordings, readers and sections now join AudioSilo's community catalogue. What server owners can use today, and which player features are planned.
+description: LibriVox recordings, readers and sections now join AudioSilo's community database. What server owners can use today, and which player features are planned.
 kind: feature
 published: 2026-11-07
 updated: 2026-11-10
@@ -25,11 +25,11 @@ revisions:
     note: "Rewritten to be shorter and easier to read. No facts changed."
 ---
 
-LibriVox recordings are now in AudioSilo's community metadata database at [meta.audiosilo.app](https://meta.audiosilo.app). As checked on 7 November, it holds **21,851 LibriVox recordings**. If you have LibriVox books on your server, you can match them in the admin console today.
+LibriVox recordings are now in AudioSilo's community database on [AudioSilo Meta](https://meta.audiosilo.app). As checked on 7 November, it holds **21,851 LibriVox recordings**. If you have LibriVox books on your server, you can match them in the admin console today.
 
 [LibriVox](https://librivox.org/pages/about-librivox/) is a volunteer project that records books and gives the audio away free. Its readers record in many languages, and the Internet Archive hosts the audio. LibriVox follows US public-domain rules; its [public-domain page](https://librivox.org/pages/public-domain/) explains what that means elsewhere.
 
-## What is in the catalogue
+## What is in the community database
 
 Each recording brings its facts: title, authors, reader credits, language, running time, translators where recorded, and links to the LibriVox project and audio files. Different readings of the same book stay separate, so you can tell which readers and running time are yours.
 
@@ -65,7 +65,7 @@ On server 2.6.0, with **Look up community metadata** on:
 
 Check the readers and running time before accepting, especially for a classic with several recordings.
 
-The search works online and with **Keep a local copy**, once that copy includes the LibriVox data. With a ready local copy, the server answers itself. If the copy is unavailable or a local request fails, it can fall back to the online service.
+The search works online and with **Keep a local copy**, once that copy includes the LibriVox data. With a ready local copy, the server answers itself. If the copy is unavailable or a local request fails, it can fall back to AudioSilo Meta online.
 
 Server 2.6.0 also remembers which work and recording you matched, even without an ASIN or ISBN. With nothing ticked, **Match to this work** just records the match, so later match runs skip the book ([how 2.6 matches](/blog/smarter-bulk-matching/)).
 
@@ -77,7 +77,7 @@ The [matching guide](/blog/fix-covers-and-series/) covers the field comparison. 
 
 ## Licensing
 
-AudioSilo normally keeps catalogue imports bounded. Its [licensing policy](https://github.com/KodeStar/audiosilo-meta/blob/main/LICENSING.md#the-public-domain-exception-librivox) makes a public-domain exception for the LibriVox catalogue alone, in every language.
+AudioSilo normally keeps imports into the community database bounded. Its [licensing policy](https://github.com/KodeStar/audiosilo-meta/blob/main/LICENSING.md#the-public-domain-exception-librivox) makes a public-domain exception for the LibriVox catalogue alone, in every language.
 
 - The imported facts are **CC0-1.0**.
 - Project descriptions are left out, since they can quote other sources.
@@ -92,7 +92,7 @@ The metadata API can search for works with LibriVox recordings, look up a projec
 
 These are plans, with no promised delivery date:
 
-- **Daily LibriVox updates.** Today's catalogue comes from the October snapshot and reviewed follow-up imports.
+- **Daily LibriVox updates.** Today's LibriVox records come from the October snapshot and reviewed follow-up imports.
 - **In v2.7.0:** an **Also free on LibriVox** link on a book, and an **Add from LibriVox** action, with the Bridge downloading the files into a library.
 - **Later:** listening to LibriVox in a standalone player without an AudioSilo server, subject to that player's validation work.
 

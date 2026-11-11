@@ -37,7 +37,7 @@ Server 2.6.0 makes **Match automatically** get more books right with less review
 
 There's nothing to turn on. Use the same card in **Health > Not matched**: **Find matches**, then **Review and apply**. Nothing changes until you click **Apply**.
 
-## An ASIN or ISBN the community knows is enough
+## An ASIN or ISBN the community database knows is enough
 
 A confident match normally needs a score of at least 90, a lead of 10 points over the next candidate, an ASIN or ISBN, and a recording within 10% of your book's length. The lead held many right books back.
 
@@ -74,10 +74,10 @@ Tags still win (a tagged series with no number keeps the name's number), unless 
 Some books exist in the community database only as a store listing with no ASIN or ISBN, such as Audiobook Guild and GraphicAudio titles. These always waited in **To review**. Now one goes into **Confident** when:
 
 - it scores at least 90, 10 points ahead of the next candidate;
-- the community names the author in full and places the work at the book's number in its series;
+- the community database names the author in full and places the work at the book's number in its series;
 - both lengths are known and within 2% of each other.
 
-Applying one records the community work, which makes the book matched: it leaves **Health > Not matched** and later runs skip it. The book's **Community metadata** card shows **Community work**, and **Unlink** undoes the match. It asks first and can't be undone: the community's values and cover go, your own edits stay.
+Applying one records the community work, which makes the book matched. It leaves **Health > Not matched**, and later runs skip it. The book's **Community metadata** card shows **Community work**, and **Unlink** removes the match. **Unlink** asks first, and you can't reverse it. The community database's values and cover go, and your own edits stay.
 
 ## Weak matches stop cluttering review
 
@@ -85,7 +85,7 @@ A best candidate under 60% is almost always another book, so it's no longer offe
 
 ## File titles get tidied
 
-**Fill in what's missing** now replaces a file title that is the community's title plus only clutter: the series name, the book's number, the subtitle, words like "book" or "unabridged", and store genre labels like "LitRPG". So "Emergence: The Mystic Knight, Book 1 (Unabridged)" becomes "Emergence".
+**Fill in what's missing** now replaces a file title that is the community database's title plus only clutter: the series name, the book's number, the subtitle, words like "book" or "unabridged", and store genre labels like "LitRPG". So "Emergence: The Mystic Knight, Book 1 (Unabridged)" becomes "Emergence".
 
 The file's title is kept when it has a real extra word, "Part 1" or "abridged", a number nothing states, or your own edit. Type a title to keep it for good.
 
@@ -125,9 +125,9 @@ The stricter check compares a book whose reference answer has no ASIN against th
 
 This is one test of mostly English books, not a promise about your library. The figures are ours, not LibraForge's, and this post compares no tools.
 
-## A run is much quicker too
+## A run takes 2 minutes instead of 13
 
-A run against meta.audiosilo.app used to make about three and a half requests per book, one at a time. Now it makes one, six books at once, with the same results.
+A run against AudioSilo Meta used to make about three and a half requests per book, one at a time. Now it makes one, six books at once, with the same results.
 
 | 4,044 books, live service | Run time |
 |---|---:|
@@ -141,12 +141,12 @@ Everything except the new scoring arrives with 2.6.0. The scoring depends on whe
 | Where answers come from | New scoring |
 |---|---|
 | A local copy (`metadata.mode: mirror`) | With 2.6.0 |
-| meta.audiosilo.app | Since 7 November 2026; language and narrators count from 2.6.0 |
-| Your own metadata service | Needs v0.25.5 or later |
+| AudioSilo Meta (meta.audiosilo.app) | Since 7 November 2026; language and narrators count from 2.6.0 |
+| Your own copy of AudioSilo Meta | Needs v0.25.5 or later |
 
 ## Good to know
 
-- **Check Confident before applying.** A wrong ASIN tag can apply the wrong work, as nothing checks a hint. To undo one, clear the book's ASIN (and ISBN), then **Unlink**. Reverting values alone leaves the match: a [known issue](https://docs.audiosilo.app/users/admin/health#filling-in-books-that-are-already-matched) in 2.6.0.
+- **Check Confident before applying.** A wrong ASIN tag can apply the wrong work, as nothing checks a hint. To undo one, clear the book's ASIN (and ISBN), then **Unlink**. Reverting values alone leaves the match, a known issue in 2.6.0 (see [Filling in books that are already matched](https://docs.audiosilo.app/users/admin/health#filling-in-books-that-are-already-matched)).
 - **Store-listing matches have no "About this book" in players yet**, as players look details up by ASIN or ISBN. Title, series, narrator and cover still show.
 - **Title tidying looks at words, not meaning.** "Book of the Dead" matched to "Dead" would become "Dead".
 - **What a match sends:** the book's tagged details, length, narrators, language, identifiers, what you type and up to three folder names. Nothing about your server or listeners, and none of it leaves your server with a ready local copy. To show a candidate's cover, your server downloads just the image, such as from Audible's image servers or Open Library.
