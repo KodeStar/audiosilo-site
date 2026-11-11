@@ -34,27 +34,29 @@ post against them.
    blocks and tables. Past that, cut.
 10. **No em dashes, and few spaced hyphens.** Never use the em dash character.
     A spaced hyphen in the middle of a sentence is the same habit. Prefer a
-    full stop or a comma.
+    full stop or a comma. A list item written as a label, a hyphen and its text
+    is fine.
 
 ## Wording
 
 11. **Say what it does, not how it feels.** Name the step, the mechanism or
     the number. "Downloaded books play with no connection", not "your library
-    is always within reach". If a sentence could appear unchanged on another
-    product's blog, cut it.
+    is always within reach". If a sentence about AudioSilo could appear
+    unchanged on another product's blog, cut it.
 12. **Name who does what.** "The server scans the folder", not "the folder is
     scanned". Use the passive only when the actor does not matter.
 13. **No colon as a mid-sentence connector.** A colon introduces a list, an
-    example or a labelled item. Anywhere else, write two sentences.
+    example, a figure, a definition or a labelled item. Anywhere else, write
+    two sentences.
 14. **Plain and literal.** No metaphors, slogans or sentence fragments for
-    effect. Never "simply", "easily" or "just" in a step. Give the measured
-    figure instead of "much faster".
+    effect. Never "simply", "easily" or "just" in a step. Instead of "much
+    faster", give the measured figure. With no figure, say what changes.
 15. **One name per thing.** Use the label the reader sees in the product, and
     keep it for the whole post. Do not switch between "the console", "the
     admin page" and "the dashboard".
-16. **Steps start with the goal and end with the result.** "To share a book,
-    open its page and select **Share**." After a step that changes something,
-    say what the reader should now see.
+16. **Numbered steps start with the goal and end with the result.** "To share
+    a book, open its page and select **Share**." After the last step, say what
+    the reader should now see.
 17. **Links say where they go.** Link text is the page's title or a short
     description, never "here" or "this page".
 
