@@ -125,7 +125,8 @@ docs/PERFORMANCE.md     the performance budget and how it is kept
   `prefers-reduced-motion`, semantic HTML with visible focus states. The site
   must be excellent on a phone. Budget: Lighthouse mobile >= 90 and LCP
   < 2.5 s on `/`, `/player`, `/server` ([docs/PERFORMANCE.md](docs/PERFORMANCE.md)).
-- **House style: hyphens, never em dashes** (matches the workspace-wide rule).
+- **House style: never em dashes, and few spaced hyphens** (prefer a full stop or
+  a comma; matches the workspace-wide rule).
 - **The blog** (`/blog`, in the header nav and the footer): posts are the
   `blog` content collection, plain Markdown in `src/content/blog/<slug>.md`;
   the URL has no date, so a post is updated in place and never renamed.
@@ -141,7 +142,8 @@ docs/PERFORMANCE.md     the performance budget and how it is kept
   lists the posts a release or a change touches (`covers` keys).
   Every post follows the readability rules in
   [docs/BLOG-WRITING.md](docs/BLOG-WRITING.md) (answer first, short sentences,
-  tables over prose, no internal names, length targets).
+  tables over prose, no internal names, length targets) and its Wording rules
+  (say what it does, name who does what, plain and literal, one name per thing).
 - `VersionBadge.tsx` fetches the latest server release tag at runtime; bump
   `SERVER_VERSION` in `src/data/status.ts` (its fallback) when a server
   release is cut.

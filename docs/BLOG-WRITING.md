@@ -32,7 +32,35 @@ post against them.
 9. **Keep posts short.** Tips and feature posts: about 800 words. Guides: about
    1,200. Comparisons and reverse-proxy guides: about 1,500, not counting code
    blocks and tables. Past that, cut.
-10. **Hyphens, never em dashes.**
+10. **No em dashes, and few spaced hyphens.** Never use the em dash character.
+    A spaced hyphen in the middle of a sentence is the same habit. Prefer a
+    full stop or a comma.
+
+## Wording
+
+11. **Say what it does, not how it feels.** Name the step, the mechanism or
+    the number. "Downloaded books play with no connection", not "your library
+    is always within reach". If a sentence could appear unchanged on another
+    product's blog, cut it.
+12. **Name who does what.** "The server scans the folder", not "the folder is
+    scanned". Use the passive only when the actor does not matter.
+13. **No colon as a mid-sentence connector.** A colon introduces a list, an
+    example or a labelled item. Anywhere else, write two sentences.
+14. **Plain and literal.** No metaphors, slogans or sentence fragments for
+    effect. Never "simply", "easily" or "just" in a step. Give the measured
+    figure instead of "much faster".
+15. **One name per thing.** Use the label the reader sees in the product, and
+    keep it for the whole post. Do not switch between "the console", "the
+    admin page" and "the dashboard".
+16. **Steps start with the goal and end with the result.** "To share a book,
+    open its page and select **Share**." After a step that changes something,
+    say what the reader should now see.
+17. **Links say where they go.** Link text is the page's title or a short
+    description, never "here" or "this page".
+
+**A rule never beats a clear sentence.** Short does not mean clipped. Keep
+"the" and "a", and keep a longer sentence when it carries one idea with its
+condition. If a rule makes a sentence worse, rewrite the sentence another way.
 
 **Cut, don't add.** When you edit a post, look for something to remove.
 Accuracy still comes first: a shorter post keeps every figure and claim true,
