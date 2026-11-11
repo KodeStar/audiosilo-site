@@ -83,7 +83,7 @@ To pick up exactly where you stopped on another device, pause first. A pause sav
 
 A player screen left open stayed mounted with the phone locked or the tab hidden. It redrew the seek bar, the times and the chapter list once a second.
 
-Now, while the app is in the background, those ticks are not drawn. When you come back, the screen shows the live place at once. In a separate 15-minute test with the screen off, the app's JavaScript thread used 11.9 seconds of processor time, down from 49.6.
+Now, while the app is in the background, those ticks are not drawn. When you come back, the screen shows the live place at once. In a separate 15-minute test on a Pixel 6a with the screen off, the app's JavaScript thread used 11.9 seconds of processor time, down from 49.6.
 
 Everything that does not depend on the screen carries on as before:
 
