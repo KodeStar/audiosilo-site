@@ -54,7 +54,7 @@ Both are self-hosted, open-source Docker servers with per-person accounts and sy
 | Web player | Yes, installable | Yes, installable, with offline downloads |
 | In the car | Android Auto | CarPlay in the iPhone app (App Store 2.4.1 and later); Android Auto in the Android app (2.1 and later, on Google Play and as an APK) |
 | Casting | Chromecast from the web app and the Android app | Chromecast from the iPhone app (App Store 2.4.1 and later), the Android app (2.1 and later, on Google Play and as an APK) and the web player (server 2.3, Chromium browsers over HTTPS) |
-| Metadata | Fetches from several sources | Community database at [meta.audiosilo.app](https://meta.audiosilo.app), with spoiler-safe recaps and characters for the books that have them |
+| Metadata | Fetches from several sources | The community database on [AudioSilo Meta](https://meta.audiosilo.app), with spoiler-safe recaps and characters for the books that have them |
 
 **Stay with Audiobookshelf** if you rely on an ebook library (ebooks without audio, PDF or comics), web uploads, or metadata written into your files. AudioSilo only reads the EPUB beside an audiobook ([Read the ebook](/blog/ebook-reader/)), and its podcasts need the Bridge ([Podcasts in AudioSilo](/blog/podcasts/)).
 
@@ -72,7 +72,7 @@ Point AudioSilo at the folders Audiobookshelf already reads, mounted read-only. 
       - /srv/audiobooks:/library:ro
 ```
 
-[Self-hosted audiobook server](/blog/self-hosted-audiobook-server/) has the whole compose file. An Audiobookshelf layout usually scans cleanly: see [How to organise audiobook folders](/blog/organize-audiobook-folders/).
+[Self-hosted audiobook server](/blog/self-hosted-audiobook-server/) has the whole compose file. An Audiobookshelf layout usually scans cleanly. See [How to organise audiobook folders](/blog/organize-audiobook-folders/).
 
 ## Step 2: Let it read Audiobookshelf's metadata.json
 
@@ -94,12 +94,12 @@ In the admin console, **Invite someone** creates an account, gives it access to 
 
 Open **Server > Settings > Import**.
 
-1. **Connect.** Enter the Audiobookshelf address *as the AudioSilo server sees it* (the server fetches the history, not your browser) and an Audiobookshelf API token (**Settings > Users**, or **Settings > API Keys** in newer versions). An admin or root token reads every user; a regular user's token imports only that user. The token is never stored.
+1. **Connect.** Enter the Audiobookshelf address *as the AudioSilo server sees it* (the server fetches the history, not your browser) and an Audiobookshelf API token (**Settings > Users**, or **Settings > API Keys** in newer versions). An admin or root token reads every user; a regular user's token imports only that user. AudioSilo doesn't store the token.
 2. **Map the people.** Send each Audiobookshelf account to an AudioSilo person, or to **Don't import**. The default listening to bring, **before each person started using AudioSilo**, means nothing is counted twice.
 3. **Review.** For each person: hours, sessions, books matched (by path, ASIN, ISBN, or title and author), and which didn't match and why.
-4. **Apply.** It's written in one go, and can be **undone** later.
+4. **Apply.** The server writes the import in one go, and you can **undo** it later.
 
-Progress only moves forward: an import never rewinds a book or unfinishes a finished one.
+Progress only moves forward. An import never rewinds a book or unfinishes a finished one.
 
 | Comes over | Doesn't |
 |---|---|
@@ -109,12 +109,12 @@ The full walkthrough is [Importing from Audiobookshelf](https://docs.audiosilo.a
 
 ## Step 5: Match what's left and pair the devices
 
-- **Health > Not matched** lists books without an ASIN or ISBN. **Match automatically** looks them up for your review: see [Fix covers and series](/blog/fix-covers-and-series/).
-- Everyone signs in to the app or the web player at `/web` with their invite: [How to pair your phone](/blog/pair-your-phone/).
+- **Health > Not matched** lists books without an ASIN or ISBN. **Match automatically** looks them up for your review. See [Fix covers and series](/blog/fix-covers-and-series/).
+- Everyone signs in to the app or the web player at `/web` with their invite. See [How to pair your phone](/blog/pair-your-phone/).
 
 ## Step 6: Decide
 
-Keep both running for a while. None of this changes Audiobookshelf, so if AudioSilo isn't for you, you've lost nothing. If it is, re-run the import for anyone who kept listening in Audiobookshelf: a new import replaces that person's previous one, so nothing is counted twice.
+Keep both running for a while. None of this changes Audiobookshelf, so if AudioSilo isn't for you, you've lost nothing. If it is, re-run the import for anyone who kept listening in Audiobookshelf. A new import replaces that person's previous one, so nothing is counted twice.
 
 ## Good to know
 

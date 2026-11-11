@@ -50,11 +50,11 @@ From version 2.6.0, AudioSilo keeps an eye on the series in your library. Once a
 
 ## What it needs
 
-- **Server 2.6.0 or later** with the [community metadata](https://docs.audiosilo.app/users/admin/server#community-metadata) lookup on. The list comes from the free, community-run catalogue at [meta.audiosilo.app](https://meta.audiosilo.app). No [Bridge](https://docs.audiosilo.app/users/admin/bridge) is needed.
+- **Server 2.6.0 or later** with the [community metadata](https://docs.audiosilo.app/users/admin/server#community-metadata) lookup on. The list comes from the community database on [AudioSilo Meta](https://meta.audiosilo.app), which is free and community-run. No [Bridge](https://docs.audiosilo.app/users/admin/bridge) is needed.
 - **Check for upcoming releases** on, in the console's **Server > Settings > Community metadata**. It's on by default.
 - **The web player your 2.6.0 server serves**, or **app 2.6.0** for iPhone, iPad and Android: on the App Store now, and on Android from the APK on [its GitHub release](https://github.com/KodeStar/audiosilo-frontend/releases/tag/v2.6.0) until 2.6.0 reaches Google Play (see [Android without Google Play](https://docs.audiosilo.app/users/listening/mobile-apps#android-without-google-play)). Older players carry on without it.
 
-Only series you have at least one book of are checked, and a book you already have is never listed. Your server asks the metadata service only about series and books, never about who is listening. With a [local copy](https://docs.audiosilo.app/users/admin/server#keeping-a-local-copy) of the community metadata, it answers the check itself.
+Only series you have at least one book of are checked, and a book you already have is never listed. Your server asks AudioSilo Meta only about series and books, never about who is listening. With a [local copy](https://docs.audiosilo.app/users/admin/server#keeping-a-local-copy) of the community database, it answers the check itself.
 
 ## Coming up in your series
 
@@ -72,7 +72,7 @@ The page lists everything in up to three groups:
 
 Open it from **See all** on Home, the **Upcoming** section of the **Me** tab on a phone, or **You** in the top bar on a tablet or computer.
 
-Each book has one date, as precise as the catalogue knows it:
+Each book has one date, as precise as the community database knows it:
 
 | Group | Example |
 |---|---|
@@ -117,7 +117,7 @@ Each book is announced once. The first check only notes what's already out, so y
 
 - **Standalone books aren't checked**, nor series with none of their books on your server.
 - **Kids don't see it.** No shelf, page, You section or calendar link. A link made before an account became a kid's stops working. The [demo](https://docs.audiosilo.app/users/demo) shows upcoming releases, but demo accounts can't subscribe to a calendar.
-- **Dates are the catalogue's.** A book with no date has no date line. The date is the first release anywhere, so your local store may get it a little later.
+- **Dates come from the community database.** A book with no date has no date line. The date is the first release anywhere, so your local store may get it a little later.
 - **Home-only addresses** and self-signed certificates work only in a calendar app that fetches the link itself, on a device that reaches and trusts your server.
 
 ## More
