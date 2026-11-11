@@ -54,15 +54,15 @@ When you bring the app back, a save that is due goes straight away.
 
 Streaming in front, the phone's radio is busy with the audio anyway. In the background, after the first part of the book is buffered, the saves are often the only traffic. At 15 seconds the radio never got more than 15 seconds of quiet.
 
-We measured an iPhone on 4G, streaming for 15 minutes in the background:
+We measured an iPhone on 4G, streaming for 15 minutes in the background, with the same build at each pace:
 
-| | Every 15 seconds | Every minute |
+| | Every 15 seconds | Every minute (two runs) |
 |---|---|---|
-| Saves sent | 60 | 15 |
+| Saves sent | 60 | 15 and 15 |
 | Mobile data | 118 KB | 31 KB |
 | Share of time rated high network impact | 37% | 8 to 11% |
 
-On Wi-Fi the pace made no measurable difference. We did not measure a battery percentage.
+On Wi-Fi, on a Pixel 6a, the pace made no measurable difference. We did not measure a battery percentage.
 
 ## What stays on the device
 
@@ -83,7 +83,7 @@ To pick up exactly where you stopped on another device, pause first. A pause sav
 
 A player screen left open stayed mounted with the phone locked or the tab hidden. It redrew the seek bar, the times and the chapter list once a second.
 
-Now, while the app is in the background, those ticks are not drawn. When you come back, the screen shows the live place at once. In a 15-minute test with the screen off, the app's JavaScript work fell from 49.6 to 11.9 seconds.
+Now, while the app is in the background, those ticks are not drawn. When you come back, the screen shows the live place at once. In our 15-minute test with the screen off, the app's JavaScript thread used 11.9 seconds of processor time, down from 49.6.
 
 Everything that does not depend on the screen carries on as before:
 
@@ -92,7 +92,8 @@ Everything that does not depend on the screen carries on as before:
 
 ## Good to know
 
-- The admin console and **Listening in the house** may show a backgrounded player as paused for a moment before its next save lands.
+<!-- Remove this item if audiosilo-server#364 (a wider playing window on the server) ships in 2.7.0. -->
+- The server counts a player as playing for a minute after its last save. So while a player saves once a minute, the admin console and **Listening in the house** may show it as paused for a moment before its next save arrives.
 - On Android, a share sheet or a permission dialog counts as the background. The seek bar holds still behind it and catches up when you return.
 - Casting a downloaded book with the app in front keeps the 15-second pace, because the Cast device streams from the server.
 

@@ -1,6 +1,6 @@
 ---
 title: "The web player: one tab plays at a time, and every tab keeps one place"
-description: "In AudioSilo 2.7, starting a book in a second browser tab pauses the first. Your listening counts once, and the tab you go back to carries on where the other stopped."
+description: "In AudioSilo 2.7, playing in a second browser tab pauses the first. Your listening counts once, and with one book in both, the tab you go back to picks up where the other stopped."
 kind: feature
 published: 2026-11-11
 verified: 2026-11-11
@@ -23,7 +23,7 @@ related:
 draft: true
 ---
 
-In the web player, only one tab plays at a time. Press play in a second tab and the first one pauses and says **Playing in another tab**. When you go back to the first tab, it carries on from where the second one got to.
+In the web player, only one tab plays at a time. Press play in a second tab and the first one pauses and says **Playing in another tab**. With the same book in both tabs, the tab you go back to carries on from where the other one got to.
 
 This is new in the web player that comes with AudioSilo 2.7.0.
 
@@ -59,9 +59,9 @@ Your history shows one unbroken run of listening across both tabs, with nothing 
 
 ## Mark as finished and Undo with two tabs open
 
-Tabs also share what is waiting to reach the server. So another tab may be sending a finish when you press **Undo** after **Mark as finished**.
+**Undo** after **Mark as finished** is not new. What 2.7.0 adds is that a finish waits with the rest of your listening until it reaches the server, and the tabs share what is waiting. So another tab may be sending your finish when you press **Undo**.
 
-Undo now waits for that send, then takes the finish back. The book ends up not finished, as you asked.
+Undo waits for that send, then takes the finish back. The book ends up not finished, as you asked.
 
 ## What is not paused
 
