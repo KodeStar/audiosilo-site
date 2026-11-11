@@ -61,15 +61,15 @@ The server has the Bridge check each account every 6 hours; **Check now** checks
 - **Back up everything...** queues every available title not on your server, after confirming how many books and roughly how much space. It skips titles marked **Not this book**, ones probably here under another title, and preorders.
 - **Not this book** is for a wrong match, or a title you never want backed up.
 
-The Bridge downloads each book with your account and removes the copy protection without re-encoding (a **lossless copy** that keeps the chapters). The server indexes it straight away with the title's ASIN, so it plays everywhere.
+The Bridge downloads each book with your account and removes the DRM without re-encoding (a **lossless copy** that keeps the chapters). The server indexes it straight away with the title's ASIN, so it plays everywhere.
 
-The Bridge works one book at a time per account, so a big library can take days. A cut-off download carries on where it stopped. Each backup shows in the Bridge's **Jobs** list and is notified like its other jobs.
+The Bridge works one book at a time per account, so a big library can take days. A cut-off download carries on where it stopped. Each backup shows in the Bridge's **Jobs** list, with the same notifications as its other jobs.
 
 ## Where the books go
 
 By default a backup goes **beside the series' other books**, following your library's naming. A new series goes under its author and series; a book in no series under `Author/Title/`.
 
-To name folders yourself, give the account a **placement template** in **Account settings...**, such as `{Author}/{Series}/{ {PaddedSeq} - }{Title}`, or give one title its own **Destination...**. A backup **never overwrites anything**: if the place is taken, it stops and tells you.
+To name folders yourself, give the account a **placement template** in **Account settings...**, such as `{Author}/{Series}/{ {PaddedSeq} - }{Title}`, or give one title its own **Destination...**. A backup **never overwrites anything**. If the place is taken, it stops and tells you.
 
 ## New purchases, by themselves
 
@@ -87,13 +87,13 @@ These cover new purchases only. For books the account already had, use **Back up
 
 ## Good to know
 
-- **Listening place sync** is a separate switch per account: see [Audible and AudioSilo keep your listening place in step](/blog/audible-listening-sync/).
+- **Listening place sync** is a separate switch per account. See [Audible and AudioSilo keep your listening place in step](/blog/audible-listening-sync/).
 - **No Bridge?** [How to back up your Audible library](/blog/back-up-your-audible-library/) covers Libation, OpenAudible and audible-cli.
 - **Folder layout:** [How to organise audiobook folders](/blog/organize-audiobook-folders/) explains the rules backups follow.
 
 ## How we built it
 
-The Bridge is written in Go, and there was no Go library for Audible, so we wrote our own: signing in, registering as a device, reading your library, fetching books and syncing your place. ffmpeg removes the copy protection.
+The Bridge is written in Go, and there was no Go library for Audible, so we wrote our own: signing in, registering as a device, reading your library, fetching books and syncing your place. ffmpeg removes the DRM.
 
 Two open-source projects showed us how Audible works, and we checked our work against them:
 

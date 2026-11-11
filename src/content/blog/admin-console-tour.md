@@ -1,6 +1,6 @@
 ---
 title: "A tour of the AudioSilo admin console"
-description: Four and a half minutes on a real household server - fixing a badly tagged book, the library and series shelves, Health, people and invites, activity and settings.
+description: "Four and a half minutes on a real home server: fixing a badly tagged book, the library and series shelves, Health, people and invites, activity and settings."
 kind: tutorial
 published: 2026-10-09
 updated: 2026-11-10
@@ -47,7 +47,7 @@ revisions:
     note: "Added what server 2.3 and 2.4 changed since the recording, and corrected how an invite QR is scanned."
 ---
 
-The admin console is where you run an AudioSilo server: add libraries, fix books, invite people and see how the household listens. It's built into the server at `/admin`, installs like an app from the browser, and comes in light and dark. The video above tours it on a real household server in about four and a half minutes, with captions.
+The admin console is where you run an AudioSilo server: add libraries, fix books, invite people and see how the household listens. It's built into the server at `/admin`, installs like an app from the browser, and comes in light and dark. The video above tours it on a real home server in about four and a half minutes, with captions.
 
 ## The overview (0:00)
 

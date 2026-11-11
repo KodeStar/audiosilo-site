@@ -50,7 +50,7 @@ Audible's downloads come in two DRM-protected formats:
 - **AAX**, the older one, is tied to your account by a short key (often called "activation bytes").
 - **AAXC**, the newer one, has its own key for each book.
 
-Inside both is ordinary AAC audio with chapters, which is what an M4B file is. So converting is quick and lossless when the tool just unlocks the audio without re-encoding it.
+Inside both is ordinary AAC audio with chapters, which is what an M4B file is. So converting is quick and lossless when the tool only unlocks the audio without re-encoding it.
 
 A self-hosted server can't stream AAX or AAXC, as they need your account's keys. AudioSilo deliberately doesn't index them, so a stray `.aax` stays out of the way until you convert it.
 
@@ -104,7 +104,7 @@ Audiobooks/
 - Number series books at the start of the folder name (`01 - Title`) so they sort in order.
 - Keep each book in its own folder, even a single M4B.
 
-In Libation, a folder template like `<first author>/<if series-><first series>/<series#> - <-if series><title short> [<id>]` gets close (Settings > Download/Decrypt). Libation recommends keeping `<id>`, the ASIN, so it can recognise books it already downloaded. That's fine: AudioSilo takes the title from the file's tags first by default.
+In Libation, a folder template like `<first author>/<if series-><first series>/<series#> - <-if series><title short> [<id>]` gets close (Settings > Download/Decrypt). Libation recommends keeping `<id>`, the ASIN, so it can recognise books it already downloaded. That's fine, because AudioSilo takes the title from the file's tags first by default.
 
 More rules, including disc folders and short-story collections, are in [How to organise audiobook folders](/blog/organize-audiobook-folders/).
 
@@ -132,15 +132,15 @@ AudioSilo is a self-hosted audiobook server with a web player and apps for iPhon
 
    Then run `docker compose up -d`, and `docker compose logs` for the admin password, which is printed once. See the [Docker quick start](https://docs.audiosilo.app/users/getting-started/quickstart-docker) and [Self-hosted audiobook server](/blog/self-hosted-audiobook-server/).
 
-2. **Add the library.** Your first sign-in to the admin console at `/admin` opens **Set up your server**. Type `/library` and press **Check folder**. The first scan starts at the end of step 3. (Skipped it? Use **Add your first library** on the Overview.)
+2. **Add the library.** Your first sign-in to the admin console at `/admin` opens **Set up your server**. Type `/library` and press **Check folder**. The first scan starts when you finish the setup's third step, **Community metadata**. (Skipped it? Use **Add your first library** on the Overview.)
 
-3. **Match the books.** Open **Health > Not matched** and run **Match automatically**. It looks every book up in the free community database at [meta.audiosilo.app](https://meta.audiosilo.app) and changes nothing until you apply. Matched books get descriptions, series order and, where the community wrote them, spoiler-safe recaps and character lists. See [Fix covers and series](/blog/fix-covers-and-series/).
+3. **Match the books.** Open **Health > Not matched** and run **Match automatically**. It looks every book up in the free community database on [AudioSilo Meta](https://meta.audiosilo.app) and changes nothing until you apply. Matched books get descriptions, series order and, where the community wrote them, spoiler-safe recaps and character lists. See [Fix covers and series](/blog/fix-covers-and-series/).
 
 4. **Listen.** Open the web player at `/web`, or pair the app with a QR code ([how to pair your phone](/blog/pair-your-phone/)).
 
 ## Keep a second copy
 
-A backup on one disk isn't really a backup. Copy the folder to a second drive now and then, and keep one copy away from home if you can. AudioSilo doesn't change your files, so any ordinary backup tool works.
+A copy on one disk is lost with that disk. Copy the folder to a second drive now and then, and keep one copy away from home if you can. AudioSilo doesn't change your files, so any ordinary backup tool works.
 
 ## Common questions
 

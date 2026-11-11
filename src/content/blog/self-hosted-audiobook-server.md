@@ -43,7 +43,7 @@ Your files stay where they are, and nobody else holds your library. This guide s
 
 If your audiobooks are files (CD rips, DRM-free purchases, public-domain recordings, backups), a server built for audiobooks adds:
 
-- **One place in every book, on every device.** Pause on your phone, carry on at your desk.
+- **Your place syncs across devices.** Pause on your phone and carry on at your desk from the same point.
 - **Streaming from anywhere**, plus downloads for offline listening.
 - **Separate accounts**, each with their own progress, bookmarks and stats.
 - **A player made for books**: sleep timer, speed control, chapters and bookmarks.
@@ -53,14 +53,14 @@ If you stop using the server, your library is still just a folder.
 ## What you need
 
 - **A machine that stays on.** A NAS, a mini PC, an old laptop or a Raspberry Pi with a 64-bit OS all work. AudioSilo is a single Go program with a built-in database, so it doesn't need much.
-- **Your audiobooks as files**, in a folder that machine can read. M4B, M4A, MP4, MP3, FLAC, OGG, Opus and MKA are indexed. A tidy layout helps: see [How to organise audiobook folders](/blog/organize-audiobook-folders/).
+- **Your audiobooks as files**, in a folder that machine can read. M4B, M4A, MP4, MP3, FLAC, OGG, Opus and MKA are indexed. A tidy layout helps. See [How to organise audiobook folders](/blog/organize-audiobook-folders/).
 - **Docker**, ideally (20.10.10 or newer from server 2.6; `docker version` shows yours). A plain binary works too (below).
 
 ## The main options
 
 | Option | What it's like |
 |---|---|
-| **Audiobookshelf** | The best-known open-source audiobook server. Also handles ebooks, can upload books and write metadata into files; its mobile apps are in beta. [Moving from Audiobookshelf](/blog/moving-from-audiobookshelf/) compares the two. |
+| **Audiobookshelf** | The best-known open-source audiobook server. Also handles ebooks, can upload books and write metadata into files; its phone apps are in beta. [Moving from Audiobookshelf](/blog/moving-from-audiobookshelf/) compares the two. |
 | **Plex, Jellyfin** | Built around music and video, so per-book progress and chapters depend on workarounds or third-party apps. |
 | **AudioSilo** | Built for audiobooks, with podcasts when you add its optional companion container, the Bridge. Open source (AGPLv3), never writes to your files, with a built-in web player and free apps for iPhone, iPad and Android. |
 
@@ -90,7 +90,7 @@ services:
       AUDIOSILO_WEB_DIR: /app/web
 ```
 
-`/data` holds everything the server creates: keep it and back it up. `/library` is your books, mounted **read-only**, since the server never writes to them.
+`/data` holds everything the server creates. Keep it and back it up. `/library` is your books, mounted **read-only**, since the server never writes to them.
 
 ### 2. Start it and save the credentials
 
@@ -129,7 +129,7 @@ Your first sign-in to the admin console opens **Set up your server**: eight shor
 
 1. For your books folder, type `/library` (the path inside the container).
 2. Press **Check folder**.
-3. Carry on through the steps. The library is added at the end of step 3.
+3. Carry on through the steps. The server adds the library at the end of the setup's third step, **Community metadata**.
 
 Books are browsable straight away while the scan fills in the details. More in [Set up your server](/blog/first-run-setup/).
 
@@ -159,7 +159,7 @@ Updates leave your data folder and books alone. Back up the `data` folder before
 
 ## Good to know
 
-- **Apps and self-signed certificates:** the apps can't accept one the way a browser can. From app 2.1 on iPhone and iPad (app 2.4.0 on Android) they connect over plain HTTP on your home network instead. Away from home (or with an older app) they need an address with a trusted certificate: see [How to pair your phone](/blog/pair-your-phone/) and [Listen away from home](/blog/listen-away-from-home/).
+- **Apps and self-signed certificates:** the apps can't accept one the way a browser can. From app 2.1 on iPhone and iPad (app 2.4.0 on Android) they connect over plain HTTP on your home network instead. Away from home (or with an older app) they need an address with a trusted certificate. See [How to pair your phone](/blog/pair-your-phone/) and [Listen away from home](/blog/listen-away-from-home/).
 - **MKA files:** with ffmpeg, an MP3 inside one plays everywhere; another codec inside plays in the web player only.
 - **Ebooks:** from server 2.5, a DRM-free EPUB beside a book's audio opens in the player's reader. See [Read the ebook](/blog/ebook-reader/).
 

@@ -67,7 +67,7 @@ public_url: "https://books.example.com"          # the address people use
 trusted_proxies: ["127.0.0.1/32"]                # where the proxy connects from
 ```
 
-`trusted_proxies` makes AudioSilo believe the proxy's `X-Forwarded-For` header, so rate limiting and sign-in lockouts apply to each real visitor, not to the proxy. List only your proxy's address or range: trusting too wide a range lets anyone fake their address.
+`trusted_proxies` makes AudioSilo believe the proxy's `X-Forwarded-For` header, so rate limiting and sign-in lockouts apply to each real visitor, not to the proxy. List only your proxy's address or range. Trusting too wide a range lets anyone fake their address.
 
 For a complete Docker Compose setup, follow the guide for your proxy:
 
@@ -75,7 +75,7 @@ For a complete Docker Compose setup, follow the guide for your proxy:
 - [AudioSilo with SWAG](/blog/audiosilo-with-swag/)
 - [AudioSilo with Traefik](/blog/audiosilo-with-traefik/)
 
-Those guides set the same three settings as environment variables, which override `config.yaml`. If you set HTTPS mode to Off in the admin console instead, restart AudioSilo to apply it.
+Those guides set the same three settings as environment variables, which override `config.yaml`. If you set **HTTPS mode** to **Off** in the admin console instead, restart AudioSilo to apply it.
 
 For a proxy and AudioSilo on the same host, without Docker, the short Caddy configuration is:
 
@@ -105,7 +105,7 @@ server {
 }
 ```
 
-Never use `tls.mode: "off"` without a proxy in front that serves HTTPS: plain HTTP over the internet sends passwords and audio unencrypted.
+Never use `tls.mode: "off"` without a proxy in front that serves HTTPS. Plain HTTP over the internet sends passwords and audio unencrypted.
 
 ## Option 3: Keep it private with a VPN
 
@@ -115,7 +115,7 @@ To open no ports at all, use a VPN such as WireGuard or Tailscale. It puts your 
 
 | Setup | Open |
 |---|---|
-| AudioSilo on its own | **Port 8080** by default (`bind` or `AUDIOSILO_BIND`): the API, admin console, web player and audio all use it |
+| AudioSilo on its own | **Port 8080** by default (`bind` or `AUDIOSILO_BIND`). The API, admin console, web player and audio all use it |
 | Reverse proxy with an HTTP certificate challenge | TCP 80 and 443 to the proxy; AudioSilo's port can stay inside Docker |
 | Direct autocert | Public TCP 443 |
 
@@ -125,7 +125,7 @@ Use the same HTTPS hostname on home Wi-Fi and mobile data. If mobile data works 
 
 An optional **Home address** (`lan_url`, `AUDIOSILO_LAN_URL`, or **Server > Settings > General**) adds a separate home endpoint. The apps learn both addresses when connecting and check that the home one is the same server before using it. With app 2.0.0, it also needs HTTPS with a certificate the app trusts.
 
-Leave it empty unless you have set up a separate reachable endpoint: the Docker proxy guides don't publish port 8080, so `http://192.168.1.20:8080` won't work there. The web player stays on the address you opened it at.
+Leave it empty unless you have set up a separate reachable endpoint. The Docker proxy guides don't publish port 8080, so `http://192.168.1.20:8080` won't work there. The web player stays on the address you opened it at.
 
 ## Is it safe to expose?
 

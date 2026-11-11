@@ -22,7 +22,7 @@ revisions:
     note: "Rewritten to be shorter and easier to read. No facts changed."
 ---
 
-Audiobook files play out of order because many players, car stereos and tools sort names **character by character**, like a dictionary. They see that `1` comes before `2` and put `10 - Part.mp3` ahead of `2 - Part.mp3`. The fix: **number the files with leading zeros** so every name has the same number of digits.
+Audiobook files play out of order because many players, car stereos and tools sort names **character by character**, like a dictionary. They see that `1` comes before `2` and put `10 - Part.mp3` ahead of `2 - Part.mp3`. The fix is to **number the files with leading zeros**, so every name has the same number of digits.
 
 | Sorted letter by letter | Sorted by number |
 |---|---|
@@ -45,7 +45,7 @@ Use `01`, `02` ... `10` for up to 99 parts, and `001` ... `100` beyond that. The
 
 ## Rename a whole folder at once
 
-- **macOS**: select the files in Finder, right-click, **Rename**, and choose **Format** with a name and an index. Check the order first: Finder numbers them in the order they're selected and sorted.
+- **macOS**: select the files in Finder, right-click, **Rename**, and choose **Format** with a name and an index. Check the order first. Finder numbers them in the order they're selected and sorted.
 - **Windows**: **PowerRename** in [PowerToys](https://learn.microsoft.com/windows/powertoys/) does batch renaming with numbering, from the right-click menu.
 - **Any OS**: Mp3tag can rename files from their tags (for example track number and title).
 - **The command line**: inside the book's folder, this bash loop pads the leading number to three digits. Run it with `echo` in front of `mv` first to see what it would do.
@@ -60,7 +60,7 @@ done
 
 Change `.mp3` to your extension, and `%03d` to `%02d` for two digits. `mv -n` never overwrites an existing file.
 
-Or sidestep it: an **M4B** holds the whole book in one file, so there's nothing to sort. [M4B vs MP3](/blog/m4b-vs-mp3-audiobooks/) shows how to join a folder of parts into one.
+An **M4B** avoids the problem. It holds the whole book in one file, so there's nothing to sort. [M4B vs MP3](/blog/m4b-vs-mp3-audiobooks/) shows how to join a folder of parts into one.
 
 ## How AudioSilo handles it
 
@@ -68,11 +68,11 @@ From **server 2.4.0**, AudioSilo plays a book's files in **natural order**. It r
 
 AudioSilo goes by file names, not track-number tags. Natural order can't help files with no digits: unnumbered prologues and epilogues, and numbers spelt as words.
 
-Leading zeros are still worth adding: other players, file managers and backup tools don't all sort naturally.
+Leading zeros are still worth adding, because other players, file managers and backup tools don't all sort naturally.
 
 ## Good to know
 
-- A book that played out of order before 2.4.0 is put right at the next library scan. Anyone partway through it may find their place has moved.
+- The next library scan puts right a book that played out of order before 2.4.0. Anyone partway through it may find their place has moved.
 - Chapters a Bridge found for the book move with their files, so they don't need finding again.
 - A downloaded copy takes the new order the next time the book is started online in app 2.4.0. Until then, and in older apps, it plays in its download order.
 
