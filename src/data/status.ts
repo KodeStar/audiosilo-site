@@ -30,18 +30,62 @@ export const SUPPORT_CARD_LIVE = true
  */
 export const APPLE_WATCH_LIVE = true
 
-/** What the watch app needs, shared by the live lines below. */
-const APPLE_WATCH_NEEDS = 'iPhone app 2.6 or later, watchOS 11 or later and server 2.6 or later with ffmpeg'
+/**
+ * The Wear OS app is on Google Play: it ships with Android app 2.7.0 as its own
+ * listing on the Wear OS track, reviewed apart from the phone app. Flip it only
+ * once the owner has seen it live on Play (there is no lookup to check). False
+ * words it as coming in the 2.7 app update.
+ */
+export const WEAR_OS_LIVE = false
+
+/**
+ * The watch app is one feature on both watches: the lines below name the
+ * watches that are live and say the other is coming. What each one needs:
+ */
+const APPLE_WATCH_NEEDS = 'iPhone app 2.6 or later and watchOS 11 or later'
+const WEAR_OS_NEEDS = 'Android app 2.7 or later and Wear OS 3 or later'
+const WATCH_SERVER_NEEDS = 'server 2.6 or later with ffmpeg'
+
+/** The watches it plays on today, the phone that sets it up, and what it needs. */
+const WATCH_NOW = APPLE_WATCH_LIVE && WEAR_OS_LIVE
+  ? {
+      on: 'your Apple Watch or Wear OS watch',
+      phone: 'phone',
+      needs: `It needs ${WATCH_SERVER_NEEDS}. On Apple Watch: ${APPLE_WATCH_NEEDS}. On Wear OS: ${WEAR_OS_NEEDS}.`,
+    }
+  : APPLE_WATCH_LIVE
+    ? { on: 'your Apple Watch', phone: 'iPhone', needs: `It needs ${APPLE_WATCH_NEEDS}, and ${WATCH_SERVER_NEEDS}.` }
+    : { on: 'your Wear OS watch', phone: 'Android phone', needs: `It needs ${WEAR_OS_NEEDS}, and ${WATCH_SERVER_NEEDS}.` }
+
+/** The watch still to come, as a closing sentence (empty once both are live). */
+const WATCH_COMING = APPLE_WATCH_LIVE && !WEAR_OS_LIVE
+  ? ' Coming in the 2.7 app update: the same on a Wear OS watch (Wear OS 3 or later), set up from your Android phone.'
+  : WEAR_OS_LIVE && !APPLE_WATCH_LIVE
+    ? ' Coming to the iPhone app: the same on Apple Watch.'
+    : ''
 
 /** The player page's offline row. */
-export const APPLE_WATCH_OFFLINE = APPLE_WATCH_LIVE
-  ? `Out for a run? The Apple Watch app plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs with your server once the watch can reach it. It needs ${APPLE_WATCH_NEEDS}.`
-  : 'Coming to the iPhone app: an Apple Watch app that plays books downloaded to the watch, with your iPhone left at home. Send a book from your iPhone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It will need server 2.6 or later.'
+export const WATCH_OFFLINE = APPLE_WATCH_LIVE || WEAR_OS_LIVE
+  ? `Out for a run? The watch app plays books downloaded to ${WATCH_NOW.on}, with your ${WATCH_NOW.phone} left at home. Send a book from your ${WATCH_NOW.phone} or choose one from Continue listening on the watch, and your listening syncs with your server once the watch can reach it. ${WATCH_NOW.needs}${WATCH_COMING}`
+  : 'Coming to the apps: a watch app for Apple Watch and Wear OS that plays books downloaded to the watch, with your phone left at home. Send a book from your phone or choose one from Continue listening on the watch, and your listening syncs the next time the watch has a connection. It will need server 2.6 or later.'
 
 /** The download page, under the app cards. */
-export const APPLE_WATCH_DOWNLOAD = APPLE_WATCH_LIVE
-  ? `On Apple Watch: the watch app comes with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It needs ${APPLE_WATCH_NEEDS}.`
-  : 'Coming to the iPhone app: an Apple Watch app, included with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. It will need server 2.6 or later.'
+export const WATCH_DOWNLOAD = APPLE_WATCH_LIVE && WEAR_OS_LIVE
+  ? `On a watch: the Apple Watch app comes with the iPhone app, and the Wear OS app installs from Google Play on the watch. Set it up from your phone, send it a book and leave the phone at home. ${WATCH_NOW.needs}`
+  : APPLE_WATCH_LIVE
+    ? `On a watch: the Apple Watch app comes with the iPhone app. Set it up from your iPhone, send it a book and leave the phone at home. ${WATCH_NOW.needs}${WATCH_COMING}`
+    : WEAR_OS_LIVE
+      ? `On a watch: the Wear OS app installs from Google Play on the watch. Set it up from your Android phone, send it a book and leave the phone at home. ${WATCH_NOW.needs}${WATCH_COMING}`
+      : 'Coming to the apps: a watch app for Apple Watch and Wear OS. Set it up from your phone, send it a book and leave the phone at home. It will need server 2.6 or later.'
+
+/** The home page's player tile: one point for the watch app, or none while neither watch is live. */
+export const WATCH_POINTS: string[] = APPLE_WATCH_LIVE && WEAR_OS_LIVE
+  ? ['A watch app for Apple Watch and Wear OS that plays downloaded books with your phone left at home']
+  : APPLE_WATCH_LIVE
+    ? ['An Apple Watch app that plays downloaded books with your iPhone left at home, with Wear OS coming in the 2.7 app update']
+    : WEAR_OS_LIVE
+      ? ['A Wear OS app that plays downloaded books with your Android phone left at home']
+      : []
 
 /** Latest server release, the fallback when the live GitHub lookup fails. */
 export const SERVER_VERSION = 'v2.6.0'
