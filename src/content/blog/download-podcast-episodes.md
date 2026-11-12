@@ -43,10 +43,9 @@ If you download an episode while it's playing, the player moves onto the downloa
 
 ## An episode that isn't on your server yet
 
-Some episodes say **Plays on demand**. Your server hasn't downloaded them yet. You can still download one to your device:
+Some episodes say **Plays on demand**. Your server hasn't downloaded them yet. You can still download one to your device.
 
-1. Your server fetches the episode first. Meanwhile the download reads **Getting it on your server**.
-2. When the server has it, the download to your device starts by itself.
+Your server fetches the episode first. Meanwhile the download reads **Getting it on your server**. When the server has it, the download to your device starts by itself.
 
 Keep the app open on screen until it moves on. If you download several, a few are fetched at a time and the rest wait their turn. Book downloads carry on while an episode waits.
 
@@ -60,7 +59,7 @@ To free the space, choose **Remove download**. You often won't need to. **Remove
 
 ## Download every episode you start
 
-A new setting downloads each episode as you start it: **Download podcast episodes when you start them**. It's in [Settings](https://docs.audiosilo.app/users/listening/settings#up-next-and-downloads) and in the **Automatic downloads** card on the Downloads page.
+A new setting, **Download podcast episodes when you start them**, downloads each episode as you start it. It's in [Settings](https://docs.audiosilo.app/users/listening/settings#up-next-and-downloads) and in the **Automatic downloads** card on the Downloads page.
 
 - **Default**: off.
 - **Network rule**: the same as for books, from the **Automatic downloads** picker (**On Wi-Fi** or **Always**).
@@ -70,16 +69,13 @@ The apps start **Automatic downloads** at **On Wi-Fi** and the web player at **N
 
 **Keep the next books ready** still never downloads episodes.
 
-## Not there yet
-
-AudioSilo can't yet keep the latest episodes of the shows you follow on your device by itself. For now, you download each episode by hand or turn on the setting above.
-
 ## Good to know
 
 - **Downloads belong to each device.** An episode on your phone isn't on your tablet.
 - **In the car**, the **Downloads** tab lists your downloaded episodes beside your books.
 - **The server's copy is separate.** If your admin's retention rules delete an episode from the server, your downloaded copy stays on your device.
 - **Still no casting, Apple Watch or kids mode** for episodes, downloaded or not.
+- **No automatic copies of new episodes yet.** AudioSilo doesn't keep the latest episodes of the shows you follow on your device. Download each one by hand, or turn on the setting above.
 
 ## More
 
