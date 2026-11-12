@@ -28,7 +28,7 @@ related:
 draft: true
 ---
 
-AudioSilo 2.7 adds a Wear OS app. It plays books downloaded to the watch, so you can go out with headphones and leave your Android phone at home. Your phone sets the watch up and sends it books. When the watch is back online, it sends what you heard to your server.
+AudioSilo 2.7 adds a Wear OS app. It plays books downloaded to the watch, so you can go out with headphones and leave your Android phone at home. Your phone sets the watch up and sends it books. The watch sends what you heard to your server.
 
 We tested the Wear OS app on the Wear OS emulator. It hasn't run on a real watch yet, so battery saving, Bluetooth headphones and download speeds may behave differently on yours.
 
@@ -60,9 +60,9 @@ There are two ways to choose a book:
 
 The watch's home screen shows each book coming under **On the way**. The server first prepares the watch's copy, which can take a while the first time for a long book. When the download is done, the book moves to **On this watch**.
 
-The watch downloads over Wi-Fi. If it finds no Wi-Fi within 30 seconds, the book's row says **Waiting for Wi-Fi** and offers **Use the phone's connection (slow)**. That route goes through your phone over Bluetooth, and can be much slower for a large book.
+The watch downloads over Wi-Fi. If it finds no Wi-Fi within 30 seconds, the book's row says **Waiting for Wi-Fi** and offers **Use the phone's connection (slow)**. That route goes through your phone over Bluetooth, which is slower than Wi-Fi, so a large book takes longer.
 
-On the phone, **Downloads** has an **On your watch** section. It lists the books you sent and the books the watch holds, with how far each has got. **Remove** takes a book off the watch. If it's playing, it stops, and your place is kept.
+On the phone, **Downloads** has an **On your watch** section. It lists the books you sent and the books the watch holds, with how far each has got. **Remove** takes a book off the watch, after asking. If it's playing, it stops, and your place is kept.
 
 ## A run without your phone
 
@@ -70,7 +70,7 @@ On the phone, **Downloads** has an **On your watch** section. It lists the books
 2. **Leave the phone.** Connect your headphones and play. The watch needs no connection to play a downloaded book.
 3. **Come back.** The watch sends what you heard to your server, with the times you heard it.
 
-The player has back 15 and forward 30 seconds, chapters, **Speed** and a **Sleep timer**. The book keeps playing after you leave the app.
+The player has back 15 seconds, forward 30 seconds, **Chapters**, **Speed** and a **Sleep timer**. The book keeps playing after you leave the app.
 
 Before a book plays, the watch asks your server for your place if it can reach it. If another device is elsewhere in the book, it offers **Jump there** or **Stay here**, like the other apps.
 
@@ -96,7 +96,7 @@ Kids' accounts and demos don't offer it.
 
 ## Good to know
 
-- **[Install both apps from the same place.](https://docs.audiosilo.app/users/listening/wear-os#install-both-apps-from-the-same-place)** The phone and the watch only talk to each other when both apps come from Google Play, or both from GitHub. Each GitHub app release has a watch APK beside the phone's. Installing it on a watch needs a computer with `adb`.
+- **[Install both apps from the same place.](https://docs.audiosilo.app/users/listening/wear-os#install-both-apps-from-the-same-place)** The phone and the watch only talk to each other when both apps come from Google Play, or both from GitHub. From 2.7.0, each GitHub app release has a watch APK beside the phone's. Installing it on a watch needs a computer with `adb`.
 - **At home with a [self-signed certificate](https://docs.audiosilo.app/users/listening/wear-os#a-self-signed-server),** the watch uses the server's plain HTTP home address. Set the watch up on the same network as the server.
 - **Away from home,** the watch needs an address with a certificate it trusts. Without one, it still plays its books anywhere, and syncs only at home.
 
