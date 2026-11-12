@@ -45,9 +45,9 @@ To set up the watch, start on your phone.
 1. In AudioSilo on the phone, open your account page for the server.
 2. On the **Wear OS watch** card, tap **Install on watch**. Google Play opens on the watch at AudioSilo. Install it there.
 3. Back on the card, tap **Set up your watch**.
-4. Keep the watch close. It signs in by itself.
+4. Keep the watch close. It signs in by itself, with nothing to type.
 
-There's nothing to type on the watch. The card now shows the account and how syncing is going.
+The card now shows the account and how syncing is going.
 
 The sign-in works once, for 10 minutes. If it runs out, tap **Send again** on the card.
 
@@ -55,10 +55,10 @@ The sign-in works once, for 10 minutes. If it runs out, tap **Send again** on th
 
 There are two ways to choose a book:
 
-- **From your phone:** open a book's menu, or **More** on its page, and tap **Send to watch**. You don't need to open AudioSilo on the watch. It starts the download in the background.
+- **From your phone:** open a book's menu, or **More** on its page, and tap **Send to watch**. The watch starts the download in the background, without you opening the app.
 - **On the watch:** **Continue listening** lists books you've started. Tap one to download it.
 
-**On the way**, on the watch's home screen, shows each book coming. The server first prepares the watch's copy, which can take a while the first time for a long book. When the download is done, the book moves to **On this watch**.
+The watch's home screen shows each book coming under **On the way**. The server first prepares the watch's copy, which can take a while the first time for a long book. When the download is done, the book moves to **On this watch**.
 
 The watch downloads over Wi-Fi. If it finds no Wi-Fi within 30 seconds, the book's row says **Waiting for Wi-Fi** and offers **Use the phone's connection (slow)**. That route goes through your phone over Bluetooth, and can be much slower for a large book.
 
@@ -84,7 +84,7 @@ Background sending can take a while. **Opening the app is the sure way to send i
 
 ## A small companion
 
-The watch holds **one account on one server** and plays **books**. It lists Continue listening and the books you send it.
+The watch holds **one account on one server** and plays **books**.
 
 It doesn't have:
 
@@ -96,11 +96,9 @@ Kids' accounts and demos don't offer it.
 
 ## Good to know
 
-- **Install both apps from the same place.** The phone and the watch only talk to each other when both apps come from Google Play, or both from GitHub. Each GitHub app release has a watch APK beside the phone's. Installing it on a watch needs a computer with `adb`.
-- **At home with a self-signed certificate,** the watch uses the server's plain HTTP home address. Set the watch up on the same network as the server.
+- **[Install both apps from the same place.](https://docs.audiosilo.app/users/listening/wear-os#install-both-apps-from-the-same-place)** The phone and the watch only talk to each other when both apps come from Google Play, or both from GitHub. Each GitHub app release has a watch APK beside the phone's. Installing it on a watch needs a computer with `adb`.
+- **At home with a [self-signed certificate](https://docs.audiosilo.app/users/listening/wear-os#a-self-signed-server),** the watch uses the server's plain HTTP home address. Set the watch up on the same network as the server.
 - **Away from home,** the watch needs an address with a certificate it trusts. Without one, it still plays its books anywhere, and syncs only at home.
-
-The docs explain [installing both apps from the same place](https://docs.audiosilo.app/users/listening/wear-os#install-both-apps-from-the-same-place) and [a self-signed server](https://docs.audiosilo.app/users/listening/wear-os#a-self-signed-server).
 
 ## More
 
