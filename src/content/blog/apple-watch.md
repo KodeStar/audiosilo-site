@@ -20,6 +20,7 @@ covers:
   - docs:/users/listening/offline-downloads
   - docs:/users/getting-started/remote-access
 related:
+  - wear-os
   - server-2-6
   - listening-sync
   - listen-away-from-home
