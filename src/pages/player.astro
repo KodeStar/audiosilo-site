@@ -13,7 +13,7 @@ import AppCards from '@/components/site/AppCards.astro'
 import { stills } from '@/data/media'
 import { demoLibrary } from '@/data/demo'
 import { DEMO_URL } from '@/data/links'
-import { APPLE_WATCH_OFFLINE, APPS_WITH_2, PLAYER_PLATFORMS, REDESIGN_WHERE } from '@/data/status'
+import { APPS_WITH_2, PLAYER_PLATFORMS, REDESIGN_WHERE, WATCH_OFFLINE } from '@/data/status'
 import { chapterTitle } from '@/lib/chapters'
 
 const chapters = [
@@ -176,7 +176,7 @@ const chapter = chapterTitle(chapters)
           always leaving storage free. It works in the web player too, over https. Progress made
           offline syncs when you're back, and a book never quietly restarts from zero.
         </p>
-        <p>{APPLE_WATCH_OFFLINE}</p>
+        <p>{WATCH_OFFLINE}</p>
         <p>
           Sign in to more than one server and Home, search and favourites merge them.
           {APPS_WITH_2} switch between your server's home and public address on their own.
