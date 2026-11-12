@@ -13,6 +13,7 @@ covers:
   - server:transcode
   - server:addresses
   - app:watch
+  - app:wear-os
   - app:account
   - app:downloads
   - docs:/users/listening/apple-watch
