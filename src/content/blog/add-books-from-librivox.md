@@ -103,7 +103,7 @@ A book is matched by its ASIN or ISBN, or by an admin in the console. LibriVox d
 
 ## Good to know
 
-- **Cancel and restart.** In the console, cancel from the **Jobs** list in **Server > Settings > Bridge**. A cancelled book leaves nothing behind. If the Bridge stops part way, it picks up where it left off and doesn't download finished sections again.
+- **Cancel and restart.** In the console, cancel from the **Jobs** list in **Server > Settings > Bridge**. Cancelling during the download leaves nothing behind. If the Bridge stops part way, it picks up where it left off and doesn't download finished sections again.
 - **When adding fails,** the row says why, such as a full disk or archive.org being out of reach. Add the recording again to retry.
 - **A new books library** with no books yet can't be **Ready**. Add one book to it first.
 - **Notifications.** The server tells you when a book is added or fails to add, in the bell.
