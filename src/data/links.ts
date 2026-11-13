@@ -27,6 +27,13 @@ export const META_URL = 'https://meta.audiosilo.app'
 export const APP_STORE_URL = 'https://apps.apple.com/us/app/audiosilo/id6783431375'
 /** Android app (live on Google Play since 2026-10-12; 2.5.0 as of 2026-11-08). */
 export const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=app.audiosilo'
+/** The app's latest GitHub release: each one since 2.5.0 carries the Android APK
+    (AudioSilo-<version>.apk). The asset name is versioned, so link the release page. */
+export const APK_RELEASE_URL = 'https://github.com/KodeStar/audiosilo-frontend/releases/latest'
+/** Obtainium: installs Android apps from their GitHub releases and offers each update. */
+export const OBTAINIUM_URL = 'https://github.com/ImranR98/Obtainium'
+/** Installing the APK, keeping it updated with Obtainium, and switching from Google Play. */
+export const APK_DOCS_URL = `${DOCS_URL}/users/listening/mobile-apps#android-without-google-play`
 
 export const SPONSORS_URL = 'https://github.com/sponsors/KodeStar'
 export const DISCORD_URL = 'https://discord.gg/nFFqRbkRn6'
