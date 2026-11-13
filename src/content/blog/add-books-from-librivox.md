@@ -44,7 +44,7 @@ The search reads the LibriVox catalogue in AudioSilo's community metadata databa
 ## What it needs
 
 - **An admin account.** Listeners don't see the search.
-- **Server 2.7.0** with community metadata on, in **Server > Settings > Metadata**.
+- **Server 2.7.0** with community metadata on, in **Server > Settings > Community metadata**.
 - **A paired Bridge**, updated together with your server.
 - **The books library shown as Ready** in **Server > Settings > Bridge**, so the Bridge can write to it.
 - To add from the player: **app 2.7.0**, or the web player in server 2.7.0.
@@ -54,19 +54,19 @@ The search reads the LibriVox catalogue in AudioSilo's community metadata databa
 To add a book from the admin console, open **Library > LibriVox**.
 
 1. Type a title or an author in **Search LibriVox**.
-2. Select a result. Its **Recordings** list shows who reads each one, its length, its number of sections and its LibriVox project number.
-3. Pick the **Library**, when you have more than one books library.
+2. Select a result. Each of its recordings shows who reads it, its length, its number of sections and its LibriVox project number.
+3. Pick the library on the recording's row, when you have more than one books library.
 4. Press **Add**, or **Add to** *the library* when you have only one.
 
-The recording's row shows the Bridge's progress. When the book is in, the row says **In library**, with a link to the book.
+The recording's row shows the Bridge's progress. When the book is in, the row shows **In library**, a link to the book.
 
 <!-- screenshot:console -->
 
 ## Add a book in the player
 
-To add a book from the app or the web player, open the **Library** tab on a books library.
+To add a book from the app or the web player, open **Books** in the **Library** tab of a books library.
 
-1. Press the **...** button beside the sort and layout controls.
+1. Press the **...** button beside the sort and layout controls. It shows only while the Bridge is online.
 2. Choose **Find on LibriVox**.
 3. Type a title or an author, press **Search** and select a result.
 4. Press **Add to** *the library* on the recording you want.
@@ -93,7 +93,7 @@ Charles Dickens/
 - If a folder of that name already exists, the Bridge uses *Title* (LibriVox *number*) instead. It never writes into an existing book.
 - The book appears all at once, when every section is in.
 
-The Bridge adds one book at a time. Audible backups and podcast episode downloads take turns with it.
+The Bridge adds one book at a time. Audible backups and the podcast episodes your server fetches by itself take turns with it.
 
 ## Also free on LibriVox
 
@@ -104,7 +104,7 @@ A book is matched by its ASIN or ISBN, or by an admin in the console. LibriVox d
 ## Good to know
 
 - **Cancel and restart.** In the console, cancel from the **Jobs** list in **Server > Settings > Bridge**. A cancelled book leaves nothing behind. If the Bridge stops part way, it picks up where it left off and doesn't download finished sections again.
-- **When adding fails,** the row says why, such as a full disk or archive.org being out of reach. Press **Add** to try again.
+- **When adding fails,** the row says why, such as a full disk or archive.org being out of reach. Add the recording again to retry.
 - **A new books library** with no books yet can't be **Ready**. Add one book to it first.
 - **Notifications.** The server tells you when a book is added or fails to add, in the bell.
 - **Where community details show.** For a book with no ASIN or ISBN, they show on its page and in Search. The companion, Home's cards, the end credits and downloaded copies still leave them out.
