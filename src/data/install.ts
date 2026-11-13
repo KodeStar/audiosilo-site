@@ -24,6 +24,7 @@ docker compose logs     # the admin password and auth code, shown once`
 
 export const dockerRun = `mkdir -p data           # create the data folder first
 docker run -d --name audiosilo -p 8080:8080 \\
+  -e PUID=1000 -e PGID=1000 \\
   -v "$PWD/data:/data" \\
   -v /srv/audiobooks:/library:ro \\
   ghcr.io/kodestar/audiosilo-server:latest
