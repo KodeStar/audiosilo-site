@@ -16,7 +16,7 @@ import StoreBadge from '@/components/site/StoreBadge.astro'
 import ApkNote from '@/components/site/ApkNote.astro'
 import { loops, stills } from '@/data/media'
 import { ANDROID_LIVE, APP_PLATFORMS, GET_APP_LINE, META_STATS,PLATFORMS_LINE, PLAYER_PLATFORMS, REDESIGN_WHERE, STATS_AS_OF, WATCH_POINTS } from '@/data/status'
-import { APP_STORE_URL, META_URL, PLAY_STORE_URL } from '@/data/links'
+import { META_URL } from '@/data/links'
 import { dockerRun } from '@/data/install'
 import { demoLibrary } from '@/data/demo'
 ---
@@ -224,10 +224,10 @@ import { demoLibrary } from '@/data/demo'
       <div id="get-app" class="reveal mx-auto mt-14 flex max-w-xl scroll-mt-24 flex-col items-center gap-4 text-center">
         <p class="text-sm text-muted-foreground">Get the app for {APP_PLATFORMS}</p>
         <div class="flex flex-wrap justify-center gap-3">
-          <StoreBadge href={APP_STORE_URL} icon="apple" eyebrow="Download on the" label="App Store" />
-          {ANDROID_LIVE && <StoreBadge href={PLAY_STORE_URL} icon="googleplay" eyebrow="Get it on" label="Google Play" />}
+          <StoreBadge store="apple" />
+          {ANDROID_LIVE && <StoreBadge store="googleplay" />}
         </div>
-        {ANDROID_LIVE && <ApkNote />}
+        <ApkNote />
       </div>
     </div>
   </section>
