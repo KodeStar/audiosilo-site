@@ -12,9 +12,11 @@ import Device from '@/components/media/Device.astro'
 import MediaThemeSwitch from '@/components/theme/MediaThemeSwitch.astro'
 import TourButton from '@/components/media/TourButton.astro'
 import VersionBadge from '@/components/VersionBadge.tsx'
+import StoreBadge from '@/components/site/StoreBadge.astro'
+import ApkNote from '@/components/site/ApkNote.astro'
 import { loops, stills } from '@/data/media'
-import { GET_APP_LINE, META_STATS,PLATFORMS_LINE, PLAYER_PLATFORMS, REDESIGN_WHERE, STATS_AS_OF, WATCH_POINTS } from '@/data/status'
-import { META_URL } from '@/data/links'
+import { ANDROID_LIVE, APP_PLATFORMS, GET_APP_LINE, META_STATS,PLATFORMS_LINE, PLAYER_PLATFORMS, REDESIGN_WHERE, STATS_AS_OF, WATCH_POINTS } from '@/data/status'
+import { APP_STORE_URL, META_URL, PLAY_STORE_URL } from '@/data/links'
 import { dockerRun } from '@/data/install'
 import { demoLibrary } from '@/data/demo'
 ---
@@ -46,6 +48,9 @@ import { demoLibrary } from '@/data/demo'
         <div class="reveal reveal-d3 mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
           <a href="#start" class="group inline-flex items-center gap-1.5 font-semibold">
             Run your own server <Arrow />
+          </a>
+          <a href="#get-app" class="group inline-flex items-center gap-1.5 font-semibold">
+            Get the app <Arrow />
           </a>
           <span class="text-muted-foreground">
             Server <VersionBadge client:settled /> &middot; open source (AGPLv3)
@@ -215,6 +220,14 @@ import { demoLibrary } from '@/data/demo'
           <TourButton tour="playerIpad" label="iPad" size="pill" />
           <TourButton tour="playerMobile" label="Phone" size="pill" />
         </div>
+      </div>
+      <div id="get-app" class="reveal mx-auto mt-14 flex max-w-xl scroll-mt-24 flex-col items-center gap-4 text-center">
+        <p class="text-sm text-muted-foreground">Get the app for {APP_PLATFORMS}</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <StoreBadge href={APP_STORE_URL} icon="apple" eyebrow="Download on the" label="App Store" />
+          {ANDROID_LIVE && <StoreBadge href={PLAY_STORE_URL} icon="googleplay" eyebrow="Get it on" label="Google Play" />}
+        </div>
+        {ANDROID_LIVE && <ApkNote />}
       </div>
     </div>
   </section>

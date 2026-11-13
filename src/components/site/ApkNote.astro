@@ -1,0 +1,26 @@
+---
+/**
+ * The Android APK route beside Google Play: the latest GitHub release, Obtainium
+ * for updates, and the one-source note. Every app release since 2.5.0 carries
+ * the APK. Shared by the app cards (download, player) and the home page.
+ */
+import { APK_DOCS_URL, APK_RELEASE_URL, OBTAINIUM_URL } from '@/data/links'
+
+interface Props {
+  class?: string
+}
+const { class: className } = Astro.props
+---
+
+<div class:list={['text-sm text-muted-foreground', className]}>
+  <p>
+    No Google Play? <a href={APK_RELEASE_URL} target="_blank" rel="noopener" class="link">Download the APK</a> from
+    GitHub, or let <a href={OBTAINIUM_URL} target="_blank" rel="noopener" class="link">Obtainium</a> install it
+    and keep it up to date.
+  </p>
+  <p class="mt-2">
+    Pick one source: the two can't update each other. Switching means uninstalling, which removes the
+    app's downloads and sign-ins. Your progress stays on your server.
+    <a href={APK_DOCS_URL} target="_blank" rel="noopener" class="link">How to install it</a>
+  </p>
+</div>
