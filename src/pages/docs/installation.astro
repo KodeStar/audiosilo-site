@@ -1,5 +1,12 @@
 ---
-import { GITHUB_SERVER_RELEASES_URL, LSIO_REPO_URL, UNRAID_DOCS_URL } from '@/data/links'
+import {
+  DOCKER_DOCS_URL,
+  GITHUB_SERVER_RELEASES_URL,
+  LSIO_REPO_URL,
+  PERMISSIONS_DOCS_URL,
+  SYNOLOGY_DOCS_URL,
+  UNRAID_DOCS_URL,
+} from '@/data/links'
 import DocsLayout from '../../layouts/DocsLayout.astro'
 import CodeBlock from '../../components/CodeBlock.astro'
 
@@ -13,12 +20,13 @@ const compose = `services:
       - ./data:/data            # db, config, certs (first run prints admin creds once)
       - /srv/audiobooks:/library:ro
     environment:
-      PUID: "1000"              # owner of /data (Unraid: 99)
-      PGID: "1000"              # group of /data (Unraid: 100)
+      PUID: "1000"              # owner of ./data (Unraid: 99, Synology: usually 1026)
+      PGID: "1000"              # group of ./data (Unraid: 100, Synology: usually 100)
       AUDIOSILO_WEB_DIR: /app/web
       # AUDIOSILO_PUBLIC_URL: "https://books.example.com"  # used in QR/invite links`
 
-const up = `docker compose up -d
+const up = `mkdir -p data              # create the data folder first
+docker compose up -d
 docker compose logs        # first run prints the admin password + auth code ONCE`
 
 const binary = `# Choose the admin password in your browser instead of reading it from the log:
@@ -50,15 +58,36 @@ const update = `docker compose pull && docker compose up -d`
   </ul>
 
   <h2>Option 1: Docker (recommended)</h2>
-  <p>Create a <code>docker-compose.yml</code>, mounting your audiobooks read-only and persisting <code>/data</code>:</p>
+  <p>
+    Make a folder for AudioSilo with a <code>docker-compose.yml</code> in it, mounting your audiobooks
+    read-only and persisting <code>/data</code>:
+  </p>
   <CodeBlock filename="docker-compose.yml" code={compose} />
-  <p>Then start it and read the logs to grab your one-time admin credentials:</p>
+  <p>
+    Create the <code>data</code> folder before the first start, then start it and read the logs to grab
+    your one-time admin credentials:
+  </p>
   <CodeBlock code={up} />
   <p>
-    Set <code>PUID</code>/<code>PGID</code> to the user that should own <code>/data</code> (Unraid:
-    <code>99</code>/<code>100</code>; generic Linux: your <code>id -u</code>/<code>id -g</code>). The
-    entrypoint chowns the data dir and runs the server as that user, so it works regardless of how the
-    mounted volume is owned.
+    Set <code>PUID</code>/<code>PGID</code> to the user and group that own the data folder. The server
+    runs as that user, and it must be able to read and write the folder.
+  </p>
+  <ul>
+    <li>Linux: your <code>id -u</code>/<code>id -g</code>.</li>
+    <li>Unraid: <code>99</code>/<code>100</code>.</li>
+    <li>
+      A NAS such as Synology: the folder's owner, usually your NAS user (<code>1026</code>/<code>100</code>
+      on Synology). Give that user read and write on the folder in the NAS's file manager. See the
+      <a href={SYNOLOGY_DOCS_URL} target="_blank" rel="noopener">Synology install guide</a>.
+    </li>
+  </ul>
+  <p>
+    Backups go in <code>data/backups</code>. A backup folder mounted elsewhere
+    (<code>AUDIOSILO_BACKUP_DIR</code>) needs the same owner. If
+    the container keeps restarting or says permission denied, see
+    <a href={PERMISSIONS_DOCS_URL} target="_blank" rel="noopener">permission problems</a> in the
+    troubleshooting guide. The <a href={DOCKER_DOCS_URL} target="_blank" rel="noopener">Docker install
+    guide</a> has the full walkthrough.
   </p>
   <p>Updating the server or the bundled player is always a new image:</p>
   <CodeBlock code={update} />

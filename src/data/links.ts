@@ -10,6 +10,12 @@ export const DEMO_URL = 'https://demo.audiosilo.app/web/demo'
 export const DOCS_URL = 'https://docs.audiosilo.app'
 /** The Unraid install guide (Community Applications, the LinuxServer.io image). */
 export const UNRAID_DOCS_URL = `${DOCS_URL}/users/getting-started/install-unraid`
+/** The Docker install guide. */
+export const DOCKER_DOCS_URL = `${DOCS_URL}/users/getting-started/quickstart-docker`
+/** The Synology install guide (Container Manager, PUID / PGID for a DSM user). */
+export const SYNOLOGY_DOCS_URL = `${DOCS_URL}/users/getting-started/install-synology`
+/** Troubleshooting: the container can't write to its data or backup folder. */
+export const PERMISSIONS_DOCS_URL = `${DOCS_URL}/users/troubleshooting#permission-denied`
 /** LinuxServer.io's image repo: lscr.io/linuxserver/audiosilo, the app Unraid's Community Applications lists. */
 export const LSIO_REPO_URL = 'https://github.com/linuxserver/docker-audiosilo'
 /** Generating characters and recaps with a Bridge (and contributing them). */
