@@ -4,11 +4,12 @@
  * store availability comes from src/data/status.ts. The web card's body is
  * the default slot (it differs per page); `pairNote` adds a line to each app
  * card that is in its store. Each app card offers its store badge once live,
- * and the Discord ask while its 2.0 app is in beta.
+ * and the Discord ask while its 2.0 app is in beta. The Android card also
+ * offers the APK from GitHub (every app release since 2.5.0 carries one).
  */
 import Arrow from './Arrow.astro'
 import StoreBadge from './StoreBadge.astro'
-import { APP_STORE_URL, PLAY_STORE_URL } from '@/data/links'
+import ApkNote from './ApkNote.astro'
 import {
   ANDROID_HEADING,
   ANDROID_LIVE,
@@ -37,7 +38,7 @@ const { webTitle, pairNote } = Astro.props
     <h3 class="t-heading mt-2">On the App Store</h3>
     <p class="mt-3 text-[0.9375rem] text-foreground/80">{IOS_APP_NOTE}{pairNote && ` ${pairNote}`}</p>
     <div class="mt-auto flex flex-wrap items-center gap-x-5 gap-y-3 pt-5">
-      <StoreBadge href={APP_STORE_URL} icon="apple" eyebrow="Download on the" label="App Store" />
+      <StoreBadge store="apple" />
       {
         !IOS_2_IN_STORE && (
           <a href={BETA_URL} target="_blank" rel="noopener" class="group inline-flex items-center gap-1.5 text-sm font-semibold">
@@ -54,7 +55,8 @@ const { webTitle, pairNote } = Astro.props
     {
       ANDROID_LIVE ? (
         <div class="mt-auto pt-5">
-          <StoreBadge href={PLAY_STORE_URL} icon="googleplay" eyebrow="Get it on" label="Google Play" />
+          <StoreBadge store="googleplay" />
+          <ApkNote class="mt-4" />
         </div>
       ) : (
         <a href={BETA_URL} target="_blank" rel="noopener" class="group mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold">

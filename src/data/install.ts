@@ -12,16 +12,19 @@ export const composeYaml = `services:
       - ./data:/data                  # database, config, certificates
       - /srv/audiobooks:/library:ro   # your books, mounted read-only
     environment:
-      PUID: "1000"                    # owner of /data (Unraid: 99)
-      PGID: "1000"                    # group of /data (Unraid: 100)
+      PUID: "1000"                    # owner of ./data (Unraid: 99, Synology: usually 1026)
+      PGID: "1000"                    # group of ./data (Unraid: 100, Synology: usually 100)
       # AUDIOSILO_PUBLIC_URL: "https://books.example.com"  # used in QR/invite links
       # AUDIOSILO_TLS_MODE: "off"     # only behind a TLS-terminating reverse proxy
       AUDIOSILO_WEB_DIR: /app/web`
 
-export const composeRun = `docker compose up -d
+export const composeRun = `mkdir -p data           # create the data folder first
+docker compose up -d
 docker compose logs     # the admin password and auth code, shown once`
 
-export const dockerRun = `docker run -d --name audiosilo -p 8080:8080 \\
+export const dockerRun = `mkdir -p data           # create the data folder first
+docker run -d --name audiosilo --restart unless-stopped -p 8080:8080 \\
+  -e PUID=1000 -e PGID=1000 \\
   -v "$PWD/data:/data" \\
   -v /srv/audiobooks:/library:ro \\
   ghcr.io/kodestar/audiosilo-server:latest
