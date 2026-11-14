@@ -7,24 +7,16 @@ seams with the product repos) before working here.
 
 ## Model routing (every session follows this)
 
-Sessions in this repo run a fixed division of labour between models:
+Work runs through the workspace `/ship` skill (`~/dev/audiosilo/.claude/skills/ship/`):
+the main session plans, decides and checks; fresh agents (`ship-implementer`,
+`ship-reviewer`, `ship-deep-reviewer`, `ship-verifier`) do the reading, writing,
+reviewing and live verification, so the large main context is never what reviews or
+edits code. Which model each agent runs on is pinned in its definition
+(`~/dev/audiosilo/.claude/agents/`), not here.
 
-- **Fable (the main session) is the orchestrator only.** It owns task
-  decomposition, orchestration, design taste/direction, and final QA of every
-  delegated piece. It **never writes feature code directly** - it reviews
-  diffs, runs the gate, screenshots the result, and sends work back when it
-  falls short. Runs at **high** effort (do not escalate to xhigh/max). It may
-  write orchestration artifacts itself: this file, docs/DESIGN.md, briefs,
-  commit messages.
-- **Opus subagents do the implementation.** One subagent per task
-  (`model: "opus"`); parallel when tasks touch disjoint files, sequential when
-  one depends on another's output. Each subagent gets a self-contained brief
-  (files, constraints, acceptance criteria) and must leave `yarn build &&
-  yarn check` green for what it touched.
-- **Token-hungry chores go to cheaper models** (Sonnet/Haiku): bulk
-  copy/feature research across the workspace, screenshot sweeps, link
-  checking, log triage. They report findings back; they don't make design
-  decisions.
+On this repo the look is the product, so the main session keeps design direction and the
+last look: it opens a screenshot of the changed page (phone and desktop width) before
+calling a change done, and sends the work back when it falls short of docs/DESIGN.md.
 
 ## Stack
 
