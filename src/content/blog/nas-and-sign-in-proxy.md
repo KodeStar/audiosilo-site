@@ -56,7 +56,7 @@ The same warning can name other folders. What happens then depends on the folder
 | Folder | What you see |
 |---|---|
 | The data folder | The server stops, as above. |
-| A backups folder | The server starts, and its log warns `backups will fail`. Once a backup fails, the Backups notice in the console says why. |
+| The backups folder in `AUDIOSILO_BACKUP_DIR` | The server starts, and its log warns `backups will fail`. Once a backup fails, the Backups notice in the console says why. |
 | A books folder | The warning ends with `Until then, a library in that folder shows as offline.` The library shows **Folder unavailable** in the console. After the fix, press **Retry** on the library. |
 
 Before 2.7.0, a backup into a folder the server couldn't write to was reported only as failed. A books folder the server could reach but not list was scanned as fine, with no books in it.
@@ -88,13 +88,14 @@ To connect an app through a sign-in proxy:
 
 The app is now signed in through the proxy, and sends the headers with its requests to that `https://` address.
 
-The app stores the headers as securely as your sign-in. Proxy headers need an `https://` address, and the app never sends them over plain HTTP.
+The app stores the headers as securely as your sign-in. Proxy headers need an `https://` address, and the app doesn't add them to a plain-HTTP request. Requests to the server's other addresses, such as a plain-HTTP home address, get none.
 
 To change them later, open the **Proxy headers** card on the account page. It lists each header's name and the address it goes to, and never shows a saved value again. **Remove headers** stops the device sending them.
 
 ## Good to know
 
 - **What can't send proxy headers:** Chromecast, the Apple Watch and Wear OS apps, and calendar apps. In a browser, covers, audio and requests to another server don't carry them either. Those rely on your sign-in to the proxy in that browser.
+- **Redirects:** when the proxy or the server redirects a request to another address, the Android app sends the headers on to that address. Only let the proxy redirect to addresses you'd trust with them.
 - **Some header names are the app's own**, such as `Authorization`, `Cookie` and `Host`, and the app refuses them. So a proxy that asks for basic auth can't sit in front of AudioSilo.
 - **Create the data folder before the first start**, on any Docker host. Otherwise Docker creates it as root, and the container has to change its owner, which a NAS share can refuse.
 - **Run the container with `user:` instead of `PUID` and `PGID`?** Then the **Fix** line says to run it as the folder's owner, for example `user: "1026:100"`.
