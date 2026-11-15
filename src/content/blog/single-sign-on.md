@@ -5,13 +5,13 @@ kind: feature
 published: 2026-11-15
 verified: 2026-11-15
 appliesTo: Server 2.7.0 with its bundled web player (not released yet)
-tags: [single-sign-on, oidc, admin, self-hosting, security, player]
+tags: [single-sign-on, admin, self-hosting, security, player]
 covers:
-  - server:sso
+  - server:oidc
   - server:security
-  - server:admin
+  - server:admin_ui
   - server:notifications
-  - server:web
+  - server:web_player
   - app:web-player
   - app:connect
   - docs:/users/admin/single-sign-on
@@ -26,6 +26,7 @@ related:
   - nas-and-sign-in-proxy
   - admin-console-tour
   - listen-away-from-home
+  - pair-your-phone
 draft: true
 ---
 
