@@ -88,7 +88,8 @@ The first time someone signs in, the server looks for their account:
 | When | What happens |
 |---|---|
 | The provider says their email is verified, and it matches the email of exactly one ordinary account | The server links them to that account. |
-| Anything else, an admin's email included | The sign-in waits for an admin, under **Waiting sign-ins**. Nobody becomes an admin by changing an email at the provider. |
+| No account has their email | The sign-in waits for an admin, under **Waiting sign-ins**. With **Make accounts for new people** on (below), they get a new account instead. |
+| Anything else, such as an admin's email | The sign-in waits under **Waiting sign-ins**. Nobody becomes an admin by changing an email at the provider. |
 
 Once linked, they sign in to the same account every time. To give an account an email, open the person's page and fill in **Sign-in > Email**. Household members and demo accounts can't sign in with single sign-on.
 
@@ -106,11 +107,11 @@ After a Link or Create account, they sign in again and get straight in.
 
 These settings are under **Server > Settings > Sign-in > Who may sign in**. They apply at the next sign-in, with no restart.
 
-- **Make accounts for new people** skips the wait. The server makes an ordinary account for someone it doesn't know.
+- **Make accounts for new people** skips the wait. The server makes an ordinary account for someone it doesn't know, or an admin account for a member of the **Admin group**.
 - **Only for this group** limits that to members of one group at your provider.
 - **Admin group** manages admins at your provider. Set it to a group name, such as `audiosilo-admins`. At each single sign-on, a member of that group becomes an admin, and anyone else an ordinary user.
 
-Group names must match exactly, capital letters included. The last admin is never made an ordinary user. Leave **Admin group** empty to set roles on the **People** page yourself.
+Group names must match exactly, capital letters included. If your provider never sends groups, roles don't change. The last admin is never made an ordinary user. Leave **Admin group** empty to set roles on the **People** page yourself.
 
 ## Good to know
 
