@@ -42,6 +42,8 @@ The iOS and Android apps don't offer it. They keep signing in by [QR code, invit
 
 ## Turn it on
 
+To turn it on, register AudioSilo at your provider, then give the server the provider's details.
+
 1. In the console, open **Server > Settings > Sign-in** and copy the **Redirect URI**.
 2. At your provider, create an OpenID Connect client for AudioSilo with that redirect URI.
 3. Note the provider's issuer address, the client ID and the client secret.
@@ -61,7 +63,8 @@ With Docker Compose, the variables go under the server's `environment:`:
 
 - The name is what the button says, here "Sign in with Authentik".
 - The issuer must be exactly what your provider states, a trailing `/` included.
-- To keep the secret out of the file, put it in a file, such as a Docker secret, and set `AUDIOSILO_OIDC_CLIENT_SECRET_FILE` to its path.
+- To keep the secret out of the file, put it in a file, such as a Docker secret, and set `AUDIOSILO_OIDC_CLIENT_SECRET_FILE` to its path, in place of `AUDIOSILO_OIDC_CLIENT_SECRET`. Setting both turns single sign-on off.
+- With Docker Compose, apply the variables with `docker compose up -d`. Restarting the container keeps the old ones.
 
 Back on **Server > Settings > Sign-in**, **Status** reads **Connected to the provider**. If a setting is wrong, it gives the reason. Password sign-in keeps working either way.
 
