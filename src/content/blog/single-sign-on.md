@@ -30,24 +30,23 @@ related:
 draft: true
 ---
 
-AudioSilo 2.7 adds single sign-on with OpenID Connect. People sign in to the admin console and the web player with the account they already have at your identity provider, such as Authentik, Authelia, Keycloak or Pocket ID. You decide who gets an account and who is an admin.
+AudioSilo 2.7 adds single sign-on with OpenID Connect. People sign in to the admin console and the web player with their account at your identity provider, such as Authentik, Authelia, Keycloak or Pocket ID. You decide who gets an account and who is an admin.
 
-The iOS and Android apps don't offer it. They keep signing in by QR code, invite or password.
+The iOS and Android apps don't offer it. They keep signing in by [QR code, invite or password](/blog/pair-your-phone/).
 
 ## What you need
 
-- A public address in **Server > Settings > General**, such as `https://books.example.com`. Your provider sends people back to it.
+- A public address in **Server > Settings > General**, such as `https://books.example.com`. Your provider sends people back to it. [Listen away from home](/blog/listen-away-from-home/) shows how to set one up.
 - An identity provider that speaks OpenID Connect.
 - A way to change the server's `config.yaml` or its environment variables. The provider can't be set from the console.
 
 ## Turn it on
 
-To turn on single sign-on, register AudioSilo at your provider, then give the server the provider's details.
-
-1. At your provider, create an OpenID Connect client for AudioSilo. Give it this redirect URI, with your public address at the front: `https://books.example.com/api/v1/auth/oidc/callback`
-2. Note the provider's issuer address, the client ID and the client secret.
-3. Add them to the server's environment, as below, or to `config.yaml`.
-4. Restart the server.
+1. In the console, open **Server > Settings > Sign-in** and copy the **Redirect URI**.
+2. At your provider, create an OpenID Connect client for AudioSilo with that redirect URI.
+3. Note the provider's issuer address, the client ID and the client secret.
+4. Add them to the server's environment, as below, or to `config.yaml`.
+5. Restart the server.
 
 With Docker Compose, the variables go under the server's `environment:`:
 
@@ -60,9 +59,13 @@ With Docker Compose, the variables go under the server's `environment:`:
       AUDIOSILO_OIDC_CLIENT_SECRET: "the client secret"
 ```
 
-The name is what the button says, here "Sign in with Authentik". The issuer must be exactly what your provider states, a trailing `/` included. To keep the secret out of the file, put it in a file such as a Docker secret and set `AUDIOSILO_OIDC_CLIENT_SECRET_FILE` to its path.
+- The name is what the button says, here "Sign in with Authentik".
+- The issuer must be exactly what your provider states, a trailing `/` included.
+- To keep the secret out of the file, put it in a file, such as a Docker secret, and set `AUDIOSILO_OIDC_CLIENT_SECRET_FILE` to its path.
 
-Now open **Server > Settings > Sign-in** in the console. **Status** reads **Connected to the provider**, and the console's sign-in page shows **Sign in with Authentik**. If a setting is wrong, **Status** gives the reason. The server keeps running, and password sign-in still works.
+Back on **Server > Settings > Sign-in**, **Status** reads **Connected to the provider**. If a setting is wrong, it gives the reason. Password sign-in keeps working either way.
+
+The console's sign-in page now shows **Sign in with Authentik**. So does the web player, when you open it from your server at its own address followed by `/web`.
 
 ## A guide for each provider
 
@@ -70,10 +73,10 @@ The docs have a page for each of four providers, with the steps at the provider 
 
 | Provider | Its issuer looks like | Good to know |
 |---|---|---|
-| [Sign in with Authentik](https://docs.audiosilo.app/users/admin/sso/authentik) | `https://auth.example.com/application/o/audiosilo/` | Its application wizard makes the provider and the application together. |
-| [Sign in with Authelia](https://docs.audiosilo.app/users/admin/sso/authelia) | `https://auth.example.com` | The client goes in Authelia's configuration file, with a hash of the secret. |
-| [Sign in with Keycloak](https://docs.audiosilo.app/users/admin/sso/keycloak) | `https://auth.example.com/realms/home` | Add a `groups` client scope first. Keycloak refuses a sign-in that asks for a scope it doesn't know. |
-| [Sign in with Pocket ID](https://docs.audiosilo.app/users/admin/sso/pocket-id) | `https://id.example.com` | People sign in with a passkey. A public client needs no secret. |
+| [Authentik](https://docs.audiosilo.app/users/admin/sso/authentik) | `https://auth.example.com/application/o/audiosilo/` | Its application wizard makes the provider and the application together. |
+| [Authelia](https://docs.audiosilo.app/users/admin/sso/authelia) | `https://auth.example.com` | The client goes in Authelia's configuration file, with a hash of the secret. |
+| [Keycloak](https://docs.audiosilo.app/users/admin/sso/keycloak) | `https://auth.example.com/realms/home` | Add a `groups` client scope first. Keycloak refuses a sign-in that asks for a scope it doesn't know. |
+| [Pocket ID](https://docs.audiosilo.app/users/admin/sso/pocket-id) | `https://id.example.com` | People sign in with a passkey. A public client needs no secret. |
 
 ## Who gets in
 
@@ -82,16 +85,13 @@ The first time someone signs in, the server looks for their account:
 | When | What happens |
 |---|---|
 | The provider says their email is verified, and it matches the email of exactly one ordinary account | The server links them to that account. |
-| The matching account is an admin | The sign-in waits for an admin. Nobody becomes an admin by changing an email at the provider. |
-| Anything else | The sign-in waits for an admin, under **Waiting sign-ins**. |
+| Anything else, an admin's email included | The sign-in waits for an admin, under **Waiting sign-ins**. Nobody becomes an admin by changing an email at the provider. |
 
-Once linked, they sign in to the same account every time. Usernames are never used to match. To give an account an email, open the person's page and fill in **Sign-in > Email**.
-
-Household members and demo accounts can't sign in with single sign-on.
+Once linked, they sign in to the same account every time. To give an account an email, open the person's page and fill in **Sign-in > Email**. Household members and demo accounts can't sign in with single sign-on.
 
 ### Deal with a waiting sign-in
 
-When someone waits, the **People** page shows a **Waiting sign-ins** card, and you get the **Someone is waiting to sign in** notification. Each row shows their name, their email, whether the provider verified it, and their groups. For each row, choose one:
+When someone waits, the **People** page shows a **Waiting sign-ins** card, and you get the **Someone is waiting to sign in** notification. Each row shows their name, email, whether it is verified, and their groups. Choose one:
 
 - **Link** gives them an existing account.
 - **Create account** makes a new ordinary account for them.
@@ -99,29 +99,23 @@ When someone waits, the **People** page shows a **Waiting sign-ins** card, and y
 
 After a Link or Create account, they sign in again and get straight in.
 
-### Make accounts for new people
+## Who may sign in
 
-To skip the wait, turn on **Make accounts for new people** under **Server > Settings > Sign-in > Who may sign in**. The server then makes an ordinary account for someone it doesn't know. **Only for this group** limits that to members of one group at your provider. Everyone else still waits for you.
+These settings are under **Server > Settings > Sign-in > Who may sign in**. They apply at the next sign-in, with no restart.
 
-## Make admins from a group
+- **Make accounts for new people** skips the wait. The server makes an ordinary account for someone it doesn't know.
+- **Only for this group** limits that to members of one group at your provider.
+- **Admin group** manages admins at your provider. Set it to a group name, such as `audiosilo-admins`. At each single sign-on, a member of that group becomes an admin, and anyone else an ordinary user.
 
-To manage admins at your provider, set **Admin group** under **Who may sign in** to a group name, such as `audiosilo-admins`. At each single sign-on, a member of that group becomes an admin, and anyone else becomes an ordinary user. Group names must match exactly, capital letters included.
-
-The last admin is never made an ordinary user. Leave **Admin group** empty to set roles on the **People** page yourself.
-
-The **Who may sign in** settings apply at the next sign-in, with no restart.
-
-## Sign in to the web player
-
-Open the web player from your server, at the server's own address followed by `/web`. Its sign-in screen shows the same **Sign in with** button. Select it, sign in at your provider, and you come back signed in to the player.
+Group names must match exactly, capital letters included. The last admin is never made an ordinary user. Leave **Admin group** empty to set roles on the **People** page yourself.
 
 ## Good to know
 
-- **Keep a password.** If the provider is down, single sign-on can't work. An admin with a password can still sign in, and `reset-admin` still works. An admin with no password can't be unlinked, so set a password for them first.
+- **Keep a password.** If the provider is down, single sign-on can't work. An admin with a password can still sign in, and `reset-admin` still works.
+- **Unlink** on a person's **Sign-in** tab removes their single sign-on. Their devices stay signed in. An admin with no password can't be unlinked, so set a password for them first.
 - **Signing out is separate.** Signing out of AudioSilo doesn't sign you out of the provider. Turning someone off at the provider doesn't sign them out of AudioSilo either. To stop someone at once, disable their account or use **Sign out everywhere** on their page.
-- **Unlink** on a person's **Sign-in** tab removes their single sign-on. Their devices stay signed in.
 - **Give AudioSilo its own host name**, like `books.example.com`. The sign-in passes through short-lived cookies, and other apps on the same host name could receive them.
-- **Changing the provider** (issuer, client ID, secret or scopes) needs a restart.
+- **Changing the provider** (issuer, client ID, secret or scopes) needs a restart. Until then, the server keeps using the old one.
 - **Kids mode:** the web player doesn't offer the button while a grown-up signs in from kids mode.
 
 ## More
