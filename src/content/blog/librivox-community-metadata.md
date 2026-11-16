@@ -15,7 +15,11 @@ covers:
   - docs:/users/admin/books
   - docs:/users/admin/server
   - docs:/developers/meta/api
+  - server:librivox
+  - app:librivox
+  - bridge:librivox
 related:
+  - add-books-from-librivox
   - smarter-bulk-matching
   - fix-covers-and-series
   - m4b-vs-mp3-audiobooks
