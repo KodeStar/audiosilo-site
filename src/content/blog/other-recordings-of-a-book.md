@@ -28,7 +28,7 @@ draft: true
 
 When your server holds one book in more than one recording, AudioSilo now shows them together. A series page has one spine for the book, with a **2 recordings** chip to choose between them. The book's page lists the others in an **Other recordings in your library** card. Each recording keeps its own place.
 
-This is new in AudioSilo 2.7.0. It needs community metadata switched on.
+This is new in AudioSilo 2.7.0 and works with community metadata switched on.
 
 ## What counts as another recording
 
@@ -48,7 +48,7 @@ Each recording keeps its own place, bookmarks and notes. Starting the second nar
 
 ## Which recording plays next
 
-When the next book in the series is on your server in more than one recording, AudioSilo picks the one read by the same narrator as the book you just finished. Without one, it picks a recording you've started, then one in the same library, then an unabridged one. The others stay one tap away on that book's page.
+When the next book in the series is on your server in more than one recording, AudioSilo picks the one read by the same narrator as the book you just finished. Without one, it picks a recording you've started and not finished, then one in the same library, then an unabridged one. The others stay one tap away on that book's page.
 
 ## How the server knows two recordings are one book
 
@@ -58,11 +58,13 @@ A match you make in the console comes first. Use it for a recording with no ASIN
 
 ## Good to know
 
-- **Copies are not recordings.** Two books with the same ASIN are copies of one recording, for example the same audiobook in two libraries. AudioSilo lists them once.
+- **Copies are not recordings.** Two books with the same ASIN are copies of one recording, for example the same audiobook in two libraries. So are two with the same ISBN when one of them has no ASIN. AudioSilo lists copies once.
 - **Listeners only see what they can open.** Someone whose share holds one recording sees no card, no chip and no sign of the other.
-- **The Library's Series card counts by recording.** A series of four books with one held twice reads "5 books". The series page counts that book once.
+- **The Library's Series card counts by recording.** A series of four books with one held twice in that library reads "5 books". The series page counts that book once.
 - **Check for upcoming releases** can stay off. The server still looks up which book each recording is.
-- **Without community metadata**, or on an older server, each recording stays a book of its own, as before.
+- **After a recording with no ASIN or ISBN**, the next book comes from your series numbering, not from the narrator rule.
+- **With community metadata switched off**, the book page card and the narrator rule stop, and the server looks nothing up. Recordings it already knew as one book, from a console match or an earlier lookup, still share a spine on series pages.
+- **On an older server**, each recording stays a book of its own, as before.
 - **Keeping recordings apart on disk.** Give each its own folder, such as `The Hobbit (Rob Inglis)/` and `The Hobbit (Andy Serkis)/`. See [Organizing your library](https://docs.audiosilo.app/users/getting-started/organizing-your-library#more-than-one-recording-of-a-book).
 
 ## More
